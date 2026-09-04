@@ -24,3 +24,8 @@ P3 complete: ROM escape and CALL return addresses preserved with explicit fetch-
 
 P3 committed c9805a6; P4 committed 662843a. Full-state and reset verification passes 197 tests. P5 seed 2 routing completes in 72 iterations at 15.52 MHz; hardware captures in progress.
 
+
+## 2026-09-04
+
+P5 ongoing: first three board streams match, countdown final tag differs persistently. Production-depth RTL simulation is correct; mapped-netlist diagnostic running. No repair yet attempted.
+

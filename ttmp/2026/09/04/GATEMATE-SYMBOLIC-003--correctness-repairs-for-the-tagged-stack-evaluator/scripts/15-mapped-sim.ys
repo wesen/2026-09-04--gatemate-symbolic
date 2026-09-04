@@ -1,0 +1,2 @@
+read_json build/top.json
+write_verilog -noattr build/mapped.v

@@ -357,3 +357,57 @@ Inspect P5-hardware.json and P5-countdown-uart.bin; compare the last tag against
 ### Technical details
 
 No repair for this new hardware discrepancy has been attempted yet. Final completion slip has not been printed.
+
+## Step 7: P5 isolate the persistent board mismatch
+
+Repeated the same countdown image on hardware and reproduced the final INT tag. The production-depth behavioral simulation emits the correct final BOOL tag, so the discrepancy is not explained by the earlier 30-versus-512 BRAM test configuration.
+
+### Prompt Context
+
+**User prompt (verbatim):**
+
+(see Step 1)
+
+**Assistant interpretation:** Implement the repair design in phases with reproducible validation, focused commits, detailed diary entries, and printed phase boundaries.
+
+**Inferred user intent:** Turn the documented review findings into a reliable working evaluator with visible progress and reviewable evidence.
+
+### What I did
+
+Added scripts/14-repeat-capture.sh and retained the repeated UART bytes. Exported the mapped Yosys netlist with scripts/15-mapped-sim.ys and generated production-depth and mapped simulation benches with scripts/16-board-sim.py.
+
+### Why
+
+A repeat capture and a production-depth simulation distinguish a persistent implementation discrepancy from a one-off serial error or parameter mismatch before any repair attempt.
+
+### What worked
+
+Repeated hardware output again ends T0:00000001. Production-depth simulation ends T1:00000001 with all earlier lines matching.
+
+### What didn't work
+
+Mapped-netlist simulation is still running and has not produced a conclusion. No source fix has been attempted for the board discrepancy.
+
+### What I learned
+
+The reported tag error is reproducible with the same bitstream hash. The behavioral checker passes even at the production stack depth.
+
+### What was tricky to build
+
+The mapped top has no parameters or hierarchical ROM array; its testbench uses the initialized technology-mapped ROM and the existing top-level debug aliases.
+
+### What warrants a second pair of eyes
+
+Keep the behavioral-versus-mapped-versus-board distinction explicit; do not infer a compiler bug until the mapped simulation or signal cone demonstrates it.
+
+### What should be done in the future
+
+Use mapped or intermediate synthesis observation to localize the fault; obey the two-repair-attempt limit.
+
+### Code review instructions
+
+Compare P5-countdown-repeat.bin, P5-production-simulation.log, and the mapped simulation result when available.
+
+### Technical details
+
+The user reiterated: commit at appropriate intervals and keep a detailed diary as you work (using the diary format from the skill). This investigation evidence is committed before attempting a new implementation repair.

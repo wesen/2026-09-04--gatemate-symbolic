@@ -1,0 +1,80 @@
+:0: sorry: constant selects in always_* processes are not fully supported (the process will be sensitive to all bits in 'a_w[39:0]').
+:0: sorry: constant selects in always_* processes are not fully supported (the process will be sensitive to all bits in 'b_w[39:0]').
+:0: sorry: constant selects in always_* processes are not fully supported (the process will be sensitive to all bits in 'a_w[39:0]').
+:0: sorry: constant selects in always_* processes are not fully supported (the process will be sensitive to all bits in 'b_w[39:0]').
+:0: sorry: constant selects in always_* processes are not fully supported (the process will be sensitive to all bits in 'a_w[39:0]').
+:0: sorry: constant selects in always_* processes are not fully supported (the process will be sensitive to all bits in 'b_w[39:0]').
+rtl/stack_core_bram.sv:198: sorry: constant selects in always_* processes are not fully supported (the process will be sensitive to all bits in '+add_w[63:0]').
+rtl/stack_core_bram.sv:198: sorry: constant selects in always_* processes are not fully supported (the process will be sensitive to all bits in '+add_w[63:0]').
+rtl/stack_core_bram.sv:199: sorry: constant selects in always_* processes are not fully supported (the process will be sensitive to all bits in '+sub_w[63:0]').
+rtl/stack_core_bram.sv:199: sorry: constant selects in always_* processes are not fully supported (the process will be sensitive to all bits in '+sub_w[63:0]').
+rtl/stack_core_bram.sv:200: sorry: constant selects in always_* processes are not fully supported (the process will be sensitive to all bits in '+mul_w[63:0]').
+rtl/stack_core_bram.sv:200: sorry: constant selects in always_* processes are not fully supported (the process will be sensitive to all bits in '+mul_w[63:0]').
+rtl/stack_core_bram.sv:240: sorry: constant selects in always_* processes are not fully supported (the process will be sensitive to all bits in 'pc_q[10:0]').
+rtl/symbolic_types_pkg.sv:94: sorry: constant selects in always_* processes are not fully supported (the process will be sensitive to all bits in 'imm[14:0]').
+rtl/symbolic_types_pkg.sv:94: sorry: constant selects in always_* processes are not fully supported (the process will be sensitive to all bits in 'imm[14:0]').
+rtl/symbolic_types_pkg.sv:94: sorry: constant selects in always_* processes are not fully supported (the process will be sensitive to all bits in 'imm[14:0]').
+rtl/symbolic_types_pkg.sv:94: sorry: constant selects in always_* processes are not fully supported (the process will be sensitive to all bits in 'imm[14:0]').
+:0: sorry: constant selects in always_* processes are not fully supported (the process will be sensitive to all bits in 'a_w[39:0]').
+:0: sorry: constant selects in always_* processes are not fully supported (the process will be sensitive to all bits in 'b_w[39:0]').
+rtl/stack_core_bram.sv:366: sorry: constant selects in always_* processes are not fully supported (the process will be sensitive to all bits in '+add_w[63:0]').
+rtl/stack_core_bram.sv:367: sorry: constant selects in always_* processes are not fully supported (the process will be sensitive to all bits in '+sub_w[63:0]').
+rtl/stack_core_bram.sv:368: sorry: constant selects in always_* processes are not fully supported (the process will be sensitive to all bits in '+mul_w[63:0]').
+:0: sorry: constant selects in always_* processes are not fully supported (the process will be sensitive to all bits in 'a_w[39:0]').
+:0: sorry: constant selects in always_* processes are not fully supported (the process will be sensitive to all bits in 'b_w[39:0]').
+:0: sorry: constant selects in always_* processes are not fully supported (the process will be sensitive to all bits in 'a_w[39:0]').
+:0: sorry: constant selects in always_* processes are not fully supported (the process will be sensitive to all bits in 'b_w[39:0]').
+rtl/stack_core_bram.sv:366: sorry: constant selects in always_* processes are not fully supported (the process will be sensitive to all bits in '+add_w[63:0]').
+rtl/stack_core_bram.sv:367: sorry: constant selects in always_* processes are not fully supported (the process will be sensitive to all bits in '+sub_w[63:0]').
+rtl/stack_core_bram.sv:368: sorry: constant selects in always_* processes are not fully supported (the process will be sensitive to all bits in '+mul_w[63:0]').
+:0: sorry: constant selects in always_* processes are not fully supported (the process will be sensitive to all bits in 'a_w[39:0]').
+:0: sorry: constant selects in always_* processes are not fully supported (the process will be sensitive to all bits in 'b_w[39:0]').
+:0: sorry: constant selects in always_* processes are not fully supported (the process will be sensitive to all bits in 'a_w[39:0]').
+:0: sorry: constant selects in always_* processes are not fully supported (the process will be sensitive to all bits in 'b_w[39:0]').
+rtl/stack_core_bram.sv:366: sorry: constant selects in always_* processes are not fully supported (the process will be sensitive to all bits in '+add_w[63:0]').
+rtl/stack_core_bram.sv:367: sorry: constant selects in always_* processes are not fully supported (the process will be sensitive to all bits in '+sub_w[63:0]').
+rtl/stack_core_bram.sv:368: sorry: constant selects in always_* processes are not fully supported (the process will be sensitive to all bits in '+mul_w[63:0]').
+:0: sorry: constant selects in always_* processes are not fully supported (the process will be sensitive to all bits in 'a_w[39:0]').
+:0: sorry: constant selects in always_* processes are not fully supported (the process will be sensitive to all bits in 'b_w[39:0]').
+:0: sorry: constant selects in always_* processes are not fully supported (the process will be sensitive to all bits in 'a_w[39:0]').
+:0: sorry: constant selects in always_* processes are not fully supported (the process will be sensitive to all bits in 'b_w[39:0]').
+rtl/stack_core_bram.sv:366: sorry: constant selects in always_* processes are not fully supported (the process will be sensitive to all bits in '+add_w[63:0]').
+rtl/stack_core_bram.sv:367: sorry: constant selects in always_* processes are not fully supported (the process will be sensitive to all bits in '+sub_w[63:0]').
+rtl/stack_core_bram.sv:368: sorry: constant selects in always_* processes are not fully supported (the process will be sensitive to all bits in '+mul_w[63:0]').
+:0: sorry: constant selects in always_* processes are not fully supported (the process will be sensitive to all bits in 'a_w[39:0]').
+:0: sorry: constant selects in always_* processes are not fully supported (the process will be sensitive to all bits in 'b_w[39:0]').
+:0: sorry: constant selects in always_* processes are not fully supported (the process will be sensitive to all bits in 'a_w[39:0]').
+:0: sorry: constant selects in always_* processes are not fully supported (the process will be sensitive to all bits in 'b_w[39:0]').
+rtl/stack_core_bram.sv:366: sorry: constant selects in always_* processes are not fully supported (the process will be sensitive to all bits in '+add_w[63:0]').
+rtl/stack_core_bram.sv:367: sorry: constant selects in always_* processes are not fully supported (the process will be sensitive to all bits in '+sub_w[63:0]').
+rtl/stack_core_bram.sv:368: sorry: constant selects in always_* processes are not fully supported (the process will be sensitive to all bits in '+mul_w[63:0]').
+:0: sorry: constant selects in always_* processes are not fully supported (the process will be sensitive to all bits in 'a_w[39:0]').
+:0: sorry: constant selects in always_* processes are not fully supported (the process will be sensitive to all bits in 'b_w[39:0]').
+:0: sorry: constant selects in always_* processes are not fully supported (the process will be sensitive to all bits in 'top0_q[39:0]').
+:0: sorry: constant selects in always_* processes are not fully supported (the process will be sensitive to all bits in 'top0_q[39:0]').
+:0: sorry: constant selects in always_* processes are not fully supported (the process will be sensitive to all bits in 'top0_q[39:0]').
+:0: sorry: constant selects in always_* processes are not fully supported (the process will be sensitive to all bits in 'top0_q[39:0]').
+:0: sorry: constant selects in always_* processes are not fully supported (the process will be sensitive to all bits in 'top0_q[39:0]').
+:0: sorry: constant selects in always_* processes are not fully supported (the process will be sensitive to all bits in 'top0_q[39:0]').
+rtl/stack_core_bram.sv:491: sorry: constant selects in always_* processes are not fully supported (the process will be sensitive to all bits in 'rdepth_q[4:0]').
+rtl/stack_core_bram.sv:546: sorry: constant selects in always_* processes are not fully supported (the process will be sensitive to all bits in 'dc_q[9:0]').
+rtl/stack_core_bram.sv:546: sorry: constant selects in always_* processes are not fully supported (the process will be sensitive to all bits in 'dc_q[9:0]').
+rtl/stack_core_bram.sv:546: sorry: constant selects in always_* processes are not fully supported (the process will be sensitive to all bits in 'dc_q[9:0]').
+rtl/stack_core_bram.sv:546: sorry: constant selects in always_* processes are not fully supported (the process will be sensitive to all bits in 'dc_q[9:0]').
+:0: sorry: constant selects in always_* processes are not fully supported (the process will be sensitive to all bits in 'pending_q[39:0]').
+:0: sorry: constant selects in always_* processes are not fully supported (the process will be sensitive to all bits in 'pending_q[39:0]').
+rtl/top.sv:256: sorry: constant selects in always_* processes are not fully supported (the process will be sensitive to all bits in 'led_counter[23:0]').
+rtl/top.sv:258: sorry: constant selects in always_* processes are not fully supported (the process will be sensitive to all bits in 'led_counter[23:0]').
+rtl/stack_core_bram.sv:306: vvp.tgt sorry: Case unique/unique0 qualities are ignored.
+rtl/stack_core_bram.sv:365: vvp.tgt sorry: Case unique/unique0 qualities are ignored.
+rtl/stack_core_bram.sv:365: vvp.tgt sorry: Case unique/unique0 qualities are ignored.
+rtl/stack_core_bram.sv:365: vvp.tgt sorry: Case unique/unique0 qualities are ignored.
+rtl/stack_core_bram.sv:365: vvp.tgt sorry: Case unique/unique0 qualities are ignored.
+rtl/stack_core_bram.sv:365: vvp.tgt sorry: Case unique/unique0 qualities are ignored.
+rtl/stack_core_bram.sv:541: vvp.tgt sorry: Case unique/unique0 qualities are ignored.
+rtl/stack_core_bram.sv:541: vvp.tgt sorry: Case unique/unique0 qualities are ignored.
+rtl/stack_core_bram.sv:541: vvp.tgt sorry: Case unique/unique0 qualities are ignored.
+rtl/stack_core_bram.sv:541: vvp.tgt sorry: Case unique/unique0 qualities are ignored.
+rtl/stack_core_bram.sv:575: vvp.tgt sorry: Case unique/unique0 qualities are ignored.
+rtl/stack_core_bram.sv:575: vvp.tgt sorry: Case unique/unique0 qualities are ignored.
+rtl/top.sv:214: vvp.tgt sorry: Case unique/unique0 qualities are ignored.
