@@ -187,3 +187,111 @@ Run go test -race ./pkg/microscope -count=1; read graph.go, model.go, protocol.g
 ### Technical details
 
 New root module github.com/wesen/2026-09-04--gatemate-symbolic uses Go 1.26.1 and github.com/pkg/errors. Model and serial devices will implement the same explicit Engine contract; source identity remains visible to the API.
+
+## Step 4: P3 first UART differential run and reset monitor boundary
+
+Added graph RTL, UART reception, bounded command parsing, event serialization, and a Go-driven UART simulation comparison. Six cases passed on the first run; the path reset case exposed a testbench assertion that did not exempt a reset accepted on the observed edge.
+
+### Prompt Context
+
+**User prompt (verbatim, JSON encoded):**
+
+(see Step 1)
+
+**Assistant interpretation:** Design, publish, and implement the graph-coloring FPGA microscope with Go and React, committed milestones, a detailed diary, and physical phase slips.
+
+**Inferred user intent:** Deliver a working next laboratory with enough explanation and evidence for an intern to maintain it.
+
+### What I did
+
+Seeded a separate graph controller from the frozen queens core, added runtime adjacency/domains, S_INIT, trace_ready gating including RAM enables, level-zero trail integrity, graph_link and graph_top. Added UART tests that send real bit waveforms and decode events into the Go projection.
+
+### Why
+
+The physical protocol must be validated independently from direct access to FPGA registers. The simulation exercises command checksums and partial-line recovery before loading a graph.
+
+### What worked
+
+First run passed triangle, unsatisfiable triangle, cut, root contradiction, root solution, and eight colors. Their decoded semantic fields matched the Go model.
+
+### What didn't work
+
+Command: go test ./pkg/microscope -run TestGraphRTLSerialEvents -count=1 -v. Path case: FATAL: graph_microscope/sim/tb_graph_link.sv:53: state changed under event stall; Time: 317426000 Scope: tb_graph_link. The monitor sampled reset_hold before the edge but not after command acceptance asserted reset_hold.
+
+### What I learned
+
+An accepted reset intentionally invalidates a held event and resets domains/pointers. The monitor must exempt that explicit reset edge rather than treating it as a normal stalled edge.
+
+### What was tricky to build
+
+reset_hold is registered by the command parser; its change asynchronously resets the core in the same timestep before the testbench post-edge check. A pre-edge exemption alone does not cover that transition.
+
+### What warrants a second pair of eyes
+
+Add only the post-edge reset exemption; retain all normal held-state checks. This is the first P3 failure and no repair has yet been attempted.
+
+### What should be done in the future
+
+Apply the narrow testbench correction and rerun all seven UART cases before synthesis.
+
+### Code review instructions
+
+Source the CAD environment and run the graph UART test above.
+
+### Technical details
+
+The UART simulation uses eight clocks per bit and a shortened partial-command timeout. Hardware remains 10 MHz and nominal 115200 baud.
+
+## Step 5: P3 UART differential verification complete and board build started
+
+The first focused correction to the reset monitor passed all seven UART cases. Added the Go serial Engine and an opt-in physical test that loads multiple graphs into one bitstream, verifies every semantic event, and resets each graph afterward.
+
+### Prompt Context
+
+**User prompt (verbatim, JSON encoded):**
+
+(see Step 1)
+
+**Assistant interpretation:** Design, publish, and implement the graph-coloring FPGA microscope with Go and React, committed milestones, a detailed diary, and physical phase slips.
+
+**Inferred user intent:** Deliver a working next laboratory with enough explanation and evidence for an intern to maintain it.
+
+### What I did
+
+Added uart_rx, graph_link, graph_top, synthesis Makefile/script, UART waveform bench, Go UART differential tests, serial transport with bounded exchanges and explicit resynchronization, and physical wire capture tests. Started scripts/04-build-and-check-board.sh in tmux session graph-p3.
+
+### Why
+
+A working physical graph input path is a prerequisite for presenting the UI as a hardware microscope.
+
+### What worked
+
+All seven UART differential cases passed in 5.61 seconds. The reset assertion correction succeeded on the first repair. Synthesis completed and routing is in progress.
+
+### What didn't work
+
+The reset monitor failure is preserved in the preceding step. No new implementation failure has occurred. A read-only status glob again checked the hardware exit file before it existed; this does not indicate a build failure.
+
+### What I learned
+
+A bounded stop-and-wait protocol permits the core to prepare the next event while the current record transmits, then hold it until another S command. The host must never retry a timed-out step automatically.
+
+### What was tricky to build
+
+After an ambiguous exchange error, the Go link waits beyond the FPGA partial-command timeout and drains input only during explicit reset/reload recovery. Normal Step refuses to proceed on an unsynchronized link.
+
+### What warrants a second pair of eyes
+
+Review trace_ready gating, command graph validation, runtime reset initialization, and the difference between meaningful choice/trail event fields and stale staging fields.
+
+### What should be done in the future
+
+Complete physical evidence and phase P3, then add the session owner and HTTP API.
+
+### Code review instructions
+
+Run the Go suite under the CAD environment. Physical test is opt-in: go test ./pkg/microscope -run TestPhysicalGraphEvents -args -hardware-device /dev/ttyACM0 -hardware-out PATH.
+
+### Technical details
+
+The board build began from base commit 4160f5b with the P3 sources in the working tree; the following milestone commit records those source files. P3-build-commit.txt is a base-revision marker, not a claim that the RTL existed in that earlier commit.
