@@ -310,3 +310,57 @@ Source the CAD environment and run python3 -m pytest sim/test_rtl.py -q -x in qu
 ### Technical details
 
 Integrity faults cover corrupt trail marks and record flags; BAD_ONEHOT is checked before propagation. Complete model comparisons include all live records after reset.
+
+## Step 6: P5 board integration and UART verification
+
+Integrated the rollback solver with the existing board reset and UART blocks. The formatter holds each accepted board until its complete record is transmitted and emits an explicit completion count or fault record.
+
+### Prompt Context
+
+**User prompt (verbatim):**
+
+(see Step 2)
+
+**Assistant interpretation:** Implement the Lab 2 guide in tested phases, with committed milestones and printed boundaries.
+
+**Inferred user intent:** Deliver a working and measurable rollback solver with reproducible evidence and a detailed implementation record.
+
+### What I did
+
+Added queens_top, queens_result_printer, UART-level simulation, and reproducible synthesis commands.
+
+### Why
+
+Physical verification requires observable terminal status and an output protocol that tolerates the UART being slower than the solver.
+
+### What worked
+
+All eight UART integration tests passed: both storage modes, enumeration, cut, resource faults, and reset during transmission.
+
+### What didn't work
+
+None. Command: source /home/manuel/fpga/oss-cad-suite/environment; python3 -m pytest sim/test_top.py -q -x. Result: 8 passed in 3.83s.
+
+### What I learned
+
+Explicit D and F records make completion and resource exhaustion distinguishable from silence.
+
+### What was tricky to build
+
+The UART samples start/data synchronously. The formatter advances only on UART readiness and retains a final wait state through the last transmitted byte.
+
+### What warrants a second pair of eyes
+
+Review final-byte ownership, button reset synchronization, and terminal-record priority after the last accepted result.
+
+### What should be done in the future
+
+Synthesize and route both modes; load full and cut variants on the board and compare captured bytes with the model.
+
+### Code review instructions
+
+Run make test in queens_rollback after sourcing the OSS CAD Suite environment. Read sim/test_top.py and rtl/queens_result_printer.sv.
+
+### Technical details
+
+Protocol: Q:672BE0 CRLF for a 24-bit board, D:0000005C CRLF for a count, F:01 CRLF for a fault. Board clock 10 MHz; UART 115200 baud.
