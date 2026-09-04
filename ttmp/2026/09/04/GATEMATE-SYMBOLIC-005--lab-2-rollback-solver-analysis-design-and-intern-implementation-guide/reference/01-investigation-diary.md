@@ -127,3 +127,57 @@ Read the complete design document and saved experiment JSON. Run scripts/06-prep
 ### Technical details
 
 The local preview is /tmp/gatemate005-delivery/preview.pdf. Reproducible source files and validation logs remain in the ticket. The intended remote folder is /ai/2026/09/04/GATEMATE-SYMBOLIC-005.
+
+## Step 3: Confirm reMarkable delivery and publish the completed ticket
+
+The completed guide uploaded successfully, including its two rendered diagrams. The documentation ticket is now ready for review with every task complete; the separate Lab 2 project ticket continues to track implementation work.
+
+### Prompt Context
+
+**User prompt (verbatim):** (see Step 2; delivery continues the original guide/upload request).
+
+**Assistant interpretation:** Finish delivery and publish the completed documentation after validation.
+
+**Inferred user intent:** Receive the guide on reMarkable and retain a reviewable repository record.
+
+**Commit (guide):** `da4ea92` — `docs: complete Lab 2 design and intern implementation guide`.
+
+### What I did
+
+Ran the prepared bundle upload, read its successful receipt, checked the final documentation task, updated the ticket to review, and preserved the validation and upload logs for the final commit and push.
+
+### Why
+
+The earlier checkpoint was intentionally incomplete. Delivery status must now reflect the successful guide upload without erasing the historical failure record.
+
+### What worked
+
+The command exited zero and reported `OK: uploaded GATEMATE-SYMBOLIC-005 Lab 2 Design and Intern Guide.pdf -> /ai/2026/09/04/GATEMATE-SYMBOLIC-005`. Doctor passed and both diagrams were included by absolute image paths in the render input.
+
+### What didn't work
+
+No upload failure or authentication retry occurred.
+
+### What I learned
+
+The validated source and prepared rendering input can retain different frontmatter while preserving the same guide body and figures.
+
+### What was tricky to build
+
+The delivery copy uses conventional lowercase title metadata, while the source document retains docmgr frontmatter and related-file metadata. The recorded upload receipt is the delivery confirmation; no redundant cloud listing is needed.
+
+### What warrants a second pair of eyes
+
+Review the proposed design choices and evidence limits before implementing Lab 2. The uploaded document is a design guide, not a claim that production solver RTL exists.
+
+### What should be done in the future
+
+Proceed with the implementation phases in GATEMATE-SYMBOLIC-004 after design review.
+
+### Code review instructions
+
+Read the design guide, document-check.json, doctor.log, and upload.log. The earlier interrupted-checkpoint diary entry remains historical.
+
+### Technical details
+
+The delivery script is scripts/07-upload-guide.sh. Remote destination: /ai/2026/09/04/GATEMATE-SYMBOLIC-005. The successful receipt is stored in reference/validation/upload.log.

@@ -1,7 +1,7 @@
 ---
 Title: Lab 2 rollback solver analysis design and intern implementation guide
 Ticket: GATEMATE-SYMBOLIC-005
-Status: active
+Status: review
 Topics:
     - fpga
     - gatemate
@@ -13,10 +13,11 @@ Owners: []
 RelatedFiles: []
 ExternalSources: []
 Summary: ""
-LastUpdated: 2026-09-04T17:02:16.920581184-04:00
+LastUpdated: 2026-09-04T17:30:18.922322978-04:00
 WhatFor: ""
 WhenToUse: ""
 ---
+
 
 # Lab 2 rollback solver analysis design and intern implementation guide
 
@@ -37,7 +38,7 @@ See [the complete design and intern guide](design-doc/01-lab-2-snapshot-to-trail
 
 ## Status
 
-Current status: **active**
+Current status: **review**. The guide is complete and uploaded to reMarkable as `GATEMATE-SYMBOLIC-005 Lab 2 Design and Intern Guide.pdf` under `/ai/2026/09/04/GATEMATE-SYMBOLIC-005`. See [upload receipt](reference/validation/upload.log). All documentation tasks are complete; production implementation remains in project ticket GATEMATE-SYMBOLIC-004.
 
 ## Topics
 
