@@ -1,0 +1,74 @@
+almanach_studio_version: 1
+theme: brutalist
+paperWidth: 384
+bodyScale: 1
+feedLines: 8
+blocks:
+- id: head
+  type: row
+  data:
+    cols:
+    - w: 1fr
+      text: GATEMATE-004
+      preset: micro
+    - w: 1fr
+      text: P3 DONE
+      preset: micro
+      align: right
+- id: r1
+  type: rule
+  data:
+    weight: heavy
+- id: gap1
+  type: space
+  data:
+    size: s
+- id: title
+  type: text
+  data:
+    text: Trail RTL and reverse restoration
+    preset: h1
+    lines: 3
+- id: gap3
+  type: space
+  data:
+    size: m
+- id: did
+  type: list
+  data:
+    marker: —
+    lines: 2
+    items:
+    - Trail RTL and reverse restoration
+- id: r2
+  type: rule
+  data:
+    weight: hair
+- id: facts
+  type: kv
+  data:
+    items:
+    - - COMMIT
+      - 214a39a47d5207654330b70edc2d4ddfdc51ac34
+    - - NEXT
+      - continue tested implementation
+    - - TESTS
+      - 36 passed
+- id: r3
+  type: rule
+  data:
+    weight: hair
+- id: decide
+  type: row
+  data:
+    cols:
+    - w: 1fr
+      text: SCAN FOR COMMIT
+      preset: caption
+    - w: 120
+      blocks:
+      - id: qr
+        type: qr
+        data:
+          value: https://github.com/wesen/2026-09-04--gatemate-symbolic/commit/214a39a47d5207654330b70edc2d4ddfdc51ac34
+          size: 110

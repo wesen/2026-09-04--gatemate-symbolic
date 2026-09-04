@@ -135,7 +135,8 @@ module queens_core #(
           state_q<=S_MUTATE;
         end
         S_MUTATE: begin
-          if(domains_q[mut_col_q]==mut_mask_q) state_q<=S_AFTER_WRITE;
+          if((mut_mask_q & ~domains_q[mut_col_q])!=0) fault(queens_types_pkg::F_TRAIL_INTEGRITY);
+          else if(domains_q[mut_col_q]==mut_mask_q) state_q<=S_AFTER_WRITE;
           else if(USE_TRAIL && trail_top_q>=TRAIL_CAPACITY) fault(queens_types_pkg::F_TRAIL_FULL);
           else begin old_mask_q<=domains_q[mut_col_q];state_q<=USE_TRAIL ? S_LOG_WRITE : S_APPLY;end
         end
@@ -150,7 +151,8 @@ module queens_core #(
         end
         S_AFTER_WRITE: state_q<=write_resume_q;
         S_PROP: begin
-          if(target_q==source_q) state_q<=S_PROP_ADV;
+          if(!queens_types_pkg::singleton(domains_q[source_q])) fault(queens_types_pkg::F_BAD_ONEHOT);
+          else if(target_q==source_q) state_q<=S_PROP_ADV;
           else begin
             mut_col_q<=target_q;
             mut_mask_q<=domains_q[target_q] & ~queens_types_pkg::attack(source_q,row_q,target_q);
@@ -172,7 +174,10 @@ module queens_core #(
           end
         end
         S_CP_WAIT: state_q<=S_CP_CAPTURE;
-        S_CP_CAPTURE: begin cp_q<=cp_rd_data;state_q<=USE_TRAIL ? S_TCHECK : S_RESTORE;end
+        S_CP_CAPTURE: begin
+          if(cp_rd_data[13:0]!=0) fault(queens_types_pkg::F_TRAIL_INTEGRITY);
+          else begin cp_q<=cp_rd_data;state_q<=USE_TRAIL ? S_TCHECK : S_RESTORE;end
+        end
         S_TCHECK: begin
           if(cp_q[28:22]>trail_top_q || cp_q[28:22]<trail_base_q)
             fault(queens_types_pkg::F_TRAIL_INTEGRITY);
@@ -182,9 +187,16 @@ module queens_core #(
         S_TWAIT: state_q<=S_TCAPTURE;
         S_TCAPTURE: begin trail_entry_q<=trail_rd_data;state_q<=S_TAPPLY;end
         S_TAPPLY: begin
-          domains_q[trail_entry_q[19:17]]<=trail_entry_q[16:9];
-          trail_top_q<=trail_top_q-1'b1;
-          trace_valid<=1;trace_kind<=queens_types_pkg::E_RESTORE;state_q<=S_TCHECK;
+          if(trail_top_q<=trail_base_q || trail_entry_q[3:0]!=0 ||
+             trail_entry_q[8:4]==0 || trail_entry_q[8:4]>choice_top_q ||
+             trail_entry_q[16:9]==0 ||
+             (domains_q[trail_entry_q[19:17]] & ~trail_entry_q[16:9])!=0)
+            fault(queens_types_pkg::F_TRAIL_INTEGRITY);
+          else begin
+            domains_q[trail_entry_q[19:17]]<=trail_entry_q[16:9];
+            trail_top_q<=trail_top_q-1'b1;
+            trace_valid<=1;trace_kind<=queens_types_pkg::E_RESTORE;state_q<=S_TCHECK;
+          end
         end
         S_RESTORE: begin
           if(!USE_TRAIL) for(c=0;c<8;c=c+1) domains_q[c]<=cp_q[40+8*c+:8];

@@ -10,13 +10,20 @@ Topics:
 DocType: reference
 Intent: long-term
 Owners: []
-RelatedFiles: []
+RelatedFiles:
+    - Path: repo://queens_rollback/rtl/queens_core.sv
+      Note: Snapshot and trail recovery with one mutation owner
+    - Path: repo://queens_rollback/sim/test_rtl.py
+      Note: Complete live state and output comparisons
+    - Path: repo://queens_rollback/tools/queens_model.py
+      Note: Stepwise semantic model and complete event snapshots
 ExternalSources: []
 Summary: Chronological investigation and implementation diary for Laboratory 2.
 LastUpdated: 2026-09-04T16:57:27.323426618-04:00
 WhatFor: ""
 WhenToUse: ""
 ---
+
 
 # Diary
 
@@ -247,3 +254,59 @@ Run python3 -m pytest sim -q and ticket scripts/04-profile-backends.py under the
 ### Technical details
 
 Default logical trail64/choice8; observed trail32/choice6. Snapshot and trail output order match the independent oracle. First-only retains the winning trail and discards all choices.
+
+## Step 5: P4 cycle stability reset cut and integrity checks
+
+Strengthened verification from event equality to every-cycle live-state stability. Added reset interruption and corruption tests, and terminal dwell checks that ensure cut and faults cannot resume work.
+
+### Prompt Context
+
+**User prompt (verbatim):**
+
+(see Step 2)
+
+**Assistant interpretation:** Implement the Lab 2 guide in tested phases, with committed milestones and printed boundaries.
+
+**Inferred user intent:** Deliver a working and measurable rollback solver with reproducible evidence and a detailed implementation record.
+
+**Commit (code/work):** 214a39a
+
+### What I did
+
+Added monitors for domains, propagated bitmap, counts and every live choice/trail entry between semantic events and on faults. Added reset at log-write, restore-apply, pending result and checkpoint write; injected corrupt marks, trail flags and source masks.
+
+### Why
+
+Matching event snapshots alone can miss premature publication or state changes that are repaired before the next event.
+
+### What worked
+
+All 34 RTL tests pass in 29.38 seconds. The unchanged model suite previously passed 16 tests. Long result stalls preserve state, and the bench observes 64 additional terminal cycles without another transfer or event.
+
+### What didn't work
+
+No P4 failures or repair retries.
+
+### What I learned
+
+Corruption tests need a one-cycle monitor exemption for the deliberate testbench mutation, followed by normal stability checks through the fault event.
+
+### What was tricky to build
+
+Reset discards all live memory reachability and the comparison restarts from a fresh model after the RESTART marker. The physical RAM arrays remain uncleared.
+
+### What warrants a second pair of eyes
+
+Inspect the integrity guards before restore writes and the distinction between injected test state and subsequent protected behavior. BAD_DOMAIN_INDEX remains reserved because the implemented domain interface is exactly three bits.
+
+### What should be done in the future
+
+Integrate board formatter, synthesize both backends, capture output and compare routed resources.
+
+### Code review instructions
+
+Source the CAD environment and run python3 -m pytest sim/test_rtl.py -q -x in queens_rollback.
+
+### Technical details
+
+Integrity faults cover corrupt trail marks and record flags; BAD_ONEHOT is checked before propagation. Complete model comparisons include all live records after reset.
