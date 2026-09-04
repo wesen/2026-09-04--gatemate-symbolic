@@ -86,3 +86,12 @@ Impl P5: board top, 2 BRAM / 392 CPE / 17 MHz, both exit criteria verified on ha
 
 - /home/manuel/code/wesen/2026-09-04--gatemate-symbolic/symbolic_eval/rtl/top.sv — board integration
 
+
+## 2026-09-04
+
+Impl P6: README finalized, 105 tests green, wrap-up
+
+### Related Files
+
+- /home/manuel/code/wesen/2026-09-04--gatemate-symbolic/symbolic_eval/README.md — final documentation
+

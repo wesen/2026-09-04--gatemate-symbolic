@@ -546,3 +546,46 @@ The laboratory's completion definition is hardware evidence, not simulation.
 
 ### Technical details
 - Hardware capture: `stty -F /dev/ttyACM0 115200 raw -echo; cat /dev/ttyACM0` during `openFPGALoader -b olimex_gatemateevb build/top.bit`.
+
+## Step 11: Implementation P6 — wrap-up
+
+Final README (exit criteria, machine summary, method, measured results, test inventory,
+portability notes), full test re-run (105 green), tool versions recorded, ticket tasks
+closed out.
+
+### Prompt Context
+
+**User prompt (verbatim):** (see Step 5)
+
+**Assistant interpretation:** Close out the implementation: documentation, final validation, handoff.
+
+### What I did
+- Rewrote `symbolic_eval/README.md` with hardware evidence, budgets, LED/UART documentation, and the yosys/iverilog portability notes.
+- Re-ran the whole suite: 105 passed.
+
+### Why
+An intern must be able to reproduce and extend the work from the README alone.
+
+### What worked
+- Everything green on the final run; board left running Program A.
+
+### What didn't work
+- Nothing.
+
+### What I learned
+- The Laboratory 1 exit criteria are fully achievable within the book's budgets with margin (392/2000 CPEs, 2/2 BRAM).
+
+### What was tricky to build
+- N/A.
+
+### What warrants a second pair of eyes
+- Final repo state: `git log --oneline` (7 implementation commits), `python3 -m pytest sim/ -q`.
+
+### What should be done in the future
+- Extensions: CALL/RET, trace RAM / ILA fault capture, Laboratories 2-5 reuse of this substrate.
+
+### Code review instructions
+- Start at `symbolic_eval/README.md`, then `rtl/stack_core_bram.sv`, then run the suite.
+
+### Technical details
+- Final: 105 tests, 2 BRAM, 392 CPEs, 17.11 MHz, board evidence captured for both exit criteria.
