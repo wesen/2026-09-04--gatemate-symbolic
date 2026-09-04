@@ -1,0 +1,8 @@
+/web/node_modules/
+/web/dist/
+/internal/microscope/assets/static/
+/internal/microscope/assets/index.html
+/graph_microscope/build/
+__pycache__/
+.pytest_cache/
+*.pyc

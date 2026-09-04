@@ -143,6 +143,8 @@ An acknowledged event permits the core to continue until its next event. The tra
 
 The graph trail uses the established formats: choice metadata is 40 bits (column 3, remaining mask 8, mark 7, saved propagated 8, reserved 14), and a trail record is 20 bits (vertex 3, old mask 8, choice level 5, reserved 4). Physical depths remain eight choices and 64 trail entries. Logical capacities are elaboration parameters for testing. Runtime graph input cannot request arbitrary memory sizes.
 
+**Implementation finding:** Unlike queens, a one-color graph begins with singleton domains and can perform root propagation before creating a checkpoint. Its valid trail entries have choice level zero. Graph integrity checks must permit zero when it matches the current root depth; copying the queens nonzero-level guard would incorrectly reject this valid case. A root contradiction completes with zero solutions and no checkpoint to restore.
+
 | Event code | Name | Projection update |
 |---|---|---|
 | 1 | CREATE | Append the published choice metadata. |

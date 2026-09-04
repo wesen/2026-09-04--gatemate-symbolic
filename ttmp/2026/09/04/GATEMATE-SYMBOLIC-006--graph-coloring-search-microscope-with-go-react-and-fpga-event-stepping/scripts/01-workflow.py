@@ -12,12 +12,17 @@ PHASES = {'P1':'Design guide and reMarkable delivery','P2':'Go model and serial 
           'P5':'React search microscope interface','P6':'End to end validation and handoff'}
 p=argparse.ArgumentParser()
 sub=p.add_subparsers(dest='command',required=True)
+sub.add_parser('tidy')
 s=sub.add_parser('slip');s.add_argument('phase',choices=['PLAN',*PHASES]);s.add_argument('state',choices=['start','done']);s.add_argument('--commit');s.add_argument('--fact',action='append',default=[])
 d=sub.add_parser('diary')
 for field in ['title','summary','did','why','worked','failed','learned','tricky','review','future','validate','details']:
     d.add_argument('--'+field,required=True)
 d.add_argument('--commit')
 a=p.parse_args()
+if a.command=='tidy':
+    for path in [T/'changelog.md',T/'index.md',T/'tasks.md']:
+        path.write_text(path.read_text().rstrip()+'\n')
+    sys.exit(0)
 if a.command=='slip':
     out=T/'reference/slips';out.mkdir(exist_ok=True)
     cmd=[sys.executable,'/home/manuel/.pi/agent/skills/brutalist-work-slip/scripts/work_slip.py','status' if a.state=='done' else 'plan',
