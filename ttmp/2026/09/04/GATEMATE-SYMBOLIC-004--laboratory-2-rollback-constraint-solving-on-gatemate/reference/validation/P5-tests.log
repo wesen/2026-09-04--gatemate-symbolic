@@ -1,0 +1,4 @@
+Observed command (OSS CAD Suite environment sourced): python3 -m pytest sim -q
+Working directory: queens_rollback
+58 passed in 51.71s
+Recorded from the completed test process output; not a second test run.

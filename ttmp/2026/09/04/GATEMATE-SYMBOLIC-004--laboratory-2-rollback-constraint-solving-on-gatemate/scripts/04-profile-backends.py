@@ -15,6 +15,7 @@ results={}
 with tempfile.TemporaryDirectory(prefix='queens-profile-') as directory:
     for name,trail in [('snapshot',False),('trail',True)]:
         stdout=run_core(Path(directory),trail=trail)
+        (out/f'{name}-first-solution-trace.log').write_text(stdout.split('RESULT ')[0]+'RESULT '+stdout.split('RESULT ')[1].splitlines()[0]+'\n')
         stats=next(line.split()[1:] for line in stdout.splitlines() if line.startswith('STATS '))
         result=dict(zip(['cycles','domain_writes','history_writes','history_reads','choice_writes','result_stalls'],map(int,stats)))
         frames=[line.split() for line in stdout.splitlines() if line.startswith('E ')]

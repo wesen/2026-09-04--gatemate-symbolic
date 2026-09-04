@@ -1,0 +1,4 @@
+Jtag frequency : requested 6000000 Hz -> real 6000000 Hz
+Load SRAM via JTAG: [==================================================] 100.00%
+
+Done

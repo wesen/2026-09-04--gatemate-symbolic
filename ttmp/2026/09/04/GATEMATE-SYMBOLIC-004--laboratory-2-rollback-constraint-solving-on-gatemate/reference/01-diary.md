@@ -11,18 +11,65 @@ DocType: reference
 Intent: long-term
 Owners: []
 RelatedFiles:
+    - Path: repo://queens_rollback/Makefile
+      Note: Lab 2 implementation or reproducible verification and diary tooling
+    - Path: repo://queens_rollback/README.md
+      Note: Lab 2 implementation or reproducible verification and diary tooling
     - Path: repo://queens_rollback/rtl/queens_core.sv
-      Note: Snapshot and trail recovery with one mutation owner
+      Note: |-
+        Snapshot and trail recovery with one mutation owner
+        Lab 2 implementation or reproducible verification and diary tooling
+    - Path: repo://queens_rollback/rtl/queens_result_printer.sv
+      Note: Lab 2 implementation or reproducible verification and diary tooling
+    - Path: repo://queens_rollback/rtl/queens_top.sv
+      Note: Lab 2 implementation or reproducible verification and diary tooling
+    - Path: repo://queens_rollback/rtl/queens_types_pkg.sv
+      Note: Lab 2 implementation or reproducible verification and diary tooling
+    - Path: repo://queens_rollback/scripts/make_synth.py
+      Note: Lab 2 implementation or reproducible verification and diary tooling
+    - Path: repo://queens_rollback/sim/conftest.py
+      Note: Lab 2 implementation or reproducible verification and diary tooling
+    - Path: repo://queens_rollback/sim/tb_queens.sv
+      Note: Lab 2 implementation or reproducible verification and diary tooling
+    - Path: repo://queens_rollback/sim/tb_queens_top.sv
+      Note: Lab 2 implementation or reproducible verification and diary tooling
+    - Path: repo://queens_rollback/sim/test_model.py
+      Note: Lab 2 implementation or reproducible verification and diary tooling
     - Path: repo://queens_rollback/sim/test_rtl.py
-      Note: Complete live state and output comparisons
+      Note: |-
+        Complete live state and output comparisons
+        Lab 2 implementation or reproducible verification and diary tooling
+    - Path: repo://queens_rollback/sim/test_top.py
+      Note: Lab 2 implementation or reproducible verification and diary tooling
+    - Path: repo://queens_rollback/tools/oracle.py
+      Note: Lab 2 implementation or reproducible verification and diary tooling
     - Path: repo://queens_rollback/tools/queens_model.py
-      Note: Stepwise semantic model and complete event snapshots
+      Note: |-
+        Stepwise semantic model and complete event snapshots
+        Lab 2 implementation or reproducible verification and diary tooling
+    - Path: repo://ttmp/2026/09/04/GATEMATE-SYMBOLIC-004--laboratory-2-rollback-constraint-solving-on-gatemate/scripts/01-initialize-scope.py
+      Note: Lab 2 implementation or reproducible verification and diary tooling
+    - Path: repo://ttmp/2026/09/04/GATEMATE-SYMBOLIC-004--laboratory-2-rollback-constraint-solving-on-gatemate/scripts/02-print-phase.py
+      Note: Lab 2 implementation or reproducible verification and diary tooling
+    - Path: repo://ttmp/2026/09/04/GATEMATE-SYMBOLIC-004--laboratory-2-rollback-constraint-solving-on-gatemate/scripts/03-diary.py
+      Note: Lab 2 implementation or reproducible verification and diary tooling
+    - Path: repo://ttmp/2026/09/04/GATEMATE-SYMBOLIC-004--laboratory-2-rollback-constraint-solving-on-gatemate/scripts/04-profile-backends.py
+      Note: Lab 2 implementation or reproducible verification and diary tooling
+    - Path: repo://ttmp/2026/09/04/GATEMATE-SYMBOLIC-004--laboratory-2-rollback-constraint-solving-on-gatemate/scripts/05-hardware.py
+      Note: Lab 2 implementation or reproducible verification and diary tooling
+    - Path: repo://ttmp/2026/09/04/GATEMATE-SYMBOLIC-004--laboratory-2-rollback-constraint-solving-on-gatemate/scripts/06-hardware.sh
+      Note: Lab 2 implementation or reproducible verification and diary tooling
+    - Path: repo://ttmp/2026/09/04/GATEMATE-SYMBOLIC-004--laboratory-2-rollback-constraint-solving-on-gatemate/scripts/07-finalize-evidence.py
+      Note: Lab 2 implementation or reproducible verification and diary tooling
+    - Path: repo://ttmp/2026/09/04/GATEMATE-SYMBOLIC-004--laboratory-2-rollback-constraint-solving-on-gatemate/scripts/08-relate-files.py
+      Note: Lab 2 implementation or reproducible verification and diary tooling
 ExternalSources: []
 Summary: Chronological investigation and implementation diary for Laboratory 2.
 LastUpdated: 2026-09-04T16:57:27.323426618-04:00
 WhatFor: ""
 WhenToUse: ""
 ---
+
 
 
 # Diary
@@ -364,3 +411,59 @@ Run make test in queens_rollback after sourcing the OSS CAD Suite environment. R
 ### Technical details
 
 Protocol: Q:672BE0 CRLF for a 24-bit board, D:0000005C CRLF for a count, F:01 CRLF for a fault. Board clock 10 MHz; UART 115200 baud.
+
+## Step 7: P5 physical execution and measured comparison
+
+Completed synthesis, place and route, and physical UART verification for snapshot enumeration, trail enumeration, and trail FIRST_ONLY. All three images produced exactly the modeled bytes, including terminal counts; the board now holds the first-only trail image.
+
+### Prompt Context
+
+**User prompt (verbatim):**
+
+(see Step 2)
+
+**Assistant interpretation:** Implement the Lab 2 guide in tested phases, with committed milestones and printed boundaries.
+
+**Inferred user intent:** Deliver a working and measurable rollback solver with reproducible evidence and a detailed implementation record.
+
+**Commit (code/work):** ca666fd
+
+### What I did
+
+Ran the complete 58-test suite. Added scripts/05-hardware.py and 06-hardware.sh for reproducible tmux builds and serial capture, and 07-finalize-evidence.py for measurement extraction. Archived build logs, image hashes, UART binaries, complete first-result simulation traces, and the implementation README.
+
+### Why
+
+The prior laboratory demonstrated that simulation alone does not establish correct synthesized behavior. Comparing every byte after programming validates the deployed result sequence and explicit completion status.
+
+### What worked
+
+58 passed in 51.71s. Snapshot and trail each captured 932 bytes: 92 Q records and D:0000005C. Trail-first captured 22 bytes: Q:672BE0 and D:00000001. Final routed Fmax: 30.19, 30.98, and 33.72 MHz respectively, all passing 10 MHz.
+
+### What didn't work
+
+No software, synthesis, routing, or hardware validation failures. A read-only status command checked P5-hardware.exit before creation and zsh reported no matches found; the build continued normally and eventually wrote exit 0.
+
+### What I learned
+
+Trail reduced mapped RAM_HALF from three to two and CPE_LT from 2221 to 2070, but increased full-search cycles from 53951 to 74523 and complete-record write traffic from 69888 to 106480 bits. Tiny-board snapshots are cheaper in time and traffic.
+
+### What was tricky to build
+
+The mapped resource units differ from the lab shorthand: nextpnr reports RAM_HALF, CPE_LT, and CPE_FF, not whole blocks or whole CPEs. The report preserves those units. UART capture begins before configuration so startup results cannot be lost. Internal state traces are verified in simulation; physical captures establish external behavior only.
+
+### What warrants a second pair of eyes
+
+Review log-before-write state ordering, result handshake versus cut, and synchronous RAM wait/capture boundaries. Compare P5-measurements.json to the final frequency entry in each nextpnr log, rather than the optimistic pre-route entry.
+
+### What should be done in the future
+
+Review the implementation and measured tradeoff before extending the constraint problem. No additional optimization is required for the present fixed-eight-queens scope.
+
+### Code review instructions
+
+Source the OSS CAD Suite environment and run make test in queens_rollback. Read queens_rollback/README.md; inspect backend-profile.json, snapshot-first-solution-trace.log, trail-first-solution-trace.log, and P5-hardware.json. Physical reproduction: run ticket scripts/06-hardware.sh in tmux with exclusive access to the board UART.
+
+### Technical details
+
+Implementation commits: cf52672 model/oracle; 0f15376 snapshots; 214a39a trail; 1a5194f boundary verification; ca666fd board integration. Yosys 0.68+130 dd83bbad2-dirty; router2 seed 2; 10 MHz board clock. Choice high-water 6, trail high-water 32. Two 8-second enumeration captures and one 8-second cut capture matched exactly.

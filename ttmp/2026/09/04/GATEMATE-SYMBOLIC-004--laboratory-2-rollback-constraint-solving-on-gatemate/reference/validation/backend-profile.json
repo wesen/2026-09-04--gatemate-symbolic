@@ -11,7 +11,11 @@
     "solutions": 92,
     "protected_history_write_bits": 18504,
     "protected_history_read_bits": 48384,
-    "choice_metadata_write_bits": 26880
+    "choice_metadata_write_bits": 26880,
+    "choice_read_requests": 672,
+    "memory_write_request_bits": 69888,
+    "memory_read_request_bits": 69888,
+    "note": "Request bits include complete physical record width; exclude incidental unconsumed synchronous reads. Logical protected history and metadata fields overlap in the snapshot record."
   },
   "trail": {
     "cycles": 74523,
@@ -25,6 +29,10 @@
     "solutions": 92,
     "protected_history_write_bits": 79600,
     "protected_history_read_bits": 79600,
-    "choice_metadata_write_bits": 26880
+    "choice_metadata_write_bits": 26880,
+    "choice_read_requests": 672,
+    "memory_write_request_bits": 106480,
+    "memory_read_request_bits": 106480,
+    "note": "Request bits include complete physical record width; exclude incidental unconsumed synchronous reads. Logical protected history and metadata fields overlap in the snapshot record."
   }
 }

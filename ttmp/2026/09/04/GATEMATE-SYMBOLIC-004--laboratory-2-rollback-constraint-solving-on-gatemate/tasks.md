@@ -6,4 +6,4 @@
 - [x] Implement domain propagation, choice records, log-before-write mutation trail, and reverse unwind.
 - [x] Compare snapshot versus trail traffic, cycles, and storage high-water marks.
 - [x] Verify randomized result backpressure, shallow capacities, exact restoration, and FIRST_ONLY cut.
-- [ ] Synthesize, route, and capture first-solution execution on GateMate; document measured results.
+- [x] Synthesize, route, and capture first-solution execution on GateMate; document measured results.

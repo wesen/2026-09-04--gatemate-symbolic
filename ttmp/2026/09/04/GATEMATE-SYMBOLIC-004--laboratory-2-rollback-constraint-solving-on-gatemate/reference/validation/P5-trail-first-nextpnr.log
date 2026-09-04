@@ -1,0 +1,293 @@
+Info: Using uarch 'gatemate' for device 'CCGM1A1'
+Info: Using timing mode 'WORST'.
+Info: Using performance mode 'SPEED'.
+Info: constraining clock net 'clk_10m' to 10.00 MHz
+
+Info: Parsing CCF file..
+Info: Assign cell region based on attributes..
+Info: Packing constants..
+Info: Running cleanups..
+Info: Packing IOs..
+Info:     Constraining '$iopadmap$queens_top.user_led' to pad 'IO_SB_B6'.
+Info:     Constraining '$iopadmap$queens_top.uart_tx_pin' to pad 'IO_SA_B6'.
+Info:     Constraining '$iopadmap$queens_top.uart_rx_pin' to pad 'IO_SA_A6'.
+Info:     Constraining '$iopadmap$queens_top.fpga_but' to pad 'IO_SB_B7'.
+Info:     Constraining '$iopadmap$queens_top.clk_10m' to pad 'IO_SB_A8'.
+Info: Insert clocking cells..
+Info: Packing PLLs..
+Info: Sort BUFGs..
+Info: Packing BUFGs..
+Info: Packing IO SELs..
+Info: Packing misc..
+Info: Packing RAMs..
+Info: Packing SERDES..
+Info: Packing multipliers...
+Info: Packing ADDFs..
+Info: Packing CPEs..
+Info: Removing unused constants..
+Info:     Removed unused VCC cell.
+Info:     Removed unused GND cell.
+Info: Fix cell assigned regions..
+Info: Checksum: 0xe33ff54f
+
+Info: Device utilisation:
+Info: 	            USR_RSTN:       1/      1   100%
+Info: 	            CPE_COMP:       0/  20480     0%
+Info: 	         CPE_CPLINES:      31/  20480     0%
+Info: 	               IOSEL:       5/    162     3%
+Info: 	                GPIO:       5/    162     3%
+Info: 	               CLKIN:       1/      1   100%
+Info: 	              GLBOUT:       1/      1   100%
+Info: 	                 PLL:       0/      4     0%
+Info: 	            CFG_CTRL:       0/      1     0%
+Info: 	              SERDES:       0/      1     0%
+Info: 	              CPE_LT:    2125/  40960     5%
+Info: 	              CPE_FF:     467/  40960     1%
+Info: 	           CPE_RAMIO:     209/  40960     0%
+Info: 	            RAM_HALF:       2/     64     3%
+
+Info: Placed 0 cells based on constraints.
+Info: Creating initial analytic placement for 1338 cells, random placement wirelen = 217535.
+Info:     at initial placer iter 0, wirelen = 1928
+Info:     at initial placer iter 1, wirelen = 1894
+Info:     at initial placer iter 2, wirelen = 1841
+Info:     at initial placer iter 3, wirelen = 1908
+Info: Running main analytical placer, max placement attempts per cell = 1053426.
+Info:     at iteration #1, type ALL: wirelen solved = 1798, spread = 30660, legal = 39040; time = 0.09s
+Info:     at iteration #2, type ALL: wirelen solved = 2562, spread = 25610, legal = 32769; time = 0.08s
+Info:     at iteration #3, type ALL: wirelen solved = 3634, spread = 19690, legal = 27334; time = 0.08s
+Info:     at iteration #4, type ALL: wirelen solved = 4057, spread = 18917, legal = 24441; time = 0.05s
+Info:     at iteration #5, type ALL: wirelen solved = 4679, spread = 18199, legal = 24596; time = 0.06s
+Info:     at iteration #6, type ALL: wirelen solved = 5508, spread = 16730, legal = 22008; time = 0.05s
+Info:     at iteration #7, type ALL: wirelen solved = 5851, spread = 17004, legal = 22121; time = 0.05s
+Info:     at iteration #8, type ALL: wirelen solved = 6701, spread = 17142, legal = 24476; time = 0.05s
+Info:     at iteration #9, type ALL: wirelen solved = 7265, spread = 16670, legal = 22122; time = 0.05s
+Info:     at iteration #10, type ALL: wirelen solved = 7557, spread = 17282, legal = 25152; time = 0.05s
+Info:     at iteration #11, type ALL: wirelen solved = 8253, spread = 16384, legal = 22132; time = 0.05s
+Info: HeAP Placer Time: 1.17s
+Info:   of which solving equations: 0.43s
+Info:   of which spreading cells: 0.14s
+Info:   of which strict legalisation: 0.15s
+
+Info: Running simulated annealing placer for refinement.
+Info:   at iteration #1: temp = 0.000000, timing cost = 339, wirelen = 23118
+Info:   at iteration #5: temp = 0.000000, timing cost = 189, wirelen = 19906
+Info:   at iteration #10: temp = 0.000000, timing cost = 167, wirelen = 19040
+Info:   at iteration #15: temp = 0.000000, timing cost = 154, wirelen = 18680
+Info:   at iteration #20: temp = 0.000000, timing cost = 139, wirelen = 18617
+Info:   at iteration #22: temp = 0.000000, timing cost = 146, wirelen = 18612 
+Info: SA placement time 4.23s
+
+Info: Max frequency for clock 'u_core.clk': 57.84 MHz (PASS at 10.00 MHz)
+
+Info: Max delay <async> -> posedge u_core.clk: 3.23 ns
+
+Info: Slack histogram:
+Info:  legend: * represents 2 endpoint(s)
+Info:          + represents [1,2) endpoint(s)
+Info: [ 82712,  83509) |**+
+Info: [ 83509,  84306) | 
+Info: [ 84306,  85103) | 
+Info: [ 85103,  85900) |*+
+Info: [ 85900,  86697) |****+
+Info: [ 86697,  87494) |*********+
+Info: [ 87494,  88291) |***********************+
+Info: [ 88291,  89088) |******************+
+Info: [ 89088,  89885) |***********+
+Info: [ 89885,  90682) |************************+
+Info: [ 90682,  91479) |***********************************+
+Info: [ 91479,  92276) |************************+
+Info: [ 92276,  93073) |*********************+
+Info: [ 93073,  93870) |********************+
+Info: [ 93870,  94667) |***********************************+
+Info: [ 94667,  95464) |********************************+
+Info: [ 95464,  96261) |*******************+
+Info: [ 96261,  97058) |**********************+
+Info: [ 97058,  97855) |*****************+
+Info: [ 97855,  98652) |************************************************************ 
+Info: Checksum: 0x11e13691
+Info: Repacking RAMs..
+Info: Repacking CPEs..
+Info: Remove unused clocking cells..
+Info: Routing multipliers...
+Info: Routing clock nets...
+Info:     routing net 'u_core.clk' to 469 users
+Info: Clock router time 3.67s.
+Info: Running router2...
+Info: Setting up routing resources...
+Info: Running main router loop...
+Info:     iter=1 wires=74361 overused=6079 overuse=6775 resources=4655 overused=522 overuse=737 archfail=NA
+Info:     iter=2 wires=77318 overused=2710 overuse=2733 resources=3971 overused=129 overuse=150 archfail=NA
+Info:     iter=3 wires=78084 overused=1620 overuse=1629 resources=3988 overused=91 overuse=113 archfail=NA
+Info:     iter=4 wires=78900 overused=991 overuse=992 resources=3933 overused=53 overuse=64 archfail=NA
+Info:     iter=5 wires=79458 overused=643 overuse=643 resources=3919 overused=41 overuse=49 archfail=NA
+Info:     iter=6 wires=79730 overused=479 overuse=481 resources=4013 overused=40 overuse=49 archfail=NA
+Info:     iter=7 wires=79969 overused=378 overuse=378 resources=3882 overused=23 overuse=25 archfail=NA
+Info:     iter=8 wires=80274 overused=267 overuse=267 resources=3974 overused=23 overuse=27 archfail=NA
+Info:     iter=9 wires=80596 overused=239 overuse=239 resources=3955 overused=19 overuse=22 archfail=NA
+Info:     iter=10 wires=80891 overused=159 overuse=159 resources=3921 overused=15 overuse=17 archfail=NA
+Info:     iter=11 wires=81061 overused=122 overuse=122 resources=3884 overused=9 overuse=10 archfail=NA
+Info:     iter=12 wires=81241 overused=103 overuse=103 resources=3885 overused=8 overuse=9 archfail=NA
+Info:     iter=13 wires=81356 overused=85 overuse=86 resources=3867 overused=8 overuse=9 archfail=NA
+Info:     iter=14 wires=81481 overused=63 overuse=63 resources=3852 overused=9 overuse=10 archfail=NA
+Info:     iter=15 wires=81583 overused=63 overuse=63 resources=3838 overused=5 overuse=6 archfail=NA
+Info:     iter=16 wires=81559 overused=56 overuse=56 resources=3857 overused=9 overuse=10 archfail=NA
+Info:     iter=17 wires=81600 overused=49 overuse=49 resources=3834 overused=6 overuse=7 archfail=NA
+Info:     iter=18 wires=81615 overused=42 overuse=42 resources=3834 overused=7 overuse=7 archfail=NA
+Info:     iter=19 wires=81633 overused=36 overuse=36 resources=3824 overused=5 overuse=5 archfail=NA
+Info:     iter=20 wires=81651 overused=26 overuse=26 resources=3823 overused=5 overuse=6 archfail=NA
+Info:     iter=21 wires=81675 overused=24 overuse=24 resources=3814 overused=2 overuse=2 archfail=NA
+Info:     iter=22 wires=81752 overused=20 overuse=20 resources=3852 overused=3 overuse=3 archfail=NA
+Info:     iter=23 wires=81726 overused=13 overuse=13 resources=3846 overused=2 overuse=2 archfail=NA
+Info:     iter=24 wires=81734 overused=14 overuse=14 resources=3845 overused=2 overuse=2 archfail=NA
+Info:     iter=25 wires=81762 overused=14 overuse=14 resources=3851 overused=2 overuse=2 archfail=NA
+Info:     iter=26 wires=81794 overused=8 overuse=8 resources=3850 overused=2 overuse=2 archfail=NA
+Info:     iter=27 wires=81808 overused=5 overuse=5 resources=3842 overused=1 overuse=1 archfail=NA
+Info:     iter=28 wires=81805 overused=7 overuse=7 resources=3850 overused=2 overuse=2 archfail=NA
+Info:     iter=29 wires=81808 overused=5 overuse=5 resources=3842 overused=1 overuse=1 archfail=NA
+Info:     iter=30 wires=81805 overused=7 overuse=7 resources=3850 overused=2 overuse=2 archfail=NA
+Info:     iter=31 wires=81808 overused=5 overuse=5 resources=3842 overused=1 overuse=1 archfail=NA
+Info:     iter=32 wires=81805 overused=7 overuse=7 resources=3850 overused=2 overuse=2 archfail=NA
+Info:     iter=33 wires=81840 overused=6 overuse=6 resources=3835 overused=0 overuse=0 archfail=NA
+Info:     iter=34 wires=81813 overused=6 overuse=6 resources=3850 overused=2 overuse=2 archfail=NA
+Info:     iter=35 wires=81853 overused=9 overuse=9 resources=3835 overused=0 overuse=0 archfail=NA
+Info:     iter=36 wires=81847 overused=7 overuse=7 resources=3838 overused=0 overuse=0 archfail=NA
+Info:     iter=37 wires=81870 overused=3 overuse=3 resources=3835 overused=0 overuse=0 archfail=NA
+Info:     iter=38 wires=81888 overused=1 overuse=1 resources=3835 overused=0 overuse=0 archfail=NA
+Info:     iter=39 wires=81888 overused=1 overuse=1 resources=3835 overused=0 overuse=0 archfail=NA
+Info:     iter=40 wires=81888 overused=1 overuse=1 resources=3835 overused=0 overuse=0 archfail=NA
+Info:     iter=41 wires=81888 overused=1 overuse=1 resources=3835 overused=0 overuse=0 archfail=NA
+Info:     iter=42 wires=81888 overused=1 overuse=1 resources=3835 overused=0 overuse=0 archfail=NA
+Info:     iter=43 wires=81888 overused=1 overuse=1 resources=3835 overused=0 overuse=0 archfail=NA
+Info:     iter=44 wires=81888 overused=1 overuse=1 resources=3835 overused=0 overuse=0 archfail=NA
+Info:     iter=45 wires=81888 overused=1 overuse=1 resources=3835 overused=0 overuse=0 archfail=NA
+Info:     iter=46 wires=81888 overused=1 overuse=1 resources=3835 overused=0 overuse=0 archfail=NA
+Info:     iter=47 wires=81888 overused=1 overuse=1 resources=3835 overused=0 overuse=0 archfail=NA
+Info:     iter=48 wires=81888 overused=1 overuse=1 resources=3835 overused=0 overuse=0 archfail=NA
+Info:     iter=49 wires=81888 overused=1 overuse=1 resources=3835 overused=0 overuse=0 archfail=NA
+Info:     iter=50 wires=81888 overused=1 overuse=1 resources=3835 overused=0 overuse=0 archfail=NA
+Info:     iter=51 wires=81888 overused=1 overuse=1 resources=3835 overused=0 overuse=0 archfail=NA
+Info:     iter=52 wires=81888 overused=1 overuse=1 resources=3835 overused=0 overuse=0 archfail=NA
+Info:     iter=53 wires=81888 overused=1 overuse=1 resources=3835 overused=0 overuse=0 archfail=NA
+Info:     iter=54 wires=81888 overused=1 overuse=1 resources=3835 overused=0 overuse=0 archfail=NA
+Info:     iter=55 wires=81888 overused=1 overuse=1 resources=3835 overused=0 overuse=0 archfail=NA
+Info:     iter=56 wires=81888 overused=1 overuse=1 resources=3835 overused=0 overuse=0 archfail=NA
+Info:     iter=57 wires=81896 overused=0 overuse=0 resources=3835 overused=0 overuse=0 archfail=0
+Info: Router2 time 9.31s
+Info: Running router1 to check that route is legal...
+
+Info: Routing..
+Info: Setting up routing queue.
+Info: Routing 0 arcs.
+Info:            |   (re-)routed arcs  |   delta    | remaining|       time spent     |
+Info:    IterCnt |  w/ripup   wo/ripup |  w/r  wo/r |      arcs| batch(sec) total(sec)|
+Info:          0 |        0          0 |    0     0 |         0|       0.13       0.13|
+Info: Routing complete.
+Info: Router1 time 0.13s
+Info: Checksum: 0xa786cb85
+
+Info: Critical path report for clock 'u_core.clk' (posedge -> posedge):
+Info:       type curr  total name
+Info:   clk-skew  0.32  0.32 Net u_core.clk (19,93) -> (10,102)
+Info:                          Sink $auto$ff.cc:337:slice$13595.CLK_INT
+Info:                          Defined in:
+Info:                               rtl/queens_core.sv:10.15-10.18
+Info:   clk-to-q  0.59  0.91 Source $auto$ff.cc:337:slice$13480.DOUT
+Info:    routing  1.34  2.25 Net u_core.domains_o[13] (19,93) -> (19,94)
+Info:                          Sink $abc$23104$auto$blifparse.cc:397:parse_blif$23542.D0_01
+Info:                          Defined in:
+Info:                               rtl/queens_core.sv:19.22-19.31
+Info:      logic  0.56  2.81 Source $abc$23104$auto$blifparse.cc:397:parse_blif$23542.OUT
+Info:    routing  2.46  5.28 Net $abc$23104$new_n1395 (19,94) -> (18,94)
+Info:                          Sink $abc$23104$auto$blifparse.cc:397:parse_blif$23547.D0_00
+Info:      logic  0.61  5.89 Source $abc$23104$auto$blifparse.cc:397:parse_blif$23547.OUT
+Info:    routing  2.40  8.29 Net $abc$23104$new_n1400 (18,94) -> (20,105)
+Info:                          Sink $abc$23104$auto$blifparse.cc:397:parse_blif$23556.D0_00
+Info:      logic  0.61  8.90 Source $abc$23104$auto$blifparse.cc:397:parse_blif$23556.OUT
+Info:    routing  4.54  13.44 Net $abc$23104$new_n1409 (20,105) -> (20,106)
+Info:                          Sink $abc$23104$auto$blifparse.cc:397:parse_blif$23573.D1_00
+Info:      logic  0.57  14.01 Source $abc$23104$auto$blifparse.cc:397:parse_blif$23573.OUT
+Info:    routing  1.35  15.36 Net $abc$23104$new_n1426 (20,106) -> (19,106)
+Info:                          Sink $abc$23104$auto$blifparse.cc:397:parse_blif$23617.D0_00
+Info:      logic  0.61  15.97 Source $abc$23104$auto$blifparse.cc:397:parse_blif$23617.OUT
+Info:    routing  1.72  17.69 Net $abc$23104$new_n1470 (19,106) -> (17,106)
+Info:                          Sink $abc$23104$auto$blifparse.cc:397:parse_blif$23646.D0_01
+Info:      logic  0.47  18.17 Source $abc$23104$auto$blifparse.cc:397:parse_blif$23646.OUT
+Info:    routing  0.66  18.83 Net $abc$23104$new_n1499 (17,106) -> (17,106)
+Info:                          Sink $abc$23104$auto$blifparse.cc:397:parse_blif$23648.D0_10
+Info:      logic  0.61  19.44 Source $abc$23104$auto$blifparse.cc:397:parse_blif$23648.OUT
+Info:    routing  0.91  20.34 Net $abc$23104$new_n1501 (17,106) -> (13,105)
+Info:                          Sink $abc$23104$auto$blifparse.cc:397:parse_blif$23661.D0_10
+Info:      logic  0.55  20.89 Source $abc$23104$auto$blifparse.cc:397:parse_blif$23661.OUT
+Info:    routing  2.12  23.01 Net $abc$23104$new_n1514 (13,105) -> (13,105)
+Info:                          Sink $auto$gatemate_foldinv.cc:169:fold_output_inverters$25825.D1_00
+Info:      logic  0.64  23.65 Source $auto$gatemate_foldinv.cc:169:fold_output_inverters$25825.OUT
+Info:    routing  2.23  25.88 Net $auto$alumacc.cc:548:replace_alu$12453.B[3] (13,105) -> (11,102)
+Info:                          Sink $auto$alumacc.cc:548:replace_alu$12453.slice[3].addf_i.D0_01
+Info:                          Defined in:
+Info:                               rtl/queens_types_pkg.sv:13.25-13.35
+Info:                               /home/manuel/fpga/oss-cad-suite/lib/../share/yosys/gatemate/arith_map.v:31.22-31.23
+Info:      logic  0.55  26.43 Source $auto$alumacc.cc:548:replace_alu$12453.slice[3].addf_i.COUTY1
+Info:    routing  0.00  26.43 Net $auto$alumacc.cc:548:replace_alu$12453.CO[3] (11,102) -> (11,103)
+Info:                          Sink $auto$alumacc.cc:548:replace_alu$12453.slice[5].addf_i.CINY1
+Info:                          Defined in:
+Info:                               rtl/queens_types_pkg.sv:13.25-13.35
+Info:                               /home/manuel/fpga/oss-cad-suite/lib/../share/yosys/gatemate/arith_map.v:37.23-37.25
+Info:      logic  0.51  26.95 Source $auto$alumacc.cc:548:replace_alu$12453.slice[5].addf_i.OUT1
+Info:    routing  2.13  29.08 Net $auto$alumacc.cc:548:replace_alu$12453.Y[4] (11,103) -> (10,102)
+Info:                          Sink $abc$23104$auto$blifparse.cc:397:parse_blif$24039.D0_01
+Info:                          Defined in:
+Info:                               rtl/queens_types_pkg.sv:13.25-13.35
+Info:                               /home/manuel/fpga/oss-cad-suite/lib/../share/yosys/gatemate/arith_map.v:33.26-33.27
+Info:      logic  0.47  29.55 Source $abc$23104$auto$blifparse.cc:397:parse_blif$24039.OUT
+Info:    routing  0.00  29.55 Net $abc$23104$auto$wreduce.cc:513:run$12311[33] (10,102) -> (10,102)
+Info:                          Sink $auto$ff.cc:337:slice$13595.DIN
+Info:                          Defined in:
+Info:                               rtl/queens_core.sv:90.3-232.6
+Info:      setup  0.10  29.65 Source $auto$ff.cc:337:slice$13595.DIN
+Info: 7.46 ns logic, 22.19 ns routing
+
+Info: Critical path report for cross-domain path '<async>' -> 'posedge u_core.clk':
+Info:       type curr  total name
+Info:     source  0.00  0.00 Source $iopadmap$queens_top.fpga_but.Y
+Info:    routing  0.00  0.00 Net $iopadmap$queens_top.fpga_but$conn$Y (0,101) -> (0,101)
+Info:                          Sink $iopadmap$queens_top.fpga_but$iosel.GPIO_IN
+Info:      logic  0.38  0.38 Source $iopadmap$queens_top.fpga_but$iosel.IN1
+Info:    routing  1.97  2.35 Net $iopadmap$fpga_but (0,101) -> (3,85)
+Info:                          Sink $auto$ff.cc:337:slice$14310$lt.D0_10
+Info:      logic  0.55  2.89 Source $auto$ff.cc:337:slice$14310$lt.OUT
+Info:    routing  0.00  2.89 Net $auto$ff.cc:337:slice$14310$di (3,85) -> (3,85)
+Info:                          Sink $auto$ff.cc:337:slice$14310.DIN
+Info:      setup  0.10  2.99 Source $auto$ff.cc:337:slice$14310.DIN
+Info: 1.03 ns logic, 1.97 ns routing
+
+Info: Max frequency for clock 'u_core.clk': 33.72 MHz (PASS at 10.00 MHz)
+
+Info: Max delay <async> -> posedge u_core.clk: 2.99 ns
+
+Info: Slack histogram:
+Info:  legend: * represents 3 endpoint(s)
+Info:          + represents [1,3) endpoint(s)
+Info: [ 70348,  71765) |**+
+Info: [ 71765,  73182) |*****+
+Info: [ 73182,  74599) |*****+
+Info: [ 74599,  76016) |**************+
+Info: [ 76016,  77433) |*****+
+Info: [ 77433,  78850) |****+
+Info: [ 78850,  80267) |*******+
+Info: [ 80267,  81684) |******+
+Info: [ 81684,  83101) |**+
+Info: [ 83101,  84518) |********+
+Info: [ 84518,  85935) |***********+
+Info: [ 85935,  87352) |***************+
+Info: [ 87352,  88769) |**********+
+Info: [ 88769,  90186) |************+
+Info: [ 90186,  91603) |*************************+
+Info: [ 91603,  93020) |****************************+
+Info: [ 93020,  94437) |**************************+
+Info: [ 94437,  95854) |*************************************************+
+Info: [ 95854,  97271) |************************************************************ 
+Info: [ 97271,  98688) |****************************+
+Info: Update configuration based on routing..
+
+Info: Program finished normally.

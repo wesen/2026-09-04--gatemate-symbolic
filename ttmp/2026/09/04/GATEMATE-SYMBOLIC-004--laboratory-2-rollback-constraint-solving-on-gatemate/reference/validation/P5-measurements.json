@@ -1,0 +1,32 @@
+[
+  {
+    "configuration": "snapshot",
+    "CPE_LT": 2221,
+    "CPE_FF": 577,
+    "RAM_HALF": 3,
+    "routed_fmax_mhz": 30.19,
+    "uart_bytes": 932,
+    "solutions": 92,
+    "matches_model": true
+  },
+  {
+    "configuration": "trail",
+    "CPE_LT": 2070,
+    "CPE_FF": 460,
+    "RAM_HALF": 2,
+    "routed_fmax_mhz": 30.98,
+    "uart_bytes": 932,
+    "solutions": 92,
+    "matches_model": true
+  },
+  {
+    "configuration": "trail-first",
+    "CPE_LT": 2125,
+    "CPE_FF": 467,
+    "RAM_HALF": 2,
+    "routed_fmax_mhz": 33.72,
+    "uart_bytes": 22,
+    "solutions": 1,
+    "matches_model": true
+  }
+]
