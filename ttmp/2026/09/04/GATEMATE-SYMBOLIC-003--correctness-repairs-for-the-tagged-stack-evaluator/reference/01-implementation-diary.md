@@ -10,13 +10,18 @@ Topics:
 DocType: reference
 Intent: long-term
 Owners: []
-RelatedFiles: []
+RelatedFiles:
+    - Path: repo://symbolic_eval/rtl/symbolic_types_pkg.sv
+      Note: 605f41d repairs constant tag lowering
+    - Path: repo://symbolic_eval/sim/test_synthesis.py
+      Note: Regression executes synthesized constant and dynamic constructors
 ExternalSources: []
 Summary: ""
 LastUpdated: 2026-09-04T15:55:42.010642239-04:00
 WhatFor: ""
 WhenToUse: ""
 ---
+
 
 # Diary
 
@@ -465,3 +470,59 @@ Source the documented OSS CAD Suite environment; run python3 -m pytest sim/test_
 ### Technical details
 
 Initial failing image and UART results remain under reference/validation/before-constructor-fix. User instruction remains: commit at appropriate intervals and keep a detailed diary as you work (using the diary format from the skill).
+
+## Step 9: P5 complete: repaired hardware streams and review handoff
+
+All five phases are complete. The rebuilt image repairs the actual board mismatch, all four UART streams match the model, and the final phase completion slip printed successfully. The ticket is ready for review with every task checked.
+
+### Prompt Context
+
+**User prompt (verbatim):**
+
+(see Step 1)
+
+**Assistant interpretation:** Implement the repair design in phases with reproducible validation, focused commits, detailed diary entries, and printed phase boundaries.
+
+**Inferred user intent:** Turn the documented review findings into a reliable working evaluator with visible progress and reviewable evidence.
+
+**Commit (code/work):** 605f41d
+
+### What I did
+
+Rebuilt Fibonacci and then arithmetic, typefault, and countdown in tmux. Captured raw UART before loading each image, stored hashes and logs, updated design and README, validated delivery evidence, and printed P5 done.
+
+### Why
+
+The final acceptance gate must cover the synthesized hardware path that exposed the constructor defect. Completion needs both working code and a traceable handoff.
+
+### What worked
+
+198 tests pass; coverage records all nine fault kinds and both branch outcomes. All four board streams match. Countdown ends T1:00000001. Fibonacci routes at 16.03 MHz against 10 MHz. Eleven receipts confirm actual printing. docmgr doctor passes.
+
+### What didn't work
+
+No failures in the repaired final board run. Historical failures remain under before-constructor-fix and in the earlier diary steps. Final `git diff --check` initially reported `trailing whitespace` in raw router histogram logs and CRLF UART captures. Ticket-local attributes now mark captures binary and disable whitespace checking only for preserved validation logs; the subsequent diff check passes without modifying evidence bytes.
+
+### What I learned
+
+The extra physical countdown check found a real toolchain defect after extensive model and RTL agreement. A minimal generic-netlist regression now catches that class of constructor error cheaply.
+
+### What was tricky to build
+
+Archived initial failures before rebuilding, preserved CRLF in raw captures, and kept tested bitstream hashes distinct from subsequent documentation commits. The typefault capture only establishes UART silence, not an observable precise fault record.
+
+### What warrants a second pair of eyes
+
+Review the packed constructor change in 605f41d alongside its failing-before test, then review architectural retirement, ROM boundaries, and full-state comparisons in the phase commits. Board evidence is sampled validation rather than formal equivalence.
+
+### What should be done in the future
+
+Human review of the completed repair ticket. No remaining implementation tasks for this scope.
+
+### Code review instructions
+
+Run ticket scripts/13-validate-delivery.py to check 198 tests, coverage, four captures, and eleven printed slips. Read P5-doctor.log. Standard fresh validation: make test, python3 scripts/check_isa.py, make bit PROG=fib with the documented CAD environment.
+
+### Technical details
+
+Final countdown image SHA256: 6d2c0fe0283de49faca2efcd49d56427d29f316a431ef8a8ce15dfd4e17cbd03. Printer receipt rendered at 2026-09-04T20:31:12Z with printed: true. Full final tests took 18.35 seconds. Task status is review and all six task entries are checked.

@@ -1,7 +1,7 @@
 [
   {
     "program": "fib",
-    "image_sha256": "11f7d7d4c0f96431740887b7e5e548c601c078adefba9c64f314eaadc57c609f",
+    "image_sha256": "2a661e7b6e25e3a46362c7b0ab7f9268a928616f08a6bb76e2106cfee25366f9",
     "expected": "T0:00000037\r\n",
     "actual": "T0:00000037\r\n",
     "match": true,
@@ -10,7 +10,7 @@
   },
   {
     "program": "arith",
-    "image_sha256": "f0dead4a01c148bf5e6aa3f3226d7d636620074f1f5895bec9df5f33fba71fa1",
+    "image_sha256": "16fbc510bfa3331b36ca312b82a34a51e9e9141487d3b56feecce4441cf1de9a",
     "expected": "T1:00000001\r\n",
     "actual": "T1:00000001\r\n",
     "match": true,
@@ -19,7 +19,7 @@
   },
   {
     "program": "typefault",
-    "image_sha256": "e045fa4110e54aec5b8b70f5d28304c1bac209f07a27f4e35a7130e196634397",
+    "image_sha256": "3bfd7b3e1e6f1c1b6ffd3b499e20b985417955947e25e125758680c2a4418a7a",
     "expected": "",
     "actual": "",
     "match": true,
@@ -28,10 +28,10 @@
   },
   {
     "program": "countdown",
-    "image_sha256": "529d4ea26584df5833f25c60a89a835145a09bd0b326ee62b79de43283f6c253",
+    "image_sha256": "6d2c0fe0283de49faca2efcd49d56427d29f316a431ef8a8ce15dfd4e17cbd03",
     "expected": "T0:00000005\r\nT0:00000004\r\nT0:00000003\r\nT0:00000002\r\nT0:00000001\r\nT1:00000001\r\n",
-    "actual": "T0:00000005\r\nT0:00000004\r\nT0:00000003\r\nT0:00000002\r\nT0:00000001\r\nT0:00000001\r\n",
-    "match": false,
+    "actual": "T0:00000005\r\nT0:00000004\r\nT0:00000003\r\nT0:00000002\r\nT0:00000001\r\nT1:00000001\r\n",
+    "match": true,
     "model_fault": null,
     "evidence_limit": null
   }

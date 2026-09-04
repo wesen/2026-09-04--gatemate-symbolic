@@ -5,4 +5,4 @@
 - [x] P2: atomic return retirement and valid BRAM fault context; print start/done.
 - [x] P3: ROM escape and continuation semantics; print start/done.
 - [x] P4: full-state verification, generator and metadata checks; print start/done.
-- [ ] P5: docs, full build, board evidence, final validation; print start/done.
+- [x] P5: docs, full build, board evidence, final validation; print start/done.

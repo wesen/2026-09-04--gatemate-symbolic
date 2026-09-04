@@ -65,7 +65,7 @@ instructions. It returns actual words; the CLI pads `.hex` with zero words
 source ~/fpga/oss-cad-suite/environment
 cd symbolic_eval
 make versions
-make test                         # 197 tests
+make test                         # 198 tests; includes Yosys netlist regression
 python3 scripts/check_isa.py
 make asm PROG=fib
 make bit PROG=fib                  # synth -> route -> pack
@@ -80,7 +80,7 @@ synthesis are in `scripts/synth.ys`.
 
 ## Verification
 
-The complete suite contains 197 collected tests:
+The complete suite contains 198 collected tests:
 
 | File | Count | Scope |
 |---|---:|---|
@@ -91,6 +91,7 @@ The complete suite contains 197 collected tests:
 | test_repairs.py | 52 | Review regressions, fault context, ROM boundaries |
 | test_verification.py | 20 | Metadata, legal coverage, 514-slot capacity, RTL initial states |
 | test_top.py | 8 | UART streams, halted LED, restart during compute/UART |
+| test_synthesis.py | 1 | Execute synthesized constant/dynamic packed constructors |
 
 Both core runners compare TRACE/FINAL plus all live data/return values in STATE
 records and complete accepted words in XFER records. Per-cycle assertions require
@@ -144,3 +145,8 @@ Keep synthesizable code within the tested Yosys/Icarus subset: fully qualified
 package names, classic function-name assignment, one typedef-struct declaration
 per line, plain vector struct tags, and ROM macro initialization in the `.ys`
 script. Preserve synchronous RAM latency and explicit architectural retirement.
+
+Assign constructor results as whole packed concatenations. Field-by-field struct
+temporaries lost constant tag/flag bits in Yosys 0.68+130, although RTL simulation
+passed. The synthesis regression exercises both constant and dynamic inputs;
+the repair ticket preserves the board mismatch that exposed this distinction.

@@ -9,7 +9,7 @@ synthesis time — changing programs means re-running `make bit`.
 source ~/fpga/oss-cad-suite/environment
 cd symbolic_eval
 make versions              # record tool versions
-make test                  # 197 tests, including complete state comparison
+make test                  # 198 tests, including state and synthesized constructors
 make asm PROG=fib          # assemble programs/fib.asm -> build/fib.hex
 make bit PROG=fib          # synth -> PnR -> pack (copies fib.hex to prog.hex)
 make load PROG=fib         # keep PROG: load rebuilds its selected image

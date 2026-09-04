@@ -1,10 +1,13 @@
 # Correctness repairs for the tagged stack evaluator
 
-This is the document workspace for ticket GATEMATE-SYMBOLIC-003.
+This is the completed implementation workspace for ticket GATEMATE-SYMBOLIC-003.
+Start with [the ticket index](index.md), then read the repair design and detailed
+diary. Final validation records 198 passing tests and four matching board UART
+captures. The original failing synthesis evidence is preserved separately.
 
 ## Structure
 
-- **design/**: Design documents and architecture notes
+- **design-doc/**: Repair design, implementation references, and synthesis diagnosis
 - **reference/**: Reference documentation and API contracts
 - **playbooks/**: Operational playbooks and procedures
 - **scripts/**: Utility scripts and automation

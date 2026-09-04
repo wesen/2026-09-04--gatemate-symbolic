@@ -17,10 +17,14 @@ RelatedFiles:
       Note: Complete candidate staging and wide architectural PC
     - Path: repo://symbolic_eval/rtl/stack_core_bram.sv
       Note: DUP checks, fault context, and return retirement
+    - Path: repo://symbolic_eval/rtl/symbolic_types_pkg.sv
+      Note: Packed constructor synthesis repair
     - Path: repo://symbolic_eval/sim/program_generation.py
       Note: Executable legal and fault generation
     - Path: repo://symbolic_eval/sim/state_checks.py
       Note: Full model and RTL state comparison
+    - Path: repo://symbolic_eval/sim/test_synthesis.py
+      Note: Executable synthesized-netlist regression
     - Path: repo://symbolic_eval/sim/test_verification.py
       Note: Capacity, flags, arithmetic and metadata regressions
     - Path: repo://symbolic_eval/tools/asm20.py
@@ -31,6 +35,7 @@ LastUpdated: 2026-09-04T16:00:00-04:00
 WhatFor: Guide implementation and review of the demonstrated correctness defects.
 WhenToUse: Implementing, validating, or extending the repaired evaluator.
 ---
+
 
 
 # Correctness repair design
@@ -105,7 +110,7 @@ are `49807a4`. The detailed diary records pre-fix failures separately from succe
 post-fix runs, including checked edit-script failures that occurred before edits
 were written.
 
-The suite grew from 123 to **197 passing tests**. Full-state observation now covers
+The suite grew from 123 to **198 passing tests**. Full-state observation now covers
 all live data values and return addresses, accepted output including flags, and
 architectural stability between retirements and on faults. The final run records
 all nine fault kinds, every opcode, both JZ outcomes, and cache-count transitions.
@@ -113,7 +118,7 @@ Constructed RTL states test noncanonical Booleans, signed arithmetic extremes, a
 flag-bearing values. The 514-slot hardware capacity is tested directly. Board
 simulation tests button restart during computation and partial serial transmission.
 
-The initial router seed eventually converged at 15.60 MHz after a long period of
+Before the constructor repair below, the initial router seed converged at 15.60 MHz after a long period of
 alternating congestion. It completed before the attempted cancellation, so it was
 not a failed build. Explicit seed 2 completed in 72 router iterations at **15.52 MHz**
 (PASS at 10 MHz). Both use two BRAM blocks and one multiplier; the reported packing
@@ -134,7 +139,59 @@ and comment/documentation-only updates were pending during the first image build
 and are committed in `49807a4`. Per-image SHA256 values identify the actual tested
 bitstreams independently of that working-tree timing.
 
+### Additional P5 repair: constructor lowering
+
+The first physical countdown capture ended with `T0:00000001` instead of the
+model's `T1:00000001`. Repeated capture reproduced the mismatch. Production-size
+RTL simulation was correct, but the mapped netlist reproduced the board result.
+The generic Yosys netlist contained unknown upper bytes for constant constructor
+results: `40'hxx00000001` and `40'hxx00000000`. Dynamic constructors retained their
+tags, explaining why arithmetic-only board checks had passed.
+
+The minimized regression synthesizes a probe with constant true, false, and zero,
+plus dynamic signed integer and Boolean arguments. Icarus executes the generated
+netlist and checks all 40 bits. It failed before the repair and passed afterward.
+Constructors now assign the entire packed result directly:
+
+```text
+mk_int(x)  = concatenate(INT_TAG, zero_flags, x[31:0])
+mk_bool(b) = concatenate(BOOL_TAG, zero_flags, 31 zero bits, b)
+```
+
+This keeps the same representation and canonical Boolean semantics while avoiding
+the supported frontend's constant-folding error for field-assigned temporaries.
+Commit `605f41d` contains the repair and regression. The full suite passes 198
+tests. Original failed board evidence remains in
+`reference/validation/before-constructor-fix/`; final captures occupy the normal
+P5 evidence paths. Raw serial files are explicitly binary in Git to retain CRLF.
+
+The repaired build at `605f41d` routes Fibonacci at **16.03 MHz**, passing the
+10 MHz constraint. All four final board streams match the model. Countdown now
+ends with the correct `T1:00000001`; its repaired image hash is
+`6d2c0fe0283de49faca2efcd49d56427d29f316a431ef8a8ce15dfd4e17cbd03`.
+The synthesis/build logs preserve resource and timing details for each program.
+
+```mermaid
+flowchart LR
+  S[Constructor RTL] --> I[RTL simulation: correct]
+  S --> Y[Yosys lowering]
+  Y --> G[Generic netlist: unknown tag]
+  G --> M[Mapped netlist: zero tag]
+  M --> B[Board: INT instead of BOOL]
+  P[Whole packed assignment] --> Y
+  Y --> R[New netlist regression checks all 40 bits]
+```
+
+The failing path in the diagram describes the original field-assignment form.
+The repaired form is verified independently at the constructor netlist boundary
+and by the rebuilt board output; neither check alone proves all synthesized core
+states equivalent to the model.
+
 ### File-level implementation references
+
+- `rtl/symbolic_types_pkg.sv`, `sim/constructor_probe.sv`,
+  `sim/tb_constructor.sv`, `sim/test_synthesis.py`: whole packed constructors
+  and an executable synthesized-netlist regression (`605f41d`).
 
 - `rtl/stack_core.sv`: default candidate depth, staged return depth, wider PCs,
   fetch bounds and explicit fetch context.

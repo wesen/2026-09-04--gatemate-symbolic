@@ -29,3 +29,17 @@ P3 committed c9805a6; P4 committed 662843a. Full-state and reset verification pa
 
 P5 ongoing: first three board streams match, countdown final tag differs persistently. Production-depth RTL simulation is correct; mapped-netlist diagnostic running. No repair yet attempted.
 
+
+## 2026-09-04
+
+P5 synthesis investigation: board countdown mismatch reproduced in mapped netlist, isolated to constant constructor tag loss, repaired with packed assignments in 605f41d; 198 tests pass. Initial failing captures preserved.
+
+### Related Files
+
+- /home/manuel/code/wesen/2026-09-04--gatemate-symbolic/symbolic_eval/rtl/symbolic_types_pkg.sv — Packed constructors preserve tags during constant folding
+
+
+## 2026-09-04
+
+Implementation complete and ready for review: 198 tests, all nine faults and both branches exercised, 16.03 MHz Fibonacci route at 10 MHz target, four matching board streams. Final constructor repair is 605f41d; full diary and original failures retained.
+

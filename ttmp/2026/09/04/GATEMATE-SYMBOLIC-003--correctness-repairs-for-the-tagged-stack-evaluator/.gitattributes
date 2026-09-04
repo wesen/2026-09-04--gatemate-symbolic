@@ -1,2 +1,4 @@
-reference/validation/*.bin -text
-reference/validation/before-constructor-fix/*.bin -text
+reference/validation/*.bin binary
+reference/validation/before-constructor-fix/*.bin binary
+reference/validation/*.log -whitespace
+reference/validation/before-constructor-fix/*.log -whitespace
