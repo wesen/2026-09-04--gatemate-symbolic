@@ -10,7 +10,7 @@
 - [x] P6: Final handoff, work slip, wrap-up <!-- t:rbyh -->
 - [x] P0: bootstrap symbolic_eval repo (Makefile, constraints, reset, blink top) <!-- t:r96h -->
 - [x] P1: tools: opcodes.py + stack_model.py + model tests <!-- t:vxhb -->
-- [ ] P2: asm20.py assembler + programs <!-- t:r5ab -->
+- [x] P2: asm20.py assembler + programs <!-- t:r5ab -->
 - [ ] P3: register-stack RTL + directed differential tests <!-- t:5dz8 -->
 - [ ] P4: BRAM stack + top cache + random stall tests <!-- t:8yua -->
 - [ ] P5: board top + synthesis + budget + load <!-- t:g89i -->

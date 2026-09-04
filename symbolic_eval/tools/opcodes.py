@@ -147,9 +147,12 @@ EVENT_NAMES = {EVENT_COMMIT: "COMMIT", EVENT_OUTPUT: "OUTPUT", EVENT_FAULT: "FAU
 
 
 def encode(opcode: int, imm: int = 0) -> int:
-    """Pack opcode + 15-bit immediate into one 20-bit word."""
+    """Pack opcode + signed 15-bit immediate into one 20-bit word."""
     assert 0 <= opcode <= 0x1F
-    assert -(2**14) <= imm < 2**15, f"immediate out of 15-bit range: {imm}"
+    # Full 15-bit representable range: signed immediates (s15, -16384..16383)
+    # and unsigned branch targets (u15, 0..32767). Kind-specific validation is
+    # the assembler's and model's job.
+    assert -(2**14) <= imm <= 2**15 - 1, f"immediate out of 15-bit range: {imm}"
     word = (opcode << IMM_BITS) | (imm & 0x7FFF)
     assert 0 <= word <= 0xFFFFF
     return word

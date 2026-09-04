@@ -50,3 +50,12 @@ Impl P1: opcodes.py + stack_model.py + 30 model tests green (book Program A trac
 
 - /home/manuel/code/wesen/2026-09-04--gatemate-symbolic/symbolic_eval/tools/stack_model.py — reference model/oracle
 
+
+## 2026-09-04
+
+Impl P2: asm20.py two-pass assembler + 11 programs, 42 tests green
+
+### Related Files
+
+- /home/manuel/code/wesen/2026-09-04--gatemate-symbolic/symbolic_eval/tools/asm20.py — assembler
+

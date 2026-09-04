@@ -339,3 +339,50 @@ Model-first: the model is the differential oracle for all RTL phases; its trace 
 
 ### Technical details
 - pytest 9.1.1; test runtime 0.06 s.
+
+## Step 7: Implementation P2 — assembler and programs
+
+We implemented the two-pass assembler `tools/asm20.py` (labels, s15/u15 operand validation,
+raw `WORD` directive for fault-case words, .hex/.lst/.sym.json outputs, zero-padding to ROM
+depth) and the 11 test programs in `programs/`, including the two book exit-criteria programs.
+42 pytest tests green (30 model + 12 assembler).
+
+### Prompt Context
+
+**User prompt (verbatim):** (see Step 5)
+
+**Assistant interpretation:** Implement guide phase P2 (assembler + programs).
+
+### What I did
+- `tools/asm20.py`: two-pass, no eval, MATE-16 asm16.py discipline; hex output is one 20-bit word per line (5 hex digits) padded to ROM depth.
+- Programs: arith (exit A), typefault (exit B), smoke, deep (top-cache spill/refill exercise), branch (JZ taken/not-taken + backward loop), muloverflow, underflow, badop (WORD 0xF8000), badbranch (WORD 0x5FFFF = JMP 0x7FFF), jztype, stackoverflow.
+
+### Why
+The assembler + programs are the inputs to every RTL directed test in P3/P4.
+
+### What worked
+- Model + assembler together caught three real program bugs before any RTL existed — exactly the point of model-first.
+
+### What didn't work
+- Listing corruption bug: comment/label-only lines made `listing` index diverge from word index, so pass-2 replacements clobbered neighboring lines (ADD/MUL lines vanished, PUSH placeholders duplicated). Fixed by recording the listing position in each pending entry.
+- `encode()` immediate-range assert initially restricted to s15, breaking legal u15 branch targets (encode(0x0B, 0x7FFF)); now allows the full 15-bit representable range, kind-specific validation stays in the assembler.
+- My own branch.asm used an INT as the JZ condition (TYPE_FAULT) and inverted the JZ polarity; badop.asm encoded WORD 0x1F (= PUSH_S15 31) instead of opcode 0x1F (= 0xF8000).
+
+### What I learned
+- JZ branches on FALSE: the canonical countdown loop is `EQ 0; JZ loop` (continue while nonzero), falling through on zero.
+- Encoding rule of thumb: word = (opcode << 15) | (imm & 0x7FFF).
+
+### What was tricky to build
+- Keeping .lst truthful across two passes when not every source line emits a word; solved by carrying (word_index, listing_pos) in pending.
+
+### What warrants a second pair of eyes
+- `assemble()` returns unpadded words while the .hex writer pads to ROM depth — the model and RTL both consume the padded hex, so they agree; document this.
+
+### What should be done in the future
+- P3: register-stack RTL (`symbolic_types_pkg.sv`, `stack_core.sv`, testbench, differential runner).
+
+### Code review instructions
+- `cd symbolic_eval && python3 -m pytest sim/ -q` (42 passed); `make asm PROG=arith && cat build/arith.lst`.
+
+### Technical details
+- Exit criteria verified at model level: arith -> FINAL 1 NONE 8 0 1, output BOOL(1); typefault -> FINAL 0 TYPE_FAULT 2 2 0.
