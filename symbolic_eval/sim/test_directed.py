@@ -54,7 +54,7 @@ def _ensure_hex(name: str) -> str:
     return hex_path
 
 
-def _run_rtl(hex_path: str, stack_depth: int, stall_seed=None):
+def _run_rtl(hex_path: str, stack_depth: int, stall_seed=None, rom_depth=1024):
     """Compile (per stack-depth config) and run the register-core testbench."""
     tag = f"tb_reg_d{stack_depth}"
     vvp = os.path.join(BUILD, f"{tag}.vvp")
@@ -64,6 +64,7 @@ def _run_rtl(hex_path: str, stack_depth: int, stall_seed=None):
         os.path.join(ROOT, "rtl", "stack_core.sv"),
         os.path.join(ROOT, "sim", "tb_stack_core.sv"),
         f"-Ptb_stack_core.STACK_DEPTH={stack_depth}",
+        f"-Ptb_stack_core.ROM_DEPTH={rom_depth}",
     ]
     subprocess.run(compile_cmd, check=True, capture_output=True)
     cmd = ["vvp", vvp, f"+rom={hex_path}"]

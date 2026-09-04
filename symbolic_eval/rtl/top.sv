@@ -64,7 +64,7 @@ module top #(
 
   logic        fault_valid;
   logic        halted;
-  logic [$clog2(ROM_DEPTH)-1:0] pc_dbg;
+  logic [$clog2(ROM_DEPTH+1)-1:0] pc_dbg;
   logic [$clog2(DEEP_DEPTH+3)-1:0] depth_dbg;
   logic [$clog2(16+1)-1:0] rdepth_dbg;
 
@@ -76,6 +76,8 @@ module top #(
     .rst_n  (rst_n),
     .rom_addr(rom_addr),
     .rom_data(rom_data),
+    .trace_fetch(),
+    .fault_fetch(),
     .trace_valid(),
     .trace_seq(),
     .trace_pc_old(),

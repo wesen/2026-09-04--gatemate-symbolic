@@ -33,8 +33,9 @@ module tb_stack_core_bram;
   logic [39:0] out_data;
 
   logic        trace_valid;
+  logic trace_fetch, fault_fetch;
   logic [31:0] trace_seq;
-  logic [$clog2(ROM_DEPTH)-1:0] trace_pc_old, trace_pc_new;
+  logic [$clog2(ROM_DEPTH+1)-1:0] trace_pc_old, trace_pc_new;
   logic [4:0]  trace_op;
   logic [$clog2(DEEP_DEPTH+3)-1:0] trace_depth;
   logic [1:0]  trace_event;
@@ -43,12 +44,12 @@ module tb_stack_core_bram;
   logic [31:0] trace_out_payload;
   logic        fault_valid;
   logic [3:0]  fault_code;
-  logic [$clog2(ROM_DEPTH)-1:0] fault_pc;
+  logic [$clog2(ROM_DEPTH+1)-1:0] fault_pc;
   logic [4:0]  fault_op;
   logic [$clog2(DEEP_DEPTH+3)-1:0] fault_depth;
   logic [3:0]  fault_tag1, fault_tag0;
   logic        halted;
-  logic [$clog2(ROM_DEPTH)-1:0] pc_o;
+  logic [$clog2(ROM_DEPTH+1)-1:0] pc_o;
   logic [$clog2(16+1)-1:0] rdepth_o;
   logic [$clog2(DEEP_DEPTH+3)-1:0] depth_o;
   logic [1:0] tc_o;
@@ -60,6 +61,7 @@ module tb_stack_core_bram;
   ) dut (
     .clk(clk), .rst_n(rst_n),
     .rom_addr(rom_addr), .rom_data(rom_data),
+    .trace_fetch(trace_fetch), .fault_fetch(fault_fetch),
     .trace_valid(trace_valid), .trace_seq(trace_seq),
     .trace_pc_old(trace_pc_old), .trace_pc_new(trace_pc_new),
     .trace_op(trace_op), .trace_depth(trace_depth),
@@ -79,6 +81,7 @@ module tb_stack_core_bram;
 
   // ------------------------------------------------------------- helpers
   function automatic string op_name(input logic [4:0] o);
+    if (trace_fetch) return "FETCH";
     case (o)
       5'h00: return "PUSH_S15";
       5'h01: return "PUSH_TRUE";
@@ -159,7 +162,7 @@ module tb_stack_core_bram;
   end
 
   // pc may only change on a retired instruction (trace pulse) or reset.
-  logic [$clog2(ROM_DEPTH)-1:0] pc_prev = '0;
+  logic [$clog2(ROM_DEPTH+1)-1:0] pc_prev = '0;
   always @(posedge clk) begin
     if (rst_n && !trace_valid && cycle > 3 && !halted) begin
       if (pc_o !== pc_prev) begin

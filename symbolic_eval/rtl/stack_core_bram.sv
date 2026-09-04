@@ -33,9 +33,11 @@ module stack_core_bram #(
   input  logic [19:0] rom_data,
 
   output logic        trace_valid,
+  output logic        trace_fetch,  // opcode is not meaningful on a fetch fault
+  output logic        fault_fetch,
   output logic [31:0] trace_seq,
-  output logic [$clog2(ROM_DEPTH)-1:0] trace_pc_old,
-  output logic [$clog2(ROM_DEPTH)-1:0] trace_pc_new,
+  output logic [$clog2(ROM_DEPTH+1)-1:0] trace_pc_old,
+  output logic [$clog2(ROM_DEPTH+1)-1:0] trace_pc_new,
   output logic [4:0]  trace_op,
   output logic [$clog2(DEEP_DEPTH+3)-1:0] trace_depth,
   output logic [1:0]  trace_event,
@@ -51,14 +53,14 @@ module stack_core_bram #(
 
   output logic        fault_valid,
   output logic [3:0]  fault_code,
-  output logic [$clog2(ROM_DEPTH)-1:0] fault_pc,
+  output logic [$clog2(ROM_DEPTH+1)-1:0] fault_pc,
   output logic [4:0]  fault_op,
   output logic [$clog2(DEEP_DEPTH+3)-1:0] fault_depth,
   output logic [3:0]  fault_tag1,
   output logic [3:0]  fault_tag0,
 
   output logic        halted,
-  output logic [$clog2(ROM_DEPTH)-1:0] pc_o,
+  output logic [$clog2(ROM_DEPTH+1)-1:0] pc_o,
   output logic [$clog2(DEEP_DEPTH+3)-1:0] depth_o,
   output logic [$clog2(RSTACK_DEPTH+1)-1:0] rdepth_o,
 
@@ -71,7 +73,7 @@ module stack_core_bram #(
 
   typedef enum logic [3:0] {
     S_RESET, S_FETCH, S_FETCH_WAIT, S_DECODE, S_RDWAIT,
-    S_EXECUTE, S_COMMIT, S_OUTPUT_WAIT, S_FAULT, S_HALTED
+    S_EXECUTE, S_COMMIT, S_OUTPUT_WAIT, S_FAULT, S_HALTED, S_FETCH_CONTEXT, S_FETCH_FAULT
   } state_t;
 
   // read purposes (why RAM[dc-1] or RAM[dc-2] was requested)
@@ -83,7 +85,7 @@ module stack_core_bram #(
   rpurpose_t rp_q, rp_d;
 
   // ------------------------------------------------- architectural state
-  logic [$clog2(ROM_DEPTH)-1:0]     pc_q, pc_d;
+  logic [$clog2(ROM_DEPTH+1)-1:0]     pc_q, pc_d;
   logic [$clog2(TOTAL_DEPTH+1)-1:0]  depth_q, depth_d;
   logic [19:0]                        ir_q, ir_d;
   logic [31:0]                        seq_q, seq_d;
@@ -107,7 +109,7 @@ module stack_core_bram #(
   symbolic_types_pkg::value40_t pf_d;       // refill value for top0 after a pop
 
   // staged next-state (EXECUTE -> COMMIT)
-  logic [$clog2(ROM_DEPTH)-1:0]     npc_q, npc_d;
+  logic [$clog2(ROM_DEPTH+1)-1:0]     npc_q, npc_d;
   logic [$clog2(TOTAL_DEPTH+1)-1:0] ndepth_q, ndepth_d;
   logic [1:0]  stc_q, stc_d;         // staged tc
   logic [$clog2(DEEP_DEPTH+1)-1:0] sdc_q, sdc_d;  // staged dc
@@ -121,18 +123,20 @@ module stack_core_bram #(
   symbolic_types_pkg::value40_t pending_d;
 
   // return-address stack (continuation state; book Lab 1 extension)
-  logic [$clog2(ROM_DEPTH)-1:0]       rstack_q [0:RSTACK_DEPTH-1];
+  logic [$clog2(ROM_DEPTH+1)-1:0]       rstack_q [0:RSTACK_DEPTH-1];
   logic [$clog2(RSTACK_DEPTH+1)-1:0]  rdepth_q, rdepth_d;
   logic                               wrR_en_q, wrR_en_d;
   logic [$clog2(RSTACK_DEPTH)-1:0]   wrR_addr_q, wrR_addr_d;
-  logic [$clog2(ROM_DEPTH)-1:0]      wrR_data_q, wrR_data_d;
+  logic [$clog2(ROM_DEPTH+1)-1:0]      wrR_data_q, wrR_data_d;
 
   logic [$clog2(RSTACK_DEPTH+1)-1:0] nrdepth_q, nrdepth_d;
+
+  logic trace_fetch_q, trace_fetch_d, fault_fetch_q, fault_fetch_d;
 
   // fault record
   logic fv_q, fv_d;
   logic [3:0] fc_q, fc_d;
-  logic [$clog2(ROM_DEPTH)-1:0] fpc_q, fpc_d;
+  logic [$clog2(ROM_DEPTH+1)-1:0] fpc_q, fpc_d;
   logic [4:0] fop_q, fop_d;
   logic [$clog2(TOTAL_DEPTH+1)-1:0] fdepth_q, fdepth_d;
   logic [3:0] ft1_q, ft1_d, ft0_q, ft0_d;
@@ -140,8 +144,8 @@ module stack_core_bram #(
   // trace snapshot registers
   logic        trace_valid_q, trace_valid_d;
   logic [31:0] trace_seq_q, trace_seq_d;
-  logic [$clog2(ROM_DEPTH)-1:0] trace_pc_old_q, trace_pc_old_d;
-  logic [$clog2(ROM_DEPTH)-1:0] trace_pc_new_q, trace_pc_new_d;
+  logic [$clog2(ROM_DEPTH+1)-1:0] trace_pc_old_q, trace_pc_old_d;
+  logic [$clog2(ROM_DEPTH+1)-1:0] trace_pc_new_q, trace_pc_new_d;
   logic [4:0]  trace_op_q, trace_op_d;
   logic [$clog2(TOTAL_DEPTH+1)-1:0] trace_depth_q, trace_depth_d;
   logic [1:0]  trace_event_q, trace_event_d;
@@ -233,19 +237,44 @@ module stack_core_bram #(
     trace_tag0_d = trace_tag0_q;
     trace_out_tag_d = trace_out_tag_q;
     trace_out_payload_d = trace_out_payload_q;
-    rom_addr = pc_q;
+    rom_addr = (pc_q < ROM_DEPTH) ? pc_q[$clog2(ROM_DEPTH)-1:0] : '0;
     out_valid = 1'b0;
     ram_wr_en = 1'b0;
     ram_wr_addr = '0;
     ram_wr_data = '0;
     ram_rd_addr = (dc_q != 0) ? dc_q - 1'b1 : '0;  // guarded default
 
+    trace_fetch_d = 1'b0;
+    fault_fetch_d = fault_fetch_q;
+
     case (state_q)
       S_RESET: begin
         if (rst_n) state_d = S_FETCH;
       end
 
-      S_FETCH: state_d = S_FETCH_WAIT;
+      S_FETCH: begin
+        if (pc_q >= ROM_DEPTH) begin
+          if (tc_q == 1 && dc_q != 0) begin
+            ram_rd_addr = dc_q - 1'b1;
+            state_d = S_FETCH_CONTEXT;
+          end else begin
+            state_d = S_FETCH_FAULT;
+          end
+        end else begin
+          state_d = S_FETCH_WAIT;
+        end
+      end
+
+      S_FETCH_CONTEXT: begin
+        opnd_d = ram_rd_data;
+        state_d = S_FETCH_FAULT;
+      end
+
+      S_FETCH_FAULT: begin
+        do_fault(symbolic_types_pkg::F_BAD_BRANCH);
+        trace_fetch_d = 1'b1;
+        fault_fetch_d = 1'b1;
+      end
 
       S_FETCH_WAIT: begin
         ir_d = rom_data;
@@ -378,7 +407,7 @@ module stack_core_bram #(
               do_fault(symbolic_types_pkg::F_TYPE_FAULT);
             end else if (op == symbolic_types_pkg::OP_JZ && top0_q.payload > 32'd1) begin
               do_fault(symbolic_types_pkg::F_NONCANON_BOOL);
-            end else if (op == symbolic_types_pkg::OP_JZ && imm >= ROM_DEPTH[14:0]) begin
+            end else if (op == symbolic_types_pkg::OP_JZ && imm >= ROM_DEPTH) begin
               do_fault(symbolic_types_pkg::F_BAD_BRANCH);
             end else begin
               // stage the pop action from the representation
@@ -423,7 +452,7 @@ module stack_core_bram #(
           end
 
           symbolic_types_pkg::OP_JMP: begin
-            if (imm >= ROM_DEPTH[14:0]) begin
+            if (imm >= ROM_DEPTH) begin
               do_fault(symbolic_types_pkg::F_BAD_BRANCH);
             end else begin
               npc_d = imm;
@@ -455,7 +484,7 @@ module stack_core_bram #(
           symbolic_types_pkg::OP_CALL: begin
             if (rdepth_q == RSTACK_DEPTH[$clog2(RSTACK_DEPTH+1)-1:0]) begin
               do_fault(symbolic_types_pkg::F_RSTACK_OVERFLOW);
-            end else if (imm >= ROM_DEPTH[14:0]) begin
+            end else if (imm >= ROM_DEPTH) begin
               do_fault(symbolic_types_pkg::F_BAD_BRANCH);
             end else begin
               wrR_en_d   = 1'b1;
@@ -632,6 +661,8 @@ module stack_core_bram #(
   // ------------------------------------------------------ one mutation owner
   always_ff @(posedge clk or negedge rst_n) begin
     if (!rst_n) begin
+      trace_fetch_q <= 1'b0;
+      fault_fetch_q <= 1'b0;
       state_q <= S_RESET;
       rp_q <= R_NONE;
       pc_q <= '0;
@@ -683,6 +714,8 @@ module stack_core_bram #(
       trace_out_payload_q <= '0;
     end else begin
       state_q <= state_d;
+      trace_fetch_q <= trace_fetch_d;
+      fault_fetch_q <= fault_fetch_d;
       rp_q <= rp_d;
       pc_q <= pc_d;
       depth_q <= depth_d;
@@ -736,6 +769,14 @@ module stack_core_bram #(
       if (state_q == S_COMMIT && wrR_en_q)
         rstack_q[wrR_addr_q] <= wrR_data_q;
     end
+  end
+
+  assign trace_fetch = trace_fetch_q;
+  assign fault_fetch = fault_fetch_q;
+
+  initial begin
+    if (ROM_DEPTH < 2 || ROM_DEPTH > 32768 || DEEP_DEPTH < 2 || RSTACK_DEPTH < 2)
+      $fatal(1, "unsupported core memory parameters");
   end
 
   // ------------------------------------------------------------- outputs

@@ -135,3 +135,59 @@ Run make test in symbolic_eval with the OSS CAD Suite environment; inspect sim/t
 ### Technical details
 
 The assembler now supports ROM depth 2..32768 explicitly; all current assembly clients fit this range. No compatibility mode added.
+
+## Step 3: P2 atomic return retirement and deep fault context
+
+Added return-depth timing assertions and five BRAM fault-context regressions. All seven new failing cases now pass, and the complete suite reaches 157 passing tests.
+
+### Prompt Context
+
+**User prompt (verbatim):**
+
+(see Step 1)
+
+**Assistant interpretation:** Implement the repair design in phases with reproducible validation, focused commits, detailed diary entries, and printed phase boundaries.
+
+**Inferred user intent:** Turn the documented review findings into a reliable working evaluator with visible progress and reviewable evidence.
+
+**Commit (code/work):** 3213364 — fix: retire return state atomically and fetch deep fault context
+
+### What I did
+
+Added nrdepth staging in both cores, committed it alongside PC and return writes, and generalized the BRAM tc=1/dc>0 operand read to every instruction. Reused the same response for pop refill and removed the redundant R_POP read purpose.
+
+### Why
+
+Return occupancy must not expose unwritten continuations; fault tags must represent logical operands rather than stale cache registers.
+
+### What worked
+
+P2-before.log: 7 failed, 27 passed in 0.85s. P2-after.log: 157 passed in 6.98s. P1 completion and P2 start slips printed successfully.
+
+### What didn't work
+
+Expected red regressions include ASSERT_FAIL: return depth changed without retirement. Approval review again initially treated the post-fix print result as unverified despite the successful captured log; retried with the completed tool-call evidence. No implementation test failures remained after the first repair.
+
+### What I learned
+
+One context read can serve both fault metadata and pop refill; the extra cycle for otherwise neutral operations makes the fault contract consistent.
+
+### What was tricky to build
+
+nrdepth_d is initialized in EXECUTE but rdepth_d is changed only in COMMIT. A combinational next-state name alone does not imply delayed architectural publication.
+
+### What warrants a second pair of eyes
+
+Inspect CALL/RET candidate ownership and fault tags for BAD_OPCODE, invalid JMP/CALL, empty RET, and type-invalid JZ with a Boolean second value in RAM.
+
+### What should be done in the future
+
+P3 handles one-past-ROM PC and return addresses with explicit fetch flags.
+
+### Code review instructions
+
+Run make test; inspect both bench return-depth monitors and P2-before/after logs.
+
+### Technical details
+
+Actual output record semantics and instruction encodings remain unchanged. RAM read timing grows by one cycle only when context was previously not prefetched.

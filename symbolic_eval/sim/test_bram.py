@@ -27,7 +27,7 @@ BRAM_PROGRAMS = [(name, deep, seeds)
                  for deep in ([30] if name != "stackoverflow" else [6])]
 
 
-def _run_rtl_bram(hex_path, deep_depth, stall_seed=None):
+def _run_rtl_bram(hex_path, deep_depth, stall_seed=None, rom_depth=1024):
     tag = f"tb_bram_d{deep_depth}"
     vvp = os.path.join(BUILD, f"{tag}.vvp")
     subprocess.run([
@@ -37,6 +37,7 @@ def _run_rtl_bram(hex_path, deep_depth, stall_seed=None):
         os.path.join(ROOT, "rtl", "stack_core_bram.sv"),
         os.path.join(ROOT, "sim", "tb_stack_core_bram.sv"),
         f"-Ptb_stack_core_bram.DEEP_DEPTH={deep_depth}",
+        f"-Ptb_stack_core_bram.ROM_DEPTH={rom_depth}",
     ], check=True, capture_output=True)
     cmd = ["vvp", vvp, f"+rom={hex_path}"]
     if stall_seed is not None:

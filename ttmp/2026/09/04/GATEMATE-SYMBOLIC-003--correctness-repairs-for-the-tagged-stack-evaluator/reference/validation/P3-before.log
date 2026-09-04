@@ -1,0 +1,282 @@
+FFFFFFFF                                                                 [100%]
+=================================== FAILURES ===================================
+___________________________ test_onepast_push[2-reg] ___________________________
+
+tmp_path = PosixPath('/tmp/pytest-of-manuel/pytest-112/test_onepast_push_2_reg_0')
+core = 'reg', rom_depth = 2
+
+    @pytest.mark.parametrize('core', ['reg', 'bram'])
+    @pytest.mark.parametrize('rom_depth', [2, 7, 16, 1024])
+    def test_onepast_push(tmp_path, core, rom_depth):
+        words = [encode(0x0B, rom_depth-1)] + [0] * (rom_depth-2) + [encode(0, 7)]
+>       m = compare_words(tmp_path, words, core, rom_depth=rom_depth)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+sim/test_repairs.py:74: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+tmp_path = PosixPath('/tmp/pytest-of-manuel/pytest-112/test_onepast_push_2_reg_0')
+words = [360449, 7], core = 'reg', total_depth = 8, stall_seed = 7
+rom_depth = 2
+
+    def compare_words(tmp_path, words, core, total_depth=8, stall_seed=7, rom_depth=1024):
+        image = tmp_path / 'program.hex'
+        image.write_text(''.join(f'{w:05x}\n' for w in words + [0] * (rom_depth-len(words))))
+        model = run_program(words, total_depth=total_depth, rom_depth=rom_depth)
+        expected = [r.line() for r in model.trace] + [model.final_line()]
+        runner = _run_rtl if core == 'reg' else _run_rtl_bram
+        depth = total_depth if core == 'reg' else total_depth-2
+>       assert runner(str(image), depth, stall_seed=stall_seed, rom_depth=rom_depth) == expected
+E       AssertionError: assert ['TRACE 0 0 1... COMMIT', ...] == ['TRACE 0 0 1...RGET 2 1 0 0']
+E         
+E         At index 1 diff: 'TRACE 1 1 0 PUSH_S15 1 COMMIT' != 'TRACE 1 1 2 PUSH_S15 1 COMMIT'
+E         Left contains 15 more items, first extra item: 'TRACE 4 0 1 JMP 2 COMMIT'
+E         Use -v to get more diff
+
+sim/test_repairs.py:23: AssertionError
+__________________________ test_onepast_push[2-bram] ___________________________
+
+tmp_path = PosixPath('/tmp/pytest-of-manuel/pytest-112/test_onepast_push_2_bram_0')
+core = 'bram', rom_depth = 2
+
+    @pytest.mark.parametrize('core', ['reg', 'bram'])
+    @pytest.mark.parametrize('rom_depth', [2, 7, 16, 1024])
+    def test_onepast_push(tmp_path, core, rom_depth):
+        words = [encode(0x0B, rom_depth-1)] + [0] * (rom_depth-2) + [encode(0, 7)]
+>       m = compare_words(tmp_path, words, core, rom_depth=rom_depth)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+sim/test_repairs.py:74: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+tmp_path = PosixPath('/tmp/pytest-of-manuel/pytest-112/test_onepast_push_2_bram_0')
+words = [360449, 7], core = 'bram', total_depth = 8, stall_seed = 7
+rom_depth = 2
+
+    def compare_words(tmp_path, words, core, total_depth=8, stall_seed=7, rom_depth=1024):
+        image = tmp_path / 'program.hex'
+        image.write_text(''.join(f'{w:05x}\n' for w in words + [0] * (rom_depth-len(words))))
+        model = run_program(words, total_depth=total_depth, rom_depth=rom_depth)
+        expected = [r.line() for r in model.trace] + [model.final_line()]
+        runner = _run_rtl if core == 'reg' else _run_rtl_bram
+        depth = total_depth if core == 'reg' else total_depth-2
+>       assert runner(str(image), depth, stall_seed=stall_seed, rom_depth=rom_depth) == expected
+E       AssertionError: assert ['TRACE 0 0 1... COMMIT', ...] == ['TRACE 0 0 1...RGET 2 1 0 0']
+E         
+E         At index 1 diff: 'TRACE 1 1 0 PUSH_S15 1 COMMIT' != 'TRACE 1 1 2 PUSH_S15 1 COMMIT'
+E         Left contains 15 more items, first extra item: 'TRACE 4 0 1 JMP 2 COMMIT'
+E         Use -v to get more diff
+
+sim/test_repairs.py:23: AssertionError
+___________________________ test_onepast_push[7-reg] ___________________________
+
+tmp_path = PosixPath('/tmp/pytest-of-manuel/pytest-112/test_onepast_push_7_reg_0')
+core = 'reg', rom_depth = 7
+
+    @pytest.mark.parametrize('core', ['reg', 'bram'])
+    @pytest.mark.parametrize('rom_depth', [2, 7, 16, 1024])
+    def test_onepast_push(tmp_path, core, rom_depth):
+        words = [encode(0x0B, rom_depth-1)] + [0] * (rom_depth-2) + [encode(0, 7)]
+>       m = compare_words(tmp_path, words, core, rom_depth=rom_depth)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+sim/test_repairs.py:74: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+tmp_path = PosixPath('/tmp/pytest-of-manuel/pytest-112/test_onepast_push_7_reg_0')
+words = [360454, 0, 0, 0, 0, 0, ...], core = 'reg', total_depth = 8
+stall_seed = 7, rom_depth = 7
+
+    def compare_words(tmp_path, words, core, total_depth=8, stall_seed=7, rom_depth=1024):
+        image = tmp_path / 'program.hex'
+        image.write_text(''.join(f'{w:05x}\n' for w in words + [0] * (rom_depth-len(words))))
+        model = run_program(words, total_depth=total_depth, rom_depth=rom_depth)
+        expected = [r.line() for r in model.trace] + [model.final_line()]
+        runner = _run_rtl if core == 'reg' else _run_rtl_bram
+        depth = total_depth if core == 'reg' else total_depth-2
+>       assert runner(str(image), depth, stall_seed=stall_seed, rom_depth=rom_depth) == expected
+E       AssertionError: assert ['TRACE 0 0 6...CODE 7 1 0 0'] == ['TRACE 0 0 6...RGET 7 1 0 0']
+E         
+E         At index 2 diff: 'TRACE 2 7 7 BAD 1 FAULT BAD_OPCODE 0 0' != 'TRACE 2 7 7 FETCH 1 FAULT BAD_BRANCH_TARGET 0 0'
+E         Use -v to get more diff
+
+sim/test_repairs.py:23: AssertionError
+__________________________ test_onepast_push[7-bram] ___________________________
+
+tmp_path = PosixPath('/tmp/pytest-of-manuel/pytest-112/test_onepast_push_7_bram_0')
+core = 'bram', rom_depth = 7
+
+    @pytest.mark.parametrize('core', ['reg', 'bram'])
+    @pytest.mark.parametrize('rom_depth', [2, 7, 16, 1024])
+    def test_onepast_push(tmp_path, core, rom_depth):
+        words = [encode(0x0B, rom_depth-1)] + [0] * (rom_depth-2) + [encode(0, 7)]
+>       m = compare_words(tmp_path, words, core, rom_depth=rom_depth)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+sim/test_repairs.py:74: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+tmp_path = PosixPath('/tmp/pytest-of-manuel/pytest-112/test_onepast_push_7_bram_0')
+words = [360454, 0, 0, 0, 0, 0, ...], core = 'bram', total_depth = 8
+stall_seed = 7, rom_depth = 7
+
+    def compare_words(tmp_path, words, core, total_depth=8, stall_seed=7, rom_depth=1024):
+        image = tmp_path / 'program.hex'
+        image.write_text(''.join(f'{w:05x}\n' for w in words + [0] * (rom_depth-len(words))))
+        model = run_program(words, total_depth=total_depth, rom_depth=rom_depth)
+        expected = [r.line() for r in model.trace] + [model.final_line()]
+        runner = _run_rtl if core == 'reg' else _run_rtl_bram
+        depth = total_depth if core == 'reg' else total_depth-2
+>       assert runner(str(image), depth, stall_seed=stall_seed, rom_depth=rom_depth) == expected
+E       AssertionError: assert ['TRACE 0 0 6...CODE 7 1 0 0'] == ['TRACE 0 0 6...RGET 7 1 0 0']
+E         
+E         At index 2 diff: 'TRACE 2 7 7 BAD 1 FAULT BAD_OPCODE 0 0' != 'TRACE 2 7 7 FETCH 1 FAULT BAD_BRANCH_TARGET 0 0'
+E         Use -v to get more diff
+
+sim/test_repairs.py:23: AssertionError
+__________________________ test_onepast_push[16-reg] ___________________________
+
+tmp_path = PosixPath('/tmp/pytest-of-manuel/pytest-112/test_onepast_push_16_reg_0')
+core = 'reg', rom_depth = 16
+
+    @pytest.mark.parametrize('core', ['reg', 'bram'])
+    @pytest.mark.parametrize('rom_depth', [2, 7, 16, 1024])
+    def test_onepast_push(tmp_path, core, rom_depth):
+        words = [encode(0x0B, rom_depth-1)] + [0] * (rom_depth-2) + [encode(0, 7)]
+>       m = compare_words(tmp_path, words, core, rom_depth=rom_depth)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+sim/test_repairs.py:74: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+tmp_path = PosixPath('/tmp/pytest-of-manuel/pytest-112/test_onepast_push_16_reg_0')
+words = [360463, 0, 0, 0, 0, 0, ...], core = 'reg', total_depth = 8
+stall_seed = 7, rom_depth = 16
+
+    def compare_words(tmp_path, words, core, total_depth=8, stall_seed=7, rom_depth=1024):
+        image = tmp_path / 'program.hex'
+        image.write_text(''.join(f'{w:05x}\n' for w in words + [0] * (rom_depth-len(words))))
+        model = run_program(words, total_depth=total_depth, rom_depth=rom_depth)
+        expected = [r.line() for r in model.trace] + [model.final_line()]
+        runner = _run_rtl if core == 'reg' else _run_rtl_bram
+        depth = total_depth if core == 'reg' else total_depth-2
+>       assert runner(str(image), depth, stall_seed=stall_seed, rom_depth=rom_depth) == expected
+E       AssertionError: assert ['TRACE 0 0 1... COMMIT', ...] == ['TRACE 0 0 1...GET 16 1 0 0']
+E         
+E         At index 1 diff: 'TRACE 1 15 0 PUSH_S15 1 COMMIT' != 'TRACE 1 15 16 PUSH_S15 1 COMMIT'
+E         Left contains 15 more items, first extra item: 'TRACE 4 0 15 JMP 2 COMMIT'
+E         Use -v to get more diff
+
+sim/test_repairs.py:23: AssertionError
+__________________________ test_onepast_push[16-bram] __________________________
+
+tmp_path = PosixPath('/tmp/pytest-of-manuel/pytest-112/test_onepast_push_16_bram_0')
+core = 'bram', rom_depth = 16
+
+    @pytest.mark.parametrize('core', ['reg', 'bram'])
+    @pytest.mark.parametrize('rom_depth', [2, 7, 16, 1024])
+    def test_onepast_push(tmp_path, core, rom_depth):
+        words = [encode(0x0B, rom_depth-1)] + [0] * (rom_depth-2) + [encode(0, 7)]
+>       m = compare_words(tmp_path, words, core, rom_depth=rom_depth)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+sim/test_repairs.py:74: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+tmp_path = PosixPath('/tmp/pytest-of-manuel/pytest-112/test_onepast_push_16_bram_0')
+words = [360463, 0, 0, 0, 0, 0, ...], core = 'bram', total_depth = 8
+stall_seed = 7, rom_depth = 16
+
+    def compare_words(tmp_path, words, core, total_depth=8, stall_seed=7, rom_depth=1024):
+        image = tmp_path / 'program.hex'
+        image.write_text(''.join(f'{w:05x}\n' for w in words + [0] * (rom_depth-len(words))))
+        model = run_program(words, total_depth=total_depth, rom_depth=rom_depth)
+        expected = [r.line() for r in model.trace] + [model.final_line()]
+        runner = _run_rtl if core == 'reg' else _run_rtl_bram
+        depth = total_depth if core == 'reg' else total_depth-2
+>       assert runner(str(image), depth, stall_seed=stall_seed, rom_depth=rom_depth) == expected
+E       AssertionError: assert ['TRACE 0 0 1... COMMIT', ...] == ['TRACE 0 0 1...GET 16 1 0 0']
+E         
+E         At index 1 diff: 'TRACE 1 15 0 PUSH_S15 1 COMMIT' != 'TRACE 1 15 16 PUSH_S15 1 COMMIT'
+E         Left contains 15 more items, first extra item: 'TRACE 4 0 15 JMP 2 COMMIT'
+E         Use -v to get more diff
+
+sim/test_repairs.py:23: AssertionError
+_________________________ test_onepast_push[1024-reg] __________________________
+
+tmp_path = PosixPath('/tmp/pytest-of-manuel/pytest-112/test_onepast_push_1024_reg_0')
+core = 'reg', rom_depth = 1024
+
+    @pytest.mark.parametrize('core', ['reg', 'bram'])
+    @pytest.mark.parametrize('rom_depth', [2, 7, 16, 1024])
+    def test_onepast_push(tmp_path, core, rom_depth):
+        words = [encode(0x0B, rom_depth-1)] + [0] * (rom_depth-2) + [encode(0, 7)]
+>       m = compare_words(tmp_path, words, core, rom_depth=rom_depth)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+sim/test_repairs.py:74: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+tmp_path = PosixPath('/tmp/pytest-of-manuel/pytest-112/test_onepast_push_1024_reg_0')
+words = [361471, 0, 0, 0, 0, 0, ...], core = 'reg', total_depth = 8
+stall_seed = 7, rom_depth = 1024
+
+    def compare_words(tmp_path, words, core, total_depth=8, stall_seed=7, rom_depth=1024):
+        image = tmp_path / 'program.hex'
+        image.write_text(''.join(f'{w:05x}\n' for w in words + [0] * (rom_depth-len(words))))
+        model = run_program(words, total_depth=total_depth, rom_depth=rom_depth)
+        expected = [r.line() for r in model.trace] + [model.final_line()]
+        runner = _run_rtl if core == 'reg' else _run_rtl_bram
+        depth = total_depth if core == 'reg' else total_depth-2
+>       assert runner(str(image), depth, stall_seed=stall_seed, rom_depth=rom_depth) == expected
+E       AssertionError: assert ['TRACE 0 0 1... COMMIT', ...] == ['TRACE 0 0 1...T 1024 1 0 0']
+E         
+E         At index 1 diff: 'TRACE 1 1023 0 PUSH_S15 1 COMMIT' != 'TRACE 1 1023 1024 PUSH_S15 1 COMMIT'
+E         Left contains 15 more items, first extra item: 'TRACE 4 0 1023 JMP 2 COMMIT'
+E         Use -v to get more diff
+
+sim/test_repairs.py:23: AssertionError
+_________________________ test_onepast_push[1024-bram] _________________________
+
+tmp_path = PosixPath('/tmp/pytest-of-manuel/pytest-112/test_onepast_push_1024_bram_0')
+core = 'bram', rom_depth = 1024
+
+    @pytest.mark.parametrize('core', ['reg', 'bram'])
+    @pytest.mark.parametrize('rom_depth', [2, 7, 16, 1024])
+    def test_onepast_push(tmp_path, core, rom_depth):
+        words = [encode(0x0B, rom_depth-1)] + [0] * (rom_depth-2) + [encode(0, 7)]
+>       m = compare_words(tmp_path, words, core, rom_depth=rom_depth)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+sim/test_repairs.py:74: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+tmp_path = PosixPath('/tmp/pytest-of-manuel/pytest-112/test_onepast_push_1024_bram_0')
+words = [361471, 0, 0, 0, 0, 0, ...], core = 'bram', total_depth = 8
+stall_seed = 7, rom_depth = 1024
+
+    def compare_words(tmp_path, words, core, total_depth=8, stall_seed=7, rom_depth=1024):
+        image = tmp_path / 'program.hex'
+        image.write_text(''.join(f'{w:05x}\n' for w in words + [0] * (rom_depth-len(words))))
+        model = run_program(words, total_depth=total_depth, rom_depth=rom_depth)
+        expected = [r.line() for r in model.trace] + [model.final_line()]
+        runner = _run_rtl if core == 'reg' else _run_rtl_bram
+        depth = total_depth if core == 'reg' else total_depth-2
+>       assert runner(str(image), depth, stall_seed=stall_seed, rom_depth=rom_depth) == expected
+E       AssertionError: assert ['TRACE 0 0 1... COMMIT', ...] == ['TRACE 0 0 1...T 1024 1 0 0']
+E         
+E         At index 1 diff: 'TRACE 1 1023 0 PUSH_S15 1 COMMIT' != 'TRACE 1 1023 1024 PUSH_S15 1 COMMIT'
+E         Left contains 15 more items, first extra item: 'TRACE 4 0 1023 JMP 2 COMMIT'
+E         Use -v to get more diff
+
+sim/test_repairs.py:23: AssertionError
+=========================== short test summary info ============================
+FAILED sim/test_repairs.py::test_onepast_push[2-reg] - AssertionError: assert...
+FAILED sim/test_repairs.py::test_onepast_push[2-bram] - AssertionError: asser...
+FAILED sim/test_repairs.py::test_onepast_push[7-reg] - AssertionError: assert...
+FAILED sim/test_repairs.py::test_onepast_push[7-bram] - AssertionError: asser...
+FAILED sim/test_repairs.py::test_onepast_push[16-reg] - AssertionError: asser...
+FAILED sim/test_repairs.py::test_onepast_push[16-bram] - AssertionError: asse...
+FAILED sim/test_repairs.py::test_onepast_push[1024-reg] - AssertionError: ass...
+FAILED sim/test_repairs.py::test_onepast_push[1024-bram] - AssertionError: as...
+8 failed, 44 deselected in 0.31s
