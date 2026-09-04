@@ -68,3 +68,12 @@ Impl P3: register-stack RTL + differential tests, 54 green, book trace exact on 
 
 - /home/manuel/code/wesen/2026-09-04--gatemate-symbolic/symbolic_eval/rtl/stack_core.sv — register-stack core
 
+
+## 2026-09-04
+
+Impl P4: BRAM top-cache core + random/boundary differential tests, 101 green
+
+### Related Files
+
+- /home/manuel/code/wesen/2026-09-04--gatemate-symbolic/symbolic_eval/rtl/stack_core_bram.sv — BRAM core with top cache
+

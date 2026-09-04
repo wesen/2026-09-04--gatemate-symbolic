@@ -440,3 +440,55 @@ The register version isolates semantics and interface behavior from RAM latency 
 
 ### Technical details
 - Check order frozen: capacity/underflow -> tags -> canonicality -> branch target.
+
+## Step 9: Implementation P4 — BRAM stack with two-entry top cache
+
+We implemented the Split-Lifetime Frame refinement: `rtl/sync_sdp_ram.sv` (request/response-
+valid simple dual-port RAM) and `rtl/stack_core_bram.sv` (top0/top1 cache registers over the
+deep RAM, tc/dc/dt counters, prefetched RAM reads at DECODE, staged representation updates,
+single mutation owner). The BRAM core passes the identical differential suite as the register
+core plus the refinement invariant `depth == tc + dc` checked every cycle in the testbench,
+plus 24 random-program tests (typed-stack generator with occasional injected illegal
+instructions) and 12 random-program tests on the register core, all with random output
+backpressure. 101 tests green total.
+
+### Prompt Context
+
+**User prompt (verbatim):** (see Step 5)
+
+**Assistant interpretation:** Implement guide phase P4: BRAM top-cache refinement + boundary/random verification.
+
+### What I did
+- `rtl/sync_sdp_ram.sv`, `rtl/stack_core_bram.sv` (states: RESET/FETCH/FETCH_WAIT/DECODE/RDWAIT/EXECUTE/COMMIT/OUTPUT_WAIT/FAULT/HALTED; read purposes R_OPND/R_FILL/R_POP/R_FILL2; DECODE prefetches RAM[dc-1] when the representation will need it — reads are side-effect-free so prefetching before checks cannot change behavior).
+- `sim/tb_stack_core_bram.sv`: tb_stack_core.sv + invariant depth==tc+dc each cycle.
+- `sim/test_bram.py`: BRAM directed (11 programs), random generator (typed stack model, ~6% injected illegal instructions: ADD-on-mixed-tags, DROP-underflow, BAD_OPCODE), model-vs-RTL with stall seeds; register core on the same random programs.
+
+### Why
+The book's exercise 2 asks to prove the two-entry top-cache refinement across push, pop, binary operation, and output stall — the differential trace equality plus the per-cycle invariant is that proof at the testing level.
+
+### What worked
+- The core passed all 11 directed programs on the first full run after elaboration fixes.
+
+### What didn't work
+- iverilog: enum ternary "This assignment requires an explicit cast" in state_d assignment -> if/else.
+- 10 random-test failures, all one line: BAD_OPCODE fault records disagreed on operand tags. Root cause: the model hardcoded tag1/tag0=0 for faults without explicit tags, while the RTL (correctly, per the book's "operand tags" field) reports the current top-of-stack tags. Fixed the model to default to real top-two tags (0 when absent) and guarded the BRAM core's tags by depth (stale cache registers must not leak into fault records when depth < 2).
+- Two staging bugs caught by my own review before simulation: BIN refill dc deltas (tc==2: dc-1; tc==1: dc-2) and push spill staging; also a botched edit that briefly deleted SWAP's underflow check — restored and verified by brace-count inspection.
+
+### What I learned
+- The refinement's subtle case: binary op with tc==1 needs TWO sequential RAM reads (operand at RAM[dc-1], new top1 at RAM[dc-2]) — prefetched operand at DECODE, second read issued from EXECUTE (R_FILL2).
+- EMIT's pop-refill can be prefetched at DECODE because no write can occur between DECODE and acceptance.
+
+### What was tricky to build
+- Keeping the invariant true at every trace pulse: all count registers (tc/dc/dt/depth/pc) update atomically at the commit point; RAM reads that repair the representation are internal stuttering before the pulse.
+
+### What warrants a second pair of eyes
+- The DECODE prefetch logic (R_OPND/R_FILL/R_POP selection) is the densest code in the repo; the random tests cover it, but a table-driven review against the book's push/pop/binary algorithms is worthwhile.
+
+### What should be done in the future
+- P5: board top (rv_reg output stage, UART value printer, LED state), synthesis against the stop-build budget, load to the GateMate.
+
+### Code review instructions
+- `cd symbolic_eval && python3 -m pytest sim/ -q` (101 passed, ~13 s).
+
+### Technical details
+- BRAM configs tested: DEEP_DEPTH=30 (total 32) and DEEP_DEPTH=6 (total 8, overflow program).

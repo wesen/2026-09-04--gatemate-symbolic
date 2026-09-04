@@ -162,9 +162,18 @@ class Machine:
     def _top1(self) -> Value40:
         return self.stack[-2]
 
-    def _fault(self, code: Fault, op: str, tag1: int = 0, tag0: int = 0) -> TraceRecord:
+    def _fault(self, code: Fault, op: str, tag1: int = None,
+               tag0: int = None) -> TraceRecord:
         """Enter the precise fault state: nothing about the architectural
-        state changes; pc stays at the faulting instruction."""
+        state changes; pc stays at the faulting instruction.
+
+        Operand tags default to the current top-two stack tags (0 when
+        absent) so BAD_OPCODE / underflow records still carry the machine's
+        operand context - the RTL does the same (guarded by depth)."""
+        if tag1 is None:
+            tag1 = self.stack[-2].tag if len(self.stack) >= 2 else 0
+        if tag0 is None:
+            tag0 = self.stack[-1].tag if len(self.stack) >= 1 else 0
         self.fault = code
         self.fault_pc = self.pc
         self.fault_op = op
