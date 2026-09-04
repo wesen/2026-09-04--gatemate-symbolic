@@ -1,0 +1,9 @@
+{"level":"info","listen":"127.0.0.1:8086","engine":"serial","time":"2026-09-04T19:02:29-04:00","message":"search microscope started"}
+{"level":"info","vertices":3,"colors":3,"time":"2026-09-04T19:03:09-04:00","message":"graph loaded"}
+{"level":"info","terminal":"COMPLETE","solutions":6,"time":"2026-09-04T19:03:11-04:00","message":"search terminated"}
+{"level":"info","vertices":3,"colors":2,"time":"2026-09-04T19:03:11-04:00","message":"graph loaded"}
+{"level":"info","terminal":"COMPLETE","solutions":0,"time":"2026-09-04T19:03:12-04:00","message":"search terminated"}
+{"level":"info","vertices":4,"colors":2,"time":"2026-09-04T19:03:12-04:00","message":"graph loaded"}
+{"level":"info","terminal":"COMPLETE","solutions":2,"time":"2026-09-04T19:03:13-04:00","message":"search terminated"}
+{"level":"info","vertices":3,"colors":3,"time":"2026-09-04T19:03:13-04:00","message":"graph loaded"}
+{"level":"info","terminal":"COMPLETE","solutions":1,"time":"2026-09-04T19:03:13-04:00","message":"search terminated"}

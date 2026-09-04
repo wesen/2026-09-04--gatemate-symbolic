@@ -351,3 +351,57 @@ Repeat scripts/04-build-and-check-board.sh in tmux with exclusive UART access. I
 ### Technical details
 
 FPGA remains programmed with graph firmware. The final physical test resets the root graph and accepts its first event; a service load will replace that configuration atomically.
+
+## Step 7: P4 serialized Go session and HTTP API complete
+
+Implemented the Go service around a single explicit model or serial engine. The service serializes exchanges, retains 256 immutable snapshots, reports engine identity and transport errors, and separates historical viewing from current device control.
+
+### Prompt Context
+
+**User prompt (verbatim, JSON encoded):**
+
+(see Step 1)
+
+**Assistant interpretation:** Design, publish, and implement the graph-coloring FPGA microscope with Go and React, committed milestones, a detailed diary, and physical phase slips.
+
+**Inferred user intent:** Deliver a working next laboratory with enough explanation and evidence for an intern to maintain it.
+
+### What I did
+
+Added internal/microscope session ownership, errgroup worker, strict HTTP handlers, generation-aware history, Go embedded/development asset contracts, root Makefile/build generator, and a Glazed BareCommand with listen/engine/device/log-level fields. Added session, HTTP, serial-fragment/recovery, and CLI decoding tests.
+
+### Why
+
+One device must have one serialized owner; concurrent browser requests cannot overlap UART commands. History needs deep copies and bounded retention, and reset must distinguish old sequences from a new run.
+
+### What worked
+
+Race-instrumented tests passed for session, domain/serial, and CLI packages. go build ./... and go vet ./... passed. Version-matched make glazed-lint passed. CLI help exposes the intended settings. The API is running in tmux graph-api on 127.0.0.1:8086 with engine serial.
+
+### What didn't work
+
+No P4 implementation or validation failure occurred. A read-only package lookup found no remarquee/web/package.json; frontend dependency examples were located in the existing go-go-os frontend workspace instead.
+
+### What I learned
+
+Graph edge arrays must be decoded as variable-length arrays and checked for exactly two elements: encoding/json would otherwise silently discard extra values when decoding directly into [2]int. Explicit generation checks prevent a history lookup from resolving against a different reset run.
+
+### What was tricky to build
+
+Pause waits for an already-started bounded exchange rather than cancelling its response mid-frame. Transport or projection errors stop the runner and require explicit reset/reload. The event history is capped independently from total enumeration length.
+
+### What warrants a second pair of eyes
+
+Review context and mutex ownership, strict JSON/body limits, cross-origin mutation rejection, snapshot aliasing, and API routing. The application uses no custom environment-variable configuration; flags are decoded through Glazed.
+
+### What should be done in the future
+
+Build the React graph editor and state inspector, then exercise it against this live serial service.
+
+### Code review instructions
+
+Run go test -race ./internal/microscope ./pkg/microscope ./cmd/search-microscope -count=1, go vet ./..., and make glazed-lint. Run ticket scripts/05-api-smoke.py for physical HTTP integration.
+
+### Technical details
+
+The public routes are /api/state, /api/graph, /api/control, /api/events/{sequence}?generation=N, /, and /static/{path}. Production assets use go:embed under the embed build tag; default builds remain valid before frontend generation.

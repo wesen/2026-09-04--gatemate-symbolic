@@ -2,6 +2,8 @@
 /web/dist/
 /internal/microscope/assets/static/
 /internal/microscope/assets/index.html
+/internal/microscope/assets/app.js
+/internal/microscope/assets/app.css
 /graph_microscope/build/
 __pycache__/
 .pytest_cache/

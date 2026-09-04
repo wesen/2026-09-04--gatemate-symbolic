@@ -1,0 +1,30 @@
+[
+  {
+    "graph": "triangle",
+    "engine": "serial",
+    "events": 86,
+    "solutions": 6,
+    "generation": 1
+  },
+  {
+    "graph": "unsatisfiable",
+    "engine": "serial",
+    "events": 26,
+    "solutions": 0,
+    "generation": 2
+  },
+  {
+    "graph": "path",
+    "engine": "serial",
+    "events": 32,
+    "solutions": 2,
+    "generation": 3
+  },
+  {
+    "graph": "first",
+    "engine": "serial",
+    "events": 12,
+    "solutions": 1,
+    "generation": 4
+  }
+]
