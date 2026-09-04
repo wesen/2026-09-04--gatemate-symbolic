@@ -1,0 +1,68 @@
+{
+  "snapshot": {
+    "choice_creations": 257,
+    "snapshot_payload_bits": 18504,
+    "max_choices": 6,
+    "alternatives": 672,
+    "domain_writes": 3980,
+    "propagation_visits": 11176,
+    "contradictions": 324,
+    "snapshot_restored_payload_bits": 48384,
+    "restoration_checks": 672,
+    "result_stalls": 309,
+    "solutions": 92,
+    "remaining_trail": 0,
+    "ordered_solution_sha256": "b9e16197f78bdda8780ae3a48c5f47e2caff8b0640c49273dadabf44c8582048"
+  },
+  "trail": {
+    "choice_creations": 257,
+    "max_choices": 6,
+    "alternatives": 672,
+    "trail_pushes": 3980,
+    "max_trail": 32,
+    "domain_writes": 3980,
+    "propagation_visits": 11176,
+    "contradictions": 324,
+    "trail_pops": 3980,
+    "restoration_checks": 672,
+    "result_stalls": 309,
+    "solutions": 92,
+    "remaining_trail": 0,
+    "ordered_solution_sha256": "b9e16197f78bdda8780ae3a48c5f47e2caff8b0640c49273dadabf44c8582048"
+  },
+  "trail_first": {
+    "choice_creations": 18,
+    "max_choices": 5,
+    "alternatives": 42,
+    "trail_pushes": 244,
+    "max_trail": 30,
+    "domain_writes": 244,
+    "propagation_visits": 573,
+    "contradictions": 24,
+    "trail_pops": 215,
+    "restoration_checks": 38,
+    "result_stalls": 1,
+    "solutions": 1,
+    "remaining_trail": 29,
+    "ordered_solution_sha256": "71c25cafb877eb6154bcdde10a59c4358dcfff37aa66872acf177df179c33399"
+  },
+  "checks": [
+    "independent ordered 92-solution oracle",
+    "snapshot/trail semantic events equal",
+    "restoration snapshots equal",
+    "seeded abstract output stalls preserve state",
+    "FIRST_ONLY produces oracle prefix",
+    "precise tiny-capacity domain checks"
+  ],
+  "first_board": [
+    0,
+    4,
+    7,
+    5,
+    2,
+    6,
+    1,
+    3
+  ],
+  "first_solution24_hex": "672be0"
+}

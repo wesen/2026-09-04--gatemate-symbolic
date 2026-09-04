@@ -1,0 +1,23 @@
+digraph rollback {
+  graph [rankdir=TB, bgcolor="white", pad="0.2"];
+  node [shape=box, fontname="DejaVu Sans", fontsize=13, style="rounded,filled", fillcolor="#eeeeee"];
+  edge [fontname="DejaVu Sans",fontsize=10];
+  fail [label="Contradiction or accepted solution"];
+  read [label="Read newest choice\nrequest -> wait -> capture"];
+  test [shape=diamond,label="trail_top > mark?"];
+  restore [label="Read trail[trail_top - 1]\nrestore domain; decrement top",fillcolor="#d9ebd0"];
+  restart [label="Restore saved propagated bitmap\nverify checkpoint state",fillcolor="#cce3ef"];
+  options [shape=diamond,label="Remaining rows?"];
+  next [label="Reserve mutation capacity\nupdate choice; select next row"];
+  pop [label="Pop exhausted choice\nselect parent or COMPLETE"];
+  search [label="Resume FIND_SINGLETON"];
+  fail -> read -> test;
+  test -> restore [label="yes"];
+  restore -> test;
+  test -> restart [label="no"];
+  restart -> options;
+  options -> next [label="yes"];
+  next -> search;
+  options -> pop [label="no"];
+  pop -> read [label="parent exists"];
+}

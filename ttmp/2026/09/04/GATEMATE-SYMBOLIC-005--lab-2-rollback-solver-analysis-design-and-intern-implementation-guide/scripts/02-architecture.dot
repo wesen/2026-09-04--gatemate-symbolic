@@ -1,0 +1,22 @@
+digraph architecture {
+  graph [rankdir=TB, bgcolor="white", pad="0.2"];
+  node [shape=box, style="rounded,filled", fillcolor="#eeeeee", fontname="DejaVu Sans", fontsize=13];
+  edge [fontname="DejaVu Sans", fontsize=10];
+  ctrl [label="Deterministic search controller\nscan / propagate / choose / restore",fillcolor="#cce3ef"];
+  domains [label="Current semantic state\n8 domain bytes + propagated bitmap"];
+  mutate [label="Single domain-write owner\nreserve -> log -> update",fillcolor="#d9ebd0"];
+  trail [label="Trail RAM\nold domain + column"];
+  choices [label="Choice RAM\nalternatives + trail mark + restart state"];
+  result [label="Stable solution24\nwait for ready AND valid",fillcolor="#f0dfba"];
+  uart [label="Result formatter -> UART\n24-bit board, completion status"];
+  ctrl -> domains [label="inspect"];
+  ctrl -> mutate [label="narrow or restore"];
+  mutate -> domains [label="owned write"];
+  mutate -> trail [label="log old value"];
+  trail -> mutate [label="reverse read"];
+  ctrl -> choices [label="publish / update / pop"];
+  choices -> ctrl [label="synchronous checkpoint read"];
+  domains -> result [label="all singleton after propagation"];
+  result -> ctrl [label="acceptance permits backtrack or cut"];
+  result -> uart;
+}
