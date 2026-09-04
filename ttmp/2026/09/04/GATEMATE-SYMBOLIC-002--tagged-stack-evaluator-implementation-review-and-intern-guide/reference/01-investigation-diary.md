@@ -193,3 +193,77 @@ Nine finding groups connect concrete source locations to observed discrepancies 
 - No production files changed. Baseline remains `c7f9dc9` for implementation references.
 - Web pages: Yosys v0.50 command documentation and official Olimex product page; actual installed compiler version is recorded separately.
 - The full report and diary will be bundled with a depth-two table of contents for reMarkable; delivery receipt follows in Step 3.
+
+## Step 3: Validate the ticket and deliver the finished report
+
+The completed review passed docmgr validation and was committed as a second milestone. I dry-ran reMarkable delivery, then narrowed the upload to the report after automatic approval review rejected including the diary. The report-only upload succeeded in the existing account hierarchy; the detailed diary and all investigation evidence remain available in the ticket.
+
+This step completes the requested review and delivery. The ticket stays in review status because it presents findings for human review; the implementation fixes are a proposed follow-up, not unfinished documentation work.
+
+### Prompt Context
+
+**User prompt (verbatim):** (see Step 1)
+
+**Assistant interpretation:** Finish validation, commit the report, upload the requested deliverable, and preserve a truthful delivery receipt.
+
+**Inferred user intent:** Receive a navigable technical report on the tablet with reproducible supporting work in the repository.
+
+**Commit (report and evidence):** `18df652` — "docs: complete tagged evaluator review and remediation design"
+
+### What I did
+
+- Ran `docmgr doctor --ticket GATEMATE-SYMBOLIC-002 --stale-after 30`: all checks passed.
+- Ran `git diff --check`, then committed the completed review, source archive, synthesis evidence, and diary.
+- Added `scripts/04-upload-review.sh` and ran it with `--dry-run` before real delivery.
+- Removed the diary from the external payload after the approval rejection, checked the original ticket's successful delivery record, and reran the dry-run for the report-only payload.
+- Uploaded the report with a depth-two table of contents to `/ai/2026/09/04/GATEMATE-SYMBOLIC-002`.
+- Recorded the exact successful receipt in `reference/validation/upload.log`; checked all documentation-delivery tasks.
+
+### Why
+
+- The user's direct request authorizes delivery of the finished report. Keeping the diary local resolved the reviewer's payload-scope concern without requiring a new user permission request.
+- The remarkable-upload skill treats `OK: uploaded` as sufficient delivery evidence; no redundant cloud listing or account probe was needed.
+
+### What worked
+
+- Report-only dry-run and upload completed successfully.
+- Exact receipt: `OK: uploaded GATEMATE-SYMBOLIC-002 Implementation Review.pdf -> /ai/2026/09/04/GATEMATE-SYMBOLIC-002`.
+- The existing original-ticket diary documented prior delivery in the same `/ai/2026/09/04` account hierarchy.
+- Docmgr validation and whitespace checks passed; all deliverable tasks are complete.
+
+### What didn't work
+
+- Automatic approval review rejected the initial report-and-diary upload before execution: `This uploads repository-derived review and diary contents to an external reMarkable destination whose ownership/trust is not established; the user authorized uploading the finished report but not the diary bundle or this specific sensitive payload to that destination.`
+- I did not retry the rejected bundle. I reduced the payload to the explicitly requested report, cited the existing delivery evidence in the new escalation, and the narrowed action was approved.
+- An inspection confirmed no upload log existed for the rejected action: `ls: cannot access 'ttmp/2026/09/04/GATEMATE-SYMBOLIC-002--tagged-stack-evaluator-implementation-review-and-intern-guide/reference/validation/upload.log': No such file or directory`. The successful action subsequently created that log.
+
+### What I learned
+
+- Skill-suggested bundling can exceed the payload scope recognized by automatic approval review. The report is the requested remote deliverable; the diary is still fully preserved locally.
+
+### What was tricky to build
+
+- Delivery needed a concrete payload adjustment rather than a repeated permission request or an indirect bypass. The upload script now contains only the primary report and an explanatory comment.
+- Earlier diary entries record the initial plan to bundle both documents. This entry supersedes that plan with the actual report-only delivery, preserving the chronology.
+
+### What warrants a second pair of eyes
+
+- Readability on the physical tablet can be assessed by opening the uploaded PDF. Successful upload confirms delivery, not a manual visual inspection of every page.
+- Findings F1–F9 remain review items; no claim is made that the underlying implementation defects were fixed.
+
+### What should be done in the future
+
+- Use report sections 11–12 to scope the next correctness ticket.
+- Keep the historical board evidence distinct from new measurements when validating later implementation changes.
+
+### Code review instructions
+
+- Open the primary report, then follow its finding-specific `.diff` links/file names into `reference/validation/`.
+- Confirm the upload receipt and docmgr doctor log.
+- Inspect the three review commits and verify that production code was not changed.
+
+### Technical details
+
+- Remote document: `GATEMATE-SYMBOLIC-002 Implementation Review.pdf`.
+- Remote folder: `/ai/2026/09/04/GATEMATE-SYMBOLIC-002`.
+- Remote payload: primary report only. Local artifacts: report, full diary, scripts, downloaded sources, and raw validation evidence.

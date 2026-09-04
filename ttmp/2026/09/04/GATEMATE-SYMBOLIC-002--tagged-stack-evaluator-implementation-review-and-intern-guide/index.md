@@ -36,4 +36,4 @@ Ticket status is **review** because this is a review deliverable, not a claim th
 
 ## Delivery
 
-Planned reMarkable destination: `/ai/2026/09/04/GATEMATE-SYMBOLIC-002/`. The final upload receipt is recorded in the diary.
+Uploaded **GATEMATE-SYMBOLIC-002 Implementation Review.pdf** to `/ai/2026/09/04/GATEMATE-SYMBOLIC-002/`. Report-only delivery succeeded; the diary remains in the ticket. See [upload receipt](reference/validation/upload.log) and diary Step 3.
