@@ -152,3 +152,50 @@ Every claim in the guide must be traceable to a book section or a verified file 
 
 ### Technical details
 - Stop-build budget Lab 1: 2 BRAM blocks / 2,000 CPEs.
+
+## Step 3: Design analysis and intern guide written
+
+We translated the Laboratory 1 specification plus the prior-project infrastructure into the
+primary deliverable: a complete intern onboarding guide covering background (pattern contracts,
+commitment levels), the value representation and ISA, the microarchitecture (FSM, register
+stack, BRAM top cache, output commitment, trace), the model-first software method, the
+verification ladder, the GateMate substrate/toolchain/budgets, repository layout, a phased
+implementation plan, decision records, risks, and full book/prior-project references.
+
+### Prompt Context
+
+**User prompt (verbatim):** (see Step 1)
+
+**Assistant interpretation:** Write the detailed analysis/design/implementation guide for the first project, intern-ready.
+
+### What I did
+- Wrote `design-doc/01-intern-onboarding-guide-symbolic-computer-patterns-on-gatemate.md` (~31 KB).
+- Organized around the 8 composed patterns from Laboratory 1; every claim line-anchored to the book or to a sibling-repo file.
+
+### Why
+The guide is the ticket's primary artifact and the reMarkable upload payload.
+
+### What worked
+- Reusing MATE-16 file references (opcodes.py/model16.py/io_block.sv lessons) made the guide concrete rather than generic.
+
+### What didn't work
+- Nothing significant.
+
+### What I learned
+- The 15-opcode ISA and 7 fault cases fit exactly in the 5-bit opcode field with extension room.
+
+### What was tricky to build
+- Keeping the guide faithful to the book (commitment levels, one-mutation-owner, stop-build budgets) without inventing new architecture; every design choice the book leaves open is captured as a decision record (DR-1..DR-4) marked "proposed" for the intern to confirm.
+
+### What warrants a second pair of eyes
+- DR-2 (MUL overflow policy) and DR-3 (EQ tag policy) are my proposals, not book mandates — review before implementation.
+- Line-number references into the book will drift if the source file is regenerated; they match the imported copy in sources/.
+
+### What should be done in the future
+- Validate docs (doctor), upload to reMarkable.
+
+### Code review instructions
+- Read the design doc top-to-bottom; spot-check book line refs with `sed -n` against `sources/`.
+
+### Technical details
+- Guide sections: 1 exec summary ... 15 glossary; phased plan P0-P6; stop-build budget 2 BRAM / 2000 CPE.
