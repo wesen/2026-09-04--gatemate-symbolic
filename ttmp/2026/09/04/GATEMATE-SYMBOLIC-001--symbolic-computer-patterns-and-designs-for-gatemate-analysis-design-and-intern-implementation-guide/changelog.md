@@ -41,3 +41,12 @@ Impl P0: symbolic_eval bootstrap, blink verified in sim + on board
 
 - /home/manuel/code/wesen/2026-09-04--gatemate-symbolic/symbolic_eval/Makefile — P0 flow
 
+
+## 2026-09-04
+
+Impl P1: opcodes.py + stack_model.py + 30 model tests green (book Program A trace exact)
+
+### Related Files
+
+- /home/manuel/code/wesen/2026-09-04--gatemate-symbolic/symbolic_eval/tools/stack_model.py — reference model/oracle
+

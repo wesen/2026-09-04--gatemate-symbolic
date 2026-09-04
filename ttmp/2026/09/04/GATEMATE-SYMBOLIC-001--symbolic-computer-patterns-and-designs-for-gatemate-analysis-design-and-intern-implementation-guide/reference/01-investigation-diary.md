@@ -292,3 +292,50 @@ P0 of the guide: prove clock pin, LED pin, toolchain, config reset, and the evid
 
 ### Technical details
 - Yosys 0.68+130, nextpnr-himbaechel, gmpack, openFPGALoader -b olimex_gatemateevb.
+
+## Step 6: Implementation P1 — opcode table and reference model
+
+We implemented the authoritative instruction table (`tools/opcodes.py`: 15 opcodes, 10 tags,
+8 fault codes, 20-bit word codec) and the executable reference model (`tools/stack_model.py`:
+Machine with precise faults, commit-trace records). The model reproduces the book's Program A
+commit trace character-for-character and Program B's precise TYPE_FAULT. 30 pytest model tests
+green.
+
+### Prompt Context
+
+**User prompt (verbatim):** (see Step 5)
+
+**Assistant interpretation:** Implement guide phase P1 (types + model + tests) before any RTL.
+
+### What I did
+- `tools/opcodes.py`: single source of truth; Instruction dataclass in the MATE-16 `opcodes.py` shape; `encode/decode/sign_extend_s15`.
+- `tools/stack_model.py`: `Value40`, `TraceRecord` (canonical TRACE line format shared with future RTL testbenches), `Machine.step()` implementing every opcode + fault with check-before-mutation discipline; hex loader.
+- `sim/test_model.py` + `sim/conftest.py`: 30 tests (book directed tests 1,2,4,5,7,8 + all fault cases + constructed-state tests for NONCANONICAL_BOOL and ARITH_OVERFLOW).
+
+### Why
+Model-first: the model is the differential oracle for all RTL phases; its trace format is the contract.
+
+### What worked
+- Program A trace matched the book's expected trace table exactly on the first full run after fixing one model bug.
+
+### What didn't work
+- First version of `_commit` in the model captured `pc_old` AFTER mutating `self.pc` (bogus `pc_prev`/`rec_pc_old` helpers) — caught by review before running tests; fixed by capturing `pc_old` at function entry.
+- 9 test failures on first run: my tests ended programs without HALT and assumed running off the end stops the machine. It does not — unwritten ROM words are 0x00000 = PUSH_S15 0 (zero-filled ROM), so the machine keeps pushing until STACK_OVERFLOW. Fixed the tests and pinned the semantics as defined behavior (RTL ROM must explicitly zero-init to match).
+
+### What I learned
+- Zero-word-equals-legal-instruction means `test_pc_past_program` becomes an overflow test; the assembler must always terminate programs with HALT.
+
+### What was tricky to build
+- Precise-fault check ordering (capacity -> tags -> canonicality -> branch target) had to be fixed once and documented, because the RTL and tb must replay exactly the same order to produce identical FAULT trace lines.
+
+### What warrants a second pair of eyes
+- The `FINAL` line format and TRACE line format are now a frozen contract between model, RTL testbenches, and compare scripts.
+
+### What should be done in the future
+- P2: `tools/asm20.py` two-pass assembler + programs/ fixtures.
+
+### Code review instructions
+- `cd symbolic_eval && python3 -m pytest sim/test_model.py -q` (30 passed).
+
+### Technical details
+- pytest 9.1.1; test runtime 0.06 s.
