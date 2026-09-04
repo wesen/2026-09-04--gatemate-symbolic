@@ -1,0 +1,14 @@
+{"case": "empty-dup", "core": "stack_core", "match": true, "model_final": "FINAL 0 STACK_UNDERFLOW 0 0 0 0", "rtl_final": "FINAL 0 STACK_UNDERFLOW 0 0 0 0", "bench_pass": true}
+{"case": "emit-jmp", "core": "stack_core", "match": false, "model_final": "FINAL 1 NONE 3 0 1 0", "rtl_final": "FINAL 1 NONE 3 1 1 0", "bench_pass": true}
+{"case": "emit-swap", "core": "stack_core", "match": false, "model_final": "FINAL 1 NONE 7 0 3 0", "rtl_final": "FINAL 1 NONE 7 1 3 0", "bench_pass": true}
+{"case": "deep-fault-tags", "core": "stack_core", "match": true, "model_final": "FINAL 0 BAD_OPCODE 4 2 0 0", "rtl_final": "FINAL 0 BAD_OPCODE 4 2 0 0", "bench_pass": true}
+{"case": "call-ret-timing", "core": "stack_core", "match": true, "model_final": "FINAL 1 NONE 1 0 0 0", "rtl_final": "FINAL 1 NONE 1 0 0 0", "bench_pass": true}
+{"case": "pc-rom-boundary", "core": "stack_core", "match": false, "model_final": "FINAL 0 BAD_BRANCH_TARGET 1024 1 0 0", "rtl_final": "FINAL 0 STACK_OVERFLOW 1023 32 0 0", "bench_pass": true}
+{"case": "empty-dup", "core": "stack_core_bram", "match": false, "model_final": "FINAL 0 STACK_UNDERFLOW 0 0 0 0", "rtl_final": "FINAL 1 NONE 1 1 0 0", "bench_pass": true}
+{"case": "emit-jmp", "core": "stack_core_bram", "match": true, "model_final": "FINAL 1 NONE 3 0 1 0", "rtl_final": "FINAL 1 NONE 3 0 1 0", "bench_pass": true}
+{"case": "emit-swap", "core": "stack_core_bram", "match": true, "model_final": "FINAL 1 NONE 7 0 3 0", "rtl_final": "FINAL 1 NONE 7 0 3 0", "bench_pass": true}
+{"case": "deep-fault-tags", "core": "stack_core_bram", "match": false, "model_final": "FINAL 0 BAD_OPCODE 4 2 0 0", "rtl_final": "FINAL 0 BAD_OPCODE 4 2 0 0", "bench_pass": true}
+{"case": "call-ret-timing", "core": "stack_core_bram", "match": true, "model_final": "FINAL 1 NONE 1 0 0 0", "rtl_final": "FINAL 1 NONE 1 0 0 0", "bench_pass": true}
+{"case": "pc-rom-boundary", "core": "stack_core_bram", "match": false, "model_final": "FINAL 0 BAD_BRANCH_TARGET 1024 1 0 0", "rtl_final": "FINAL 0 STACK_OVERFLOW 1023 32 0 0", "bench_pass": true}
+{"case": "malformed-line", "accepted": true, "words": [458752], "rom_depth": 1024, "listing": ["0000                ; PUSH_S15 1 2", "0000 70000            HALT"]}
+{"case": "word-capacity", "accepted": true, "words": [0, 0, 0], "rom_depth": 2, "listing": ["0000 00000            WORD 0", "0001 00000            WORD 0", "0002 00000            WORD 0"]}

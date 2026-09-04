@@ -1,0 +1,11 @@
+CYCLE 0 PC 0 RDEPTH 0 TRACE 0
+CYCLE 1 PC 0 RDEPTH 0 TRACE 0
+CYCLE 2 PC 0 RDEPTH 0 TRACE 0
+CYCLE 3 PC 0 RDEPTH 0 TRACE 0
+CYCLE 4 PC 0 RDEPTH 0 TRACE 0
+TRACE 0 0 0 DUP 0 FAULT STACK_UNDERFLOW 0 0
+CYCLE 5 PC 0 RDEPTH 0 TRACE 1
+CYCLE 5 PC 0 RDEPTH 0 TRACE 0
+FINAL 0 STACK_UNDERFLOW 0 0 0 0
+TB_PASS
+/home/manuel/code/wesen/2026-09-04--gatemate-symbolic/ttmp/2026/09/04/GATEMATE-SYMBOLIC-002--tagged-stack-evaluator-implementation-review-and-intern-guide/scripts/probe-tb_stack_core.sv:247: $finish called at 1050000 (1ps)
