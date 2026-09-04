@@ -731,3 +731,132 @@ Count 13 reference/slips/*.log files, confirm printed: true in each, and check o
 ### Technical details
 
 Implementation milestones: 812e5b9 design, 4160f5b Go contract, b2ead24 RTL, db2fb14 physical evidence, f11e401 service, cc9a6f9 React, 7ca4145 integrated handoff. The final receipt commit records this last print.
+
+## Step 14: Full technical article and physical screenshot evidence
+
+Wrote a new textbook-style report about the implemented machine, preserving the design guide and earlier reports. The article develops graph coloring, masks, propagation, checkpoints, trail restoration, synchronous memory, lossless events, serial failure handling, Go projections, and React history through physical execution examples. It includes three diagrams and three UI figures, with a new physical rollback capture and two reused verified screenshots.
+
+### Prompt Context
+
+**User prompts (verbatim):**
+
+```text
+Write a full report on this graph coloring project
+```
+
+```text
+take/reuse screenshots of the UI for the article
+```
+
+```json
+"write a detailed project report for the obsidian vault as a deep dive technical analysis blog post using a textbook writing style (no analogies, see skill).      \n Commit and push the bsidian vault when done (go-go-parc vault).   "
+```
+
+**Assistant interpretation:** Author a full technical article, embed real UI screenshots, retain it in the ticket, and publish a self-contained new note to go-go-parc with a committed/pushed vault change.
+
+**Inferred user intent:** Preserve a durable account of how the completed graph-coloring system operates, with evidence and explanations useful to future readers rather than a development chronology.
+
+### What I did
+
+- Read the authoring, vault, diary, docmgr, and Obsidian skills; inspected model, RTL, protocol, projection, session, UI, tests, and recorded hardware measurements.
+- Added `08-report-evidence.py`, which independently decodes archived physical frames and checks outputs against direct enumeration. Added derived JSON and trace tables.
+- Captured a new physical triangle historical view at event 13, with the run completed at event 86 and six accepted colorings. Reused the verified event-2 desktop and event-1 mobile screenshots.
+- Wrote roughly 7,500 words with 18 technical sections, exact trace tables, three Mermaid diagrams, API and file maps, and explicit evidence limits.
+- Added an append-only vault exporter that validates 20 triangle trace rows and copies all three figures into a colocated `_assets` folder.
+
+### Why
+
+The report needs to explain the implemented system directly. In particular, intermediate RESTORE events retain the previous propagation mask until RESTORED, and runtime projection checks are weaker than complete deterministic model comparison. These distinctions matter to interpreting the UI correctly.
+
+### What worked
+
+The independent decoder checked all five archived physical cases and reproduced their output sets and event totals. The exporter validated the full triangle walkthrough and prepared a self-contained draft under `/tmp/gatemate-graph-report`. Visual inspection confirmed the new rollback screenshot matches domains `01 06 06`, propagation `FF`, two choices, three trail records, and one accepted coloring at event 13.
+
+### What didn't work
+
+The first screenshot lookup expected triangle event 13, but the active service held a square graph: event 13 was CREATE and the completed run had 18 solutions in 242 events. Explicitly loading the triangle preset produced the intended 86-event run; the final figure replaced the provisional capture.
+
+The first report write used delete and add operations on the same path in one patch. `apply_patch` rejected it with `invalid patch: multiple operations target .../02-inside-the-graph-coloring-search-microscope-technical-project-report.md`. No report content had been applied. `09-recover-report-draft.py` recovered the exact authored text from that tool call in the local session archive and wrote only the still-empty docmgr template. That first repair succeeded.
+
+### What I learned
+
+A complete explanation must distinguish delivered state, pending hardware state, and selected historical state. The new screenshot makes the distinction concrete: current completion remains visible while the inspector shows an earlier partially restored branch.
+
+### What was tricky to build
+
+Archived captures include reset activity after the first terminal event. The report decoder deliberately analyzes the first complete run, retains source hashes, and ignores subsequent reset runs for its tables. Screenshots are copied, not linked across repositories, so the vault remains self-contained.
+
+### What warrants a second pair of eyes
+
+Review the bounds and limitations of serial deadlines, meaningful event deltas, intermediate propagation bookkeeping, and the difference between a local projection invariant and full algorithm equivalence.
+
+### What should be done in the future
+
+Complete vault rendering checks and commit/push the new article and intended assets only. Preserve the unrelated untracked AgentForum research note.
+
+### Code review instructions
+
+Run `python3 scripts/08-report-evidence.py` from this ticket's directory. Run the exporter with a new `--destination-directory` to validate the article and local image links without overwriting existing notes. Compare report events 1–20 with `reference/validation/report-decoded-traces.json`.
+
+### Technical details
+
+The report pins implementation revision `9e7868721c3e80208b3534a33ac7aa98f4ec4407`. Figure sources are `P6-desktop.png`, `report-rollback.png`, and `P6-mobile-history.png`. The new screenshot was checked against physical session generation 7; the earlier figures retain their original capture context. No solver code changed for this report.
+
+## Step 15: Vault publication and report validation
+
+Published the full article and its three local screenshot assets to go-go-parc and pushed vault commit `2a61554832f02328f3f3ea9406698781ec5ae9f3`. The article contains 7,497 body words including its related-note links, three Mermaid diagrams, and a verified physical execution walkthrough. The ticket keeps the report, decoded evidence, publication receipt, and reproduction scripts.
+
+### Prompt Context
+
+**User prompts (verbatim):** See Step 14.
+
+**Assistant interpretation:** Finish and validate the requested Obsidian technical article, then commit and push the vault.
+
+**Inferred user intent:** Obtain a durable, self-contained technical report that remains readable with its figures after cloning the vault.
+
+**Commit (vault):** `2a61554832f02328f3f3ea9406698781ec5ae9f3` — docs: explain graph coloring FPGA search with physical traces and UI figures.
+
+### What I did
+
+- Exported the article into `Projects/2026/09/04/ARTICLE - GateMate Symbolic - Inside the Graph Coloring Search Microscope.md` and copied three byte-identical images into that directory's `_assets/` folder.
+- Parsed the ticket and vault Markdown with Pandoc; checked frontmatter, balanced fences, image references, three diagram blocks, and all 20 detailed triangle table rows against decoded physical records.
+- Ran docmgr doctor successfully after correcting generated artifact metadata. Committed only the new article and three intended assets in the vault and pushed main.
+- Verified vault HEAD equals origin/main and recorded article/source hashes and screenshot provenance in `report-vault-delivery.json`.
+
+### Why
+
+The vault needs the complete report and independent local assets, with source revision and physical evidence provenance. Publication should preserve historical notes and unrelated user work.
+
+### What worked
+
+The export checks, Markdown parsing, image checks, and docmgr doctor passed. Git confirmed the push from `8a777e7` to `2a61554`, and HEAD equals origin/main. The unrelated untracked AgentForum research note was left untouched. The physical browser was returned to live view after the article screenshot; the triangle run remains complete at 86 events and six outputs.
+
+### What didn't work
+
+`obsidian help` returned: `Your Obsidian installer is out of date. Please download the latest installer which includes better CLI support: https://obsidian.md/download`. Consequently an actual Obsidian reading-view rendering check was unavailable. No installer change was attempted. Markdown parsing and structural/link checks passed, but are not represented as an Obsidian render test.
+
+The first docmgr check rejected the generated trace table with `frontmatter delimiters '---' not found`. Adding metadata resolved that error; a remaining numeric-prefix warning was resolved by naming it `08-report-trace-tables.md`. The first diff check also caught trailing spaces in the verbatim user prompt. JSON encoding preserved those exact spaces without trailing whitespace in Markdown source. All checks then passed.
+
+### What I learned
+
+Generated explanatory tables placed under a docmgr reference directory need document metadata and naming conventions, even when their main purpose is validation evidence. Physical screenshot provenance must identify the graph and event, because another user can change the shared live session between captures.
+
+### What was tricky to build
+
+The article's current-versus-historical figure combines two valid times in one screen. Captions explicitly distinguish the completed live run from the inspected earlier event, and the publication receipt records both. The exporter rejects existing notes/assets rather than overwriting historical material.
+
+### What warrants a second pair of eyes
+
+Review the article in Obsidian reading view when an updated CLI or interactive UI is available. Inspect diagram layout and the long mobile screenshot at a comfortable zoom. All technical claims are tied to the pinned source and archived evidence rather than new performance estimates being described as measurements.
+
+### What should be done in the future
+
+No required report-writing or publication work remains. Native Obsidian visual verification is the stated validation limitation.
+
+### Code review instructions
+
+Open the new vault article, verify its three relative `_assets` references, and compare the source and image hashes in `report-vault-delivery.json`. Run `11-record-report-delivery.py` while the vault remains at the recorded publication commit to recheck delivery and image identity.
+
+### Technical details
+
+The vault commit contains four files: one 522-line article and three PNGs. Publication preserves the earlier tagged-stack and queens reports and links them as related vault notes. The project report is a new reference document in the existing graph ticket; the earlier design guide and reMarkable deliveries remain separate artifacts.

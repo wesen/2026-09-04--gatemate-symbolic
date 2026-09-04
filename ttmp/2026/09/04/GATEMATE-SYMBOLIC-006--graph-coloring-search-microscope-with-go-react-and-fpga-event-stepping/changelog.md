@@ -25,3 +25,11 @@ P4 complete: Go serialized session, strict HTTP API, bounded immutable history, 
 ## 2026-09-04
 
 Completed React microscope and physical embedded-service acceptance; all final tests passed, Go patched to 1.26.8 after vulnerability scan, guide reconciled with implemented API and measured results.
+
+## 2026-09-04
+
+Added full textbook technical report on graph coloring, reversible FPGA search, UART, Go projections, and React history, with independently decoded physical examples and three UI figures.
+
+## 2026-09-04
+
+Published full 7497-word technical article with three UI screenshots and three diagrams to go-go-parc, committed and pushed as 2a61554; archived validated trace and delivery evidence.

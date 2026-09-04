@@ -37,6 +37,7 @@ The implementation and final checks are complete. The live embedded service is a
 
 - [Intern analysis, design, and implementation guide](design-doc/01-graph-coloring-search-microscope-intern-analysis-design-and-implementation-guide.md): principles, source map, pseudocode, diagrams, wire and HTTP contracts, execution walkthrough, measurements, and validation limits.
 - [Detailed implementation diary](reference/01-implementation-diary.md): chronological changes, failures, corrections, review instructions, and delivery records.
+- [Full technical project report](reference/02-inside-the-graph-coloring-search-microscope-technical-project-report.md): textbook account of the completed system with independently decoded physical traces and three UI screenshots; published to go-go-parc in commit `2a61554`.
 - [Tasks](tasks.md) and [changelog](changelog.md).
 - [Desktop screenshot](reference/validation/P6-desktop.png) and [mobile historical view](reference/validation/P6-mobile-history.png).
 - [Physical API acceptance](reference/validation/api-serial-smoke.json), [Go race checks](reference/validation/P6-go-tests.log), [queens regression](reference/validation/P6-queens-tests.log), and [final vulnerability scan](reference/validation/P6-vulnerabilities.log).

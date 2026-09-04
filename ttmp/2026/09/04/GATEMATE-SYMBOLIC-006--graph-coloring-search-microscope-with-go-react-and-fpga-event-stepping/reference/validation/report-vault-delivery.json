@@ -1,0 +1,34 @@
+{
+  "article": "/home/manuel/code/wesen/go-go-golems/go-go-parc/Projects/2026/09/04/ARTICLE - GateMate Symbolic - Inside the Graph Coloring Search Microscope.md",
+  "body_words": 7497,
+  "mermaid_diagrams": 3,
+  "screenshots": [
+    "/home/manuel/code/wesen/go-go-golems/go-go-parc/Projects/2026/09/04/_assets/gatemate-graph-microscope-desktop.png",
+    "/home/manuel/code/wesen/go-go-golems/go-go-parc/Projects/2026/09/04/_assets/gatemate-graph-microscope-rollback.png",
+    "/home/manuel/code/wesen/go-go-golems/go-go-parc/Projects/2026/09/04/_assets/gatemate-graph-microscope-mobile-history.png"
+  ],
+  "source_sha256": "2e8e84e60eb54f5fde03461d92161c8056912be4fd78529d174f08324c88589f",
+  "article_sha256": "f87155d2cbd34bb5ba7e4df5aaca51f9cbd8cad98040b4884ba8e50ef307b5f1",
+  "triangle_trace_rows_verified": 20,
+  "vault_commit": "2a61554832f02328f3f3ea9406698781ec5ae9f3",
+  "origin_main": "2a61554832f02328f3f3ea9406698781ec5ae9f3",
+  "assets_byte_identical": true,
+  "markdown_parsed_with": "pandoc",
+  "obsidian_reading_view": "Not verified: installed Obsidian launcher reports outdated installer without CLI support.",
+  "new_screenshot": {
+    "engine": "serial",
+    "graph": "triangle with three colors",
+    "generation": 7,
+    "latest_event": 86,
+    "total_colorings": 6,
+    "inspected_event": 13,
+    "domains": [
+      1,
+      6,
+      6
+    ],
+    "propagated": 255,
+    "choice_top": 2,
+    "trail_top": 3
+  }
+}

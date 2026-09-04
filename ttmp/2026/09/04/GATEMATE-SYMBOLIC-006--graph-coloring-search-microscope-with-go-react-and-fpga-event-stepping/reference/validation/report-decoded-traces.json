@@ -1,0 +1,3324 @@
+{
+  "triangle": {
+    "vertices": 3,
+    "colors": 3,
+    "firstOnly": false,
+    "edges": [
+      [
+        0,
+        1
+      ],
+      [
+        0,
+        2
+      ],
+      [
+        1,
+        2
+      ]
+    ],
+    "source_sha256": "3b4989d173d61553207f91bb3e95251536a304a06a65e7b1f284afbc98de25bb",
+    "events": 86,
+    "solutions": 6,
+    "outputs": [
+      [
+        0,
+        1,
+        2
+      ],
+      [
+        0,
+        2,
+        1
+      ],
+      [
+        1,
+        0,
+        2
+      ],
+      [
+        1,
+        2,
+        0
+      ],
+      [
+        2,
+        0,
+        1
+      ],
+      [
+        2,
+        1,
+        0
+      ]
+    ],
+    "histogram": {
+      "CREATE": 4,
+      "WRITE": 21,
+      "PROPAGATED": 15,
+      "OUTPUT": 6,
+      "RESTORE": 21,
+      "RESTORED": 9,
+      "UPDATE": 5,
+      "POP": 4,
+      "COMPLETE": 1
+    },
+    "records": [
+      {
+        "sequence": 1,
+        "name": "CREATE",
+        "domains": [
+          7,
+          7,
+          7
+        ],
+        "propagated": "F8",
+        "choiceTop": 1,
+        "trailTop": 0,
+        "base": 0,
+        "count": 0,
+        "result": 0,
+        "fault": 0,
+        "choice": {
+          "vertex": 0,
+          "remaining": 6,
+          "mark": 0,
+          "propagated": 248
+        }
+      },
+      {
+        "sequence": 2,
+        "name": "WRITE",
+        "domains": [
+          1,
+          7,
+          7
+        ],
+        "propagated": "F8",
+        "choiceTop": 1,
+        "trailTop": 1,
+        "base": 0,
+        "count": 0,
+        "result": 0,
+        "fault": 0,
+        "trail": {
+          "vertex": 0,
+          "old": 7,
+          "level": 1
+        }
+      },
+      {
+        "sequence": 3,
+        "name": "WRITE",
+        "domains": [
+          1,
+          6,
+          7
+        ],
+        "propagated": "F8",
+        "choiceTop": 1,
+        "trailTop": 2,
+        "base": 0,
+        "count": 0,
+        "result": 0,
+        "fault": 0,
+        "trail": {
+          "vertex": 1,
+          "old": 7,
+          "level": 1
+        }
+      },
+      {
+        "sequence": 4,
+        "name": "WRITE",
+        "domains": [
+          1,
+          6,
+          6
+        ],
+        "propagated": "F8",
+        "choiceTop": 1,
+        "trailTop": 3,
+        "base": 0,
+        "count": 0,
+        "result": 0,
+        "fault": 0,
+        "trail": {
+          "vertex": 2,
+          "old": 7,
+          "level": 1
+        }
+      },
+      {
+        "sequence": 5,
+        "name": "PROPAGATED",
+        "domains": [
+          1,
+          6,
+          6
+        ],
+        "propagated": "F9",
+        "choiceTop": 1,
+        "trailTop": 3,
+        "base": 0,
+        "count": 0,
+        "result": 0,
+        "fault": 0
+      },
+      {
+        "sequence": 6,
+        "name": "CREATE",
+        "domains": [
+          1,
+          6,
+          6
+        ],
+        "propagated": "F9",
+        "choiceTop": 2,
+        "trailTop": 3,
+        "base": 0,
+        "count": 0,
+        "result": 0,
+        "fault": 0,
+        "choice": {
+          "vertex": 1,
+          "remaining": 4,
+          "mark": 3,
+          "propagated": 249
+        }
+      },
+      {
+        "sequence": 7,
+        "name": "WRITE",
+        "domains": [
+          1,
+          2,
+          6
+        ],
+        "propagated": "F9",
+        "choiceTop": 2,
+        "trailTop": 4,
+        "base": 0,
+        "count": 0,
+        "result": 0,
+        "fault": 0,
+        "trail": {
+          "vertex": 1,
+          "old": 6,
+          "level": 2
+        }
+      },
+      {
+        "sequence": 8,
+        "name": "WRITE",
+        "domains": [
+          1,
+          2,
+          4
+        ],
+        "propagated": "F9",
+        "choiceTop": 2,
+        "trailTop": 5,
+        "base": 0,
+        "count": 0,
+        "result": 0,
+        "fault": 0,
+        "trail": {
+          "vertex": 2,
+          "old": 6,
+          "level": 2
+        }
+      },
+      {
+        "sequence": 9,
+        "name": "PROPAGATED",
+        "domains": [
+          1,
+          2,
+          4
+        ],
+        "propagated": "FB",
+        "choiceTop": 2,
+        "trailTop": 5,
+        "base": 0,
+        "count": 0,
+        "result": 0,
+        "fault": 0
+      },
+      {
+        "sequence": 10,
+        "name": "PROPAGATED",
+        "domains": [
+          1,
+          2,
+          4
+        ],
+        "propagated": "FF",
+        "choiceTop": 2,
+        "trailTop": 5,
+        "base": 0,
+        "count": 0,
+        "result": 0,
+        "fault": 0
+      },
+      {
+        "sequence": 11,
+        "name": "OUTPUT",
+        "domains": [
+          1,
+          2,
+          4
+        ],
+        "propagated": "FF",
+        "choiceTop": 2,
+        "trailTop": 5,
+        "base": 0,
+        "count": 1,
+        "result": 136,
+        "fault": 0,
+        "coloring": [
+          0,
+          1,
+          2
+        ]
+      },
+      {
+        "sequence": 12,
+        "name": "RESTORE",
+        "domains": [
+          1,
+          2,
+          6
+        ],
+        "propagated": "FF",
+        "choiceTop": 2,
+        "trailTop": 4,
+        "base": 0,
+        "count": 1,
+        "result": 136,
+        "fault": 0,
+        "trail": {
+          "vertex": 2,
+          "old": 6,
+          "level": 2
+        }
+      },
+      {
+        "sequence": 13,
+        "name": "RESTORE",
+        "domains": [
+          1,
+          6,
+          6
+        ],
+        "propagated": "FF",
+        "choiceTop": 2,
+        "trailTop": 3,
+        "base": 0,
+        "count": 1,
+        "result": 136,
+        "fault": 0,
+        "trail": {
+          "vertex": 1,
+          "old": 6,
+          "level": 2
+        }
+      },
+      {
+        "sequence": 14,
+        "name": "RESTORED",
+        "domains": [
+          1,
+          6,
+          6
+        ],
+        "propagated": "F9",
+        "choiceTop": 2,
+        "trailTop": 3,
+        "base": 0,
+        "count": 1,
+        "result": 136,
+        "fault": 0
+      },
+      {
+        "sequence": 15,
+        "name": "UPDATE",
+        "domains": [
+          1,
+          6,
+          6
+        ],
+        "propagated": "F9",
+        "choiceTop": 2,
+        "trailTop": 3,
+        "base": 0,
+        "count": 1,
+        "result": 136,
+        "fault": 0,
+        "choice": {
+          "vertex": 1,
+          "remaining": 0,
+          "mark": 3,
+          "propagated": 249
+        }
+      },
+      {
+        "sequence": 16,
+        "name": "WRITE",
+        "domains": [
+          1,
+          4,
+          6
+        ],
+        "propagated": "F9",
+        "choiceTop": 2,
+        "trailTop": 4,
+        "base": 0,
+        "count": 1,
+        "result": 136,
+        "fault": 0,
+        "trail": {
+          "vertex": 1,
+          "old": 6,
+          "level": 2
+        }
+      },
+      {
+        "sequence": 17,
+        "name": "WRITE",
+        "domains": [
+          1,
+          4,
+          2
+        ],
+        "propagated": "F9",
+        "choiceTop": 2,
+        "trailTop": 5,
+        "base": 0,
+        "count": 1,
+        "result": 136,
+        "fault": 0,
+        "trail": {
+          "vertex": 2,
+          "old": 6,
+          "level": 2
+        }
+      },
+      {
+        "sequence": 18,
+        "name": "PROPAGATED",
+        "domains": [
+          1,
+          4,
+          2
+        ],
+        "propagated": "FB",
+        "choiceTop": 2,
+        "trailTop": 5,
+        "base": 0,
+        "count": 1,
+        "result": 136,
+        "fault": 0
+      },
+      {
+        "sequence": 19,
+        "name": "PROPAGATED",
+        "domains": [
+          1,
+          4,
+          2
+        ],
+        "propagated": "FF",
+        "choiceTop": 2,
+        "trailTop": 5,
+        "base": 0,
+        "count": 1,
+        "result": 136,
+        "fault": 0
+      },
+      {
+        "sequence": 20,
+        "name": "OUTPUT",
+        "domains": [
+          1,
+          4,
+          2
+        ],
+        "propagated": "FF",
+        "choiceTop": 2,
+        "trailTop": 5,
+        "base": 0,
+        "count": 2,
+        "result": 80,
+        "fault": 0,
+        "coloring": [
+          0,
+          2,
+          1
+        ]
+      },
+      {
+        "sequence": 21,
+        "name": "RESTORE",
+        "domains": [
+          1,
+          4,
+          6
+        ],
+        "propagated": "FF",
+        "choiceTop": 2,
+        "trailTop": 4,
+        "base": 0,
+        "count": 2,
+        "result": 80,
+        "fault": 0,
+        "trail": {
+          "vertex": 2,
+          "old": 6,
+          "level": 2
+        }
+      },
+      {
+        "sequence": 22,
+        "name": "RESTORE",
+        "domains": [
+          1,
+          6,
+          6
+        ],
+        "propagated": "FF",
+        "choiceTop": 2,
+        "trailTop": 3,
+        "base": 0,
+        "count": 2,
+        "result": 80,
+        "fault": 0,
+        "trail": {
+          "vertex": 1,
+          "old": 6,
+          "level": 2
+        }
+      },
+      {
+        "sequence": 23,
+        "name": "RESTORED",
+        "domains": [
+          1,
+          6,
+          6
+        ],
+        "propagated": "F9",
+        "choiceTop": 2,
+        "trailTop": 3,
+        "base": 0,
+        "count": 2,
+        "result": 80,
+        "fault": 0
+      },
+      {
+        "sequence": 24,
+        "name": "POP",
+        "domains": [
+          1,
+          6,
+          6
+        ],
+        "propagated": "F9",
+        "choiceTop": 1,
+        "trailTop": 3,
+        "base": 0,
+        "count": 2,
+        "result": 80,
+        "fault": 0
+      },
+      {
+        "sequence": 25,
+        "name": "RESTORE",
+        "domains": [
+          1,
+          6,
+          7
+        ],
+        "propagated": "F9",
+        "choiceTop": 1,
+        "trailTop": 2,
+        "base": 0,
+        "count": 2,
+        "result": 80,
+        "fault": 0,
+        "trail": {
+          "vertex": 2,
+          "old": 7,
+          "level": 1
+        }
+      },
+      {
+        "sequence": 26,
+        "name": "RESTORE",
+        "domains": [
+          1,
+          7,
+          7
+        ],
+        "propagated": "F9",
+        "choiceTop": 1,
+        "trailTop": 1,
+        "base": 0,
+        "count": 2,
+        "result": 80,
+        "fault": 0,
+        "trail": {
+          "vertex": 1,
+          "old": 7,
+          "level": 1
+        }
+      },
+      {
+        "sequence": 27,
+        "name": "RESTORE",
+        "domains": [
+          7,
+          7,
+          7
+        ],
+        "propagated": "F9",
+        "choiceTop": 1,
+        "trailTop": 0,
+        "base": 0,
+        "count": 2,
+        "result": 80,
+        "fault": 0,
+        "trail": {
+          "vertex": 0,
+          "old": 7,
+          "level": 1
+        }
+      },
+      {
+        "sequence": 28,
+        "name": "RESTORED",
+        "domains": [
+          7,
+          7,
+          7
+        ],
+        "propagated": "F8",
+        "choiceTop": 1,
+        "trailTop": 0,
+        "base": 0,
+        "count": 2,
+        "result": 80,
+        "fault": 0
+      },
+      {
+        "sequence": 29,
+        "name": "UPDATE",
+        "domains": [
+          7,
+          7,
+          7
+        ],
+        "propagated": "F8",
+        "choiceTop": 1,
+        "trailTop": 0,
+        "base": 0,
+        "count": 2,
+        "result": 80,
+        "fault": 0,
+        "choice": {
+          "vertex": 0,
+          "remaining": 4,
+          "mark": 0,
+          "propagated": 248
+        }
+      },
+      {
+        "sequence": 30,
+        "name": "WRITE",
+        "domains": [
+          2,
+          7,
+          7
+        ],
+        "propagated": "F8",
+        "choiceTop": 1,
+        "trailTop": 1,
+        "base": 0,
+        "count": 2,
+        "result": 80,
+        "fault": 0,
+        "trail": {
+          "vertex": 0,
+          "old": 7,
+          "level": 1
+        }
+      },
+      {
+        "sequence": 31,
+        "name": "WRITE",
+        "domains": [
+          2,
+          5,
+          7
+        ],
+        "propagated": "F8",
+        "choiceTop": 1,
+        "trailTop": 2,
+        "base": 0,
+        "count": 2,
+        "result": 80,
+        "fault": 0,
+        "trail": {
+          "vertex": 1,
+          "old": 7,
+          "level": 1
+        }
+      },
+      {
+        "sequence": 32,
+        "name": "WRITE",
+        "domains": [
+          2,
+          5,
+          5
+        ],
+        "propagated": "F8",
+        "choiceTop": 1,
+        "trailTop": 3,
+        "base": 0,
+        "count": 2,
+        "result": 80,
+        "fault": 0,
+        "trail": {
+          "vertex": 2,
+          "old": 7,
+          "level": 1
+        }
+      },
+      {
+        "sequence": 33,
+        "name": "PROPAGATED",
+        "domains": [
+          2,
+          5,
+          5
+        ],
+        "propagated": "F9",
+        "choiceTop": 1,
+        "trailTop": 3,
+        "base": 0,
+        "count": 2,
+        "result": 80,
+        "fault": 0
+      },
+      {
+        "sequence": 34,
+        "name": "CREATE",
+        "domains": [
+          2,
+          5,
+          5
+        ],
+        "propagated": "F9",
+        "choiceTop": 2,
+        "trailTop": 3,
+        "base": 0,
+        "count": 2,
+        "result": 80,
+        "fault": 0,
+        "choice": {
+          "vertex": 1,
+          "remaining": 4,
+          "mark": 3,
+          "propagated": 249
+        }
+      },
+      {
+        "sequence": 35,
+        "name": "WRITE",
+        "domains": [
+          2,
+          1,
+          5
+        ],
+        "propagated": "F9",
+        "choiceTop": 2,
+        "trailTop": 4,
+        "base": 0,
+        "count": 2,
+        "result": 80,
+        "fault": 0,
+        "trail": {
+          "vertex": 1,
+          "old": 5,
+          "level": 2
+        }
+      },
+      {
+        "sequence": 36,
+        "name": "WRITE",
+        "domains": [
+          2,
+          1,
+          4
+        ],
+        "propagated": "F9",
+        "choiceTop": 2,
+        "trailTop": 5,
+        "base": 0,
+        "count": 2,
+        "result": 80,
+        "fault": 0,
+        "trail": {
+          "vertex": 2,
+          "old": 5,
+          "level": 2
+        }
+      },
+      {
+        "sequence": 37,
+        "name": "PROPAGATED",
+        "domains": [
+          2,
+          1,
+          4
+        ],
+        "propagated": "FB",
+        "choiceTop": 2,
+        "trailTop": 5,
+        "base": 0,
+        "count": 2,
+        "result": 80,
+        "fault": 0
+      },
+      {
+        "sequence": 38,
+        "name": "PROPAGATED",
+        "domains": [
+          2,
+          1,
+          4
+        ],
+        "propagated": "FF",
+        "choiceTop": 2,
+        "trailTop": 5,
+        "base": 0,
+        "count": 2,
+        "result": 80,
+        "fault": 0
+      },
+      {
+        "sequence": 39,
+        "name": "OUTPUT",
+        "domains": [
+          2,
+          1,
+          4
+        ],
+        "propagated": "FF",
+        "choiceTop": 2,
+        "trailTop": 5,
+        "base": 0,
+        "count": 3,
+        "result": 129,
+        "fault": 0,
+        "coloring": [
+          1,
+          0,
+          2
+        ]
+      },
+      {
+        "sequence": 40,
+        "name": "RESTORE",
+        "domains": [
+          2,
+          1,
+          5
+        ],
+        "propagated": "FF",
+        "choiceTop": 2,
+        "trailTop": 4,
+        "base": 0,
+        "count": 3,
+        "result": 129,
+        "fault": 0,
+        "trail": {
+          "vertex": 2,
+          "old": 5,
+          "level": 2
+        }
+      },
+      {
+        "sequence": 41,
+        "name": "RESTORE",
+        "domains": [
+          2,
+          5,
+          5
+        ],
+        "propagated": "FF",
+        "choiceTop": 2,
+        "trailTop": 3,
+        "base": 0,
+        "count": 3,
+        "result": 129,
+        "fault": 0,
+        "trail": {
+          "vertex": 1,
+          "old": 5,
+          "level": 2
+        }
+      },
+      {
+        "sequence": 42,
+        "name": "RESTORED",
+        "domains": [
+          2,
+          5,
+          5
+        ],
+        "propagated": "F9",
+        "choiceTop": 2,
+        "trailTop": 3,
+        "base": 0,
+        "count": 3,
+        "result": 129,
+        "fault": 0
+      },
+      {
+        "sequence": 43,
+        "name": "UPDATE",
+        "domains": [
+          2,
+          5,
+          5
+        ],
+        "propagated": "F9",
+        "choiceTop": 2,
+        "trailTop": 3,
+        "base": 0,
+        "count": 3,
+        "result": 129,
+        "fault": 0,
+        "choice": {
+          "vertex": 1,
+          "remaining": 0,
+          "mark": 3,
+          "propagated": 249
+        }
+      },
+      {
+        "sequence": 44,
+        "name": "WRITE",
+        "domains": [
+          2,
+          4,
+          5
+        ],
+        "propagated": "F9",
+        "choiceTop": 2,
+        "trailTop": 4,
+        "base": 0,
+        "count": 3,
+        "result": 129,
+        "fault": 0,
+        "trail": {
+          "vertex": 1,
+          "old": 5,
+          "level": 2
+        }
+      },
+      {
+        "sequence": 45,
+        "name": "WRITE",
+        "domains": [
+          2,
+          4,
+          1
+        ],
+        "propagated": "F9",
+        "choiceTop": 2,
+        "trailTop": 5,
+        "base": 0,
+        "count": 3,
+        "result": 129,
+        "fault": 0,
+        "trail": {
+          "vertex": 2,
+          "old": 5,
+          "level": 2
+        }
+      },
+      {
+        "sequence": 46,
+        "name": "PROPAGATED",
+        "domains": [
+          2,
+          4,
+          1
+        ],
+        "propagated": "FB",
+        "choiceTop": 2,
+        "trailTop": 5,
+        "base": 0,
+        "count": 3,
+        "result": 129,
+        "fault": 0
+      },
+      {
+        "sequence": 47,
+        "name": "PROPAGATED",
+        "domains": [
+          2,
+          4,
+          1
+        ],
+        "propagated": "FF",
+        "choiceTop": 2,
+        "trailTop": 5,
+        "base": 0,
+        "count": 3,
+        "result": 129,
+        "fault": 0
+      },
+      {
+        "sequence": 48,
+        "name": "OUTPUT",
+        "domains": [
+          2,
+          4,
+          1
+        ],
+        "propagated": "FF",
+        "choiceTop": 2,
+        "trailTop": 5,
+        "base": 0,
+        "count": 4,
+        "result": 17,
+        "fault": 0,
+        "coloring": [
+          1,
+          2,
+          0
+        ]
+      },
+      {
+        "sequence": 49,
+        "name": "RESTORE",
+        "domains": [
+          2,
+          4,
+          5
+        ],
+        "propagated": "FF",
+        "choiceTop": 2,
+        "trailTop": 4,
+        "base": 0,
+        "count": 4,
+        "result": 17,
+        "fault": 0,
+        "trail": {
+          "vertex": 2,
+          "old": 5,
+          "level": 2
+        }
+      },
+      {
+        "sequence": 50,
+        "name": "RESTORE",
+        "domains": [
+          2,
+          5,
+          5
+        ],
+        "propagated": "FF",
+        "choiceTop": 2,
+        "trailTop": 3,
+        "base": 0,
+        "count": 4,
+        "result": 17,
+        "fault": 0,
+        "trail": {
+          "vertex": 1,
+          "old": 5,
+          "level": 2
+        }
+      },
+      {
+        "sequence": 51,
+        "name": "RESTORED",
+        "domains": [
+          2,
+          5,
+          5
+        ],
+        "propagated": "F9",
+        "choiceTop": 2,
+        "trailTop": 3,
+        "base": 0,
+        "count": 4,
+        "result": 17,
+        "fault": 0
+      },
+      {
+        "sequence": 52,
+        "name": "POP",
+        "domains": [
+          2,
+          5,
+          5
+        ],
+        "propagated": "F9",
+        "choiceTop": 1,
+        "trailTop": 3,
+        "base": 0,
+        "count": 4,
+        "result": 17,
+        "fault": 0
+      },
+      {
+        "sequence": 53,
+        "name": "RESTORE",
+        "domains": [
+          2,
+          5,
+          7
+        ],
+        "propagated": "F9",
+        "choiceTop": 1,
+        "trailTop": 2,
+        "base": 0,
+        "count": 4,
+        "result": 17,
+        "fault": 0,
+        "trail": {
+          "vertex": 2,
+          "old": 7,
+          "level": 1
+        }
+      },
+      {
+        "sequence": 54,
+        "name": "RESTORE",
+        "domains": [
+          2,
+          7,
+          7
+        ],
+        "propagated": "F9",
+        "choiceTop": 1,
+        "trailTop": 1,
+        "base": 0,
+        "count": 4,
+        "result": 17,
+        "fault": 0,
+        "trail": {
+          "vertex": 1,
+          "old": 7,
+          "level": 1
+        }
+      },
+      {
+        "sequence": 55,
+        "name": "RESTORE",
+        "domains": [
+          7,
+          7,
+          7
+        ],
+        "propagated": "F9",
+        "choiceTop": 1,
+        "trailTop": 0,
+        "base": 0,
+        "count": 4,
+        "result": 17,
+        "fault": 0,
+        "trail": {
+          "vertex": 0,
+          "old": 7,
+          "level": 1
+        }
+      },
+      {
+        "sequence": 56,
+        "name": "RESTORED",
+        "domains": [
+          7,
+          7,
+          7
+        ],
+        "propagated": "F8",
+        "choiceTop": 1,
+        "trailTop": 0,
+        "base": 0,
+        "count": 4,
+        "result": 17,
+        "fault": 0
+      },
+      {
+        "sequence": 57,
+        "name": "UPDATE",
+        "domains": [
+          7,
+          7,
+          7
+        ],
+        "propagated": "F8",
+        "choiceTop": 1,
+        "trailTop": 0,
+        "base": 0,
+        "count": 4,
+        "result": 17,
+        "fault": 0,
+        "choice": {
+          "vertex": 0,
+          "remaining": 0,
+          "mark": 0,
+          "propagated": 248
+        }
+      },
+      {
+        "sequence": 58,
+        "name": "WRITE",
+        "domains": [
+          4,
+          7,
+          7
+        ],
+        "propagated": "F8",
+        "choiceTop": 1,
+        "trailTop": 1,
+        "base": 0,
+        "count": 4,
+        "result": 17,
+        "fault": 0,
+        "trail": {
+          "vertex": 0,
+          "old": 7,
+          "level": 1
+        }
+      },
+      {
+        "sequence": 59,
+        "name": "WRITE",
+        "domains": [
+          4,
+          3,
+          7
+        ],
+        "propagated": "F8",
+        "choiceTop": 1,
+        "trailTop": 2,
+        "base": 0,
+        "count": 4,
+        "result": 17,
+        "fault": 0,
+        "trail": {
+          "vertex": 1,
+          "old": 7,
+          "level": 1
+        }
+      },
+      {
+        "sequence": 60,
+        "name": "WRITE",
+        "domains": [
+          4,
+          3,
+          3
+        ],
+        "propagated": "F8",
+        "choiceTop": 1,
+        "trailTop": 3,
+        "base": 0,
+        "count": 4,
+        "result": 17,
+        "fault": 0,
+        "trail": {
+          "vertex": 2,
+          "old": 7,
+          "level": 1
+        }
+      },
+      {
+        "sequence": 61,
+        "name": "PROPAGATED",
+        "domains": [
+          4,
+          3,
+          3
+        ],
+        "propagated": "F9",
+        "choiceTop": 1,
+        "trailTop": 3,
+        "base": 0,
+        "count": 4,
+        "result": 17,
+        "fault": 0
+      },
+      {
+        "sequence": 62,
+        "name": "CREATE",
+        "domains": [
+          4,
+          3,
+          3
+        ],
+        "propagated": "F9",
+        "choiceTop": 2,
+        "trailTop": 3,
+        "base": 0,
+        "count": 4,
+        "result": 17,
+        "fault": 0,
+        "choice": {
+          "vertex": 1,
+          "remaining": 2,
+          "mark": 3,
+          "propagated": 249
+        }
+      },
+      {
+        "sequence": 63,
+        "name": "WRITE",
+        "domains": [
+          4,
+          1,
+          3
+        ],
+        "propagated": "F9",
+        "choiceTop": 2,
+        "trailTop": 4,
+        "base": 0,
+        "count": 4,
+        "result": 17,
+        "fault": 0,
+        "trail": {
+          "vertex": 1,
+          "old": 3,
+          "level": 2
+        }
+      },
+      {
+        "sequence": 64,
+        "name": "WRITE",
+        "domains": [
+          4,
+          1,
+          2
+        ],
+        "propagated": "F9",
+        "choiceTop": 2,
+        "trailTop": 5,
+        "base": 0,
+        "count": 4,
+        "result": 17,
+        "fault": 0,
+        "trail": {
+          "vertex": 2,
+          "old": 3,
+          "level": 2
+        }
+      },
+      {
+        "sequence": 65,
+        "name": "PROPAGATED",
+        "domains": [
+          4,
+          1,
+          2
+        ],
+        "propagated": "FB",
+        "choiceTop": 2,
+        "trailTop": 5,
+        "base": 0,
+        "count": 4,
+        "result": 17,
+        "fault": 0
+      },
+      {
+        "sequence": 66,
+        "name": "PROPAGATED",
+        "domains": [
+          4,
+          1,
+          2
+        ],
+        "propagated": "FF",
+        "choiceTop": 2,
+        "trailTop": 5,
+        "base": 0,
+        "count": 4,
+        "result": 17,
+        "fault": 0
+      },
+      {
+        "sequence": 67,
+        "name": "OUTPUT",
+        "domains": [
+          4,
+          1,
+          2
+        ],
+        "propagated": "FF",
+        "choiceTop": 2,
+        "trailTop": 5,
+        "base": 0,
+        "count": 5,
+        "result": 66,
+        "fault": 0,
+        "coloring": [
+          2,
+          0,
+          1
+        ]
+      },
+      {
+        "sequence": 68,
+        "name": "RESTORE",
+        "domains": [
+          4,
+          1,
+          3
+        ],
+        "propagated": "FF",
+        "choiceTop": 2,
+        "trailTop": 4,
+        "base": 0,
+        "count": 5,
+        "result": 66,
+        "fault": 0,
+        "trail": {
+          "vertex": 2,
+          "old": 3,
+          "level": 2
+        }
+      },
+      {
+        "sequence": 69,
+        "name": "RESTORE",
+        "domains": [
+          4,
+          3,
+          3
+        ],
+        "propagated": "FF",
+        "choiceTop": 2,
+        "trailTop": 3,
+        "base": 0,
+        "count": 5,
+        "result": 66,
+        "fault": 0,
+        "trail": {
+          "vertex": 1,
+          "old": 3,
+          "level": 2
+        }
+      },
+      {
+        "sequence": 70,
+        "name": "RESTORED",
+        "domains": [
+          4,
+          3,
+          3
+        ],
+        "propagated": "F9",
+        "choiceTop": 2,
+        "trailTop": 3,
+        "base": 0,
+        "count": 5,
+        "result": 66,
+        "fault": 0
+      },
+      {
+        "sequence": 71,
+        "name": "UPDATE",
+        "domains": [
+          4,
+          3,
+          3
+        ],
+        "propagated": "F9",
+        "choiceTop": 2,
+        "trailTop": 3,
+        "base": 0,
+        "count": 5,
+        "result": 66,
+        "fault": 0,
+        "choice": {
+          "vertex": 1,
+          "remaining": 0,
+          "mark": 3,
+          "propagated": 249
+        }
+      },
+      {
+        "sequence": 72,
+        "name": "WRITE",
+        "domains": [
+          4,
+          2,
+          3
+        ],
+        "propagated": "F9",
+        "choiceTop": 2,
+        "trailTop": 4,
+        "base": 0,
+        "count": 5,
+        "result": 66,
+        "fault": 0,
+        "trail": {
+          "vertex": 1,
+          "old": 3,
+          "level": 2
+        }
+      },
+      {
+        "sequence": 73,
+        "name": "WRITE",
+        "domains": [
+          4,
+          2,
+          1
+        ],
+        "propagated": "F9",
+        "choiceTop": 2,
+        "trailTop": 5,
+        "base": 0,
+        "count": 5,
+        "result": 66,
+        "fault": 0,
+        "trail": {
+          "vertex": 2,
+          "old": 3,
+          "level": 2
+        }
+      },
+      {
+        "sequence": 74,
+        "name": "PROPAGATED",
+        "domains": [
+          4,
+          2,
+          1
+        ],
+        "propagated": "FB",
+        "choiceTop": 2,
+        "trailTop": 5,
+        "base": 0,
+        "count": 5,
+        "result": 66,
+        "fault": 0
+      },
+      {
+        "sequence": 75,
+        "name": "PROPAGATED",
+        "domains": [
+          4,
+          2,
+          1
+        ],
+        "propagated": "FF",
+        "choiceTop": 2,
+        "trailTop": 5,
+        "base": 0,
+        "count": 5,
+        "result": 66,
+        "fault": 0
+      },
+      {
+        "sequence": 76,
+        "name": "OUTPUT",
+        "domains": [
+          4,
+          2,
+          1
+        ],
+        "propagated": "FF",
+        "choiceTop": 2,
+        "trailTop": 5,
+        "base": 0,
+        "count": 6,
+        "result": 10,
+        "fault": 0,
+        "coloring": [
+          2,
+          1,
+          0
+        ]
+      },
+      {
+        "sequence": 77,
+        "name": "RESTORE",
+        "domains": [
+          4,
+          2,
+          3
+        ],
+        "propagated": "FF",
+        "choiceTop": 2,
+        "trailTop": 4,
+        "base": 0,
+        "count": 6,
+        "result": 10,
+        "fault": 0,
+        "trail": {
+          "vertex": 2,
+          "old": 3,
+          "level": 2
+        }
+      },
+      {
+        "sequence": 78,
+        "name": "RESTORE",
+        "domains": [
+          4,
+          3,
+          3
+        ],
+        "propagated": "FF",
+        "choiceTop": 2,
+        "trailTop": 3,
+        "base": 0,
+        "count": 6,
+        "result": 10,
+        "fault": 0,
+        "trail": {
+          "vertex": 1,
+          "old": 3,
+          "level": 2
+        }
+      },
+      {
+        "sequence": 79,
+        "name": "RESTORED",
+        "domains": [
+          4,
+          3,
+          3
+        ],
+        "propagated": "F9",
+        "choiceTop": 2,
+        "trailTop": 3,
+        "base": 0,
+        "count": 6,
+        "result": 10,
+        "fault": 0
+      },
+      {
+        "sequence": 80,
+        "name": "POP",
+        "domains": [
+          4,
+          3,
+          3
+        ],
+        "propagated": "F9",
+        "choiceTop": 1,
+        "trailTop": 3,
+        "base": 0,
+        "count": 6,
+        "result": 10,
+        "fault": 0
+      },
+      {
+        "sequence": 81,
+        "name": "RESTORE",
+        "domains": [
+          4,
+          3,
+          7
+        ],
+        "propagated": "F9",
+        "choiceTop": 1,
+        "trailTop": 2,
+        "base": 0,
+        "count": 6,
+        "result": 10,
+        "fault": 0,
+        "trail": {
+          "vertex": 2,
+          "old": 7,
+          "level": 1
+        }
+      },
+      {
+        "sequence": 82,
+        "name": "RESTORE",
+        "domains": [
+          4,
+          7,
+          7
+        ],
+        "propagated": "F9",
+        "choiceTop": 1,
+        "trailTop": 1,
+        "base": 0,
+        "count": 6,
+        "result": 10,
+        "fault": 0,
+        "trail": {
+          "vertex": 1,
+          "old": 7,
+          "level": 1
+        }
+      },
+      {
+        "sequence": 83,
+        "name": "RESTORE",
+        "domains": [
+          7,
+          7,
+          7
+        ],
+        "propagated": "F9",
+        "choiceTop": 1,
+        "trailTop": 0,
+        "base": 0,
+        "count": 6,
+        "result": 10,
+        "fault": 0,
+        "trail": {
+          "vertex": 0,
+          "old": 7,
+          "level": 1
+        }
+      },
+      {
+        "sequence": 84,
+        "name": "RESTORED",
+        "domains": [
+          7,
+          7,
+          7
+        ],
+        "propagated": "F8",
+        "choiceTop": 1,
+        "trailTop": 0,
+        "base": 0,
+        "count": 6,
+        "result": 10,
+        "fault": 0
+      },
+      {
+        "sequence": 85,
+        "name": "POP",
+        "domains": [
+          7,
+          7,
+          7
+        ],
+        "propagated": "F8",
+        "choiceTop": 0,
+        "trailTop": 0,
+        "base": 0,
+        "count": 6,
+        "result": 10,
+        "fault": 0
+      },
+      {
+        "sequence": 86,
+        "name": "COMPLETE",
+        "domains": [
+          7,
+          7,
+          7
+        ],
+        "propagated": "F8",
+        "choiceTop": 0,
+        "trailTop": 0,
+        "base": 0,
+        "count": 6,
+        "result": 10,
+        "fault": 0
+      }
+    ]
+  },
+  "unsatisfiable": {
+    "vertices": 3,
+    "colors": 2,
+    "firstOnly": false,
+    "edges": [
+      [
+        0,
+        1
+      ],
+      [
+        0,
+        2
+      ],
+      [
+        1,
+        2
+      ]
+    ],
+    "source_sha256": "0d95c7031771e7ee9848a266fd38411186bc41fa98731bc18a9ca0ba658d19b9",
+    "events": 26,
+    "solutions": 0,
+    "outputs": [],
+    "histogram": {
+      "CREATE": 1,
+      "WRITE": 8,
+      "PROPAGATED": 2,
+      "CONTRADICTION": 2,
+      "RESTORE": 8,
+      "RESTORED": 2,
+      "UPDATE": 1,
+      "POP": 1,
+      "COMPLETE": 1
+    },
+    "records": [
+      {
+        "sequence": 1,
+        "name": "CREATE",
+        "domains": [
+          3,
+          3,
+          3
+        ],
+        "propagated": "F8",
+        "choiceTop": 1,
+        "trailTop": 0,
+        "base": 0,
+        "count": 0,
+        "result": 0,
+        "fault": 0,
+        "choice": {
+          "vertex": 0,
+          "remaining": 2,
+          "mark": 0,
+          "propagated": 248
+        }
+      },
+      {
+        "sequence": 2,
+        "name": "WRITE",
+        "domains": [
+          1,
+          3,
+          3
+        ],
+        "propagated": "F8",
+        "choiceTop": 1,
+        "trailTop": 1,
+        "base": 0,
+        "count": 0,
+        "result": 0,
+        "fault": 0,
+        "trail": {
+          "vertex": 0,
+          "old": 3,
+          "level": 1
+        }
+      },
+      {
+        "sequence": 3,
+        "name": "WRITE",
+        "domains": [
+          1,
+          2,
+          3
+        ],
+        "propagated": "F8",
+        "choiceTop": 1,
+        "trailTop": 2,
+        "base": 0,
+        "count": 0,
+        "result": 0,
+        "fault": 0,
+        "trail": {
+          "vertex": 1,
+          "old": 3,
+          "level": 1
+        }
+      },
+      {
+        "sequence": 4,
+        "name": "WRITE",
+        "domains": [
+          1,
+          2,
+          2
+        ],
+        "propagated": "F8",
+        "choiceTop": 1,
+        "trailTop": 3,
+        "base": 0,
+        "count": 0,
+        "result": 0,
+        "fault": 0,
+        "trail": {
+          "vertex": 2,
+          "old": 3,
+          "level": 1
+        }
+      },
+      {
+        "sequence": 5,
+        "name": "PROPAGATED",
+        "domains": [
+          1,
+          2,
+          2
+        ],
+        "propagated": "F9",
+        "choiceTop": 1,
+        "trailTop": 3,
+        "base": 0,
+        "count": 0,
+        "result": 0,
+        "fault": 0
+      },
+      {
+        "sequence": 6,
+        "name": "WRITE",
+        "domains": [
+          1,
+          2,
+          0
+        ],
+        "propagated": "F9",
+        "choiceTop": 1,
+        "trailTop": 4,
+        "base": 0,
+        "count": 0,
+        "result": 0,
+        "fault": 0,
+        "trail": {
+          "vertex": 2,
+          "old": 2,
+          "level": 1
+        }
+      },
+      {
+        "sequence": 7,
+        "name": "CONTRADICTION",
+        "domains": [
+          1,
+          2,
+          0
+        ],
+        "propagated": "F9",
+        "choiceTop": 1,
+        "trailTop": 4,
+        "base": 0,
+        "count": 0,
+        "result": 0,
+        "fault": 0
+      },
+      {
+        "sequence": 8,
+        "name": "RESTORE",
+        "domains": [
+          1,
+          2,
+          2
+        ],
+        "propagated": "F9",
+        "choiceTop": 1,
+        "trailTop": 3,
+        "base": 0,
+        "count": 0,
+        "result": 0,
+        "fault": 0,
+        "trail": {
+          "vertex": 2,
+          "old": 2,
+          "level": 1
+        }
+      },
+      {
+        "sequence": 9,
+        "name": "RESTORE",
+        "domains": [
+          1,
+          2,
+          3
+        ],
+        "propagated": "F9",
+        "choiceTop": 1,
+        "trailTop": 2,
+        "base": 0,
+        "count": 0,
+        "result": 0,
+        "fault": 0,
+        "trail": {
+          "vertex": 2,
+          "old": 3,
+          "level": 1
+        }
+      },
+      {
+        "sequence": 10,
+        "name": "RESTORE",
+        "domains": [
+          1,
+          3,
+          3
+        ],
+        "propagated": "F9",
+        "choiceTop": 1,
+        "trailTop": 1,
+        "base": 0,
+        "count": 0,
+        "result": 0,
+        "fault": 0,
+        "trail": {
+          "vertex": 1,
+          "old": 3,
+          "level": 1
+        }
+      },
+      {
+        "sequence": 11,
+        "name": "RESTORE",
+        "domains": [
+          3,
+          3,
+          3
+        ],
+        "propagated": "F9",
+        "choiceTop": 1,
+        "trailTop": 0,
+        "base": 0,
+        "count": 0,
+        "result": 0,
+        "fault": 0,
+        "trail": {
+          "vertex": 0,
+          "old": 3,
+          "level": 1
+        }
+      },
+      {
+        "sequence": 12,
+        "name": "RESTORED",
+        "domains": [
+          3,
+          3,
+          3
+        ],
+        "propagated": "F8",
+        "choiceTop": 1,
+        "trailTop": 0,
+        "base": 0,
+        "count": 0,
+        "result": 0,
+        "fault": 0
+      },
+      {
+        "sequence": 13,
+        "name": "UPDATE",
+        "domains": [
+          3,
+          3,
+          3
+        ],
+        "propagated": "F8",
+        "choiceTop": 1,
+        "trailTop": 0,
+        "base": 0,
+        "count": 0,
+        "result": 0,
+        "fault": 0,
+        "choice": {
+          "vertex": 0,
+          "remaining": 0,
+          "mark": 0,
+          "propagated": 248
+        }
+      },
+      {
+        "sequence": 14,
+        "name": "WRITE",
+        "domains": [
+          2,
+          3,
+          3
+        ],
+        "propagated": "F8",
+        "choiceTop": 1,
+        "trailTop": 1,
+        "base": 0,
+        "count": 0,
+        "result": 0,
+        "fault": 0,
+        "trail": {
+          "vertex": 0,
+          "old": 3,
+          "level": 1
+        }
+      },
+      {
+        "sequence": 15,
+        "name": "WRITE",
+        "domains": [
+          2,
+          1,
+          3
+        ],
+        "propagated": "F8",
+        "choiceTop": 1,
+        "trailTop": 2,
+        "base": 0,
+        "count": 0,
+        "result": 0,
+        "fault": 0,
+        "trail": {
+          "vertex": 1,
+          "old": 3,
+          "level": 1
+        }
+      },
+      {
+        "sequence": 16,
+        "name": "WRITE",
+        "domains": [
+          2,
+          1,
+          1
+        ],
+        "propagated": "F8",
+        "choiceTop": 1,
+        "trailTop": 3,
+        "base": 0,
+        "count": 0,
+        "result": 0,
+        "fault": 0,
+        "trail": {
+          "vertex": 2,
+          "old": 3,
+          "level": 1
+        }
+      },
+      {
+        "sequence": 17,
+        "name": "PROPAGATED",
+        "domains": [
+          2,
+          1,
+          1
+        ],
+        "propagated": "F9",
+        "choiceTop": 1,
+        "trailTop": 3,
+        "base": 0,
+        "count": 0,
+        "result": 0,
+        "fault": 0
+      },
+      {
+        "sequence": 18,
+        "name": "WRITE",
+        "domains": [
+          2,
+          1,
+          0
+        ],
+        "propagated": "F9",
+        "choiceTop": 1,
+        "trailTop": 4,
+        "base": 0,
+        "count": 0,
+        "result": 0,
+        "fault": 0,
+        "trail": {
+          "vertex": 2,
+          "old": 1,
+          "level": 1
+        }
+      },
+      {
+        "sequence": 19,
+        "name": "CONTRADICTION",
+        "domains": [
+          2,
+          1,
+          0
+        ],
+        "propagated": "F9",
+        "choiceTop": 1,
+        "trailTop": 4,
+        "base": 0,
+        "count": 0,
+        "result": 0,
+        "fault": 0
+      },
+      {
+        "sequence": 20,
+        "name": "RESTORE",
+        "domains": [
+          2,
+          1,
+          1
+        ],
+        "propagated": "F9",
+        "choiceTop": 1,
+        "trailTop": 3,
+        "base": 0,
+        "count": 0,
+        "result": 0,
+        "fault": 0,
+        "trail": {
+          "vertex": 2,
+          "old": 1,
+          "level": 1
+        }
+      },
+      {
+        "sequence": 21,
+        "name": "RESTORE",
+        "domains": [
+          2,
+          1,
+          3
+        ],
+        "propagated": "F9",
+        "choiceTop": 1,
+        "trailTop": 2,
+        "base": 0,
+        "count": 0,
+        "result": 0,
+        "fault": 0,
+        "trail": {
+          "vertex": 2,
+          "old": 3,
+          "level": 1
+        }
+      },
+      {
+        "sequence": 22,
+        "name": "RESTORE",
+        "domains": [
+          2,
+          3,
+          3
+        ],
+        "propagated": "F9",
+        "choiceTop": 1,
+        "trailTop": 1,
+        "base": 0,
+        "count": 0,
+        "result": 0,
+        "fault": 0,
+        "trail": {
+          "vertex": 1,
+          "old": 3,
+          "level": 1
+        }
+      },
+      {
+        "sequence": 23,
+        "name": "RESTORE",
+        "domains": [
+          3,
+          3,
+          3
+        ],
+        "propagated": "F9",
+        "choiceTop": 1,
+        "trailTop": 0,
+        "base": 0,
+        "count": 0,
+        "result": 0,
+        "fault": 0,
+        "trail": {
+          "vertex": 0,
+          "old": 3,
+          "level": 1
+        }
+      },
+      {
+        "sequence": 24,
+        "name": "RESTORED",
+        "domains": [
+          3,
+          3,
+          3
+        ],
+        "propagated": "F8",
+        "choiceTop": 1,
+        "trailTop": 0,
+        "base": 0,
+        "count": 0,
+        "result": 0,
+        "fault": 0
+      },
+      {
+        "sequence": 25,
+        "name": "POP",
+        "domains": [
+          3,
+          3,
+          3
+        ],
+        "propagated": "F8",
+        "choiceTop": 0,
+        "trailTop": 0,
+        "base": 0,
+        "count": 0,
+        "result": 0,
+        "fault": 0
+      },
+      {
+        "sequence": 26,
+        "name": "COMPLETE",
+        "domains": [
+          3,
+          3,
+          3
+        ],
+        "propagated": "F8",
+        "choiceTop": 0,
+        "trailTop": 0,
+        "base": 0,
+        "count": 0,
+        "result": 0,
+        "fault": 0
+      }
+    ]
+  },
+  "path": {
+    "vertices": 4,
+    "colors": 2,
+    "firstOnly": false,
+    "edges": [
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        2
+      ],
+      [
+        2,
+        3
+      ]
+    ],
+    "source_sha256": "53d0b972a2be57941397c061c053c8321f9de018a12c733ef64fbbe6087a3617",
+    "events": 32,
+    "solutions": 2,
+    "outputs": [
+      [
+        0,
+        1,
+        0,
+        1
+      ],
+      [
+        1,
+        0,
+        1,
+        0
+      ]
+    ],
+    "histogram": {
+      "CREATE": 1,
+      "WRITE": 8,
+      "PROPAGATED": 8,
+      "OUTPUT": 2,
+      "RESTORE": 8,
+      "RESTORED": 2,
+      "UPDATE": 1,
+      "POP": 1,
+      "COMPLETE": 1
+    },
+    "records": [
+      {
+        "sequence": 1,
+        "name": "CREATE",
+        "domains": [
+          3,
+          3,
+          3,
+          3
+        ],
+        "propagated": "F0",
+        "choiceTop": 1,
+        "trailTop": 0,
+        "base": 0,
+        "count": 0,
+        "result": 0,
+        "fault": 0,
+        "choice": {
+          "vertex": 0,
+          "remaining": 2,
+          "mark": 0,
+          "propagated": 240
+        }
+      },
+      {
+        "sequence": 2,
+        "name": "WRITE",
+        "domains": [
+          1,
+          3,
+          3,
+          3
+        ],
+        "propagated": "F0",
+        "choiceTop": 1,
+        "trailTop": 1,
+        "base": 0,
+        "count": 0,
+        "result": 0,
+        "fault": 0,
+        "trail": {
+          "vertex": 0,
+          "old": 3,
+          "level": 1
+        }
+      },
+      {
+        "sequence": 3,
+        "name": "WRITE",
+        "domains": [
+          1,
+          2,
+          3,
+          3
+        ],
+        "propagated": "F0",
+        "choiceTop": 1,
+        "trailTop": 2,
+        "base": 0,
+        "count": 0,
+        "result": 0,
+        "fault": 0,
+        "trail": {
+          "vertex": 1,
+          "old": 3,
+          "level": 1
+        }
+      },
+      {
+        "sequence": 4,
+        "name": "PROPAGATED",
+        "domains": [
+          1,
+          2,
+          3,
+          3
+        ],
+        "propagated": "F1",
+        "choiceTop": 1,
+        "trailTop": 2,
+        "base": 0,
+        "count": 0,
+        "result": 0,
+        "fault": 0
+      },
+      {
+        "sequence": 5,
+        "name": "WRITE",
+        "domains": [
+          1,
+          2,
+          1,
+          3
+        ],
+        "propagated": "F1",
+        "choiceTop": 1,
+        "trailTop": 3,
+        "base": 0,
+        "count": 0,
+        "result": 0,
+        "fault": 0,
+        "trail": {
+          "vertex": 2,
+          "old": 3,
+          "level": 1
+        }
+      },
+      {
+        "sequence": 6,
+        "name": "PROPAGATED",
+        "domains": [
+          1,
+          2,
+          1,
+          3
+        ],
+        "propagated": "F3",
+        "choiceTop": 1,
+        "trailTop": 3,
+        "base": 0,
+        "count": 0,
+        "result": 0,
+        "fault": 0
+      },
+      {
+        "sequence": 7,
+        "name": "WRITE",
+        "domains": [
+          1,
+          2,
+          1,
+          2
+        ],
+        "propagated": "F3",
+        "choiceTop": 1,
+        "trailTop": 4,
+        "base": 0,
+        "count": 0,
+        "result": 0,
+        "fault": 0,
+        "trail": {
+          "vertex": 3,
+          "old": 3,
+          "level": 1
+        }
+      },
+      {
+        "sequence": 8,
+        "name": "PROPAGATED",
+        "domains": [
+          1,
+          2,
+          1,
+          2
+        ],
+        "propagated": "F7",
+        "choiceTop": 1,
+        "trailTop": 4,
+        "base": 0,
+        "count": 0,
+        "result": 0,
+        "fault": 0
+      },
+      {
+        "sequence": 9,
+        "name": "PROPAGATED",
+        "domains": [
+          1,
+          2,
+          1,
+          2
+        ],
+        "propagated": "FF",
+        "choiceTop": 1,
+        "trailTop": 4,
+        "base": 0,
+        "count": 0,
+        "result": 0,
+        "fault": 0
+      },
+      {
+        "sequence": 10,
+        "name": "OUTPUT",
+        "domains": [
+          1,
+          2,
+          1,
+          2
+        ],
+        "propagated": "FF",
+        "choiceTop": 1,
+        "trailTop": 4,
+        "base": 0,
+        "count": 1,
+        "result": 520,
+        "fault": 0,
+        "coloring": [
+          0,
+          1,
+          0,
+          1
+        ]
+      },
+      {
+        "sequence": 11,
+        "name": "RESTORE",
+        "domains": [
+          1,
+          2,
+          1,
+          3
+        ],
+        "propagated": "FF",
+        "choiceTop": 1,
+        "trailTop": 3,
+        "base": 0,
+        "count": 1,
+        "result": 520,
+        "fault": 0,
+        "trail": {
+          "vertex": 3,
+          "old": 3,
+          "level": 1
+        }
+      },
+      {
+        "sequence": 12,
+        "name": "RESTORE",
+        "domains": [
+          1,
+          2,
+          3,
+          3
+        ],
+        "propagated": "FF",
+        "choiceTop": 1,
+        "trailTop": 2,
+        "base": 0,
+        "count": 1,
+        "result": 520,
+        "fault": 0,
+        "trail": {
+          "vertex": 2,
+          "old": 3,
+          "level": 1
+        }
+      },
+      {
+        "sequence": 13,
+        "name": "RESTORE",
+        "domains": [
+          1,
+          3,
+          3,
+          3
+        ],
+        "propagated": "FF",
+        "choiceTop": 1,
+        "trailTop": 1,
+        "base": 0,
+        "count": 1,
+        "result": 520,
+        "fault": 0,
+        "trail": {
+          "vertex": 1,
+          "old": 3,
+          "level": 1
+        }
+      },
+      {
+        "sequence": 14,
+        "name": "RESTORE",
+        "domains": [
+          3,
+          3,
+          3,
+          3
+        ],
+        "propagated": "FF",
+        "choiceTop": 1,
+        "trailTop": 0,
+        "base": 0,
+        "count": 1,
+        "result": 520,
+        "fault": 0,
+        "trail": {
+          "vertex": 0,
+          "old": 3,
+          "level": 1
+        }
+      },
+      {
+        "sequence": 15,
+        "name": "RESTORED",
+        "domains": [
+          3,
+          3,
+          3,
+          3
+        ],
+        "propagated": "F0",
+        "choiceTop": 1,
+        "trailTop": 0,
+        "base": 0,
+        "count": 1,
+        "result": 520,
+        "fault": 0
+      },
+      {
+        "sequence": 16,
+        "name": "UPDATE",
+        "domains": [
+          3,
+          3,
+          3,
+          3
+        ],
+        "propagated": "F0",
+        "choiceTop": 1,
+        "trailTop": 0,
+        "base": 0,
+        "count": 1,
+        "result": 520,
+        "fault": 0,
+        "choice": {
+          "vertex": 0,
+          "remaining": 0,
+          "mark": 0,
+          "propagated": 240
+        }
+      },
+      {
+        "sequence": 17,
+        "name": "WRITE",
+        "domains": [
+          2,
+          3,
+          3,
+          3
+        ],
+        "propagated": "F0",
+        "choiceTop": 1,
+        "trailTop": 1,
+        "base": 0,
+        "count": 1,
+        "result": 520,
+        "fault": 0,
+        "trail": {
+          "vertex": 0,
+          "old": 3,
+          "level": 1
+        }
+      },
+      {
+        "sequence": 18,
+        "name": "WRITE",
+        "domains": [
+          2,
+          1,
+          3,
+          3
+        ],
+        "propagated": "F0",
+        "choiceTop": 1,
+        "trailTop": 2,
+        "base": 0,
+        "count": 1,
+        "result": 520,
+        "fault": 0,
+        "trail": {
+          "vertex": 1,
+          "old": 3,
+          "level": 1
+        }
+      },
+      {
+        "sequence": 19,
+        "name": "PROPAGATED",
+        "domains": [
+          2,
+          1,
+          3,
+          3
+        ],
+        "propagated": "F1",
+        "choiceTop": 1,
+        "trailTop": 2,
+        "base": 0,
+        "count": 1,
+        "result": 520,
+        "fault": 0
+      },
+      {
+        "sequence": 20,
+        "name": "WRITE",
+        "domains": [
+          2,
+          1,
+          2,
+          3
+        ],
+        "propagated": "F1",
+        "choiceTop": 1,
+        "trailTop": 3,
+        "base": 0,
+        "count": 1,
+        "result": 520,
+        "fault": 0,
+        "trail": {
+          "vertex": 2,
+          "old": 3,
+          "level": 1
+        }
+      },
+      {
+        "sequence": 21,
+        "name": "PROPAGATED",
+        "domains": [
+          2,
+          1,
+          2,
+          3
+        ],
+        "propagated": "F3",
+        "choiceTop": 1,
+        "trailTop": 3,
+        "base": 0,
+        "count": 1,
+        "result": 520,
+        "fault": 0
+      },
+      {
+        "sequence": 22,
+        "name": "WRITE",
+        "domains": [
+          2,
+          1,
+          2,
+          1
+        ],
+        "propagated": "F3",
+        "choiceTop": 1,
+        "trailTop": 4,
+        "base": 0,
+        "count": 1,
+        "result": 520,
+        "fault": 0,
+        "trail": {
+          "vertex": 3,
+          "old": 3,
+          "level": 1
+        }
+      },
+      {
+        "sequence": 23,
+        "name": "PROPAGATED",
+        "domains": [
+          2,
+          1,
+          2,
+          1
+        ],
+        "propagated": "F7",
+        "choiceTop": 1,
+        "trailTop": 4,
+        "base": 0,
+        "count": 1,
+        "result": 520,
+        "fault": 0
+      },
+      {
+        "sequence": 24,
+        "name": "PROPAGATED",
+        "domains": [
+          2,
+          1,
+          2,
+          1
+        ],
+        "propagated": "FF",
+        "choiceTop": 1,
+        "trailTop": 4,
+        "base": 0,
+        "count": 1,
+        "result": 520,
+        "fault": 0
+      },
+      {
+        "sequence": 25,
+        "name": "OUTPUT",
+        "domains": [
+          2,
+          1,
+          2,
+          1
+        ],
+        "propagated": "FF",
+        "choiceTop": 1,
+        "trailTop": 4,
+        "base": 0,
+        "count": 2,
+        "result": 65,
+        "fault": 0,
+        "coloring": [
+          1,
+          0,
+          1,
+          0
+        ]
+      },
+      {
+        "sequence": 26,
+        "name": "RESTORE",
+        "domains": [
+          2,
+          1,
+          2,
+          3
+        ],
+        "propagated": "FF",
+        "choiceTop": 1,
+        "trailTop": 3,
+        "base": 0,
+        "count": 2,
+        "result": 65,
+        "fault": 0,
+        "trail": {
+          "vertex": 3,
+          "old": 3,
+          "level": 1
+        }
+      },
+      {
+        "sequence": 27,
+        "name": "RESTORE",
+        "domains": [
+          2,
+          1,
+          3,
+          3
+        ],
+        "propagated": "FF",
+        "choiceTop": 1,
+        "trailTop": 2,
+        "base": 0,
+        "count": 2,
+        "result": 65,
+        "fault": 0,
+        "trail": {
+          "vertex": 2,
+          "old": 3,
+          "level": 1
+        }
+      },
+      {
+        "sequence": 28,
+        "name": "RESTORE",
+        "domains": [
+          2,
+          3,
+          3,
+          3
+        ],
+        "propagated": "FF",
+        "choiceTop": 1,
+        "trailTop": 1,
+        "base": 0,
+        "count": 2,
+        "result": 65,
+        "fault": 0,
+        "trail": {
+          "vertex": 1,
+          "old": 3,
+          "level": 1
+        }
+      },
+      {
+        "sequence": 29,
+        "name": "RESTORE",
+        "domains": [
+          3,
+          3,
+          3,
+          3
+        ],
+        "propagated": "FF",
+        "choiceTop": 1,
+        "trailTop": 0,
+        "base": 0,
+        "count": 2,
+        "result": 65,
+        "fault": 0,
+        "trail": {
+          "vertex": 0,
+          "old": 3,
+          "level": 1
+        }
+      },
+      {
+        "sequence": 30,
+        "name": "RESTORED",
+        "domains": [
+          3,
+          3,
+          3,
+          3
+        ],
+        "propagated": "F0",
+        "choiceTop": 1,
+        "trailTop": 0,
+        "base": 0,
+        "count": 2,
+        "result": 65,
+        "fault": 0
+      },
+      {
+        "sequence": 31,
+        "name": "POP",
+        "domains": [
+          3,
+          3,
+          3,
+          3
+        ],
+        "propagated": "F0",
+        "choiceTop": 0,
+        "trailTop": 0,
+        "base": 0,
+        "count": 2,
+        "result": 65,
+        "fault": 0
+      },
+      {
+        "sequence": 32,
+        "name": "COMPLETE",
+        "domains": [
+          3,
+          3,
+          3,
+          3
+        ],
+        "propagated": "F0",
+        "choiceTop": 0,
+        "trailTop": 0,
+        "base": 0,
+        "count": 2,
+        "result": 65,
+        "fault": 0
+      }
+    ]
+  },
+  "first": {
+    "vertices": 3,
+    "colors": 3,
+    "firstOnly": true,
+    "edges": [
+      [
+        0,
+        1
+      ],
+      [
+        0,
+        2
+      ],
+      [
+        1,
+        2
+      ]
+    ],
+    "source_sha256": "dc1e80e286e1c9669addf6573993fc73a2c441a600619dfd49cf789433bf5371",
+    "events": 12,
+    "solutions": 1,
+    "outputs": [
+      [
+        0,
+        1,
+        2
+      ]
+    ],
+    "histogram": {
+      "CREATE": 2,
+      "WRITE": 5,
+      "PROPAGATED": 3,
+      "OUTPUT": 1,
+      "COMPLETE": 1
+    },
+    "records": [
+      {
+        "sequence": 1,
+        "name": "CREATE",
+        "domains": [
+          7,
+          7,
+          7
+        ],
+        "propagated": "F8",
+        "choiceTop": 1,
+        "trailTop": 0,
+        "base": 0,
+        "count": 0,
+        "result": 0,
+        "fault": 0,
+        "choice": {
+          "vertex": 0,
+          "remaining": 6,
+          "mark": 0,
+          "propagated": 248
+        }
+      },
+      {
+        "sequence": 2,
+        "name": "WRITE",
+        "domains": [
+          1,
+          7,
+          7
+        ],
+        "propagated": "F8",
+        "choiceTop": 1,
+        "trailTop": 1,
+        "base": 0,
+        "count": 0,
+        "result": 0,
+        "fault": 0,
+        "trail": {
+          "vertex": 0,
+          "old": 7,
+          "level": 1
+        }
+      },
+      {
+        "sequence": 3,
+        "name": "WRITE",
+        "domains": [
+          1,
+          6,
+          7
+        ],
+        "propagated": "F8",
+        "choiceTop": 1,
+        "trailTop": 2,
+        "base": 0,
+        "count": 0,
+        "result": 0,
+        "fault": 0,
+        "trail": {
+          "vertex": 1,
+          "old": 7,
+          "level": 1
+        }
+      },
+      {
+        "sequence": 4,
+        "name": "WRITE",
+        "domains": [
+          1,
+          6,
+          6
+        ],
+        "propagated": "F8",
+        "choiceTop": 1,
+        "trailTop": 3,
+        "base": 0,
+        "count": 0,
+        "result": 0,
+        "fault": 0,
+        "trail": {
+          "vertex": 2,
+          "old": 7,
+          "level": 1
+        }
+      },
+      {
+        "sequence": 5,
+        "name": "PROPAGATED",
+        "domains": [
+          1,
+          6,
+          6
+        ],
+        "propagated": "F9",
+        "choiceTop": 1,
+        "trailTop": 3,
+        "base": 0,
+        "count": 0,
+        "result": 0,
+        "fault": 0
+      },
+      {
+        "sequence": 6,
+        "name": "CREATE",
+        "domains": [
+          1,
+          6,
+          6
+        ],
+        "propagated": "F9",
+        "choiceTop": 2,
+        "trailTop": 3,
+        "base": 0,
+        "count": 0,
+        "result": 0,
+        "fault": 0,
+        "choice": {
+          "vertex": 1,
+          "remaining": 4,
+          "mark": 3,
+          "propagated": 249
+        }
+      },
+      {
+        "sequence": 7,
+        "name": "WRITE",
+        "domains": [
+          1,
+          2,
+          6
+        ],
+        "propagated": "F9",
+        "choiceTop": 2,
+        "trailTop": 4,
+        "base": 0,
+        "count": 0,
+        "result": 0,
+        "fault": 0,
+        "trail": {
+          "vertex": 1,
+          "old": 6,
+          "level": 2
+        }
+      },
+      {
+        "sequence": 8,
+        "name": "WRITE",
+        "domains": [
+          1,
+          2,
+          4
+        ],
+        "propagated": "F9",
+        "choiceTop": 2,
+        "trailTop": 5,
+        "base": 0,
+        "count": 0,
+        "result": 0,
+        "fault": 0,
+        "trail": {
+          "vertex": 2,
+          "old": 6,
+          "level": 2
+        }
+      },
+      {
+        "sequence": 9,
+        "name": "PROPAGATED",
+        "domains": [
+          1,
+          2,
+          4
+        ],
+        "propagated": "FB",
+        "choiceTop": 2,
+        "trailTop": 5,
+        "base": 0,
+        "count": 0,
+        "result": 0,
+        "fault": 0
+      },
+      {
+        "sequence": 10,
+        "name": "PROPAGATED",
+        "domains": [
+          1,
+          2,
+          4
+        ],
+        "propagated": "FF",
+        "choiceTop": 2,
+        "trailTop": 5,
+        "base": 0,
+        "count": 0,
+        "result": 0,
+        "fault": 0
+      },
+      {
+        "sequence": 11,
+        "name": "OUTPUT",
+        "domains": [
+          1,
+          2,
+          4
+        ],
+        "propagated": "FF",
+        "choiceTop": 0,
+        "trailTop": 5,
+        "base": 5,
+        "count": 1,
+        "result": 136,
+        "fault": 0,
+        "coloring": [
+          0,
+          1,
+          2
+        ]
+      },
+      {
+        "sequence": 12,
+        "name": "COMPLETE",
+        "domains": [
+          1,
+          2,
+          4
+        ],
+        "propagated": "FF",
+        "choiceTop": 0,
+        "trailTop": 5,
+        "base": 5,
+        "count": 1,
+        "result": 136,
+        "fault": 0
+      }
+    ]
+  },
+  "root": {
+    "vertices": 2,
+    "colors": 1,
+    "firstOnly": false,
+    "edges": [
+      [
+        0,
+        1
+      ]
+    ],
+    "source_sha256": "5c353e02de56f3ff6cba9b8675645a3d68ab25dd0cff3793ee1579545430ee87",
+    "events": 3,
+    "solutions": 0,
+    "outputs": [],
+    "histogram": {
+      "WRITE": 1,
+      "CONTRADICTION": 1,
+      "COMPLETE": 1
+    },
+    "records": [
+      {
+        "sequence": 1,
+        "name": "WRITE",
+        "domains": [
+          1,
+          0
+        ],
+        "propagated": "FC",
+        "choiceTop": 0,
+        "trailTop": 1,
+        "base": 0,
+        "count": 0,
+        "result": 0,
+        "fault": 0,
+        "trail": {
+          "vertex": 1,
+          "old": 1,
+          "level": 0
+        }
+      },
+      {
+        "sequence": 2,
+        "name": "CONTRADICTION",
+        "domains": [
+          1,
+          0
+        ],
+        "propagated": "FC",
+        "choiceTop": 0,
+        "trailTop": 1,
+        "base": 0,
+        "count": 0,
+        "result": 0,
+        "fault": 0
+      },
+      {
+        "sequence": 3,
+        "name": "COMPLETE",
+        "domains": [
+          1,
+          0
+        ],
+        "propagated": "FC",
+        "choiceTop": 0,
+        "trailTop": 1,
+        "base": 0,
+        "count": 0,
+        "result": 0,
+        "fault": 0
+      }
+    ]
+  }
+}
