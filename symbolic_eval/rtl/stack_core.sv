@@ -3,8 +3,9 @@
 //
 // Contract (design doc §6):
 //   * No architectural mutation before all checks pass: EXECUTE validates
-//     everything and stages complete next-state data; COMMIT is the single
-//     mutation owner and the only place registers and the stack change.
+//     everything and stages complete next-state data. Architectural PC/stacks
+//     change only at COMMIT or EMIT acceptance; internal registers may change
+//     during preparation. Fault publication preserves both stacks and PC.
 //   * A commit pulse fires only in COMMIT, on output acceptance in
 //     OUTPUT_WAIT, or on entry to a precise fault state.
 //   * EMIT pops only when the output channel accepts (Delayed Irreversible

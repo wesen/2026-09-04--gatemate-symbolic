@@ -23,7 +23,7 @@ usually fallout.
    | One `depth` wrong from line k on | staging bug: wrong `ndepth_d`/`sdc_d` delta, or a missing cache shift |
    | FAULT line differs only in tags | fault-record operand tags (guarded by depth?) |
    | RTL trace is a prefix of the model's | watchdog timeout or a hang: dump the FSM state (`--vcd` + `gtkwave build/*.vcd`) |
-   | Output values differ, trace identical | `EMIT` pending register or printer path, not the core |
+   | UART bytes differ but complete core state/transfer checks pass | inspect printer and UART framing |
 
 3. **Decide which side is right first.** The model is the specification. If the
    RTL matches the book/design doc and the model does not, fix the model — but
@@ -48,3 +48,18 @@ vvp build/tb_bram_d30.vvp +rom=build/fib.hex +stall_seed=7
 # view waves of a hang
 iverilog -g2012 -s tb_stack_core -o build/t.vvp rtl/*.sv sim/tb_stack_core.sv
 ```
+
+
+## Complete-state checks
+
+Both core runners compare `STATE` records (all live 40-bit data words and return
+addresses), `XFER` records (accepted output including flags), and TRACE/FINAL.
+The benches assert live state is unchanged between retirements and on a fault.
+An empty DUP can preserve counts while being semantically wrong; use the full
+snapshot diff to find such errors. `trace_fetch` formats a fetch failure as FETCH;
+its opcode field is not an instruction in that case. Fault addresses can equal
+ROM_DEPTH, while physical memory addresses remain in range.
+
+`build/verification-coverage.json` records exercised opcodes, faults, branches,
+and cache-count transitions for the most recent pytest run. The counters measure
+executed tests; they are not a formal coverage proof.

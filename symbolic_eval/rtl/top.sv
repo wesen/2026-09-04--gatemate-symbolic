@@ -15,8 +15,8 @@
 //   faulted: fast blink (counter[21], ~2.4 Hz)
 //
 // The FPGA button (active-low) is a global experiment abort (DR-4): pressing
-// it async-asserts reset; releasing it synchronously restarts the machine
-// from the initial image.
+// it passes through a two-flop synchronizer before asserting reset; release
+// synchronously restarts the machine from the initial image.
 `default_nettype none
 
 module top #(
@@ -196,8 +196,8 @@ module top #(
   logic [39:0] vval_q;
 
   // The printer accepts a value only when the UART is idle; rv_reg then
-  // holds the item stable while bytes are framed (Delayed Irreversible
-  // Store boundary on real hardware).
+  // transfers ownership to vval_q while bytes are framed. The elastic stage
+  // can then accept another value.
   assign rv_out_ready = (vstate_q == V_IDLE) && uart_ready;
 
   // uart_start is a one-cycle pulse: V_SEND issues a byte whenever the

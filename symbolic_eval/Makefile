@@ -19,6 +19,7 @@ TOOLS_DIR := tools
 BUILD    := build
 
 PROG     ?= arith
+PNR_SEED ?= 2
 
 # All synthesizable RTL for the evaluator top (blink_top remains for the
 # P0 bring-up sim target).
@@ -45,7 +46,7 @@ versions:
 test:
 	python3 -m pytest sim/ -q
 
-# Assemble a program: programs/$(PROG).asm -> build/$(PROG).{hex,bin,lst,sym.json}
+# Assemble a program: programs/$(PROG).asm -> build/$(PROG).{hex,lst,sym.json}
 asm:
 	python3 $(TOOLS_DIR)/asm20.py programs/$(PROG).asm -o $(BUILD) -n $(PROG)
 
@@ -67,7 +68,7 @@ pnr: synth
 	nextpnr-himbaechel -l $(BUILD)/nextpnr.log --device $(DEVICE) \
 	  --json $(BUILD)/top.json \
 	  -o ccf=$(CCF) -o out=$(BUILD)/top.txt \
-	  --sdc $(SDC) --router router2
+	  --sdc $(SDC) --router router2 --seed $(PNR_SEED)
 
 # Bitstream (gmpack).
 bit: pnr

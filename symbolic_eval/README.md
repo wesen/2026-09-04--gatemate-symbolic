@@ -1,151 +1,146 @@
-# symbolic_eval — Laboratory 1: a precise tagged stack evaluator
+# symbolic_eval — precise tagged stack evaluator
 
-A 40-bit tagged-value stack machine for the Olimex GateMateA1-EVB
-(Cologne Chip CCGM1A1), built with open-source tools only. This is
-Laboratory 1 of *Composable Hardware Patterns for Symbolic Computers*
-(the book lives in the ticket `sources/`; the intern guide is the ticket
-design doc).
+A 40-bit tagged-value stack machine for the Olimex GateMateA1-EVB, implemented
+with Python and SystemVerilog using the open-source CAD flow. It implements
+Laboratory 1 of the book archived in ticket GATEMATE-SYMBOLIC-001.
 
-## Exit criteria (book Laboratory 1) — VERIFIED ON HARDWARE
+The implementation review is GATEMATE-SYMBOLIC-002. Correctness repairs,
+regressions, build records, and printed work slips are in GATEMATE-SYMBOLIC-003.
 
-```text
-Program A:  ((7+5)*3)==36 -> EMIT BOOL(true), HALT
-            board UART: "T1:00000001\r\n", then LED solid (halted)
+## Machine contract
 
-Program B:  BOOL(true) + INT(4) -> TYPE_FAULT at the ADD
-            pc and stack unchanged, no output transfer, LED fast-blink
-```
+- Values are `tag[39:36]`, `flags[35:32]`, `payload[31:0]`. INT arithmetic uses
+  signed 32-bit payloads and precise overflow faults; constructors clear flags.
+- Seventeen 20-bit instructions: PUSH_S15, PUSH_TRUE, PUSH_FALSE, ADD, SUB, MUL,
+  EQ, LT, DUP, DROP, SWAP, JMP, JZ, EMIT, HALT, CALL, RET. Opcode occupies bits
+  19:15; the remaining 15 bits encode a signed literal or unsigned target.
+- EQ compares all 40 bits. JZ requires BOOL payload zero or one. It validates
+  its target even when the branch will not be taken.
+- The separate return-address stack defaults to 16 entries. CALL saves pc+1;
+  RET restores it. Return occupancy and address writes retire together.
+- Normal instructions publish architectural changes in COMMIT; EMIT publishes
+  on ready/valid acceptance. Preparation cycles and faults preserve PC and both
+  logical stacks. Output holds valid/data stable while blocked.
+- Faults: STACK_UNDERFLOW, STACK_OVERFLOW, TYPE_FAULT, ARITH_OVERFLOW,
+  BAD_OPCODE, BAD_BRANCH_TARGET, NONCANONICAL_BOOL, RSTACK_UNDERFLOW,
+  RSTACK_OVERFLOW. A fault records PC, opcode context, data depth, and the true
+  top-two logical operand tags (zero when absent), then stops until reset.
 
-## Machine summary
+Architectural PC and return addresses can represent ROM_DEPTH. An instruction
+at the final valid ROM word may retire to that address; the next fetch faults
+BAD_BRANCH_TARGET with the trace mnemonic FETCH. `trace_fetch` and `fault_fetch`
+distinguish this context from an instruction fault; opcode fields are not
+meaningful when these flags are set. Physical ROM addresses remain narrower and
+are guarded. ROM sizes 2..32768 and data/return memory depths >=2 are supported
+by the core parameter checks.
 
-- **value40**: tag[3:0], flags[3:0], payload[31:0] (INT, BOOL, REF, ...).
-- **ISA**: 17 opcodes (PUSH_S15, PUSH_TRUE/FALSE, ADD, SUB, MUL, EQ, LT,
-  DUP, DROP, SWAP, JMP, JZ, EMIT, HALT, CALL, RET) in a 20-bit word
-  `[19:15] opcode, [14:0] imm`.
-- **CALL/RET extension** (book Lab 1 extension): a separate 16-entry
-  return-address stack (registers). CALL pushes pc+1 and jumps; RET pops
-  and jumps. Empty RET / full-call-stack fault precisely.
-- **Precise faults**: STACK_UNDERFLOW, STACK_OVERFLOW, TYPE_FAULT,
-  ARITH_OVERFLOW, BAD_OPCODE, BAD_BRANCH_TARGET, NONCANONICAL_BOOL,
-  RSTACK_UNDERFLOW, RSTACK_OVERFLOW — each leaves pc and stacks exactly as
-  before the failing instruction.
-- **Commitment**: no architectural mutation before all checks pass; COMMIT
-  is the single mutation owner; EMIT pops only on output-channel acceptance.
-- **Two implementations of the same contract** (differentially tested
-  against one model):
-  - `rtl/stack_core.sv` — register stack (32-entry).
-  - `rtl/stack_core_bram.sv` — BRAM deep stack + two-entry top cache
-    (Split-Lifetime Frame; invariant `depth == tc + dc` checked every
-    cycle in the testbench).
-
-## Method (stolen from MATE-16)
-
-`tools/opcodes.py` is the single source of truth for the ISA.
-`tools/stack_model.py` is the executable reference model and differential
-oracle. `tools/asm20.py` is the two-pass assembler. The RTL testbenches
-print TRACE/FINAL lines in exactly the model's format; the pytest suites
-diff them line by line, with random output backpressure and random legal /
-illegal program generation.
+The register core defaults to 32 operand slots. The board uses the BRAM core
+with 512 deep slots plus two cached values: total capacity **514**. The cache can
+hold only one value even with nonempty deep RAM. `depth=tc+dc` and complete value
+ordering are checked in simulation. Internal synchronous reads acquire operands,
+refills, and accurate fault context before publication.
 
 ## Layout
 
-```
-constraints/   CCF pins, SDC timing (verified on this board in MATE-16)
-rtl/           symbolic_types_pkg, stack_core (reg), stack_core_bram + sync_sdp_ram,
-               program_rom, rv_reg, uart_tx, reset_sync, top
-tools/         opcodes.py, stack_model.py, asm20.py
-programs/      arith, typefault (exit criteria), smoke, deep, branch,
-               muloverflow, underflow, badop, badbranch, jztype,
-               stackoverflow, fib (recursive CALL/RET), sq, countdown,
-               retunderflow, calloverflow
-sim/           tb_stack_core, tb_stack_core_bram, tb_top + pytest suites
-scripts/       synth.ys
-build/         generated (gitignored)
+```text
+tools/          opcodes.py, stack_model.py, asm20.py
+rtl/            two cores, tagged types, RAM/ROM, reset, rv_reg, UART, top
+programs/       arithmetic, faults, deep stack, branches, fib, sq, countdown
+sim/            model/assembler/core/board tests and full-state monitors
+scripts/        synth.ys and check_isa.py
+constraints/    board pins and 10 MHz timing constraint
+playbooks/      PB-01 opcode, PB-02 debug, PB-03 faults, PB-04 board, PB-05 RTL
+build/          ignored generated images, simulation files, logs, coverage
 ```
 
-## Playbooks (working in this repo)
+`tools/opcodes.py` is the metadata authority. The assembler and model import it;
+`scripts/check_isa.py` verifies handwritten RTL constants and bench name tables.
+The assembler rejects malformed lines and oversized images, including raw WORD
+instructions. It returns actual words; the CLI pads `.hex` with zero words
+(PUSH_S15 0), and also writes `.lst` and `.sym.json`. It does not write `.bin`.
 
-- `playbooks/PB-01-adding-an-opcode.md` — the full checklist for extending the ISA
-- `playbooks/PB-02-debugging-a-trace-mismatch.md` — reading the differential diff, common causes
-- `playbooks/PB-03-adding-a-fault-code.md` — fault set, check order, width rules
-- `playbooks/PB-04-board-workflow.md` — build, load, concurrent UART capture, LED codes, restart
-- `playbooks/PB-05-rtl-portability-rules.md` — the yosys ∩ iverilog subset as repo law
-
-## Toolchain
+## Build and test
 
 ```bash
 source ~/fpga/oss-cad-suite/environment
-make versions    # record tool versions
-make test        # 105 tests: model + assembler + differential RTL + board sim
-make asm PROG=arith
-make bit PROG=arith   # synth -> PnR -> pack (program image baked into ROM)
-make load             # load to the board, then read the UART:
-stty -F /dev/ttyACM0 115200 raw -echo && cat /dev/ttyACM0
+cd symbolic_eval
+make versions
+make test                         # 197 tests
+python3 scripts/check_isa.py
+make asm PROG=fib
+make bit PROG=fib                  # synth -> route -> pack
+make load PROG=fib                 # rebuilds: keep PROG explicit
 ```
 
-Pressing the FPGA button restarts the program (global experiment abort,
-design doc DR-4).
+Run tests from `symbolic_eval/`; some fixtures open relative program paths.
+`make sim` is only the original blink bring-up test. `make test` exercises the
+evaluator and board simulation. PNR_SEED selects a reproducible router seed;
+seed 2 is the repair build default. The source list and top parameters used by
+synthesis are in `scripts/synth.ys`.
 
-## Output format
+## Verification
 
-Each EMIT value becomes 13 UART bytes at 115200 8N1:
+The complete suite contains 197 collected tests:
 
+| File | Count | Scope |
+|---|---:|---|
+| test_model.py | 36 | Semantic machine and constructed Python states |
+| test_assembler.py | 12 | Encoding, labels, diagnostics |
+| test_directed.py | 17 | Register-core directed programs and exit criteria |
+| test_bram.py | 52 | BRAM directed and both-core generated execution |
+| test_repairs.py | 52 | Review regressions, fault context, ROM boundaries |
+| test_verification.py | 20 | Metadata, legal coverage, 514-slot capacity, RTL initial states |
+| test_top.py | 8 | UART streams, halted LED, restart during compute/UART |
+
+Both core runners compare TRACE/FINAL plus all live data/return values in STATE
+records and complete accepted words in XFER records. Per-cycle assertions require
+architectural state to stay unchanged between retirements and on faults. Stale
+unused memory is intentionally ignored. Initial-stack injection exists only in
+simulation to reach noncanonical Boolean and overflow states.
+
+The generator validates candidate instruction fragments with the model, including
+bounded nested calls and explicit branch joins. Legal runs terminate deliberately;
+injected fault runs really fault. The coverage test exercises all 17 opcodes and
+both JZ outcomes. `build/verification-coverage.json` records executed opcode, fault,
+branch, and BRAM cache-transition counts. Passing tests are not a formal proof.
+
+## Output and board behavior
+
+Each accepted EMIT becomes 13 bytes at nominal 115200 8N1:
+
+```text
+T<tag hex digit>:<8 payload hex digits> CR LF
+INT(55) -> T0:00000037
+BOOL(1) -> T1:00000001
 ```
-'T' <tag hex digit> ':' <8 payload hex digits, MSB first> CR LF
-```
 
-e.g. `INT(5)` -> `T0:00000005`, `BOOL(true)` -> `T1:00000001`.
+Flags are omitted from the UART text. EMIT retires when the elastic register
+accepts the value, before serial transmission finishes. HALT does not imply the
+UART is drained. Reset is a global experiment abort and may discard buffered or
+partially transmitted output. The button is synchronized before reset assertion;
+release restarts from the initial image. UART RX is unused.
 
-## Measured results (stop-build budget: 2 BRAM blocks / ~2000 CPEs)
+The user LED is active-low: halted is solid on, running is slow blink, faulted is
+fast blink. The top does not expose the full fault record on UART. Empty UART output
+alone does not prove a precise fault occurred. See PB-04 for arming serial capture
+before loading, so short programs do not finish before the host opens the port.
 
-| Metric | Value |
-|---|---|
-| Block RAM | 2 x CC_BRAM_20K (1Kx20 ROM + 512x40 stack) |
-| CPEs (packed) | 392 / 20480 |
-| Max frequency (routed, with CALL/RET) | 16.56 MHz (PASS at 10 MHz board clock) |
-| Multipliers | 1 (CC_MULT, 34x34 MUL) |
+## Evidence and limits
 
-## LED codes (the EVB user LED is active-LOW: pin low = LED lit)
+The original implementation demonstrated arithmetic, type-fault behavior, and
+fib(10)=55 on hardware. The repair ticket preserves fresh simulation/build and
+board-capture results separately from those historical claims. The laboratory
+budget remains two physical BRAM blocks and roughly 2000 packed CPEs. Consult
+GATEMATE-SYMBOLIC-003 validation logs for final routed timing and image hashes.
 
-- running: slow blink (~0.6 Hz)
-- halted (success): solid ON — e.g. fib leaves it lit after ~2 ms
-- faulted: fast blink (~2.4 Hz)
+Future work includes boxed integers, capability REF descriptors, replayable
+multi-cycle MUL, and trace RAM. The declared REF/PAIR/THUNK tags do not yet provide
+heap management or a graph-reduction runtime. Extra trace memory must be accounted
+for separately from the two-BRAM laboratory budget.
 
-## Test inventory (123 green)
+## RTL portability
 
-- `test_model.py` (30): book Program A trace exact, Program B precise
-  fault, every opcode at minimum depth, all fault cases (constructed
-  states for NONCANONICAL_BOOL / ARITH_OVERFLOW), value packing.
-- `test_assembler.py` (12): round-trip, labels, error cases.
-- `test_directed.py` (12): register core vs model on all programs +
-  random output stalls.
-- `test_bram.py` (47): BRAM core on all programs + refinement invariant +
-  24 random-program differential tests + 12 register-core random tests.
-- `test_top.py` (6): full-board sim, UART byte stream vs model EMITs
-  (incl. fib and countdown).
-- `test_model.py` CALL/RET: return addresses, nested calls, precise
-  RSTACK_UNDERFLOW / RSTACK_OVERFLOW, recursive fib(10)=55.
-
-## Portability notes (yosys ∩ iverilog SystemVerilog subset)
-
-- No `return` in functions (classic function-name assignment).
-- No `import` (file-scope or module-header): all package references are
-  fully qualified `symbolic_types_pkg::NAME`.
-- No multi-declarator typedef'd struct variables.
-- ROM init via a `.ys` script file (yosys tokenizer handles the quoted
-  filename; `-D` on the command line does not).
-- `value40_t.tag` is a plain vector: enum-typed struct fields break yosys
-  width inference inside package functions.
-
-## Status
-
-- P0 bootstrap — done (blink on board)
-- P1 model — done (30 tests)
-- P2 assembler — done (12 tests)
-- P3 register RTL — done (differential, book trace exact)
-- P4 BRAM + top cache — done (invariant + random tests)
-- P5 board — done (both exit criteria on hardware)
-
-Extensions still open (book): boxed integers, capability REF descriptors,
-replayable multi-cycle MUL, trace RAM / ILA capture of fault records.
-CALL/RET is DONE (recursive fib verified on hardware: `T0:00000037`).
+Keep synthesizable code within the tested Yosys/Icarus subset: fully qualified
+package names, classic function-name assignment, one typedef-struct declaration
+per line, plain vector struct tags, and ROM macro initialization in the `.ys`
+script. Preserve synchronous RAM latency and explicit architectural retirement.

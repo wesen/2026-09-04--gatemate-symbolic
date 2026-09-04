@@ -2,7 +2,7 @@
 
 The model is the abstract machine
 
-    M = <pc, stack, output_stream, fault, halted>
+    M = <pc, stack, rstack, output_stream, fault, halted>
 
 from the book (Laboratory 1, "Semantic machine"). It implements every opcode,
 every fault case, and the retirement discipline, and it produces the same

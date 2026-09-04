@@ -1,8 +1,8 @@
 # PB-03: Adding a fault code
 
 Fault codes are a closed set shared by the model, the package, both cores, and
-both testbenches. The field is currently **4 bits** — adding codes 10+ means
-widening again (see the checklist note at the end).
+both testbenches. The field is currently **4 bits** — adding code 16 or higher requires
+widening (see the checklist note at the end).
 
 ## Checklist
 
@@ -36,3 +36,10 @@ Fault ports, registers, `do_fault`'s argument, and `trace_fault` are `[3:0]`.
 Codes 0x0–0x9 are used. If you need more than six new codes, widen to `[4:0]`
 everywhere in one commit (grep `\[3:0\].*fault` in `rtl/`, `sim/`), and expect
 `FINAL`/`FAULT` line changes to touch every hardcoded test expectation.
+
+
+Fetch faults are published from FETCH (or the BRAM fetch-context states), with
+`trace_fetch`/`fault_fetch` asserted. Keep fault PC wide enough for ROM_DEPTH.
+For tc=1 and dc>0 the second operand tag comes from a synchronous deep-RAM read;
+never use stale opnd_q without acquiring context. Constructed-state RTL cases in
+`test_verification.py` cover noncanonical Booleans and arithmetic extremes.

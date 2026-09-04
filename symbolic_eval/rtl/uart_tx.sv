@@ -1,7 +1,7 @@
 // uart_tx.sv — 8-N-1 UART transmitter (textbook §3.11). 10-bit shift register
 // with a baud divider. Accepts a byte via a one-cycle `start` pulse when
-// `ready`. The io_block derives `start` from a single acceptance edge, so a
-// held io_req never re-triggers a byte.
+// `ready`. The value printer asserts start only while the transmitter is
+// ready; busy suppresses additional starts until the frame completes.
 `default_nettype none
 
 module uart_tx #(

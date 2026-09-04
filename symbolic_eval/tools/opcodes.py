@@ -2,9 +2,8 @@
 
 This module is the single source of truth for the instruction set, the value
 tags, and the fault codes. The assembler (asm20.py), the executable reference
-model (stack_model.py), the RTL package header generator, and the tests all
-import this module. Keeping one table prevents the failure mode where four
-hand-copied tables gradually diverge.
+model (stack_model.py), and the tests import this module. Handwritten RTL
+constants and testbench name tables are checked by scripts/check_isa.py.
 
 Book: Composable_Hardware_Patterns_for_Symbolic_Computers.md, Laboratory 1
 (ticket sources/, lines 4211-4569). Conventions:
@@ -13,7 +12,7 @@ Book: Composable_Hardware_Patterns_for_Symbolic_Computers.md, Laboratory 1
   target.
 - Stack effects use Forth notation: ( a b -- r ) means b is TOS (top0), a is
   NOS (top1).
-- The architectural machine is M = <pc, stack, output_stream, fault, halted>.
+- The architectural machine is M = <pc, stack, rstack, output_stream, fault, halted>.
 - No architectural mutation occurs before all checks for an instruction pass.
 - Opcodes not listed below are illegal -> BAD_OPCODE.
 """

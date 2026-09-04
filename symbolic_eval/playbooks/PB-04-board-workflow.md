@@ -9,10 +9,10 @@ synthesis time — changing programs means re-running `make bit`.
 source ~/fpga/oss-cad-suite/environment
 cd symbolic_eval
 make versions              # record tool versions
-make test                  # 123 tests: run these first, always
+make test                  # 197 tests, including complete state comparison
 make asm PROG=fib          # assemble programs/fib.asm -> build/fib.hex
 make bit PROG=fib          # synth -> PnR -> pack (copies fib.hex to prog.hex)
-make load                  # openFPGALoader over the RP2040 DirtyJTAG bridge
+make load PROG=fib         # keep PROG: load rebuilds its selected image
 ```
 
 Budget check after synthesis: `grep -E "CC_BRAM_20K|CC_MULT" build/yosys.log`
@@ -49,7 +49,7 @@ Examples: `T1:00000001` = BOOL(true), `T0:00000037` = INT(55).
 ## Restarting a run
 
 The FPGA button (active-low) is wired as a global experiment abort: press =
-async reset, release = synchronous restart from the initial image. No reload
+synchronized assertion, release = synchronous restart from the initial image. No reload
 needed — press it while a terminal is attached to `ACM0` and watch the output
 again.
 

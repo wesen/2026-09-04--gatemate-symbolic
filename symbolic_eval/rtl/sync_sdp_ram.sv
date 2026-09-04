@@ -16,7 +16,7 @@ module sync_sdp_ram #(
   input  logic [$clog2(DEPTH)-1:0] wr_addr,
   input  logic [WIDTH-1:0]      wr_data,
   // read port (simple dual port: one write + one read per cycle; in this
-  // design they never target the same address in the same cycle)
+  // design incidental same-address read results during a spill are unused)
   input  logic [$clog2(DEPTH)-1:0] rd_addr,
   output logic [WIDTH-1:0]      rd_data
 );

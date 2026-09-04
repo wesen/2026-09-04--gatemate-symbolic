@@ -14,12 +14,12 @@ you commit.
    `test_model.py` case: minimum-depth behavior, each fault case, and (if the
    opcode is reachable in odd states) a constructed-state test.
 3. **`rtl/symbolic_types_pkg.sv`** — add the `OP_*` localparam (keep the value in
-   sync with the table; there is no generator).
+   sync with the table; `scripts/check_isa.py` verifies these handwritten mirrors).
 4. **Both cores** — `rtl/stack_core.sv` **and** `rtl/stack_core_bram.sv`:
    - `EXECUTE`: the case branch (use `symbolic_types_pkg::`-qualified labels!),
-     stage complete next-state data (`npc_d`, `ndepth_d`, write descriptors).
+     stage complete next-state data (`npc_d`, `ndepth_d`, `nrdepth_d`, write descriptors).
    - `COMMIT`: apply the staged representation change (stack write, cache update).
-   - Remember the single-mutation-owner rule: registers only change in `COMMIT`
+   - Remember the single-mutation-owner rule: architectural PC and stacks only change in `COMMIT`
      (and at `EMIT` acceptance in `S_OUTPUT_WAIT`).
 5. **Both testbenches** — `sim/tb_stack_core.sv` **and**
    `sim/tb_stack_core_bram.sv`: extend `op_name()` with the mnemonic. A missed
