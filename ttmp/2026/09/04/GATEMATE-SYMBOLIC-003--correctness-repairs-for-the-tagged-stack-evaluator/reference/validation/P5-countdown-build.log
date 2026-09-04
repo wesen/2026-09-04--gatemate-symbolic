@@ -1,0 +1,487 @@
+python3 tools/asm20.py programs/countdown.asm -o build -n countdown
+programs/countdown.asm: 15 words -> build/countdown.hex
+cp build/countdown.hex build/prog.hex
+yosys -ql build/yosys.log scripts/synth.ys
+Warning: Replacing memory \rstack_q with list of registers. See rtl/stack_core_bram.sv:770
+Warning: Resizing cell port top.u_rom.mem.0.0.A_DO from 10 bits to 20 bits.
+        2   CC_BRAM_20K
+      581   CC_L2T4
+        1   CC_MULT
+nextpnr-himbaechel -l build/nextpnr.log --device CCGM1A1 \
+  --json build/top.json \
+  -o ccf=constraints/olimex_gatematea1_evb.ccf -o out=build/top.txt \
+  --sdc constraints/top.sdc --router router2 --seed 2
+Info: Using uarch 'gatemate' for device 'CCGM1A1'
+Info: Using timing mode 'WORST'.
+Info: Using performance mode 'SPEED'.
+Info: constraining clock net 'clk_10m' to 10.00 MHz
+
+Info: Parsing CCF file..
+Info: Assign cell region based on attributes..
+Info: Packing constants..
+Info: Running cleanups..
+Info: Packing IOs..
+Info:     Constraining '$iopadmap$top.fpga_but' to pad 'IO_SB_B7'.
+Info:     Constraining '$iopadmap$top.clk_10m' to pad 'IO_SB_A8'.
+Info:     Constraining '$iopadmap$top.uart_rx_pin' to pad 'IO_SA_A6'.
+Info:     Constraining '$iopadmap$top.user_led' to pad 'IO_SB_B6'.
+Info:     Constraining '$iopadmap$top.uart_tx_pin' to pad 'IO_SA_B6'.
+Info: Insert clocking cells..
+Info: Packing PLLs..
+Info: Sort BUFGs..
+Info: Packing BUFGs..
+Info: Packing IO SELs..
+Info: Packing misc..
+Info: Packing RAMs..
+Info: Packing SERDES..
+Info: Packing multipliers...
+Info:     Configuring '$flatten\u_core.$mul$rtl/stack_core_bram.sv:197$206' as a 34-bit * 34-bit = 64-bit multiplier.
+Info:         Created 392 CPEs.
+Info: Packing ADDFs..
+Info: Packing CPEs..
+Info: Removing unused constants..
+Info:     Removed unused VCC cell.
+Info:     Removed unused GND cell.
+Info: Fix cell assigned regions..
+Info: Checksum: 0x775207e0
+
+Info: Device utilisation:
+Info: 	            USR_RSTN:       1/      1   100%
+Info: 	            CPE_COMP:      85/  20480     0%
+Info: 	         CPE_CPLINES:     121/  20480     0%
+Info: 	               IOSEL:       5/    162     3%
+Info: 	                GPIO:       5/    162     3%
+Info: 	               CLKIN:       1/      1   100%
+Info: 	              GLBOUT:       1/      1   100%
+Info: 	                 PLL:       0/      4     0%
+Info: 	            CFG_CTRL:       0/      1     0%
+Info: 	              SERDES:       0/      1     0%
+Info: 	              CPE_LT:    3126/  40960     7%
+Info: 	              CPE_FF:     804/  40960     1%
+Info: 	           CPE_RAMIO:     146/  40960     0%
+Info: 	            RAM_HALF:       2/     64     3%
+
+Info: Placed 0 cells based on constraints.
+Info: Creating initial analytic placement for 1713 cells, random placement wirelen = 256983.
+Info:     at initial placer iter 0, wirelen = 6133
+Info:     at initial placer iter 1, wirelen = 5641
+Info:     at initial placer iter 2, wirelen = 5540
+Info:     at initial placer iter 3, wirelen = 5575
+Info: Running main analytical placer, max placement attempts per cell = 2360964.
+Info:     at iteration #1, type ALL: wirelen solved = 5419, spread = 41951, legal = 52621; time = 0.19s
+Info:     at iteration #2, type ALL: wirelen solved = 6966, spread = 32885, legal = 40615; time = 0.19s
+Info:     at iteration #3, type ALL: wirelen solved = 8292, spread = 28991, legal = 41705; time = 0.21s
+Info:     at iteration #4, type ALL: wirelen solved = 9521, spread = 29235, legal = 41091; time = 0.18s
+Info:     at iteration #5, type ALL: wirelen solved = 10420, spread = 28037, legal = 40194; time = 0.11s
+Info:     at iteration #6, type ALL: wirelen solved = 11409, spread = 25062, legal = 38944; time = 0.15s
+Info:     at iteration #7, type ALL: wirelen solved = 12270, spread = 22325, legal = 35352; time = 0.13s
+Info:     at iteration #8, type ALL: wirelen solved = 12363, spread = 22806, legal = 31702; time = 0.15s
+Info:     at iteration #9, type ALL: wirelen solved = 12886, spread = 23654, legal = 34634; time = 0.18s
+Info:     at iteration #10, type ALL: wirelen solved = 14157, spread = 20615, legal = 31373; time = 0.13s
+Info:     at iteration #11, type ALL: wirelen solved = 14341, spread = 23986, legal = 31173; time = 0.13s
+Info:     at iteration #12, type ALL: wirelen solved = 14674, spread = 24149, legal = 29150; time = 0.14s
+Info:     at iteration #13, type ALL: wirelen solved = 15233, spread = 22275, legal = 32122; time = 0.13s
+Info:     at iteration #14, type ALL: wirelen solved = 16702, spread = 23104, legal = 33655; time = 0.11s
+Info:     at iteration #15, type ALL: wirelen solved = 17076, spread = 23269, legal = 32937; time = 0.11s
+Info:     at iteration #16, type ALL: wirelen solved = 17368, spread = 23928, legal = 33109; time = 0.09s
+Info:     at iteration #17, type ALL: wirelen solved = 18426, spread = 23999, legal = 33429; time = 0.09s
+Info: HeAP Placer Time: 3.15s
+Info:   of which solving equations: 1.09s
+Info:   of which spreading cells: 0.29s
+Info:   of which strict legalisation: 1.08s
+
+Info: Running simulated annealing placer for refinement.
+Info:   at iteration #1: temp = 0.000000, timing cost = 137, wirelen = 29632
+Info:   at iteration #5: temp = 0.000000, timing cost = 103, wirelen = 24762
+Info:   at iteration #10: temp = 0.000000, timing cost = 99, wirelen = 23618
+Info:   at iteration #15: temp = 0.000000, timing cost = 92, wirelen = 23229
+Info:   at iteration #20: temp = 0.000000, timing cost = 91, wirelen = 23119
+Info:   at iteration #20: temp = 0.000000, timing cost = 91, wirelen = 23132 
+Info: SA placement time 6.36s
+
+Info: Max frequency for clock 'u_core.clk': 67.63 MHz (PASS at 10.00 MHz)
+
+Info: Max delay <async> -> posedge u_core.clk: 2.83 ns
+
+Info: Slack histogram:
+Info:  legend: * represents 7 endpoint(s)
+Info:          + represents [1,7) endpoint(s)
+Info: [ 85213,  85918) |+
+Info: [ 85918,  86623) |+
+Info: [ 86623,  87328) | 
+Info: [ 87328,  88033) |+
+Info: [ 88033,  88738) |****+
+Info: [ 88738,  89443) |**********+
+Info: [ 89443,  90148) |****+
+Info: [ 90148,  90853) |*********+
+Info: [ 90853,  91558) |***********+
+Info: [ 91558,  92263) |*****************+
+Info: [ 92263,  92968) |****************+
+Info: [ 92968,  93673) |***************+
+Info: [ 93673,  94378) |***************+
+Info: [ 94378,  95083) |*****************+
+Info: [ 95083,  95788) |****************+
+Info: [ 95788,  96493) |***************************+
+Info: [ 96493,  97198) |************+
+Info: [ 97198,  97903) |**************+
+Info: [ 97903,  98608) |************************************************************ 
+Info: [ 98608,  99313) |************+
+Info: Checksum: 0x7ecca750
+Info: Repacking RAMs..
+Info: Repacking CPEs..
+Info: Remove unused clocking cells..
+Info: Routing multipliers...
+Info: Routing clock nets...
+Info:     routing net 'u_core.clk' to 806 users
+Info: Clock router time 5.11s.
+Info: Running router2...
+Info: Setting up routing resources...
+Info: Running main router loop...
+Info:     iter=1 wires=102278 overused=6594 overuse=7018 resources=3528 overused=289 overuse=353 archfail=NA
+Info:     iter=2 wires=107499 overused=2846 overuse=2886 resources=3232 overused=82 overuse=90 archfail=NA
+Info:     iter=3 wires=108741 overused=1494 overuse=1502 resources=3193 overused=34 overuse=40 archfail=NA
+Info:     iter=4 wires=109482 overused=845 overuse=845 resources=3206 overused=22 overuse=22 archfail=NA
+Info:     iter=5 wires=110417 overused=533 overuse=533 resources=3087 overused=11 overuse=11 archfail=NA
+Info:     iter=6 wires=110778 overused=308 overuse=308 resources=3094 overused=10 overuse=11 archfail=NA
+Info:     iter=7 wires=111163 overused=227 overuse=227 resources=3084 overused=8 overuse=8 archfail=NA
+Info:     iter=8 wires=111417 overused=169 overuse=169 resources=3061 overused=6 overuse=6 archfail=NA
+Info:     iter=9 wires=111506 overused=119 overuse=119 resources=3074 overused=3 overuse=3 archfail=NA
+Info:     iter=10 wires=111664 overused=83 overuse=83 resources=3078 overused=5 overuse=5 archfail=NA
+Info:     iter=11 wires=111773 overused=72 overuse=72 resources=3074 overused=3 overuse=3 archfail=NA
+Info:     iter=12 wires=111788 overused=54 overuse=54 resources=3065 overused=2 overuse=2 archfail=NA
+Info:     iter=13 wires=111800 overused=49 overuse=49 resources=3067 overused=1 overuse=1 archfail=NA
+Info:     iter=14 wires=111821 overused=47 overuse=47 resources=3071 overused=2 overuse=2 archfail=NA
+Info:     iter=15 wires=111817 overused=41 overuse=41 resources=3064 overused=0 overuse=0 archfail=NA
+Info:     iter=16 wires=111851 overused=46 overuse=46 resources=3062 overused=0 overuse=0 archfail=NA
+Info:     iter=17 wires=111899 overused=40 overuse=40 resources=3062 overused=0 overuse=0 archfail=NA
+Info:     iter=18 wires=111919 overused=38 overuse=38 resources=3067 overused=0 overuse=0 archfail=NA
+Info:     iter=19 wires=111882 overused=42 overuse=42 resources=3055 overused=0 overuse=0 archfail=NA
+Info:     iter=20 wires=111917 overused=35 overuse=35 resources=3063 overused=0 overuse=0 archfail=NA
+Info:     iter=21 wires=111898 overused=32 overuse=32 resources=3058 overused=0 overuse=0 archfail=NA
+Info:     iter=22 wires=111923 overused=31 overuse=31 resources=3058 overused=0 overuse=0 archfail=NA
+Info:     iter=23 wires=111932 overused=27 overuse=27 resources=3056 overused=0 overuse=0 archfail=NA
+Info:     iter=24 wires=111917 overused=32 overuse=32 resources=3049 overused=0 overuse=0 archfail=NA
+Info:     iter=25 wires=111931 overused=30 overuse=30 resources=3056 overused=0 overuse=0 archfail=NA
+Info:     iter=26 wires=111935 overused=27 overuse=27 resources=3056 overused=0 overuse=0 archfail=NA
+Info:     iter=27 wires=111942 overused=25 overuse=25 resources=3056 overused=0 overuse=0 archfail=NA
+Info:     iter=28 wires=111938 overused=25 overuse=25 resources=3056 overused=0 overuse=0 archfail=NA
+Info:     iter=29 wires=111936 overused=20 overuse=20 resources=3044 overused=0 overuse=0 archfail=NA
+Info:     iter=30 wires=111941 overused=17 overuse=17 resources=3044 overused=0 overuse=0 archfail=NA
+Info:     iter=31 wires=111949 overused=16 overuse=16 resources=3044 overused=0 overuse=0 archfail=NA
+Info:     iter=32 wires=111952 overused=14 overuse=14 resources=3044 overused=0 overuse=0 archfail=NA
+Info:     iter=33 wires=111946 overused=16 overuse=16 resources=3044 overused=0 overuse=0 archfail=NA
+Info:     iter=34 wires=111949 overused=14 overuse=14 resources=3044 overused=0 overuse=0 archfail=NA
+Info:     iter=35 wires=111950 overused=13 overuse=13 resources=3044 overused=0 overuse=0 archfail=NA
+Info:     iter=36 wires=111950 overused=13 overuse=13 resources=3044 overused=0 overuse=0 archfail=NA
+Info:     iter=37 wires=111965 overused=12 overuse=12 resources=3044 overused=0 overuse=0 archfail=NA
+Info:     iter=38 wires=111964 overused=13 overuse=13 resources=3044 overused=0 overuse=0 archfail=NA
+Info:     iter=39 wires=111981 overused=10 overuse=10 resources=3044 overused=0 overuse=0 archfail=NA
+Info:     iter=40 wires=111964 overused=13 overuse=13 resources=3044 overused=0 overuse=0 archfail=NA
+Info:     iter=41 wires=111981 overused=11 overuse=11 resources=3044 overused=0 overuse=0 archfail=NA
+Info:     iter=42 wires=111987 overused=9 overuse=9 resources=3054 overused=0 overuse=0 archfail=NA
+Info:     iter=43 wires=111991 overused=9 overuse=9 resources=3054 overused=0 overuse=0 archfail=NA
+Info:     iter=44 wires=111989 overused=8 overuse=8 resources=3054 overused=0 overuse=0 archfail=NA
+Info:     iter=45 wires=111991 overused=8 overuse=8 resources=3054 overused=0 overuse=0 archfail=NA
+Info:     iter=46 wires=111989 overused=8 overuse=8 resources=3054 overused=0 overuse=0 archfail=NA
+Info:     iter=47 wires=111991 overused=8 overuse=8 resources=3054 overused=0 overuse=0 archfail=NA
+Info:     iter=48 wires=111991 overused=8 overuse=8 resources=3054 overused=0 overuse=0 archfail=NA
+Info:     iter=49 wires=111991 overused=8 overuse=8 resources=3054 overused=0 overuse=0 archfail=NA
+Info:     iter=50 wires=111994 overused=8 overuse=8 resources=3054 overused=0 overuse=0 archfail=NA
+Info:     iter=51 wires=111991 overused=8 overuse=8 resources=3054 overused=0 overuse=0 archfail=NA
+Info:     iter=52 wires=112002 overused=7 overuse=7 resources=3054 overused=0 overuse=0 archfail=NA
+Info:     iter=53 wires=112002 overused=7 overuse=7 resources=3054 overused=0 overuse=0 archfail=NA
+Info:     iter=54 wires=112005 overused=7 overuse=7 resources=3051 overused=0 overuse=0 archfail=NA
+Info:     iter=55 wires=112004 overused=6 overuse=6 resources=3051 overused=0 overuse=0 archfail=NA
+Info:     iter=56 wires=112004 overused=6 overuse=6 resources=3051 overused=0 overuse=0 archfail=NA
+Info:     iter=57 wires=112004 overused=6 overuse=6 resources=3051 overused=0 overuse=0 archfail=NA
+Info:     iter=58 wires=112004 overused=6 overuse=6 resources=3051 overused=0 overuse=0 archfail=NA
+Info:     iter=59 wires=112004 overused=6 overuse=6 resources=3051 overused=0 overuse=0 archfail=NA
+Info:     iter=60 wires=112001 overused=6 overuse=6 resources=3051 overused=0 overuse=0 archfail=NA
+Info:     iter=61 wires=112001 overused=6 overuse=6 resources=3051 overused=0 overuse=0 archfail=NA
+Info:     iter=62 wires=112001 overused=6 overuse=6 resources=3051 overused=0 overuse=0 archfail=NA
+Info:     iter=63 wires=112001 overused=6 overuse=6 resources=3051 overused=0 overuse=0 archfail=NA
+Info:     iter=64 wires=112001 overused=6 overuse=6 resources=3051 overused=0 overuse=0 archfail=NA
+Info:     iter=65 wires=112001 overused=6 overuse=6 resources=3051 overused=0 overuse=0 archfail=NA
+Info:     iter=66 wires=112001 overused=6 overuse=6 resources=3051 overused=0 overuse=0 archfail=NA
+Info:     iter=67 wires=112001 overused=6 overuse=6 resources=3051 overused=0 overuse=0 archfail=NA
+Info:     iter=68 wires=112001 overused=6 overuse=6 resources=3051 overused=0 overuse=0 archfail=NA
+Info:     iter=69 wires=112001 overused=6 overuse=6 resources=3051 overused=0 overuse=0 archfail=NA
+Info:     iter=70 wires=112001 overused=6 overuse=6 resources=3051 overused=0 overuse=0 archfail=NA
+Info:     iter=71 wires=112001 overused=6 overuse=6 resources=3051 overused=0 overuse=0 archfail=NA
+Info:     iter=72 wires=112008 overused=5 overuse=5 resources=3048 overused=0 overuse=0 archfail=NA
+Info:     iter=73 wires=112008 overused=5 overuse=5 resources=3048 overused=0 overuse=0 archfail=NA
+Info:     iter=74 wires=112008 overused=5 overuse=5 resources=3048 overused=0 overuse=0 archfail=NA
+Info:     iter=75 wires=112021 overused=4 overuse=4 resources=3048 overused=0 overuse=0 archfail=NA
+Info:     iter=76 wires=112008 overused=5 overuse=5 resources=3048 overused=0 overuse=0 archfail=NA
+Info:     iter=77 wires=112020 overused=5 overuse=5 resources=3048 overused=0 overuse=0 archfail=NA
+Info:     iter=78 wires=112023 overused=3 overuse=3 resources=3052 overused=0 overuse=0 archfail=NA
+Info:     iter=79 wires=112026 overused=2 overuse=2 resources=3052 overused=0 overuse=0 archfail=NA
+Info:     iter=80 wires=112025 overused=4 overuse=4 resources=3052 overused=0 overuse=0 archfail=NA
+Info:     iter=81 wires=112026 overused=2 overuse=2 resources=3052 overused=0 overuse=0 archfail=NA
+Info:     iter=82 wires=112025 overused=4 overuse=4 resources=3052 overused=0 overuse=0 archfail=NA
+Info:     iter=83 wires=112043 overused=3 overuse=3 resources=3052 overused=0 overuse=0 archfail=NA
+Info:     iter=84 wires=112036 overused=3 overuse=3 resources=3052 overused=0 overuse=0 archfail=NA
+Info:     iter=85 wires=112052 overused=1 overuse=1 resources=3052 overused=0 overuse=0 archfail=NA
+Info:     iter=86 wires=112036 overused=3 overuse=3 resources=3052 overused=0 overuse=0 archfail=NA
+Info:     iter=87 wires=112054 overused=2 overuse=2 resources=3052 overused=0 overuse=0 archfail=NA
+Info:     iter=88 wires=112038 overused=3 overuse=3 resources=3052 overused=0 overuse=0 archfail=NA
+Info:     iter=89 wires=112056 overused=1 overuse=1 resources=3052 overused=0 overuse=0 archfail=NA
+Info:     iter=90 wires=112056 overused=0 overuse=0 resources=3052 overused=0 overuse=0 archfail=0
+Info: Router2 time 11.26s
+Info: Running router1 to check that route is legal...
+
+Info: Routing..
+Info: Setting up routing queue.
+Info: Routing 0 arcs.
+Info:            |   (re-)routed arcs  |   delta    | remaining|       time spent     |
+Info:    IterCnt |  w/ripup   wo/ripup |  w/r  wo/r |      arcs| batch(sec) total(sec)|
+Info:          0 |        0          0 |    0     0 |         0|       0.28       0.28|
+Info: Routing complete.
+Info: Router1 time 0.28s
+Info: Checksum: 0xc091eea7
+
+Info: Critical path report for clock 'u_core.clk' (posedge -> posedge):
+Info:       type curr  total name
+Info:   clk-to-q  0.59  0.59 Source $auto$ff.cc:337:slice$18840.DOUT
+Info:    routing  2.96  3.55 Net u_core.tc_o[1] (27,113) -> (27,111)
+Info:                          Sink $abc$30060$auto$blifparse.cc:397:parse_blif$30355.D0_10
+Info:                          Defined in:
+Info:                               rtl/stack_core_bram.sv:68.23-68.27
+Info:      logic  0.61  4.16 Source $abc$30060$auto$blifparse.cc:397:parse_blif$30355.OUT
+Info:    routing  4.09  8.26 Net $abc$30060$new_n1730 (27,111) -> (3,120)
+Info:                          Sink $abc$30060$auto$blifparse.cc:397:parse_blif$30563.D1_00
+Info:      logic  0.57  8.83 Source $abc$30060$auto$blifparse.cc:397:parse_blif$30563.OUT
+Info:    routing  3.68  12.51 Net $abc$30060$new_n1938 (3,120) -> (8,92)
+Info:                          Sink $abc$30060$auto$blifparse.cc:397:parse_blif$30564.D0_10
+Info:      logic  0.55  13.06 Source $abc$30060$auto$blifparse.cc:397:parse_blif$30564.OUT
+Info:    routing  1.81  14.86 Net u_core.a_w[1] (8,92) -> (4,96)
+Info:                          Sink $flatten\u_core.$mul$rtl/stack_core_bram.sv:197$206$col0$row0$a_passthru_upper.IN1
+Info:                          Defined in:
+Info:                               rtl/stack_core_bram.sv:182.33-182.36
+Info:      logic  0.61  15.47 Source $flatten\u_core.$mul$rtl/stack_core_bram.sv:197$206$col0$row0$a_passthru_upper.OUT
+Info:    routing  1.68  17.15 Net $flatten\u_core.$mul$rtl/stack_core_bram.sv:197$206$col0$row0$a_passthru_upper$u_core.a_w[1]$a1_passthru (4,96) -> (5,96)
+Info:                          Sink $flatten\u_core.$mul$rtl/stack_core_bram.sv:197$206$col1$row0$mult_lower.IN1
+Info:      logic  0.59  17.75 Source $flatten\u_core.$mul$rtl/stack_core_bram.sv:197$206$col1$row0$mult_lower.COUTY1
+Info:    routing  0.00  17.75 Net $flatten\u_core.$mul$rtl/stack_core_bram.sv:197$206$col1$row0$mult_lower$u_core.b_w[1]$co0 (5,96) -> (5,97)
+Info:                          Sink $flatten\u_core.$mul$rtl/stack_core_bram.sv:197$206$col1$row1$mult_lower.CINY1
+Info:      logic  0.44  18.18 Source $flatten\u_core.$mul$rtl/stack_core_bram.sv:197$206$col1$row1$mult_lower.COUTX
+Info:    routing  0.00  18.18 Net $flatten\u_core.$mul$rtl/stack_core_bram.sv:197$206$col1$row1$mult_lower$so2 (5,97) -> (6,97)
+Info:                          Sink $flatten\u_core.$mul$rtl/stack_core_bram.sv:197$206$col2$row0$mult_lower.CINX
+Info:      logic  0.58  18.76 Source $flatten\u_core.$mul$rtl/stack_core_bram.sv:197$206$col2$row0$mult_lower.COUTY1
+Info:    routing  0.00  18.76 Net $flatten\u_core.$mul$rtl/stack_core_bram.sv:197$206$col2$row0$mult_lower$u_core.b_w[3]$co2 (6,97) -> (6,98)
+Info:                          Sink $flatten\u_core.$mul$rtl/stack_core_bram.sv:197$206$col2$row1$mult_lower.CINY1
+Info:      logic  0.44  19.20 Source $flatten\u_core.$mul$rtl/stack_core_bram.sv:197$206$col2$row1$mult_lower.COUTX
+Info:    routing  0.00  19.20 Net $flatten\u_core.$mul$rtl/stack_core_bram.sv:197$206$col2$row1$mult_lower$so2 (6,98) -> (7,98)
+Info:                          Sink $flatten\u_core.$mul$rtl/stack_core_bram.sv:197$206$col3$row0$mult_lower.CINX
+Info:      logic  0.58  19.78 Source $flatten\u_core.$mul$rtl/stack_core_bram.sv:197$206$col3$row0$mult_lower.COUTY1
+Info:    routing  0.00  19.78 Net $flatten\u_core.$mul$rtl/stack_core_bram.sv:197$206$col3$row0$mult_lower$u_core.b_w[5]$co4 (7,98) -> (7,99)
+Info:                          Sink $flatten\u_core.$mul$rtl/stack_core_bram.sv:197$206$col3$row1$mult_lower.CINY1
+Info:      logic  0.44  20.21 Source $flatten\u_core.$mul$rtl/stack_core_bram.sv:197$206$col3$row1$mult_lower.COUTX
+Info:    routing  0.00  20.21 Net $flatten\u_core.$mul$rtl/stack_core_bram.sv:197$206$col3$row1$mult_lower$so2 (7,99) -> (8,99)
+Info:                          Sink $flatten\u_core.$mul$rtl/stack_core_bram.sv:197$206$col4$row0$mult_lower.CINX
+Info:      logic  0.58  20.79 Source $flatten\u_core.$mul$rtl/stack_core_bram.sv:197$206$col4$row0$mult_lower.COUTY1
+Info:    routing  0.00  20.79 Net $flatten\u_core.$mul$rtl/stack_core_bram.sv:197$206$col4$row0$mult_lower$u_core.b_w[7]$co6 (8,99) -> (8,100)
+Info:                          Sink $flatten\u_core.$mul$rtl/stack_core_bram.sv:197$206$col4$row1$mult_lower.CINY1
+Info:      logic  0.46  21.25 Source $flatten\u_core.$mul$rtl/stack_core_bram.sv:197$206$col4$row1$mult_lower.COUTY2
+Info:    routing  0.00  21.25 Net $flatten\u_core.$mul$rtl/stack_core_bram.sv:197$206$col4$row1$mult_lower$u_core.b_w[7]$co7 (8,100) -> (8,101)
+Info:                          Sink $flatten\u_core.$mul$rtl/stack_core_bram.sv:197$206$col4$row2$mult_lower.CINY2
+Info:      logic  0.22  21.47 Source $flatten\u_core.$mul$rtl/stack_core_bram.sv:197$206$col4$row2$mult_lower.COUTX
+Info:    routing  0.00  21.47 Net $flatten\u_core.$mul$rtl/stack_core_bram.sv:197$206$col4$row2$mult_lower$so2 (8,101) -> (9,101)
+Info:                          Sink $flatten\u_core.$mul$rtl/stack_core_bram.sv:197$206$col5$row1$mult_lower.CINX
+Info:      logic  0.58  22.05 Source $flatten\u_core.$mul$rtl/stack_core_bram.sv:197$206$col5$row1$mult_lower.COUTY1
+Info:    routing  0.00  22.05 Net $flatten\u_core.$mul$rtl/stack_core_bram.sv:197$206$col5$row1$mult_lower$u_core.b_w[9]$co8 (9,101) -> (9,102)
+Info:                          Sink $flatten\u_core.$mul$rtl/stack_core_bram.sv:197$206$col5$row2$mult_lower.CINY1
+Info:      logic  0.46  22.51 Source $flatten\u_core.$mul$rtl/stack_core_bram.sv:197$206$col5$row2$mult_lower.COUTY2
+Info:    routing  0.00  22.51 Net $flatten\u_core.$mul$rtl/stack_core_bram.sv:197$206$col5$row2$mult_lower$u_core.b_w[9]$co9 (9,102) -> (9,103)
+Info:                          Sink $flatten\u_core.$mul$rtl/stack_core_bram.sv:197$206$col5$row3$mult_lower.CINY2
+Info:      logic  0.22  22.73 Source $flatten\u_core.$mul$rtl/stack_core_bram.sv:197$206$col5$row3$mult_lower.COUTX
+Info:    routing  0.00  22.73 Net $flatten\u_core.$mul$rtl/stack_core_bram.sv:197$206$col5$row3$mult_lower$so2 (9,103) -> (10,103)
+Info:                          Sink $flatten\u_core.$mul$rtl/stack_core_bram.sv:197$206$col6$row2$mult_lower.CINX
+Info:      logic  0.58  23.30 Source $flatten\u_core.$mul$rtl/stack_core_bram.sv:197$206$col6$row2$mult_lower.COUTY1
+Info:    routing  0.00  23.30 Net $flatten\u_core.$mul$rtl/stack_core_bram.sv:197$206$col6$row2$mult_lower$u_core.b_w[11]$co10 (10,103) -> (10,104)
+Info:                          Sink $flatten\u_core.$mul$rtl/stack_core_bram.sv:197$206$col6$row3$mult_lower.CINY1
+Info:      logic  0.46  23.76 Source $flatten\u_core.$mul$rtl/stack_core_bram.sv:197$206$col6$row3$mult_lower.COUTY2
+Info:    routing  0.00  23.76 Net $flatten\u_core.$mul$rtl/stack_core_bram.sv:197$206$col6$row3$mult_lower$u_core.b_w[11]$co11 (10,104) -> (10,105)
+Info:                          Sink $flatten\u_core.$mul$rtl/stack_core_bram.sv:197$206$col6$row4$mult_lower.CINY2
+Info:      logic  0.22  23.98 Source $flatten\u_core.$mul$rtl/stack_core_bram.sv:197$206$col6$row4$mult_lower.COUTX
+Info:    routing  0.00  23.98 Net $flatten\u_core.$mul$rtl/stack_core_bram.sv:197$206$col6$row4$mult_lower$so2 (10,105) -> (11,105)
+Info:                          Sink $flatten\u_core.$mul$rtl/stack_core_bram.sv:197$206$col7$row3$mult_lower.CINX
+Info:      logic  0.58  24.56 Source $flatten\u_core.$mul$rtl/stack_core_bram.sv:197$206$col7$row3$mult_lower.COUTY1
+Info:    routing  0.00  24.56 Net $flatten\u_core.$mul$rtl/stack_core_bram.sv:197$206$col7$row3$mult_lower$u_core.b_w[13]$co12 (11,105) -> (11,106)
+Info:                          Sink $flatten\u_core.$mul$rtl/stack_core_bram.sv:197$206$col7$row4$mult_lower.CINY1
+Info:      logic  0.46  25.02 Source $flatten\u_core.$mul$rtl/stack_core_bram.sv:197$206$col7$row4$mult_lower.COUTY2
+Info:    routing  0.00  25.02 Net $flatten\u_core.$mul$rtl/stack_core_bram.sv:197$206$col7$row4$mult_lower$u_core.b_w[13]$co13 (11,106) -> (11,107)
+Info:                          Sink $flatten\u_core.$mul$rtl/stack_core_bram.sv:197$206$col7$row5$mult_lower.CINY2
+Info:      logic  0.22  25.24 Source $flatten\u_core.$mul$rtl/stack_core_bram.sv:197$206$col7$row5$mult_lower.COUTX
+Info:    routing  0.00  25.24 Net $flatten\u_core.$mul$rtl/stack_core_bram.sv:197$206$col7$row5$mult_lower$so2 (11,107) -> (12,107)
+Info:                          Sink $flatten\u_core.$mul$rtl/stack_core_bram.sv:197$206$col8$row4$mult_lower.CINX
+Info:      logic  0.58  25.82 Source $flatten\u_core.$mul$rtl/stack_core_bram.sv:197$206$col8$row4$mult_lower.COUTY1
+Info:    routing  0.00  25.82 Net $flatten\u_core.$mul$rtl/stack_core_bram.sv:197$206$col8$row4$mult_lower$u_core.b_w[15]$co14 (12,107) -> (12,108)
+Info:                          Sink $flatten\u_core.$mul$rtl/stack_core_bram.sv:197$206$col8$row5$mult_lower.CINY1
+Info:      logic  0.46  26.28 Source $flatten\u_core.$mul$rtl/stack_core_bram.sv:197$206$col8$row5$mult_lower.COUTY2
+Info:    routing  0.00  26.28 Net $flatten\u_core.$mul$rtl/stack_core_bram.sv:197$206$col8$row5$mult_lower$u_core.b_w[15]$co15 (12,108) -> (12,109)
+Info:                          Sink $flatten\u_core.$mul$rtl/stack_core_bram.sv:197$206$col8$row6$mult_lower.CINY2
+Info:      logic  0.22  26.49 Source $flatten\u_core.$mul$rtl/stack_core_bram.sv:197$206$col8$row6$mult_lower.COUTX
+Info:    routing  0.00  26.49 Net $flatten\u_core.$mul$rtl/stack_core_bram.sv:197$206$col8$row6$mult_lower$so2 (12,109) -> (13,109)
+Info:                          Sink $flatten\u_core.$mul$rtl/stack_core_bram.sv:197$206$col9$row5$mult_lower.CINX
+Info:      logic  0.58  27.07 Source $flatten\u_core.$mul$rtl/stack_core_bram.sv:197$206$col9$row5$mult_lower.COUTY1
+Info:    routing  0.00  27.07 Net $flatten\u_core.$mul$rtl/stack_core_bram.sv:197$206$col9$row5$mult_lower$u_core.b_w[17]$co16 (13,109) -> (13,110)
+Info:                          Sink $flatten\u_core.$mul$rtl/stack_core_bram.sv:197$206$col9$row6$mult_lower.CINY1
+Info:      logic  0.46  27.53 Source $flatten\u_core.$mul$rtl/stack_core_bram.sv:197$206$col9$row6$mult_lower.COUTY2
+Info:    routing  0.00  27.53 Net $flatten\u_core.$mul$rtl/stack_core_bram.sv:197$206$col9$row6$mult_lower$u_core.b_w[17]$co17 (13,110) -> (13,111)
+Info:                          Sink $flatten\u_core.$mul$rtl/stack_core_bram.sv:197$206$col9$row7$mult_lower.CINY2
+Info:      logic  0.22  27.75 Source $flatten\u_core.$mul$rtl/stack_core_bram.sv:197$206$col9$row7$mult_lower.COUTX
+Info:    routing  0.00  27.75 Net $flatten\u_core.$mul$rtl/stack_core_bram.sv:197$206$col9$row7$mult_lower$so2 (13,111) -> (14,111)
+Info:                          Sink $flatten\u_core.$mul$rtl/stack_core_bram.sv:197$206$col10$row6$mult_lower.CINX
+Info:      logic  0.58  28.33 Source $flatten\u_core.$mul$rtl/stack_core_bram.sv:197$206$col10$row6$mult_lower.COUTY1
+Info:    routing  0.00  28.33 Net $flatten\u_core.$mul$rtl/stack_core_bram.sv:197$206$col10$row6$mult_lower$u_core.b_w[19]$co18 (14,111) -> (14,112)
+Info:                          Sink $flatten\u_core.$mul$rtl/stack_core_bram.sv:197$206$col10$row7$mult_lower.CINY1
+Info:      logic  0.46  28.79 Source $flatten\u_core.$mul$rtl/stack_core_bram.sv:197$206$col10$row7$mult_lower.COUTY2
+Info:    routing  0.00  28.79 Net $flatten\u_core.$mul$rtl/stack_core_bram.sv:197$206$col10$row7$mult_lower$u_core.b_w[19]$co19 (14,112) -> (14,113)
+Info:                          Sink $flatten\u_core.$mul$rtl/stack_core_bram.sv:197$206$col10$row8$mult_lower.CINY2
+Info:      logic  0.22  29.01 Source $flatten\u_core.$mul$rtl/stack_core_bram.sv:197$206$col10$row8$mult_lower.COUTX
+Info:    routing  0.00  29.01 Net $flatten\u_core.$mul$rtl/stack_core_bram.sv:197$206$col10$row8$mult_lower$so2 (14,113) -> (15,113)
+Info:                          Sink $flatten\u_core.$mul$rtl/stack_core_bram.sv:197$206$col11$row7$mult_lower.CINX
+Info:      logic  0.58  29.58 Source $flatten\u_core.$mul$rtl/stack_core_bram.sv:197$206$col11$row7$mult_lower.COUTY1
+Info:    routing  0.00  29.58 Net $flatten\u_core.$mul$rtl/stack_core_bram.sv:197$206$col11$row7$mult_lower$u_core.b_w[21]$co20 (15,113) -> (15,114)
+Info:                          Sink $flatten\u_core.$mul$rtl/stack_core_bram.sv:197$206$col11$row8$mult_lower.CINY1
+Info:      logic  0.46  30.05 Source $flatten\u_core.$mul$rtl/stack_core_bram.sv:197$206$col11$row8$mult_lower.COUTY2
+Info:    routing  0.00  30.05 Net $flatten\u_core.$mul$rtl/stack_core_bram.sv:197$206$col11$row8$mult_lower$u_core.b_w[21]$co21 (15,114) -> (15,115)
+Info:                          Sink $flatten\u_core.$mul$rtl/stack_core_bram.sv:197$206$col11$row9$mult_lower.CINY2
+Info:      logic  0.22  30.26 Source $flatten\u_core.$mul$rtl/stack_core_bram.sv:197$206$col11$row9$mult_lower.COUTX
+Info:    routing  0.00  30.26 Net $flatten\u_core.$mul$rtl/stack_core_bram.sv:197$206$col11$row9$mult_lower$so2 (15,115) -> (16,115)
+Info:                          Sink $flatten\u_core.$mul$rtl/stack_core_bram.sv:197$206$col12$row8$mult_lower.CINX
+Info:      logic  0.58  30.84 Source $flatten\u_core.$mul$rtl/stack_core_bram.sv:197$206$col12$row8$mult_lower.COUTY1
+Info:    routing  0.00  30.84 Net $flatten\u_core.$mul$rtl/stack_core_bram.sv:197$206$col12$row8$mult_lower$u_core.b_w[23]$co22 (16,115) -> (16,116)
+Info:                          Sink $flatten\u_core.$mul$rtl/stack_core_bram.sv:197$206$col12$row9$mult_lower.CINY1
+Info:      logic  0.46  31.30 Source $flatten\u_core.$mul$rtl/stack_core_bram.sv:197$206$col12$row9$mult_lower.COUTY2
+Info:    routing  0.00  31.30 Net $flatten\u_core.$mul$rtl/stack_core_bram.sv:197$206$col12$row9$mult_lower$u_core.b_w[23]$co23 (16,116) -> (16,117)
+Info:                          Sink $flatten\u_core.$mul$rtl/stack_core_bram.sv:197$206$col12$row10$mult_lower.CINY2
+Info:      logic  0.22  31.52 Source $flatten\u_core.$mul$rtl/stack_core_bram.sv:197$206$col12$row10$mult_lower.COUTX
+Info:    routing  0.00  31.52 Net $flatten\u_core.$mul$rtl/stack_core_bram.sv:197$206$col12$row10$mult_lower$so2 (16,117) -> (17,117)
+Info:                          Sink $flatten\u_core.$mul$rtl/stack_core_bram.sv:197$206$col13$row9$mult_lower.CINX
+Info:      logic  0.58  32.10 Source $flatten\u_core.$mul$rtl/stack_core_bram.sv:197$206$col13$row9$mult_lower.COUTY1
+Info:    routing  0.00  32.10 Net $flatten\u_core.$mul$rtl/stack_core_bram.sv:197$206$col13$row9$mult_lower$u_core.b_w[25]$co24 (17,117) -> (17,118)
+Info:                          Sink $flatten\u_core.$mul$rtl/stack_core_bram.sv:197$206$col13$row10$mult_lower.CINY1
+Info:      logic  0.46  32.56 Source $flatten\u_core.$mul$rtl/stack_core_bram.sv:197$206$col13$row10$mult_lower.COUTY2
+Info:    routing  0.00  32.56 Net $flatten\u_core.$mul$rtl/stack_core_bram.sv:197$206$col13$row10$mult_lower$u_core.b_w[25]$co25 (17,118) -> (17,119)
+Info:                          Sink $flatten\u_core.$mul$rtl/stack_core_bram.sv:197$206$col13$row11$mult_lower.CINY2
+Info:      logic  0.22  32.77 Source $flatten\u_core.$mul$rtl/stack_core_bram.sv:197$206$col13$row11$mult_lower.COUTX
+Info:    routing  0.00  32.77 Net $flatten\u_core.$mul$rtl/stack_core_bram.sv:197$206$col13$row11$mult_lower$so2 (17,119) -> (18,119)
+Info:                          Sink $flatten\u_core.$mul$rtl/stack_core_bram.sv:197$206$col14$row10$mult_lower.CINX
+Info:      logic  0.58  33.35 Source $flatten\u_core.$mul$rtl/stack_core_bram.sv:197$206$col14$row10$mult_lower.COUTY1
+Info:    routing  0.00  33.35 Net $flatten\u_core.$mul$rtl/stack_core_bram.sv:197$206$col14$row10$mult_lower$u_core.b_w[27]$co26 (18,119) -> (18,120)
+Info:                          Sink $flatten\u_core.$mul$rtl/stack_core_bram.sv:197$206$col14$row11$mult_lower.CINY1
+Info:      logic  0.46  33.81 Source $flatten\u_core.$mul$rtl/stack_core_bram.sv:197$206$col14$row11$mult_lower.COUTY2
+Info:    routing  0.00  33.81 Net $flatten\u_core.$mul$rtl/stack_core_bram.sv:197$206$col14$row11$mult_lower$u_core.b_w[27]$co27 (18,120) -> (18,121)
+Info:                          Sink $flatten\u_core.$mul$rtl/stack_core_bram.sv:197$206$col14$row12$mult_lower.CINY2
+Info:      logic  0.22  34.03 Source $flatten\u_core.$mul$rtl/stack_core_bram.sv:197$206$col14$row12$mult_lower.COUTX
+Info:    routing  0.00  34.03 Net $flatten\u_core.$mul$rtl/stack_core_bram.sv:197$206$col14$row12$mult_lower$so2 (18,121) -> (19,121)
+Info:                          Sink $flatten\u_core.$mul$rtl/stack_core_bram.sv:197$206$col15$row11$mult_lower.CINX
+Info:      logic  0.58  34.61 Source $flatten\u_core.$mul$rtl/stack_core_bram.sv:197$206$col15$row11$mult_lower.COUTY1
+Info:    routing  0.00  34.61 Net $flatten\u_core.$mul$rtl/stack_core_bram.sv:197$206$col15$row11$mult_lower$u_core.b_w[29]$co28 (19,121) -> (19,122)
+Info:                          Sink $flatten\u_core.$mul$rtl/stack_core_bram.sv:197$206$col15$row12$mult_lower.CINY1
+Info:      logic  0.46  35.07 Source $flatten\u_core.$mul$rtl/stack_core_bram.sv:197$206$col15$row12$mult_lower.COUTY2
+Info:    routing  0.00  35.07 Net $flatten\u_core.$mul$rtl/stack_core_bram.sv:197$206$col15$row12$mult_lower$u_core.b_w[29]$co29 (19,122) -> (19,123)
+Info:                          Sink $flatten\u_core.$mul$rtl/stack_core_bram.sv:197$206$col15$row13$mult_lower.CINY2
+Info:      logic  0.22  35.29 Source $flatten\u_core.$mul$rtl/stack_core_bram.sv:197$206$col15$row13$mult_lower.COUTX
+Info:    routing  0.00  35.29 Net $flatten\u_core.$mul$rtl/stack_core_bram.sv:197$206$col15$row13$mult_lower$so2 (19,123) -> (20,123)
+Info:                          Sink $flatten\u_core.$mul$rtl/stack_core_bram.sv:197$206$col16$row12$mult_lower.CINX
+Info:      logic  0.58  35.86 Source $flatten\u_core.$mul$rtl/stack_core_bram.sv:197$206$col16$row12$mult_lower.COUTY1
+Info:    routing  0.00  35.86 Net $flatten\u_core.$mul$rtl/stack_core_bram.sv:197$206$col16$row12$mult_lower$u_core.b_w[31]$co30 (20,123) -> (20,124)
+Info:                          Sink $flatten\u_core.$mul$rtl/stack_core_bram.sv:197$206$col16$row13$mult_lower.CINY1
+Info:      logic  0.46  36.33 Source $flatten\u_core.$mul$rtl/stack_core_bram.sv:197$206$col16$row13$mult_lower.COUTY2
+Info:    routing  0.00  36.33 Net $flatten\u_core.$mul$rtl/stack_core_bram.sv:197$206$col16$row13$mult_lower$u_core.b_w[31]$co31 (20,124) -> (20,125)
+Info:                          Sink $flatten\u_core.$mul$rtl/stack_core_bram.sv:197$206$col16$row14$mult_lower.CINY2
+Info:      logic  0.22  36.54 Source $flatten\u_core.$mul$rtl/stack_core_bram.sv:197$206$col16$row14$mult_lower.COUTX
+Info:    routing  0.00  36.54 Net $flatten\u_core.$mul$rtl/stack_core_bram.sv:197$206$col16$row14$mult_lower$so2 (20,125) -> (21,125)
+Info:                          Sink $flatten\u_core.$mul$rtl/stack_core_bram.sv:197$206$col17$row13$mult_lower.CINX
+Info:      logic  0.58  37.12 Source $flatten\u_core.$mul$rtl/stack_core_bram.sv:197$206$col17$row13$mult_lower.COUTY1
+Info:    routing  0.00  37.12 Net $flatten\u_core.$mul$rtl/stack_core_bram.sv:197$206$col17$row13$mult_lower$u_core.b_w[31]$co32 (21,125) -> (21,126)
+Info:                          Sink $flatten\u_core.$mul$rtl/stack_core_bram.sv:197$206$col17$row14$mult_lower.CINY1
+Info:      logic  0.46  37.58 Source $flatten\u_core.$mul$rtl/stack_core_bram.sv:197$206$col17$row14$mult_lower.COUTY2
+Info:    routing  0.00  37.58 Net $flatten\u_core.$mul$rtl/stack_core_bram.sv:197$206$col17$row14$mult_lower$u_core.b_w[31]$co33 (21,126) -> (21,127)
+Info:                          Sink $flatten\u_core.$mul$rtl/stack_core_bram.sv:197$206$col17$row15$mult_lower.CINY2
+Info:      logic  0.18  37.76 Source $flatten\u_core.$mul$rtl/stack_core_bram.sv:197$206$col17$row15$mult_lower.CPOUT2
+Info:    routing  2.97  40.73 Net u_core.mul_w[63] (21,127) -> (32,126)
+Info:                          Sink $abc$30060$auto$blifparse.cc:397:parse_blif$31016.D1_10
+Info:                          Defined in:
+Info:                               rtl/stack_core_bram.sv:192.37-192.42
+Info:      logic  0.47  41.20 Source $abc$30060$auto$blifparse.cc:397:parse_blif$31016.OUT
+Info:    routing  1.34  42.55 Net $abc$30060$new_n2391 (32,126) -> (34,126)
+Info:                          Sink $abc$30060$auto$blifparse.cc:397:parse_blif$31019.D0_00
+Info:      logic  0.55  43.09 Source $abc$30060$auto$blifparse.cc:397:parse_blif$31019.OUT
+Info:    routing  1.30  44.39 Net $abc$30060$new_n2394 (34,126) -> (34,127)
+Info:                          Sink $abc$30060$auto$blifparse.cc:397:parse_blif$31021.D0_01
+Info:      logic  0.56  44.95 Source $abc$30060$auto$blifparse.cc:397:parse_blif$31021.OUT
+Info:    routing  0.66  45.61 Net $abc$30060$new_n2396 (34,127) -> (34,127)
+Info:                          Sink $abc$30060$auto$blifparse.cc:397:parse_blif$31026.D0_10
+Info:      logic  0.55  46.16 Source $abc$30060$auto$blifparse.cc:397:parse_blif$31026.OUT
+Info:    routing  2.03  48.19 Net $abc$30060$new_n2401 (34,127) -> (33,123)
+Info:                          Sink $abc$30060$auto$blifparse.cc:397:parse_blif$31069.D0_00
+Info:      logic  0.55  48.74 Source $abc$30060$auto$blifparse.cc:397:parse_blif$31069.OUT
+Info:    routing  2.11  50.85 Net $abc$30060$new_n2444 (33,123) -> (31,112)
+Info:                          Sink $abc$30060$auto$blifparse.cc:397:parse_blif$31086.D0_10
+Info:      logic  0.61  51.46 Source $abc$30060$auto$blifparse.cc:397:parse_blif$31086.OUT
+Info:    routing  1.75  53.21 Net $abc$30060$new_n2461 (31,112) -> (30,117)
+Info:                          Sink $abc$30060$auto$blifparse.cc:397:parse_blif$31106.D0_10
+Info:      logic  0.55  53.75 Source $abc$30060$auto$blifparse.cc:397:parse_blif$31106.OUT
+Info:    routing  1.36  55.12 Net $abc$30060$new_n2481 (30,117) -> (29,117)
+Info:                          Sink $abc$30060$auto$blifparse.cc:397:parse_blif$31466.D0_01
+Info:      logic  0.47  55.59 Source $abc$30060$auto$blifparse.cc:397:parse_blif$31466.OUT
+Info:    routing  3.53  59.12 Net $abc$30060$new_n2841 (29,117) -> (30,115)
+Info:                          Sink $abc$30060$auto$blifparse.cc:397:parse_blif$31467.D1_00
+Info:      logic  0.64  59.76 Source $abc$30060$auto$blifparse.cc:397:parse_blif$31467.OUT
+Info:    routing  1.32  61.08 Net $abc$30060$new_n2842 (30,115) -> (30,115)
+Info:                          Sink $abc$30060$auto$blifparse.cc:397:parse_blif$31473.D1_00
+Info:      logic  0.57  61.65 Source $abc$30060$auto$blifparse.cc:397:parse_blif$31473.OUT
+Info:    routing  0.00  61.65 Net $abc$30060$auto$rtlil.cc:3314:And$17974 (30,115) -> (30,115)
+Info:                          Sink $auto$ff.cc:337:slice$18434.DIN
+Info:      setup  0.10  61.75 Source $auto$ff.cc:337:slice$18434.DIN
+Info: 29.16 ns logic, 32.59 ns routing
+
+Info: Critical path report for cross-domain path '<async>' -> 'posedge u_core.clk':
+Info:       type curr  total name
+Info:     source  0.00  0.00 Source $iopadmap$top.fpga_but.Y
+Info:    routing  0.00  0.00 Net $iopadmap$top.fpga_but$conn$Y (0,101) -> (0,101)
+Info:                          Sink $iopadmap$top.fpga_but$iosel.GPIO_IN
+Info:      logic  0.38  0.38 Source $iopadmap$top.fpga_but$iosel.IN1
+Info:    routing  1.79  2.17 Net $iopadmap$fpga_but (0,101) -> (3,89)
+Info:                          Sink $auto$ff.cc:337:slice$21054$lt.D0_10
+Info:      logic  0.55  2.72 Source $auto$ff.cc:337:slice$21054$lt.OUT
+Info:    routing  0.00  2.72 Net $auto$ff.cc:337:slice$21054$di (3,89) -> (3,89)
+Info:                          Sink $auto$ff.cc:337:slice$21054.DIN
+Info:      setup  0.10  2.82 Source $auto$ff.cc:337:slice$21054.DIN
+Info: 1.03 ns logic, 1.79 ns routing
+
+Info: Max frequency for clock 'u_core.clk': 16.19 MHz (PASS at 10.00 MHz)
+
+Info: Max delay <async> -> posedge u_core.clk: 2.82 ns
+
+Info: Slack histogram:
+Info:  legend: * represents 8 endpoint(s)
+Info:          + represents [1,8) endpoint(s)
+Info: [ 38248,  41278) |+
+Info: [ 41278,  44308) |***+
+Info: [ 44308,  47338) |*****+
+Info: [ 47338,  50368) | 
+Info: [ 50368,  53398) | 
+Info: [ 53398,  56428) | 
+Info: [ 56428,  59458) | 
+Info: [ 59458,  62488) |+
+Info: [ 62488,  65518) |+
+Info: [ 65518,  68548) |+
+Info: [ 68548,  71578) |+
+Info: [ 71578,  74608) |+
+Info: [ 74608,  77638) |*+
+Info: [ 77638,  80668) |***+
+Info: [ 80668,  83698) |*************+
+Info: [ 83698,  86728) |*********+
+Info: [ 86728,  89758) |********************+
+Info: [ 89758,  92788) |***************************************************+
+Info: [ 92788,  95818) |*****************************************************+
+Info: [ 95818,  98848) |************************************************************ 
+Info: Update configuration based on routing..
+
+Info: Program finished normally.
+gmpack build/top.txt build/top.bit

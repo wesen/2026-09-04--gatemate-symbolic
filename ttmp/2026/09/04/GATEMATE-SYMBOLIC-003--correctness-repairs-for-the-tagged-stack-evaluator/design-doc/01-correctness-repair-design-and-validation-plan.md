@@ -2,17 +2,36 @@
 Title: Correctness repair design and validation plan
 Ticket: GATEMATE-SYMBOLIC-003
 Status: active
-Topics: [fpga, gatemate, symbolic-computers, architecture]
+Topics:
+    - fpga
+    - gatemate
+    - symbolic-computers
+    - architecture
 DocType: design-doc
 Intent: long-term
 Owners: []
-RelatedFiles: []
+RelatedFiles:
+    - Path: repo://symbolic_eval/Makefile
+      Note: Reproducible router seed
+    - Path: repo://symbolic_eval/rtl/stack_core.sv
+      Note: Complete candidate staging and wide architectural PC
+    - Path: repo://symbolic_eval/rtl/stack_core_bram.sv
+      Note: DUP checks, fault context, and return retirement
+    - Path: repo://symbolic_eval/sim/program_generation.py
+      Note: Executable legal and fault generation
+    - Path: repo://symbolic_eval/sim/state_checks.py
+      Note: Full model and RTL state comparison
+    - Path: repo://symbolic_eval/sim/test_verification.py
+      Note: Capacity, flags, arithmetic and metadata regressions
+    - Path: repo://symbolic_eval/tools/asm20.py
+      Note: Strict syntax and common capacity validation
 ExternalSources: []
 Summary: Implement the findings from GATEMATE-SYMBOLIC-002 with precise retirement and stronger verification.
 LastUpdated: 2026-09-04T16:00:00-04:00
 WhatFor: Guide implementation and review of the demonstrated correctness defects.
 WhenToUse: Implementing, validating, or extending the repaired evaluator.
 ---
+
 
 # Correctness repair design
 
@@ -76,3 +95,69 @@ Print one overall plan and a plan/status slip before/after each of P1–P5 using
 ## Risks and alternatives
 
 The main interface change is wider architectural PCs plus explicit fetch flags. All in-repository consumers change in the same phase. The extra BRAM operand-context read trades a cycle for reliable fault metadata. Full snapshots are simulation-only and cost no FPGA memory. The model is still not a formal proof, so independent boundary assertions and fixed expected examples remain valuable.
+
+## Implemented outcome and review map
+
+The implementation follows the five phases above. Core logic changes are committed
+as `a3b50fb` (guards), `3213364` (retirement/context), and `c9805a6` (ROM escape).
+Verification is `662843a`; current-contract documentation and explicit router seed
+are `49807a4`. The detailed diary records pre-fix failures separately from successful
+post-fix runs, including checked edit-script failures that occurred before edits
+were written.
+
+The suite grew from 123 to **197 passing tests**. Full-state observation now covers
+all live data values and return addresses, accepted output including flags, and
+architectural stability between retirements and on faults. The final run records
+all nine fault kinds, every opcode, both JZ outcomes, and cache-count transitions.
+Constructed RTL states test noncanonical Booleans, signed arithmetic extremes, and
+flag-bearing values. The 514-slot hardware capacity is tested directly. Board
+simulation tests button restart during computation and partial serial transmission.
+
+The initial router seed eventually converged at 15.60 MHz after a long period of
+alternating congestion. It completed before the attempted cancellation, so it was
+not a failed build. Explicit seed 2 completed in 72 router iterations at **15.52 MHz**
+(PASS at 10 MHz). Both use two BRAM blocks and one multiplier; the reported packing
+step creates 392 CPEs. The seed is now a Makefile parameter rather than an implicit
+router default.
+
+Hardware capture results and bitstream hashes are in
+`reference/validation/P5-hardware.json`, with raw serial bytes and loader/build logs
+per program. These captures compare the actual board stream against the model for
+Fibonacci, arithmetic, type-fault, and countdown. UART silence for type-fault confirms
+only absence of emitted bytes; complete fault-state preservation is established by
+simulation, not by this serial capture. Trace RAM remains a future extension.
+
+The initial board-discovery command ran inside a sandbox without USB/serial access.
+An outside-sandbox check found DirtyJTAG and both ttyACM interfaces; no physical
+reconnection was necessary. Build provenance starts from `662843a`; seed selection
+and comment/documentation-only updates were pending during the first image builds
+and are committed in `49807a4`. Per-image SHA256 values identify the actual tested
+bitstreams independently of that working-tree timing.
+
+### File-level implementation references
+
+- `rtl/stack_core.sv`: default candidate depth, staged return depth, wider PCs,
+  fetch bounds and explicit fetch context.
+- `rtl/stack_core_bram.sv`: empty DUP guard, generalized operand-context read,
+  staged return depth, fetch-context states and wider addresses.
+- `rtl/top.sv`: wider debug PC and new fetch-flag port wiring.
+- `tools/asm20.py`: syntax rejection, common pre-emission capacity check, ROM limits.
+- `sim/tb_stack_core*.sv`: simulation state injection, STATE/XFER observations,
+  return/data/PC stability and fault-context checks.
+- `sim/state_checks.py`: executable-model comparison of complete snapshots and
+  transfers; aggregated execution coverage.
+- `sim/program_generation.py`: validated bounded fragments with nested calls and
+  explicit branch joins; genuine fault injection.
+- `sim/test_repairs.py`, `sim/test_verification.py`: minimized review regressions,
+  ROM/capacity boundaries, full-width values, metadata and generator properties.
+- `sim/tb_top.sv`, `sim/test_top.py`: reset-aware serial decoder, restart during
+  compute/transmit, final LED assertion.
+- `scripts/check_isa.py`: handwritten metadata/name mirror validation.
+- `Makefile`, README, PB-01 through PB-04: explicit routing seed and current APIs,
+  observations, test count, program selection and reset behavior.
+
+Archived edit scripts in this ticket reproduce the investigation steps from their
+original starting revisions; they are intentionally checked one-shot edits, not an
+idempotent installer. Normal verification uses `make test`, `make bit PROG=fib`,
+and the standalone ISA check. Final evidence consistency is checked by ticket
+`scripts/13-validate-delivery.py` without reprinting or reprogramming the board.

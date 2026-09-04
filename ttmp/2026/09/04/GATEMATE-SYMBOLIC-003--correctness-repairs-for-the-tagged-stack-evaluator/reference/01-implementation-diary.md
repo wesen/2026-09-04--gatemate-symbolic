@@ -245,3 +245,115 @@ Run make test; inspect test_onepast_push, test_last_word_cases, and test_largest
 ### Technical details
 
 Fetch is not assigned an ISA opcode. Trace format uses the explicit flag to print FETCH, matching the existing Python model. Unsupported core memory dimensions fail elaboration.
+
+## Step 5: P4 complete architectural verification
+
+Both core harnesses now compare every live 40-bit data value, every return address, all trace/fault fields, and accepted output words against the model. Added per-cycle stability assertions, model-validated random fragments, production BRAM capacity tests, constructed states, and restart-under-load board simulation.
+
+### Prompt Context
+
+**User prompt (verbatim):**
+
+(see Step 1)
+
+**Assistant interpretation:** Implement the repair design in phases with reproducible validation, focused commits, detailed diary entries, and printed phase boundaries.
+
+**Inferred user intent:** Turn the documented review findings into a reliable working evaluator with visible progress and reviewable evidence.
+
+**Commit (code/work):** P3 c9805a6; P4 commit recorded in changelog after validation
+
+### What I did
+
+Added state_checks.py, program_generation.py, test_verification.py, and scripts/check_isa.py. Instrumented both benches for complete snapshots and architectural stability. Added simulation-only initial-stack injection, full flag transfer checks, signed overflow/noncanonical cases, and button resets during compute and UART transmission.
+
+### Why
+
+Trace depth alone cannot prove values or return addresses correct. Legal random generation must execute intended instructions rather than terminate accidentally in padding or type faults.
+
+### What worked
+
+P4-state: 175 passed. Generator and capacity: 183 passed. Constructed-state focused suite: 20 passed. Reset suite: 8 passed. Final complete suite: 197 passed in 18.80s. Coverage counters are archived in P4-coverage.json.
+
+### What didn't work
+
+The reset-test edit script initially raised AssertionError because the expected loop used j++ while the source uses j = j + 1. The guard stopped before writing files. Corrected the exact pattern; reset tests passed on the first applied version. No RTL correctness failure was discovered by the strengthened checker.
+
+### What I learned
+
+The original fixes withstand full live-state comparison, including a 514-value stack and nonzero flags that the UART text omits. All 17 opcodes and both JZ outcomes occur in the legal generator coverage test.
+
+### What was tricky to build
+
+Snapshot order must be RAM oldest-first then live top1/top0, not always two cached entries. The UART decoder must cancel a partially sampled byte on reset and resume only after reset releases.
+
+### What warrants a second pair of eyes
+
+Check snapshot extraction independently of model semantics, and verify that no invalid physical stack slots are compared. Initial-stack injection occurs only in simulation after reset and before fetch.
+
+### What should be done in the future
+
+P5 will rebuild the actual board image, update docs, and attempt hardware evidence if the board becomes available.
+
+### Code review instructions
+
+Run make test and inspect build/verification-coverage.json; metadata drift is checked by test_isa_mirrors.
+
+### Technical details
+
+A user-input request asked for the board to be connected because no ttyACM devices were present. Simulation-only instrumentation consumes no hardware BRAM. Test count is 197.
+
+## Step 6: P5 hardware discrepancy before completion
+
+Synthesis, routing, and packing succeeded, and three board programs matched the model. Countdown exposed a new hardware-only discrepancy: the final Boolean true is transmitted with INT tag zero while its payload is still one. P5 is not yet complete.
+
+### Prompt Context
+
+**User prompt (verbatim):**
+
+(see Step 1)
+
+**Assistant interpretation:** Implement the repair design in phases with reproducible validation, focused commits, detailed diary entries, and printed phase boundaries.
+
+**Inferred user intent:** Turn the documented review findings into a reliable working evaluator with visible progress and reviewable evidence.
+
+**Commit (code/work):** 49807a4 — docs: align repaired machine contracts and pin router seed
+
+### What I did
+
+Built with seed 2, captured UART before loading each image, and compared actual bytes with model output. Preserved image hashes, serial bytes, loader logs, and P5-hardware.json.
+
+### Why
+
+Board verification is required to distinguish behavioral simulation from implemented FPGA behavior.
+
+### What worked
+
+Fibonacci emitted T0:00000037; arithmetic emitted T1:00000001; typefault emitted no bytes. Routing seed 2 passed 10 MHz at 15.52 MHz in 72 iterations. All 197 simulations passed.
+
+### What didn't work
+
+Countdown assertion: expected final T1:00000001 but actual final T0:00000001. First five integer lines match. P5-hardware.exit is 1 and the failed image hash is 529d4ea26584df5833f25c60a89a835145a09bd0b326ee62b79de43283f6c253. Initial lsusb inside the sandbox returned unable to initialize libusb: -99; outside-sandbox discovery found the board. The original routing run completed before cancellation, so tmux send-keys returned cannot find pane rather than stopping a running process.
+
+### What I learned
+
+Full behavioral simulation does not by itself validate memory inference and technology mapping. A selective tag discrepancy needs a bounded reproduction before deciding which implementation layer to change.
+
+### What was tricky to build
+
+The first routing seed appeared stuck on one resource conflict but eventually converged at 15.60 MHz. Seed 2 completed much faster. The board was present but hidden by sandbox device restrictions.
+
+### What warrants a second pair of eyes
+
+Do not mark the final phase complete while countdown differs. UART silence for typefault still does not directly expose fault metadata.
+
+### What should be done in the future
+
+Reproduce the countdown capture and run the production-depth configuration; allow at most two repair attempts under the user debugging rule.
+
+### Code review instructions
+
+Inspect P5-hardware.json and P5-countdown-uart.bin; compare the last tag against programs/countdown.asm.
+
+### Technical details
+
+No repair for this new hardware discrepancy has been attempted yet. Final completion slip has not been printed.

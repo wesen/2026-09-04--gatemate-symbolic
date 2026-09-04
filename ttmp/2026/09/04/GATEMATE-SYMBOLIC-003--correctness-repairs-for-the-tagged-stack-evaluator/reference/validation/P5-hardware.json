@@ -1,0 +1,38 @@
+[
+  {
+    "program": "fib",
+    "image_sha256": "11f7d7d4c0f96431740887b7e5e548c601c078adefba9c64f314eaadc57c609f",
+    "expected": "T0:00000037\r\n",
+    "actual": "T0:00000037\r\n",
+    "match": true,
+    "model_fault": null,
+    "evidence_limit": null
+  },
+  {
+    "program": "arith",
+    "image_sha256": "f0dead4a01c148bf5e6aa3f3226d7d636620074f1f5895bec9df5f33fba71fa1",
+    "expected": "T1:00000001\r\n",
+    "actual": "T1:00000001\r\n",
+    "match": true,
+    "model_fault": null,
+    "evidence_limit": null
+  },
+  {
+    "program": "typefault",
+    "image_sha256": "e045fa4110e54aec5b8b70f5d28304c1bac209f07a27f4e35a7130e196634397",
+    "expected": "",
+    "actual": "",
+    "match": true,
+    "model_fault": "TYPE_FAULT",
+    "evidence_limit": "UART silence alone does not expose precise hardware fault state"
+  },
+  {
+    "program": "countdown",
+    "image_sha256": "529d4ea26584df5833f25c60a89a835145a09bd0b326ee62b79de43283f6c253",
+    "expected": "T0:00000005\r\nT0:00000004\r\nT0:00000003\r\nT0:00000002\r\nT0:00000001\r\nT1:00000001\r\n",
+    "actual": "T0:00000005\r\nT0:00000004\r\nT0:00000003\r\nT0:00000002\r\nT0:00000001\r\nT0:00000001\r\n",
+    "match": false,
+    "model_fault": null,
+    "evidence_limit": null
+  }
+]
