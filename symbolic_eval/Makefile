@@ -20,9 +20,10 @@ BUILD    := build
 
 PROG     ?= arith
 
-# All synthesizable RTL. top.sv arrives in P5; until then blink_top is the
-# synthesis target (P0 evidence).
-RTL_SYNTH := $(RTL_DIR)/reset_sync.sv $(RTL_DIR)/blink_top.sv
+# All synthesizable RTL for the evaluator top (blink_top remains for the
+# P0 bring-up sim target).
+RTL_SYNTH := rtl/symbolic_types_pkg.sv rtl/sync_sdp_ram.sv rtl/stack_core_bram.sv \
+            rtl/program_rom.sv rtl/rv_reg.sv rtl/reset_sync.sv rtl/uart_tx.sv rtl/top.sv
 
 .PHONY: all versions test sim synth pnr bit load asm clean
 all: sim bit
@@ -55,21 +56,26 @@ sim:
 	  $(RTL_DIR)/blink_top.sv $(RTL_DIR)/reset_sync.sv $(SIM_DIR)/CC_USR_RSTN.sv $(SIM_DIR)/tb_blink.sv
 	vvp $(BUILD)/blink.vvp
 
-synth:
+synth: asm
 	@mkdir -p $(BUILD)
-	yosys -ql $(BUILD)/yosys.log -p 'read_verilog -defer -sv $(RTL_SYNTH); synth_gatemate -top blink_top -luttree -nomx8; stat; write_json $(BUILD)/blink.json;'
+	cp $(BUILD)/$(PROG).hex $(BUILD)/prog.hex
+	yosys -ql $(BUILD)/yosys.log scripts/synth.ys
+	@grep -E "CC_BRAM_20K|CC_L2T4|CC_MULT" $(BUILD)/yosys.log | tail -3
 
+# Place and route (nextpnr-himbaechel, router2, CCF + SDC).
 pnr: synth
 	nextpnr-himbaechel -l $(BUILD)/nextpnr.log --device $(DEVICE) \
-	  --json $(BUILD)/blink.json \
-	  -o ccf=$(CCF) -o out=$(BUILD)/blink.txt \
+	  --json $(BUILD)/top.json \
+	  -o ccf=$(CCF) -o out=$(BUILD)/top.txt \
 	  --sdc $(SDC) --router router2
 
+# Bitstream (gmpack).
 bit: pnr
-	gmpack $(BUILD)/blink.txt $(BUILD)/blink.bit
+	gmpack $(BUILD)/top.txt $(BUILD)/top.bit
 
+# Load to board over the RP2040 DirtyJTAG bridge.
 load: bit
-	openFPGALoader -b $(BOARD) $(BUILD)/blink.bit
+	openFPGALoader -b $(BOARD) $(BUILD)/top.bit
 
 clean:
 	rm -f $(BUILD)/*.{json,txt,bit,vcd,log,vvp,hex,bin,lst,out}

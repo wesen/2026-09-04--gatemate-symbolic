@@ -15,7 +15,6 @@
 
 module tb_stack_core_bram;
 
-  import symbolic_types_pkg::*;
 
   parameter int ROM_DEPTH   = 1024;
   parameter int DEEP_DEPTH  = 30;   // total stack = DEEP_DEPTH + 2

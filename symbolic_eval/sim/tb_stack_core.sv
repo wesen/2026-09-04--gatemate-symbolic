@@ -14,7 +14,6 @@
 
 module tb_stack_core;
 
-  import symbolic_types_pkg::*;
 
   parameter int ROM_DEPTH   = 1024;
   parameter int STACK_DEPTH = 32;

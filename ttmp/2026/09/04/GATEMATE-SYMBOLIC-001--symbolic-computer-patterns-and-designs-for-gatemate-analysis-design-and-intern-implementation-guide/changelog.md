@@ -77,3 +77,12 @@ Impl P4: BRAM top-cache core + random/boundary differential tests, 101 green
 
 - /home/manuel/code/wesen/2026-09-04--gatemate-symbolic/symbolic_eval/rtl/stack_core_bram.sv — BRAM core with top cache
 
+
+## 2026-09-04
+
+Impl P5: board top, 2 BRAM / 392 CPE / 17 MHz, both exit criteria verified on hardware (T1:00000001; typefault silent)
+
+### Related Files
+
+- /home/manuel/code/wesen/2026-09-04--gatemate-symbolic/symbolic_eval/rtl/top.sv — board integration
+

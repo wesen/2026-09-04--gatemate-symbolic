@@ -23,8 +23,11 @@ package symbolic_types_pkg;
   } value_tag_t;
 
   // value40: tag[3:0], flags[3:0], payload[31:0]
+  // (tag is a plain vector: yosys cannot propagate enum-typed struct fields
+  // out of package functions; the value_tag_t enum remains the documentation
+  // of the tag assignment)
   typedef struct packed {
-    value_tag_t  tag;
+    logic [3:0]  tag;
     logic [3:0]  flags;
     logic [31:0] payload;
   } value40_t;
@@ -62,25 +65,29 @@ package symbolic_types_pkg;
   localparam [1:0] EV_FAULT  = 2'd2;
 
   // ------------------------------------------------------------ helpers
+  // (classic function-name assignment style: yosys does not accept the
+  // `return` statement in functions)
   function automatic value40_t mk_int(input logic signed [31:0] x);
     value40_t v;
-    v.tag     = TAG_INT;
+    v.tag     = 4'h0;              // TAG_INT
     v.flags   = 4'h0;
     v.payload = x;
-    return v;
+    mk_int = v;
   endfunction
 
   function automatic value40_t mk_bool(input logic b);
     value40_t v;
-    v.tag     = TAG_BOOL;
+    v.tag     = 4'h1;              // TAG_BOOL
     v.flags   = 4'h0;
     v.payload = b ? 32'd1 : 32'd0;
-    return v;
+    mk_bool = v;
   endfunction
 
   // Sign-extend a 15-bit immediate.
   function automatic logic signed [31:0] sx15(input logic [14:0] imm);
-    return {{17{imm[14]}}, imm};
+    logic signed [31:0] r;
+    r = {{17{imm[14]}}, imm};
+    sx15 = r;
   endfunction
 
 endpackage

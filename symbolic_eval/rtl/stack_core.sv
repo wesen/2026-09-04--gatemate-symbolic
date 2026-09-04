@@ -33,10 +33,10 @@ module stack_core #(
   output logic [$clog2(ROM_DEPTH)-1:0] trace_pc_new,
   output logic [4:0]  trace_op,
   output logic [$clog2(STACK_DEPTH+1)-1:0] trace_depth,
-  output logic [1:0]  trace_event,          // EV_COMMIT / EV_OUTPUT / EV_FAULT
-  output logic [2:0]  trace_fault,           // valid when EV_FAULT
+  output logic [1:0]  trace_event,          // symbolic_types_pkg::EV_COMMIT / symbolic_types_pkg::EV_OUTPUT / symbolic_types_pkg::EV_FAULT
+  output logic [2:0]  trace_fault,           // valid when symbolic_types_pkg::EV_FAULT
   output logic [3:0]  trace_tag1, trace_tag0,
-  output logic [3:0]  trace_out_tag,         // valid when EV_OUTPUT
+  output logic [3:0]  trace_out_tag,         // valid when symbolic_types_pkg::EV_OUTPUT
   output logic [31:0] trace_out_payload,
 
   // Output channel (ready/valid).
@@ -58,8 +58,6 @@ module stack_core #(
   output logic [$clog2(STACK_DEPTH+1)-1:0] depth_o
 );
 
-  import symbolic_types_pkg::*;
-
   // ---------------------------------------------------------------- states
   typedef enum logic [3:0] {
     S_RESET, S_FETCH, S_FETCH_WAIT, S_DECODE, S_EXECUTE, S_COMMIT,
@@ -71,7 +69,7 @@ module stack_core #(
   // ------------------------------------------------- architectural state
   logic [$clog2(ROM_DEPTH)-1:0]        pc_q, pc_d;
   logic [$clog2(STACK_DEPTH+1)-1:0]    depth_q, depth_d;
-  value40_t                            stack_q [0:STACK_DEPTH-1];
+  symbolic_types_pkg::value40_t                            stack_q [0:STACK_DEPTH-1];
   logic [19:0]                         ir_q, ir_d;
   logic [31:0]                         seq_q, seq_d;
   logic                                halted_q, halted_d;
@@ -83,9 +81,12 @@ module stack_core #(
   logic                                wrB_en_q, wrB_en_d;
   logic [$clog2(STACK_DEPTH)-1:0]      wrA_addr_q, wrA_addr_d;
   logic [$clog2(STACK_DEPTH)-1:0]      wrB_addr_q, wrB_addr_d;
-  value40_t                            wrA_data_q, wrA_data_d;
-  value40_t                            wrB_data_q, wrB_data_d;
-  value40_t                            pending_q, pending_d;
+  symbolic_types_pkg::value40_t wrA_data_q;
+  symbolic_types_pkg::value40_t wrA_data_d;
+  symbolic_types_pkg::value40_t wrB_data_q;
+  symbolic_types_pkg::value40_t wrB_data_d;
+  symbolic_types_pkg::value40_t pending_q;
+  symbolic_types_pkg::value40_t pending_d;
   logic                                halt_stage_q, halt_stage_d;
 
   // fault record
@@ -117,7 +118,8 @@ module stack_core #(
   assign op  = ir_q[19:15];
   assign imm = ir_q[14:0];
 
-  value40_t top0_w, top1_w;
+  symbolic_types_pkg::value40_t top0_w;
+  symbolic_types_pkg::value40_t top1_w;
   always_comb begin
     top0_w = '0;
     top1_w = '0;
@@ -202,42 +204,42 @@ module stack_core #(
       // mutated; EXECUTE only stages complete next-state data.
       S_EXECUTE: begin
         case (op)
-          OP_PUSH_S15, OP_PUSH_TRUE, OP_PUSH_FALSE: begin
+          symbolic_types_pkg::OP_PUSH_S15, symbolic_types_pkg::OP_PUSH_TRUE, symbolic_types_pkg::OP_PUSH_FALSE: begin
             if (depth_q == STACK_DEPTH[$clog2(STACK_DEPTH+1)-1:0]) begin
-              do_fault(F_STACK_OVERFLOW);
+              do_fault(symbolic_types_pkg::F_STACK_OVERFLOW);
             end else begin
               wrA_en_d   = 1'b1;
               wrA_addr_d = depth_q[$clog2(STACK_DEPTH)-1:0];
-              wrA_data_d = (op == OP_PUSH_S15)  ? mk_int(sx15(imm)) :
-                           (op == OP_PUSH_TRUE) ? mk_bool(1'b1)    :
-                                                  mk_bool(1'b0);
+              wrA_data_d = (op == symbolic_types_pkg::OP_PUSH_S15)  ? symbolic_types_pkg::mk_int(symbolic_types_pkg::sx15(imm)) :
+                           (op == symbolic_types_pkg::OP_PUSH_TRUE) ? symbolic_types_pkg::mk_bool(1'b1)    :
+                                                  symbolic_types_pkg::mk_bool(1'b0);
               ndepth_d = depth_q + 1'b1;
               npc_d    = pc_q + 1'b1;
               state_d  = S_COMMIT;
             end
           end
 
-          OP_ADD, OP_SUB, OP_MUL, OP_EQ, OP_LT: begin
+          symbolic_types_pkg::OP_ADD, symbolic_types_pkg::OP_SUB, symbolic_types_pkg::OP_MUL, symbolic_types_pkg::OP_EQ, symbolic_types_pkg::OP_LT: begin
             if (depth_q < 2) begin
-              do_fault(F_STACK_UNDERFLOW);
-            end else if (op != OP_EQ &&
-                         (top1_w.tag != TAG_INT || top0_w.tag != TAG_INT)) begin
-              do_fault(F_TYPE_FAULT);
-            end else if (op == OP_ADD && add_ovf) begin
-              do_fault(F_ARITH_OVERFLOW);
-            end else if (op == OP_SUB && sub_ovf) begin
-              do_fault(F_ARITH_OVERFLOW);
-            end else if (op == OP_MUL && mul_ovf) begin
-              do_fault(F_ARITH_OVERFLOW);
+              do_fault(symbolic_types_pkg::F_STACK_UNDERFLOW);
+            end else if (op != symbolic_types_pkg::OP_EQ &&
+                         (top1_w.tag != symbolic_types_pkg::TAG_INT || top0_w.tag != symbolic_types_pkg::TAG_INT)) begin
+              do_fault(symbolic_types_pkg::F_TYPE_FAULT);
+            end else if (op == symbolic_types_pkg::OP_ADD && add_ovf) begin
+              do_fault(symbolic_types_pkg::F_ARITH_OVERFLOW);
+            end else if (op == symbolic_types_pkg::OP_SUB && sub_ovf) begin
+              do_fault(symbolic_types_pkg::F_ARITH_OVERFLOW);
+            end else if (op == symbolic_types_pkg::OP_MUL && mul_ovf) begin
+              do_fault(symbolic_types_pkg::F_ARITH_OVERFLOW);
             end else begin
               wrA_en_d   = 1'b1;
               wrA_addr_d = depth_q - 2;
               unique case (op)
-                OP_ADD: wrA_data_d = mk_int(add_w[31:0]);
-                OP_SUB: wrA_data_d = mk_int(sub_w[31:0]);
-                OP_MUL: wrA_data_d = mk_int(mul_w[31:0]);
-                OP_EQ:  wrA_data_d = mk_bool(top1_w == top0_w);
-                OP_LT:  wrA_data_d = mk_bool($signed(top1_w.payload) <
+                symbolic_types_pkg::OP_ADD: wrA_data_d = symbolic_types_pkg::mk_int(add_w[31:0]);
+                symbolic_types_pkg::OP_SUB: wrA_data_d = symbolic_types_pkg::mk_int(sub_w[31:0]);
+                symbolic_types_pkg::OP_MUL: wrA_data_d = symbolic_types_pkg::mk_int(mul_w[31:0]);
+                symbolic_types_pkg::OP_EQ:  wrA_data_d = symbolic_types_pkg::mk_bool(top1_w == top0_w);
+                symbolic_types_pkg::OP_LT:  wrA_data_d = symbolic_types_pkg::mk_bool($signed(top1_w.payload) <
                                              $signed(top0_w.payload));
                 default: ;
               endcase
@@ -247,11 +249,11 @@ module stack_core #(
             end
           end
 
-          OP_DUP: begin
+          symbolic_types_pkg::OP_DUP: begin
             if (depth_q == 0) begin
-              do_fault(F_STACK_UNDERFLOW);
+              do_fault(symbolic_types_pkg::F_STACK_UNDERFLOW);
             end else if (depth_q == STACK_DEPTH[$clog2(STACK_DEPTH+1)-1:0]) begin
-              do_fault(F_STACK_OVERFLOW);
+              do_fault(symbolic_types_pkg::F_STACK_OVERFLOW);
             end else begin
               wrA_en_d   = 1'b1;
               wrA_addr_d = depth_q[$clog2(STACK_DEPTH)-1:0];
@@ -262,17 +264,17 @@ module stack_core #(
             end
           end
 
-          OP_DROP, OP_JZ: begin
+          symbolic_types_pkg::OP_DROP, symbolic_types_pkg::OP_JZ: begin
             if (depth_q == 0) begin
-              do_fault(F_STACK_UNDERFLOW);
-            end else if (op == OP_JZ && top0_w.tag != TAG_BOOL) begin
-              do_fault(F_TYPE_FAULT);
-            end else if (op == OP_JZ && top0_w.payload > 32'd1) begin
-              do_fault(F_NONCANON_BOOL);
-            end else if (op == OP_JZ && imm >= ROM_DEPTH[14:0]) begin
-              do_fault(F_BAD_BRANCH);
+              do_fault(symbolic_types_pkg::F_STACK_UNDERFLOW);
+            end else if (op == symbolic_types_pkg::OP_JZ && top0_w.tag != symbolic_types_pkg::TAG_BOOL) begin
+              do_fault(symbolic_types_pkg::F_TYPE_FAULT);
+            end else if (op == symbolic_types_pkg::OP_JZ && top0_w.payload > 32'd1) begin
+              do_fault(symbolic_types_pkg::F_NONCANON_BOOL);
+            end else if (op == symbolic_types_pkg::OP_JZ && imm >= ROM_DEPTH[14:0]) begin
+              do_fault(symbolic_types_pkg::F_BAD_BRANCH);
             end else begin
-              if (op == OP_JZ && top0_w.payload == 32'd0)
+              if (op == symbolic_types_pkg::OP_JZ && top0_w.payload == 32'd0)
                 npc_d = imm;
               else
                 npc_d = pc_q + 1'b1;
@@ -281,9 +283,9 @@ module stack_core #(
             end
           end
 
-          OP_SWAP: begin
+          symbolic_types_pkg::OP_SWAP: begin
             if (depth_q < 2) begin
-              do_fault(F_STACK_UNDERFLOW);
+              do_fault(symbolic_types_pkg::F_STACK_UNDERFLOW);
             end else begin
               wrA_en_d   = 1'b1;   // position NOS <- old TOS
               wrA_addr_d = depth_q - 2;
@@ -296,25 +298,25 @@ module stack_core #(
             end
           end
 
-          OP_JMP: begin
+          symbolic_types_pkg::OP_JMP: begin
             if (imm >= ROM_DEPTH[14:0]) begin
-              do_fault(F_BAD_BRANCH);
+              do_fault(symbolic_types_pkg::F_BAD_BRANCH);
             end else begin
               npc_d   = imm;
               state_d = S_COMMIT;
             end
           end
 
-          OP_EMIT: begin
+          symbolic_types_pkg::OP_EMIT: begin
             if (depth_q == 0) begin
-              do_fault(F_STACK_UNDERFLOW);
+              do_fault(symbolic_types_pkg::F_STACK_UNDERFLOW);
             end else begin
               pending_d = top0_w;
               state_d   = S_OUTPUT_WAIT;
             end
           end
 
-          OP_HALT: begin
+          symbolic_types_pkg::OP_HALT: begin
             halt_stage_d = 1'b1;
             npc_d        = pc_q;      // pc stays at HALT
             ndepth_d     = depth_q;
@@ -322,7 +324,7 @@ module stack_core #(
           end
 
           default: begin
-            do_fault(F_BAD_OPCODE);
+            do_fault(symbolic_types_pkg::F_BAD_OPCODE);
           end
         endcase
       end
@@ -338,7 +340,7 @@ module stack_core #(
         trace_pc_new_d = npc_q;
         trace_op_d     = op;
         trace_depth_d  = ndepth_q;
-        trace_event_d  = EV_COMMIT;
+        trace_event_d  = symbolic_types_pkg::EV_COMMIT;
         if (halt_stage_q) begin
           halted_d = 1'b1;
           state_d  = S_HALTED;
@@ -361,7 +363,7 @@ module stack_core #(
           trace_pc_new_d = pc_q + 1'b1;
           trace_op_d     = op;
           trace_depth_d  = depth_q - 1'b1;
-          trace_event_d  = EV_OUTPUT;
+          trace_event_d  = symbolic_types_pkg::EV_OUTPUT;
           trace_out_tag_d     = pending_q.tag;
           trace_out_payload_d = pending_q.payload;
           state_d        = S_FETCH;
@@ -399,7 +401,7 @@ module stack_core #(
     trace_pc_new_d = pc_q;      // precise: pc unchanged
     trace_op_d     = op;
     trace_depth_d  = depth_q;   // precise: depth unchanged
-    trace_event_d  = EV_FAULT;
+    trace_event_d  = symbolic_types_pkg::EV_FAULT;
     trace_fault_d  = code;
     trace_tag1_d   = top1_w.tag;
     trace_tag0_d   = top0_w.tag;
@@ -425,7 +427,7 @@ module stack_core #(
       pending_q     <= '0;
       halt_stage_q  <= 1'b0;
       fv_q          <= 1'b0;
-      fc_q          <= F_NONE;
+      fc_q          <= symbolic_types_pkg::F_NONE;
       fpc_q         <= '0;
       fop_q         <= '0;
       fdepth_q      <= '0;

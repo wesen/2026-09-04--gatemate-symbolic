@@ -1,0 +1,9 @@
+# synth.ys — synthesis script (MATE-16 pattern). The Makefile copies the
+# program image to build/prog.hex first.
+read_verilog -defer -sv -DPROG_HEX="build/prog.hex" rtl/program_rom.sv
+read_verilog -defer -sv rtl/symbolic_types_pkg.sv rtl/sync_sdp_ram.sv rtl/stack_core_bram.sv rtl/rv_reg.sv rtl/reset_sync.sv rtl/uart_tx.sv rtl/top.sv
+chparam -set ROM_DEPTH 1024 top
+chparam -set DEEP_DEPTH 512 top
+synth_gatemate -top top -luttree -nomx8
+stat
+write_json build/top.json

@@ -13,5 +13,5 @@
 - [x] P2: asm20.py assembler + programs <!-- t:r5ab -->
 - [x] P3: register-stack RTL + directed differential tests <!-- t:5dz8 -->
 - [x] P4: BRAM stack + top cache + random stall tests <!-- t:8yua -->
-- [ ] P5: board top + synthesis + budget + load <!-- t:g89i -->
+- [x] P5: board top + synthesis + budget + load <!-- t:g89i -->
 - [ ] P6: README, diary, wrap-up <!-- t:ezo5 -->
