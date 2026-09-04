@@ -1,0 +1,21 @@
+# Olimex GateMateA1-EVB pin constraints for the MATE-16 system.
+# Pins verified against the Cologne Chip datasheet package-pinout table
+# (see sources/board/gatemate-pin-reference.md).
+
+# 10 MHz oscillator (package pin for IO_SB_A8) and user LED (IO_SB_B6).
+Pin_in  "clk_10m"  Loc = "IO_SB_A8" | SCHMITT_TRIGGER=true;
+Pin_out "user_led" Loc = "IO_SB_B6";
+
+# FPGA user button (silkscreen FPGA_BUT1): LiteX platform file maps user_btn_n
+# -> IO_SB_B7 (active-LOW, the _n suffix). top.sv inverts so but_sync=1 means
+# pressed. (Confirmed against litex-boards olimex_gatemate_a1_evb.py, which
+# also matches user_led_n=IO_SB_B6 and clk0=IO_SB_A8.)
+Pin_in  "fpga_but" Loc = "IO_SB_B7";
+
+# Onboard UART through the RP2040 (no external wiring), per LiteX platform:
+#   serial.tx -> IO_SA_B6, serial.rx -> IO_SA_A6  (LiteX names tx/rx from the
+#   board/host perspective; the FPGA transmits on IO_SA_B6 and receives on
+#   IO_SA_A6). DBG-UART net names: TX=IO_SA_A6, RX=IO_SA_B6 per schematic;
+#   LiteX's tx/rx are host-side, so they swap. Using LiteX's mapping.
+Pin_out "uart_tx_pin" Loc = "IO_SA_B6";
+Pin_in  "uart_rx_pin" Loc = "IO_SA_A6";

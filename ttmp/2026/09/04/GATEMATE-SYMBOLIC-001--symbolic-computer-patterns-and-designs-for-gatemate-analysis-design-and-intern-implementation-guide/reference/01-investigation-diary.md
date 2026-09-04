@@ -242,3 +242,53 @@ Guardrails of the ticket-research skill: doctor-clean before upload, dry-run fir
 
 ### Technical details
 - Upload: "GATEMATE-SYMBOLIC-001 Intern Guide.pdf", toc-depth 2, 2 docs.
+
+## Step 5: Implementation P0 — repo bootstrap and board bring-up
+
+We started implementing the intern guide's plan as a new `symbolic_eval/` repo inside this
+ticket repo. P0 copies the verified board infrastructure from MATE-16 (constraints, reset
+synchronizer, UART transmitter, Makefile flow) and PCA-Z80 (sim-only CC_USR_RSTN model),
+builds the blink top, and proves the whole flow on the attached GateMateA1-EVB: sim PASS,
+synth/PnR/bit clean, bitstream loaded over DirtyJTAG.
+
+### Prompt Context
+
+**User prompt (verbatim):** "Implement, commit at appropriate intervals and keep a detailed diary as you work (using the diary format from the skill). Print out a brutalist work slip with the plan / different phases for the ticket. then before stsarting a phase, plrint a split about the phase, and print one when the phase is done."
+
+**Assistant interpretation:** Execute the intern guide's P0-P6 implementation plan now: real code, real tests, real hardware, commits and work slips per phase.
+
+**Inferred user intent:** Turn the design doc into a working, verified Laboratory 1 machine on the attached board, with the same diary/slip/commit discipline as the research phase.
+
+### What I did
+- Created `symbolic_eval/` with the guide §10 layout (constraints, rtl, sim, tools, programs, scripts, build).
+- Copied verified infra: `constraints/olimex_gatematea1_evb.ccf`, `constraints/top.sdc`, `rtl/reset_sync.sv`, `rtl/uart_tx.sv`, `rtl/blink_top.sv`, `sim/tb_blink.sv`, `sim/CC_USR_RSTN.sv`.
+- Wrote the Makefile (versions/test/sim/synth/pnr/bit/load) adapted from MATE-16.
+- Probed iverilog 14 package/struct/function support with a throwaway test — works (`o=0000000007`), so `symbolic_types_pkg.sv` with packed structs is safe for both iverilog and Yosys.
+- `make sim` -> PASS: blink self-test; `make bit` -> clean; `make load` -> "Load SRAM via JTAG: 100.00% Done" (LED blinking on board).
+
+### Why
+P0 of the guide: prove clock pin, LED pin, toolchain, config reset, and the evidence workflow before any core RTL exists.
+
+### What worked
+- The MATE-16 flow copies over with only path changes; the board (ttyACM0/1, DirtyJTAG via RP2040) loaded first try.
+
+### What didn't work
+- First `cp` used `../` instead of `../../` for the sibling projects (paths from inside `symbolic_eval/`); fixed immediately, no damage.
+
+### What I learned
+- iverilog 14.0 (devel) fully supports SV packages, packed structs, and package functions — no need for the include-file fallback.
+
+### What was tricky to build
+- Nothing this phase; this is exactly why the bootstrap phase exists.
+
+### What warrants a second pair of eyes
+- Makefile still hardcodes `blink_top` in synth/pnr; P5 must switch to the real `top`.
+
+### What should be done in the future
+- P1: `tools/opcodes.py` + `tools/stack_model.py` + model tests.
+
+### Code review instructions
+- `cd symbolic_eval && make sim` (PASS), `make versions`, `git log`.
+
+### Technical details
+- Yosys 0.68+130, nextpnr-himbaechel, gmpack, openFPGALoader -b olimex_gatemateevb.

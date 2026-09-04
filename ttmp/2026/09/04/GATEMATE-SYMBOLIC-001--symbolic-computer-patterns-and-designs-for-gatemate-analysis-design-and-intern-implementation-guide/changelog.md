@@ -32,3 +32,12 @@ Step 4: doctor passed (vocab added), bundle uploaded to reMarkable /ai/2026/09/0
 
 Step 5: ticket complete — all phases done, final handoff reported
 
+
+## 2026-09-04
+
+Impl P0: symbolic_eval bootstrap, blink verified in sim + on board
+
+### Related Files
+
+- /home/manuel/code/wesen/2026-09-04--gatemate-symbolic/symbolic_eval/Makefile — P0 flow
+
