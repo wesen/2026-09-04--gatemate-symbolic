@@ -79,3 +79,59 @@ Read this ticket index alongside book lines 4569–4961 and 3724–3884. Run doc
 ### Technical details
 
 Domains are eight eight-bit masks; trail and choice records map to separate RAMs. Solutions pack eight three-bit rows into 24 bits. The book asks to simplify around two RAM blocks and 3,000 CPEs. All new scripts are stored in this ticket's scripts folder; the existing source book is related rather than duplicated.
+
+## Step 2: P1 explicit semantic model and oracle
+
+Implemented a production stepwise model with snapshot and trail recovery, plus an independent row-placement oracle. The overall plan and P1 start slips printed successfully before implementation.
+
+### Prompt Context
+
+**User prompt (verbatim):**
+
+> Now implement it, commit at appropriate intervals and keep a detailed diary as you work (using the diary format from the skill)
+>
+> . Print out a brutalist work slip with the plan / different phases for the ticket. then before stsarting a phase, plrint a split about the phase, and print one when the phase is done.
+
+**Assistant interpretation:** Implement the Lab 2 guide in tested phases, with committed milestones and printed boundaries.
+
+**Inferred user intent:** Deliver a working and measurable rollback solver with reproducible evidence and a detailed implementation record.
+
+### What I did
+
+Added queens_rollback/tools/oracle.py, queens_model.py and model tests. Events include complete domains, propagated bitmap, live choice records, live trail records, accepted output and fault state.
+
+### Why
+
+The RTL needs an executable semantic boundary contract and an independent complete solution stream.
+
+### What worked
+
+16 model tests passed, covering exact enumeration, first-result cut, stable blocked output, helper truth tables, and small logical capacities.
+
+### What didn't work
+
+No model failures. Initial read-only discovery noted the repository has no root .gitignore or AGENTS.md; project-local ignores are used.
+
+### What I learned
+
+The smallest measured sufficient capacities are 32 trail entries and six choices; defaults remain conservatively 64 and eight.
+
+### What was tricky to build
+
+The model separates entering a pending result from accepting it, preserving search state while blocked. Choice entries include complete checkpoint domains for independent restoration assertions even in trail mode.
+
+### What warrants a second pair of eyes
+
+Review event snapshots and first-only cut at acceptance. The oracle uses pairwise geometry rather than domains.
+
+### What should be done in the future
+
+Implement the snapshot RTL and compare full live state at semantic events.
+
+### Code review instructions
+
+Run python3 -m pytest sim/test_model.py -q from queens_rollback.
+
+### Technical details
+
+P1 model tests: 16. Snapshot and trail share deterministic propagation order but have distinct restore events. No Lab 1 runtime files changed.

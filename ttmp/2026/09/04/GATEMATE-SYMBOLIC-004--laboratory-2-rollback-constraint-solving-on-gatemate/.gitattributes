@@ -1,0 +1,2 @@
+reference/validation/*.log -whitespace
+reference/validation/*.bin binary
