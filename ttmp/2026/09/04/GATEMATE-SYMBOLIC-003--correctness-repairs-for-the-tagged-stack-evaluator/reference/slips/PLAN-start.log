@@ -1,0 +1,25 @@
+layout: /home/manuel/code/wesen/2026-09-04--gatemate-symbolic/ttmp/2026/09/04/GATEMATE-SYMBOLIC-003--correctness-repairs-for-the-tagged-stack-evaluator/reference/slips/PLAN-start.yaml
+dry_run: false
+height: 595
+layout_member: PLAN-start.yaml
+ok: true
+printed: true
+printer_response:
+    ok: true
+rendered_at: "2026-09-04T19:57:15Z"
+response:
+    height: 595
+    ok: true
+    printed: true
+    printerResponse:
+        ok: true
+    renderedAt: "2026-09-04T19:57:15Z"
+    width: 384
+source_kind: file
+status_code: 200
+url: https://almanach.crib.scapegoat.dev/api/render-and-print
+width: 384
+
+---
+
+printed: yes

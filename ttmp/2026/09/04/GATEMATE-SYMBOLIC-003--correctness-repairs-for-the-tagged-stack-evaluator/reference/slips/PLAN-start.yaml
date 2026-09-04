@@ -1,0 +1,61 @@
+almanach_studio_version: 1
+theme: brutalist
+paperWidth: 384
+bodyScale: 1
+feedLines: 8
+blocks:
+- id: head
+  type: row
+  data:
+    cols:
+    - w: 1fr
+      text: GATEMATE-003
+      preset: micro
+    - w: 1fr
+      text: PLAN START
+      preset: micro
+      align: right
+- id: r1
+  type: rule
+  data:
+    weight: heavy
+- id: gap1
+  type: space
+  data:
+    size: s
+- id: title
+  type: text
+  data:
+    text: Tagged evaluator correctness repairs
+    preset: h1
+    lines: 3
+- id: gap3
+  type: space
+  data:
+    size: m
+- id: planhead
+  type: text
+  data:
+    text: PLAN
+    preset: h2
+- id: plan
+  type: checks
+  data:
+    items:
+    - P1 Instruction and assembler guards
+    - P2 Atomic retirement and fault context
+    - P3 ROM boundary and return addresses
+    - P4 Full state and generator coverage
+    - P5 Build docs and hardware validation
+- id: r2
+  type: rule
+  data:
+    weight: hair
+- id: facts
+  type: kv
+  data:
+    items:
+    - - PHASES
+      - '5'
+    - - NEXT
+      - P1 instruction and assembler guards
