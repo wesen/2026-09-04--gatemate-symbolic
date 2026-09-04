@@ -63,6 +63,14 @@ scripts/       synth.ys
 build/         generated (gitignored)
 ```
 
+## Playbooks (working in this repo)
+
+- `playbooks/PB-01-adding-an-opcode.md` — the full checklist for extending the ISA
+- `playbooks/PB-02-debugging-a-trace-mismatch.md` — reading the differential diff, common causes
+- `playbooks/PB-03-adding-a-fault-code.md` — fault set, check order, width rules
+- `playbooks/PB-04-board-workflow.md` — build, load, concurrent UART capture, LED codes, restart
+- `playbooks/PB-05-rtl-portability-rules.md` — the yosys ∩ iverilog subset as repo law
+
 ## Toolchain
 
 ```bash

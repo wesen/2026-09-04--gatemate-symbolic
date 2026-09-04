@@ -693,3 +693,52 @@ The vault is the durable knowledge layer; the report makes the project's method 
 
 ### Technical details
 - Vault: /home/manuel/code/wesen/go-go-golems/go-go-parc, note in Projects/2026/09/04/, commit 5e3c5e1 pushed to origin/main.
+
+## Step 14: Playbooks — vault Research notes and repo-local pragmatic guides
+
+The user asked which playbooks would be worth writing for follow-up students, then directed: put them in
+Research/YYYY/MM/DD/ in the vault (not Projects/), link them from the main report, and additionally write
+pragmatic playbooks into the repository itself as working guidance. We wrote five durable ARTICLE playbooks
+into Research/2026/09/04/, linked them from the PROJECT REPORT, and five pragmatic PB-0x playbooks into
+symbolic_eval/playbooks/ with a README section.
+
+### Prompt Context
+
+**User prompt (verbatim):** "Create in /home/manuel/code/wesen/go-go-golems/go-go-parc/Research/YYYY/MM/DD/ though, and link from main report. Also, just pragmatic playbooks to put into the repository to give guidancec for things"
+
+**Assistant interpretation:** Move the recommended playbook set into the vault's Research section (dated folder), cross-link from the main report, and also ship short, checklist-style playbooks inside symbolic_eval/ for day-to-day work in the repo.
+
+**Inferred user intent:** Follow-up students should get both the durable-knowledge writeups (generalizable method) and the in-repo operational guides (exact files, commands, checklists).
+
+### What I did
+- Vault: five ARTICLE playbooks in Research/2026/09/04/ — Differential Verification with a Frozen Trace Contract; A Two-Entry Top Cache over Block RAM; The yosys and iverilog SystemVerilog Subset; Race-Free Testbench Monitors and the Ready/Valid Boundary; GateMate Board Evidence Workflow.
+- Edited the main report: new "Related playbooks" section before Sources, with wikilinks to all five and a pointer to the repo playbooks.
+- Repo: symbolic_eval/playbooks/PB-01..PB-05 (adding an opcode, debugging a trace mismatch, adding a fault code, board workflow, RTL portability rules) + README "Playbooks" section.
+- Vault commit 61e0320 pushed to main (0935c7a..61e0320): Research notes + report edit only, no workspace files.
+
+### Why
+The playbooks separate durable method (vault Research, generalizes beyond this repo) from operational guidance (repo-local, exact paths and commands), which is exactly the split the vault's PROJ/ARTICLE distinction encodes.
+
+### What worked
+- Each playbook was written directly from diary-recorded failures, so every rule cites a real incident.
+
+### What didn't work
+- None.
+
+### What I learned
+- The vault already had a Research/playbooks/ convention for process notes, but dated Research/YYYY/MM/DD/ with ARTICLE naming matches the user's requested location and the 2026/08/19 exemplar.
+
+### What was tricky to build
+- Keeping the two playbook layers distinct without duplication: the vault notes generalize (no repo-specific commands as the core content), while the repo notes stay mechanical (checklists, exact greps, symptom tables) and merely reference the vault note for background.
+
+### What warrants a second pair of eyes
+- PB-01's checklist is the critical path for the next person extending the ISA — worth a dry run on the next real opcode addition.
+
+### What should be done in the future
+- Dry-run PB-01 when adding the next opcode; extend the playbook set only from repeated friction, not preemptively.
+
+### Code review instructions
+- Vault: Research/2026/09/04/ (five notes) + the report's new section; repo: symbolic_eval/playbooks/ + README.
+
+### Technical details
+- Vault push: 61e0320 on main; repo commit follows this diary entry.

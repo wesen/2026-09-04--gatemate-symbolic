@@ -104,3 +104,12 @@ Extension: LED polarity fixed (active-low), CALL/RET + return stack + fib/sq/cou
 
 - /home/manuel/code/wesen/2026-09-04--gatemate-symbolic/symbolic_eval/rtl/stack_core_bram.sv — CALL/RET extension
 
+
+## 2026-09-04
+
+Playbooks: 5 vault Research articles (linked from report, pushed) + 5 repo-local pragmatic playbooks (PB-01..05) with README section
+
+### Related Files
+
+- /home/manuel/code/wesen/2026-09-04--gatemate-symbolic/symbolic_eval/playbooks/PB-01-adding-an-opcode.md — repo-local playbook set
+
