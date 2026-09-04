@@ -14,3 +14,8 @@ Created Lab 2 ticket after rereading the complete rollback constraint-solving la
 
 P5 implemented board UART and terminal records (ca666fd); 58 tests pass; snapshot/trail enumeration and trail cut match the model on physical GateMate; all variants meet 10 MHz. Detailed measurements and implementation README archived.
 
+
+## 2026-09-04
+
+Published 5,295-word textbook deep dive to go-go-parc (8a777e7, pushed), with checked execution examples and explicit hardware evidence limits. Backfilled diary Steps 8–12 from commits and receipts, correcting phase commit attribution; Step 13 records report delivery.
+

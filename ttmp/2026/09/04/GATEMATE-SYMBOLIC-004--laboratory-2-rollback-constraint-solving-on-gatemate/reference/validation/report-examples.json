@@ -1,0 +1,39 @@
+{
+  "first_rows": [
+    0,
+    4,
+    7,
+    5,
+    2,
+    6,
+    1,
+    3
+  ],
+  "first_word": "672BE0",
+  "initial_propagated_domains": [
+    "01",
+    "FC",
+    "FA",
+    "F6",
+    "EE",
+    "DE",
+    "BE",
+    "7E"
+  ],
+  "first_contradiction_and_retry": [
+    "E 3 4000080280100401 af 3 29 0 0 000000 0",
+    "E 5 4000080280100401 af 3 29 0 0 000000 0",
+    "E 6 4002080280100401 af 3 28 0 0 000000 0",
+    "E 6 4002088280100401 af 3 27 0 0 000000 0",
+    "E 6 7a3a9acae2f00401 af 3 15 0 0 000000 0",
+    "E 7 7a3a9acae2f00401 03 3 15 0 0 000000 0",
+    "E 2 7a3a9acae2f00401 03 3 15 0 0 000000 0",
+    "E 3 7a3a9acae2200401 03 3 16 0 0 000000 0"
+  ],
+  "cut_output_frame": "E 9 0802400420801001 ff 0 29 29 1 672be0 0",
+  "cut_complete_frame": "E 10 0802400420801001 ff 0 29 29 1 672be0 0",
+  "snapshot_ms_at_10mhz": 5.3951,
+  "trail_ms_at_10mhz": 7.4523,
+  "cycle_increase_percent": 38.130896554280746,
+  "traffic_increase_percent": 52.3580586080586
+}

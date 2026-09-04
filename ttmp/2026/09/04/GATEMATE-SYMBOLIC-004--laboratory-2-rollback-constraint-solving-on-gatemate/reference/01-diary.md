@@ -63,12 +63,21 @@ RelatedFiles:
       Note: Lab 2 implementation or reproducible verification and diary tooling
     - Path: repo://ttmp/2026/09/04/GATEMATE-SYMBOLIC-004--laboratory-2-rollback-constraint-solving-on-gatemate/scripts/08-relate-files.py
       Note: Lab 2 implementation or reproducible verification and diary tooling
+    - Path: repo://ttmp/2026/09/04/GATEMATE-SYMBOLIC-004--laboratory-2-rollback-constraint-solving-on-gatemate/scripts/09-report-examples.py
+      Note: Lab 2 implementation or reproducible verification and diary tooling
+    - Path: repo://ttmp/2026/09/04/GATEMATE-SYMBOLIC-004--laboratory-2-rollback-constraint-solving-on-gatemate/scripts/10-backfill-diary.py
+      Note: Lab 2 implementation or reproducible verification and diary tooling
+    - Path: repo://ttmp/2026/09/04/GATEMATE-SYMBOLIC-004--laboratory-2-rollback-constraint-solving-on-gatemate/scripts/11-export-vault-report.py
+      Note: Lab 2 implementation or reproducible verification and diary tooling
+    - Path: repo://ttmp/2026/09/04/GATEMATE-SYMBOLIC-004--laboratory-2-rollback-constraint-solving-on-gatemate/scripts/12-record-report-delivery.py
+      Note: Lab 2 implementation or reproducible verification and diary tooling
 ExternalSources: []
 Summary: Chronological investigation and implementation diary for Laboratory 2.
 LastUpdated: 2026-09-04T16:57:27.323426618-04:00
 WhatFor: ""
 WhenToUse: ""
 ---
+
 
 
 
@@ -469,3 +478,356 @@ Source the OSS CAD Suite environment and run make test in queens_rollback. Read 
 Implementation commits: cf52672 model/oracle; 0f15376 snapshots; 214a39a trail; 1a5194f boundary verification; ca666fd board integration. Yosys 0.68+130 dd83bbad2-dirty; router2 seed 2; 10 MHz board clock. Choice high-water 6, trail high-water 32. Two 8-second enumeration captures and one 8-second cut capture matched exactly.
 
 The measured-results package was committed as `6c7b2d3`. The final P5 completion slip printed successfully at 2026-09-04T22:01:44Z and links that commit. All eleven requested receipts report `printed: true`: one overall plan and a start/completion pair for each of five phases. `docmgr doctor --ticket GATEMATE-SYMBOLIC-004 --fail-on error` passed; all seven ticket tasks are checked. The ticket remains available for implementation review.
+
+## Step 8: Retrospective P1: executable state and independent answer stream
+
+This entry backfills the implementation detail behind Step 2 from the committed model, tests, and retained print receipts. It is retrospective documentation, not a newly executed implementation phase. The model made domain writes, checkpoint publication, restoration, and result acceptance independently observable before those operations were assigned clock cycles.
+
+### Prompt Context
+
+**User prompt (verbatim):** "Backfill your diary in detail, btw."
+
+**Assistant interpretation:** Expand the historical record from committed implementation and retained evidence; distinguish retrospective reconstruction from contemporaneous observations.
+
+**Inferred user intent:** Preserve enough detail to understand decisions, reproduce validation, and review the finished solver.
+
+**Commit (code):** cf52672 — feat: add stepwise queens model and independent oracle (2026-09-04T17:39:32-04:00)
+
+### What I did
+
+- Added the independent recursive coordinate solver in tools/oracle.py, then the generator-based Machine in tools/queens_model.py. The oracle checks row and diagonal conflicts without domain propagation.
+- Defined Event and Fault encodings and E/C/T frames containing domains, propagation bits, pointers, outputs, and complete live records.
+- Represented output preparation as a pending state: step(False) cannot resume the generator past acceptance.
+- Retained checkpoint domain tuples in the trail model for exact restoration assertions; these are verification copies, not proposed trail hardware storage.
+
+### Why
+
+The solution set needs an independent oracle, while the microarchitecture needs an exact state-transition specification. Separating those responsibilities reduces the chance that identical rollback mistakes in model and hardware would be accepted merely because their outputs agree.
+
+### What worked
+
+The contemporaneous Step 2 records 16 passing model tests. The committed tests cover both storage modes, full enumeration, first-only, helper truth tables, blocked output, and reduced capacities. The checked report examples later reconfirm the complete ordered output against the independent oracle.
+
+### What didn't work
+
+No model test failure is recorded. Read-only discovery found no root .gitignore or AGENTS.md; project-local ignore rules were used. The earlier diary records a whitespace rejection around quoted blank lines before the commit, but no verbatim diagnostic was retained; this backfill does not fabricate one.
+
+### What I learned
+
+A model event should describe an observable complete transition, not every future RTL state. Entering a pending output is different from accepting it. Full checkpoint comparison can be stronger than comparing only domain masks.
+
+### What was tricky to build
+
+The generator normally advances one event per step. Without a separate waiting flag, a blocked consumer could accidentally advance the generator into output acceptance. The implementation checks waiting and result_ready before resuming. Choice.domain snapshots remain present only as a model assertion aid.
+
+### What warrants a second pair of eyes
+
+Review Machine.step, _write, frame, and the oracle separately. Confirm that the independent oracle does not import the propagation implementation and that first-only cut follows acceptance.
+
+### What should be done in the future
+
+Use this corrected commit attribution when reviewing the implementation. No new implementation work is implied by this retrospective entry.
+
+### Code review instructions
+
+Historical command: python3 -m pytest sim/test_model.py -q, from queens_rollback. Inspect git show cf52672 -- queens_rollback/tools queens_rollback/sim/test_model.py.
+
+### Technical details
+
+The plan receipt is 2026-09-04T21:36:06Z; P1 start is 21:36:09Z and completion 21:39:36Z. The P1 completion YAML contains literal HEAD in its QR URL. At that time the commit was cf52672, but the printed URL is mutable; the original receipt is preserved.
+
+## Step 9: Retrospective P2: snapshot storage and event publication
+
+This entry expands Step 3 using the snapshot implementation commit. The original Step 3 Commit field refers to the preceding model commit cf52672, which was the available milestone while the step was written. The actual snapshot code milestone is 0f15376; this annotation corrects attribution while preserving the original chronological text.
+
+### Prompt Context
+
+**User prompt (verbatim):** (see Step 8)
+
+**Assistant interpretation:** Expand the historical record from committed implementation and retained evidence; distinguish retrospective reconstruction from contemporaneous observations.
+
+**Inferred user intent:** Preserve enough detail to understand decisions, reproduce validation, and review the finished solver.
+
+**Commit (code):** 0f15376 — feat: implement synchronous queens snapshot RTL baseline (2026-09-04T17:43:32-04:00)
+
+### What I did
+
+- Implemented fixed-width mask helpers and a single owner for domain and checkpoint state.
+- Stored eight 104-bit checkpoint records in the shared synchronous RAM wrapper. The low 40 bits carry metadata, and the upper 64 bits carry domains.
+- Separated checkpoint preparation, inactive-slot write, top publication, registered RAM wait, capture, and restoration.
+- Added a testbench that emits complete live checkpoint records and a Python harness comparing those records with the model.
+
+### Why
+
+A full snapshot gives a simple recovery baseline. Using the same synchronous RAM discipline planned for trail mode avoids comparing a combinational-memory prototype against a clocked-memory implementation.
+
+### What worked
+
+Step 3 records 23 passing combined tests: 16 model cases and seven snapshot RTL cases. The four full/first and ready/stalled combinations plus choice capacities 0, 1, and 5 exercise the baseline behavior.
+
+### What didn't work
+
+No RTL compile or simulation failure is recorded. The whitespace issue from P1 was fixed in the diary helper. Subsequent print helpers resolve commit identifiers before creating QR references.
+
+### What I learned
+
+Publishing a new checkpoint top may follow an inactive RAM write. Updating remaining alternatives in an already live record must publish UPDATE on the actual write edge, or a state monitor sees an unannounced mutation.
+
+### What was tricky to build
+
+The shared RAM read output and controller registers both use nonblocking assignments. A controller cannot consume a newly registered read on the same edge without accounting for that scheduling. Explicit wait/capture states establish ownership of the consumed word.
+
+### What warrants a second pair of eyes
+
+Review S_CP_WRITE versus S_CP_PUBLISH and S_UPDATE_WRITE. Check domain packing direction: column zero occupies the least significant domain byte. Verify that snapshot restoration installs domains and propagated bits at the same semantic boundary.
+
+### What should be done in the future
+
+Use this corrected commit attribution when reviewing the implementation. No new implementation work is implied by this retrospective entry.
+
+### Code review instructions
+
+Historical command: source /home/manuel/fpga/oss-cad-suite/environment, then python3 -m pytest sim -q. Inspect git show 0f15376 and sim/test_rtl.py full C-record comparison.
+
+### Technical details
+
+P2 start printed at 21:39:39Z; completion at 21:43:38Z. The completion QR points to 0f1537618c78029d0b90f1990d236488a7284f19. The implementation directly reuses symbolic_eval/rtl/sync_sdp_ram.sv without modifying it.
+
+## Step 10: Retrospective P3: log-before-write and reverse restoration
+
+This entry expands Step 4 and attributes the trail implementation to 214a39a. Step 4 originally listed the preceding snapshot milestone 0f15376. The source change added recovery storage and sequencing while preserving the existing propagation algorithm, so measurements compare storage policies under the same search order.
+
+### Prompt Context
+
+**User prompt (verbatim):** (see Step 8)
+
+**Assistant interpretation:** Expand the historical record from committed implementation and retained evidence; distinguish retrospective reconstruction from contemporaneous observations.
+
+**Inferred user intent:** Preserve enough detail to understand decisions, reproduce validation, and review the finished solver.
+
+**Commit (code):** 214a39a — feat: add synchronous mutation trail and reverse queens rollback (2026-09-04T17:47:03-04:00)
+
+### What I did
+
+- Selected a 40-bit checkpoint RAM in trail mode and introduced 64 physical 20-bit trail slots.
+- Added S_LOG_WRITE before S_APPLY, with top publication on the domain-update edge.
+- Implemented mark checks, reverse synchronous reads, one-domain restoration, and final propagated-bitmap restoration.
+- Added logical capacities, cut-base publication, and checked backend profiling. Full-record request metrics later clarified the distinction between logical history counters and actual record widths.
+
+### Why
+
+An old domain must be retained before a new domain becomes visible. A checkpoint mark identifies which suffix of the trail belongs to the current alternative; reverse application restores repeated writes to the same column correctly.
+
+### What worked
+
+Step 4 records 36 passing tests. Unstalled enumeration measured 53,951 snapshot cycles and 74,523 trail cycles with 3,980 changed domain writes in each. Full outputs and live records matched the model.
+
+### What didn't work
+
+No P3 compile or simulation failures are recorded. The measurements contradicted the informal expectation that a trail would necessarily reduce traffic; that was an experimental finding, not a failing test.
+
+### What I learned
+
+The live trail high-water mark is 32 and the choice high-water mark is six. A smaller checkpoint width can still lead to greater aggregate traffic because many mutations occur after a single choice. No-change writes must bypass logging, while zero-domain writes must remain reversible.
+
+### What was tricky to build
+
+A physically written trail slot is not live until the top advances. During reverse recovery, intermediate domains do not yet constitute a complete checkpoint; the saved propagated bitmap is installed only at RESTORED. The model asserts the complete checkpoint at that boundary.
+
+### What warrants a second pair of eyes
+
+Check trail[19:17] column, [16:9] old domain, [8:4] choice level, and [3:0] zero flags. Review base <= mark <= top and capacity checks before consuming a retry alternative.
+
+### What should be done in the future
+
+Use this corrected commit attribution when reviewing the implementation. No new implementation work is implied by this retrospective entry.
+
+### Code review instructions
+
+Historical command: python3 -m pytest sim -q under the CAD environment. Reproduction: ticket scripts/04-profile-backends.py; inspect backend-profile.json and source commit 214a39a.
+
+### Technical details
+
+P3 start printed 21:43:41Z and completion 21:47:07Z. The completion QR points to 214a39a47d5207654330b70edc2d4ddfdc51ac34. Complete-record traffic is 672*104 bits for snapshots versus 672*40+3980*20 bits for the trail.
+
+## Step 11: Retrospective P4: boundaries between events, reset, and corruption
+
+This entry expands Step 5 and identifies 1a5194f as the boundary-verification milestone. Its original Commit field named the preceding trail commit. The additional checks examine what can happen between correct-looking event snapshots, which is where premature publication and reset ownership mistakes can otherwise remain hidden.
+
+### Prompt Context
+
+**User prompt (verbatim):** (see Step 8)
+
+**Assistant interpretation:** Expand the historical record from committed implementation and retained evidence; distinguish retrospective reconstruction from contemporaneous observations.
+
+**Inferred user intent:** Preserve enough detail to understand decisions, reproduce validation, and review the finished solver.
+
+**Commit (code):** 1a5194f — test: verify queens rollback stability reset and cut boundaries (2026-09-04T17:50:19-04:00)
+
+### What I did
+
+- Added every-cycle monitors for domains, propagated bitmap, live pointers, output count, and all live RAM records when no semantic event is emitted or a fault occurs.
+- Added reset interruption during log writes, reverse application, pending output, and checkpoint writes; comparisons restart after a RESTART marker against a fresh model.
+- Injected invalid checkpoint marks, non-singleton propagation sources, and nonzero trail flags.
+- Added seeded readiness patterns, a 200-cycle first-result stall, and 64-cycle terminal dwell checks.
+
+### Why
+
+An event-only checker could miss a mutation that appears early and is repaired before the next event. Reset tests need to verify reachability rather than physical RAM clearing. Terminal dwell checks establish that faults and cut cannot resume execution.
+
+### What worked
+
+The contemporaneous record reports 34 RTL tests passing in 29.38 seconds. The final complete suite later includes these cases. Corrupt sources report BAD_ONEHOT; malformed marks and trail flags report TRAIL_INTEGRITY.
+
+### What didn't work
+
+No P4 failures or unsuccessful repair attempts are recorded. Deliberate corruption is test stimulus, not evidence of an implementation failure.
+
+### What I learned
+
+The testbench itself changes state during corruption injection, so its stability monitor needs a narrowly bounded exemption on that injection cycle. Normal protection checks resume immediately afterward.
+
+### What was tricky to build
+
+Reset leaves stale RAM data physically present. Zeroed tops make it unreachable, and subsequent writes establish new ownership. Tests must compare only live entries and a fresh post-reset run, or they would incorrectly require RAM erasure.
+
+### What warrants a second pair of eyes
+
+Inspect injection exemptions and terminal monitors in tb_queens.sv. Confirm that counters allowed to run during stalls are not confused with protected search state. Integrity checks detect structural inconsistencies but are not a general memory-corruption checksum.
+
+### What should be done in the future
+
+Use this corrected commit attribution when reviewing the implementation. No new implementation work is implied by this retrospective entry.
+
+### Code review instructions
+
+Historical command: python3 -m pytest sim/test_rtl.py -q -x under the CAD environment. Inspect git show 1a5194f and parameterized restart/inject cases.
+
+### Technical details
+
+P4 start printed 21:47:11Z and completion 21:50:24Z. Completion references 1a5194f362458600afdcd82ab16ca01e34caf264. BAD_DOMAIN_INDEX remains a reserved hardware fault because internal column fields cannot encode an index above seven.
+
+## Step 12: Retrospective P5: serial ownership and physical measurement provenance
+
+This entry expands Steps 6 and 7 from the board integration commit, hardware scripts, and archived logs. The implementation commit is ca666fd; the results package is 6c7b2d3 and the final print receipt is 4345ee4. The physical experiment verifies external records, while internal rollback trace claims remain grounded in simulation.
+
+### Prompt Context
+
+**User prompt (verbatim):** (see Step 8)
+
+**Assistant interpretation:** Expand the historical record from committed implementation and retained evidence; distinguish retrospective reconstruction from contemporaneous observations.
+
+**Inferred user intent:** Preserve enough detail to understand decisions, reproduce validation, and review the finished solver.
+
+**Commit (code):** ca666fd — feat: integrate queens solver with board UART and terminal records (2026-09-04T17:56:40-04:00)
+
+### What I did
+
+- Added the one-record formatter, board reset integration, and UART waveform tests. The formatter retains data through the final byte and emits a terminal D or F record exactly once.
+- Ran all 58 tests, then built snapshot enumeration, trail enumeration, and trail-first with router2 seed two and the same 10 MHz constraint.
+- Armed /dev/ttyACM0 capture before each openFPGALoader invocation, observed eight seconds, and compared the complete bytes with model-generated records.
+- Archived image hashes, builds, route reports, loader output, UART binaries, profiles, and simulation first-result traces.
+
+### Why
+
+The previous laboratory exposed a synthesis-only problem on hardware. Physical UART verification is therefore a separate evidence layer. Explicit terminal records distinguish completion from silence, and capture-before-load preserves startup output.
+
+### What worked
+
+All eight board tests passed in 3.83s; the complete suite passed 58 tests in 51.71s. Physical snapshot and trail streams each contained 932 matching bytes, and trail-first contained 22. Routed estimates were 30.19, 30.98, and 33.72 MHz, each passing the actual 10 MHz constraint.
+
+### What didn't work
+
+No synthesis, routing, loading, or physical-byte mismatch occurred. A premature status read saw no P5-hardware.exit file while work was still running; it was subsequently written as 0. P5-tests.log explicitly records the observed tool result rather than pretending to be a raw second test run.
+
+### What I learned
+
+Core acceptance is not UART completion. terminal_sent marks terminal-record selection, not final-bit delivery. nextpnr RAM_HALF and CPE subresource counts must retain their units. Wider snapshots map to more RAM halves even though their logical bit allocation is smaller.
+
+### What was tricky to build
+
+The serial reader must start before configuration and must not compete with another process for the UART. The benchmark excludes output stalls, whereas physical streams are UART-limited; an eight-second observation window cannot be reported as solve time.
+
+### What warrants a second pair of eyes
+
+Review the LAST formatter state, reset during transmission, P5-build-commit.txt, image hashes, final rather than pre-route Fmax, and expected-versus-actual bytes. Fault and internal reset injection were simulated; they were not among the three physical images.
+
+### What should be done in the future
+
+Use this corrected commit attribution when reviewing the implementation. No new implementation work is implied by this retrospective entry.
+
+### Code review instructions
+
+Inspect scripts/05-hardware.py and 06-hardware.sh. Reproduce in tmux with the CAD environment sourced and exclusive physical UART access. Read P5-hardware.json and P5-measurements.json before interpreting performance.
+
+### Technical details
+
+P5 start printed 21:50:27Z and completion 22:01:44Z. The final completion QR references 6c7b2d37099830ff979416674bad0d9ffeed25d2. All eleven receipts report printed:true. The final loaded image was trail-first; repository main was pushed through 4345ee4.
+
+## Step 13: Textbook report, detailed backfill, and vault delivery
+
+Wrote a 5,295-word technical article about the implemented rollback solver and delivered it as a new dated note in go-go-parc. The article teaches domain propagation, complete checkpoint state, synchronous memory publication, reverse restoration, fault precision, output acceptance, and the measured resource/cycle tradeoff. It emphasizes system behavior rather than implementation chronology.
+
+The user also requested detailed diary backfill. Steps 8–12 preserve the original entries while adding retrospective implementation explanations, exact milestone attribution, print chronology, test provenance, and review instructions. They explicitly distinguish reconstructed detail from contemporaneous observations; they do not invent missing diagnostics or new test runs.
+
+### Prompt Context
+
+**User prompt (verbatim, JSON-encoded to preserve whitespace):**
+
+```json
+"write a detailed project report for the obsidian vault as a deep dive technical analysis blog post using a textbook writing style (no analogies, see skill).      \n Commit and push the bsidian vault when done (go-go-parc vault).   \n\n^-- for the go-go-parc vault."
+```
+
+**Additional user prompt (verbatim):** (see Step 8)
+
+**Assistant interpretation:** Write and publish the system-focused textbook report in the explicitly named vault, and make the implementation diary detailed enough to review and reproduce the completed work.
+
+**Inferred user intent:** Preserve both a durable technical explanation and a trustworthy engineering record.
+
+**Commit (analyzed implementation):** 4345ee4a9eb3460d6e94646d77e08dffa91489a0.
+
+**Commit (vault report):** 8a777e77a7f486e12d3fbf394e7e4d210dae01a9 — pushed to go-go-parc origin/main.
+
+### What I did
+
+- Read the vault-writing, textbook-authoring, and diary skills and inspected the existing tagged-stack CPU article to match vault metadata and technical depth.
+- Read queens_core, queens_model, the mask helpers, formatter, board top, shared RAM/UART, test harness, profile metrics, first-result traces, and hardware evidence.
+- Created the report in reference/02-inside-the-eight-queens-rollback-engine-technical-project-report.md and added scripts/09-report-examples.py to validate every selected contradiction/retry frame against the archived RTL trace and the model.
+- Used scripts/10-backfill-diary.py for the retrospective entries and scripts/11-export-vault-report.py to validate and create a new vault note without replacing any historical note.
+- Committed only the new vault article and pushed it. The pre-existing untracked AgentForum research note was left untouched.
+
+### Why
+
+The report needs to explain why the machine works, including the exact state that must be restored and the difference between a core handshake and a completed UART record. The diary needs to retain provenance so a later reader can identify the implementing commit rather than mistaking a previously available milestone for the change itself.
+
+### What worked
+
+The report example script passed and reproduced first board 672BE0, the first contradiction, restoration to mark 15, retry from F0 to 20, and the cut with top/base 29. Export checks verified more than 5,000 body words, balanced code fences, no template placeholders, and required example/metric anchors. The delivered vault body matches the ticket body. Vault HEAD and origin/main both identify the report commit. Docmgr doctor passed for the ticket.
+
+### What didn't work
+
+No model-example, export, Git, or push failure occurred. A read command accidentally included head -60 ' /dev/null'; it reported "head: cannot open ' /dev/null' for reading: No such file or directory" after the intended source reads had succeeded. This was a harmless discovery-command typo, not a software failure. No hardware or RTL changes were needed for the report, so the full 58-test suite was not rerun.
+
+### What I learned
+
+The implementation's terminal_sent name describes selection of the terminal record, not completed physical transmission. The UART divider is 87 at 10 MHz, so 932 bytes require at least 81.084 milliseconds of serial bit time; the eight-second capture window is an observation interval, not solve time. The report states those distinctions explicitly. The trail allocates more logical record bits than snapshots despite using fewer mapped RAM_HALF resources.
+
+### What was tricky to build
+
+The original diary's Steps 3–5 named the preceding milestone because entries were written before their code commits. The backfill preserves those historical entries and records the actual mapping: snapshots 0f15376, trail 214a39a, boundary checks 1a5194f. Raw trace words pack column zero into the least significant byte, so example decoding must follow that order. Physical evidence was restricted to what the UART can observe; internal trace and fault/reset claims are labeled as simulation evidence.
+
+### What warrants a second pair of eyes
+
+Review the record-bit calculations, the distinction between RAM_HALF and whole physical blocks, the serial-time lower bound, and the boundary where propagated bits are restored. Check that the article's fixed source revision and source line references remain appropriate if later implementation work is added.
+
+### What should be done in the future
+
+Use a new dated follow-up note for future solver extensions or new measurements. Do not silently rewrite this report's measured snapshot. No additional implementation or publication work is required for this request.
+
+### Code review instructions
+
+Run ticket scripts/09-report-examples.py and inspect reference/validation/report-examples.json. Compare the report body with the vault note and the stored report-vault-delivery.json hash. Inspect the vault commit to confirm it contains only the intended article. Read retrospective Steps 8–12 alongside the implementing commits and preserved print receipts.
+
+### Technical details
+
+Vault path: Projects/2026/09/04/ARTICLE - GateMate Symbolic - Inside an FPGA Rollback Solver.md. The note uses article frontmatter, native Mermaid diagrams, mathematical definitions, pseudocode, trace excerpts, resource/API tables, immutable source links, and two existing vault wikilinks. No external sources were downloaded, and all scripts written during this work are in the ticket scripts directory.
