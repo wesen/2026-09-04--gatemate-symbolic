@@ -191,3 +191,57 @@ Run make test; inspect both bench return-depth monitors and P2-before/after logs
 ### Technical details
 
 Actual output record semantics and instruction encodings remain unchanged. RAM read timing grows by one cycle only when context was previously not prefetched.
+
+## Step 4: P3 one-past-ROM and fetch faults
+
+Preserved the model semantics for sequential execution and CALL at the ROM boundary. Both RTL cores now hold one-past-ROM architectural addresses and publish an explicit fetch-fault context rather than wrapping.
+
+### Prompt Context
+
+**User prompt (verbatim):**
+
+(see Step 1)
+
+**Assistant interpretation:** Implement the repair design in phases with reproducible validation, focused commits, detailed diary entries, and printed phase boundaries.
+
+**Inferred user intent:** Turn the documented review findings into a reliable working evaluator with visible progress and reviewable evidence.
+
+### What I did
+
+Widened architectural PC, candidate PC, return addresses, fault/trace/debug PCs; retained narrow guarded ROM addresses. Added trace_fetch/fault_fetch flags, BRAM fetch-context states, integer target comparisons, parameter checks, and ROM-size regressions.
+
+### Why
+
+The model permits the final valid instruction to retire; a later fetch at ROM_DEPTH faults. Return addresses must preserve the same boundary.
+
+### What worked
+
+175 tests pass in 10.44s. Tests cover ROM sizes 2, 7, 16, 1024 and maximum target 32767; last-word HALT, EMIT, CALL/RET, and deep-stack fault tags agree with the model.
+
+### What didn't work
+
+The checked edit script initially raised AssertionError because its ROM-address regex matched a comment as well as code; it wrote no RTL before aborting. Narrowed the regex to the assignment line. The command chain nevertheless ran pre-fix tests: 16 failed, 159 passed in 21.05s, preserved as P3-patch-not-applied.log. The successfully applied repair passed on its first validation run.
+
+### What I learned
+
+ROM_DEPTH[14:0] becomes zero at 32768; integer comparison is required even after PC widths are corrected.
+
+### What was tricky to build
+
+BRAM fetch faults need a context read after a last-word pop leaves tc=1 and dc>0; S_FETCH_CONTEXT captures that value before S_FETCH_FAULT publishes metadata.
+
+### What warrants a second pair of eyes
+
+Verify every architectural address consumer and the meaning of trace_fetch versus fault_fetch. Physical ROM addresses are clamped while the architectural PC is invalid.
+
+### What should be done in the future
+
+P4 adds full-state comparison and improves generated programs.
+
+### Code review instructions
+
+Run make test; inspect test_onepast_push, test_last_word_cases, and test_largest_rom_last_target.
+
+### Technical details
+
+Fetch is not assigned an ISA opcode. Trace format uses the explicit flag to print FETCH, matching the existing Python model. Unsupported core memory dimensions fail elaboration.

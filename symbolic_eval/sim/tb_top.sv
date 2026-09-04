@@ -32,6 +32,8 @@ module tb_top;
 
   logic [7:0] b;
   integer max_cycles = 300000;
+  integer restart_cycle = 0;
+  logic restarted = 0;
 
   string hex_file;
   integer i;
@@ -47,19 +49,31 @@ module tb_top;
       dut.u_rom.mem[i] = 20'h00000;
     $readmemh(hex_file, dut.u_rom.mem);
 
+    void'($value$plusargs("restart_cycle=%d", restart_cycle));
+
     fork
       begin : uart_monitor
         forever begin
-          @(negedge uart_tx_pin);
-          #(BIT_NS + BIT_NS/2);
-          for (int j = 0; j < 8; j = j + 1) begin
-            b[j] = uart_tx_pin;
-            #BIT_NS;
-          end
-          $display("UARTBYTE %02x", b);
+          wait (dut.rst_n === 1'b1);
+          fork : frame_or_reset
+            begin
+              @(negedge uart_tx_pin);
+              #(BIT_NS + BIT_NS/2);
+              for (int j = 0; j < 8; j = j + 1) begin
+                b[j] = uart_tx_pin;
+                #BIT_NS;
+              end
+              if (dut.rst_n) $display("UARTBYTE %02x", b);
+            end
+            begin
+              @(negedge dut.rst_n);
+            end
+          join_any
+          disable frame_or_reset;
         end
       end
       begin : done
+        if (restart_cycle > 0) wait (restarted);
         wait (dut.halted || dut.fault_valid);
       end
       begin : watchdog
@@ -73,9 +87,21 @@ module tb_top;
     // times) for the wire to go quiet.
     #(60 * 10 * BIT_NS);
 
+    if (dut.halted && user_led !== 1'b0) $display("FAIL: halted LED is not lit");
     $display("TOPDONE %0d %0d %0d %0d %0d", dut.halted, dut.fault_valid,
              dut.pc_dbg, dut.depth_dbg, dut.rdepth_dbg);
     $finish;
   end
 
+  initial begin
+    #1;
+    if (restart_cycle > 0) begin
+      repeat (restart_cycle) @(posedge clk_10m);
+      fpga_but <= 1'b0;
+      repeat (8) @(posedge clk_10m);
+      $display("RESTART");
+      fpga_but <= 1'b1;
+      restarted <= 1'b1;
+    end
+  end
 endmodule

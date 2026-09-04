@@ -24,7 +24,7 @@ RTL = ["rtl/symbolic_types_pkg.sv", "rtl/sync_sdp_ram.sv",
        "rtl/reset_sync.sv", "rtl/uart_tx.sv", "rtl/top.sv"]
 
 
-def _run_top(hex_path, max_cycles=300000):
+def _run_top(hex_path, max_cycles=300000, restart_cycle=0):
     vvp = os.path.join(BUILD, "tb_top.vvp")
     subprocess.run([
         "iverilog", "-g2012", "-s", "tb_top", "-o", vvp,
@@ -33,7 +33,7 @@ def _run_top(hex_path, max_cycles=300000):
         os.path.join(ROOT, "sim", "tb_top.sv"),
     ], check=True, capture_output=True)
     out = subprocess.run(["vvp", vvp, f"+rom={hex_path}",
-                          f"+max_cycles={max_cycles}"],
+                          f"+max_cycles={max_cycles}", f"+restart_cycle={restart_cycle}"],
                          check=True, capture_output=True, text=True,
                          timeout=300)
     assert "FAIL" not in out.stdout, out.stdout
@@ -101,3 +101,14 @@ def test_deep_board_stream_matches_model():
         f"T{v.tag:x}:{v.payload:08X}\r\n" for v in _model_emits("deep"))
     assert got == expected
     assert "TOPDONE 1 0 18 1 0" in stdout
+
+
+@pytest.mark.parametrize("restart_cycle", [30, 1500])
+def test_restart_during_compute_or_uart(restart_cycle):
+    stdout = _run_top(_ensure_hex("countdown"), restart_cycle=restart_cycle)
+    assert "RESTART" in stdout
+    restarted = stdout.split("RESTART", 1)[1]
+    got = _bytes_to_str(_uart_lines(restarted))
+    expected = "".join(f"T{v.tag:x}:{v.payload:08X}\r\n" for v in _model_emits("countdown"))
+    assert got == expected
+    assert "TOPDONE 1 0 12 0 0" in restarted

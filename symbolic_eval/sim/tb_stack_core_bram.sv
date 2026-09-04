@@ -139,7 +139,10 @@ module tb_stack_core_bram;
 
   // Count accepted outputs (one acceptance = one pop, checked vs FINAL).
   always @(posedge clk) begin
-    if (out_valid && out_ready) emit_count = emit_count + 1;
+    if (rst_n && out_valid && out_ready) begin
+      emit_count = emit_count + 1;
+      $display("XFER %010h", out_data);
+    end
   end
 
   // Blocked producer must hold the item stable (book ch. 15 assertion).
@@ -219,6 +222,9 @@ module tb_stack_core_bram;
 
   // ------------------------------------------------------------- stimulus
   string hex_file;
+  string stack_file;
+  integer stack_count = 0;
+  logic [39:0] stack_init [0:(DEEP_DEPTH+2)-1];
   initial begin
     if (!$value$plusargs("rom=%s", hex_file)) begin
       $display("FAIL: missing +rom=<file.hex>");
@@ -235,6 +241,20 @@ module tb_stack_core_bram;
 
     repeat (4) @(posedge clk);
     rst_n <= 1'b1;
+    #1;
+    if ($value$plusargs("stack=%s", stack_file)) begin
+      void'($value$plusargs("stack_count=%d", stack_count));
+      if (stack_count < 0 || stack_count > (DEEP_DEPTH+2)) $fatal(1, "bad initial depth");
+      $readmemh(stack_file, stack_init);
+      dut.depth_q = stack_count;
+      dut.tc_q = (stack_count >= 2) ? 2 : stack_count;
+      dut.dc_q = (stack_count >= 2) ? stack_count-2 : 0;
+      dut.dt_q = dut.dc_q;
+      for (integer j=0; j<dut.dc_q; j=j+1) dut.u_deep.mem[j] = stack_init[j];
+      if (stack_count >= 1) dut.top0_q = stack_init[stack_count-1];
+      if (stack_count >= 2) dut.top1_q = stack_init[stack_count-2];
+    end
+
 
     // Wait for halt, fault, or watchdog.
     forever begin
@@ -273,6 +293,62 @@ module tb_stack_core_bram;
       errors = errors + 1;
     end
     rdepth_prev = rdepth_o;
+  end
+
+  // Full abstraction, oldest first. Invalid physical storage is ignored.
+  function automatic logic [39:0] live_data(input integer index);
+    if (index < dut.dc_q) live_data = dut.u_deep.mem[index];
+    else if (dut.tc_q == 2 && index == dut.dc_q) live_data = dut.top1_q;
+    else live_data = dut.top0_q;
+  endfunction
+
+  logic [39:0] previous_data [0:(DEEP_DEPTH+2)-1];
+  logic [$clog2(ROM_DEPTH+1)-1:0] previous_returns [0:15];
+  integer previous_depth = 0;
+  integer previous_tc = 0;
+  integer previous_dc = 0;
+  integer previous_rdepth = 0;
+  logic [$clog2(ROM_DEPTH+1)-1:0] previous_pc = 0;
+  always @(posedge clk) begin
+    #2;
+    if (rst_n && cycle > 4) begin
+      if (tc_o != previous_tc || dc_o != previous_dc)
+        $display("CACHE %0d,%0d -> %0d,%0d", previous_tc, previous_dc, tc_o, dc_o);
+      if (!trace_valid || trace_event == 2'd2) begin
+        if (pc_o !== previous_pc || depth_o != previous_depth || rdepth_o != previous_rdepth) begin
+          $display("ASSERT_FAIL: architectural counts or PC changed without retirement");
+          errors = errors + 1;
+        end
+        for (integer j=0; j<depth_o; j=j+1)
+          if (live_data(j) !== previous_data[j]) begin
+            $display("ASSERT_FAIL: live data changed without retirement at %0d", j);
+            errors = errors + 1;
+          end
+        for (integer j=0; j<rdepth_o; j=j+1)
+          if (dut.rstack_q[j] !== previous_returns[j]) begin
+            $display("ASSERT_FAIL: live return address changed without retirement");
+            errors = errors + 1;
+          end
+      end
+      if (trace_valid) begin
+        $write("STATE %0d PC %0d D %0d", trace_seq, pc_o, depth_o);
+        for (integer j=0; j<depth_o; j=j+1) $write(" %010h", live_data(j));
+        $write(" R %0d", rdepth_o);
+        for (integer j=0; j<rdepth_o; j=j+1) $write(" %0d", dut.rstack_q[j]);
+        $display("");
+        if (trace_event == 2'd2 && fault_fetch !== trace_fetch) begin
+          $display("ASSERT_FAIL: fetch context flags disagree");
+          errors = errors + 1;
+        end
+      end
+    end
+    previous_pc = pc_o;
+    previous_tc = tc_o;
+    previous_dc = dc_o;
+    previous_depth = depth_o;
+    previous_rdepth = rdepth_o;
+    for (integer j=0; j<depth_o; j=j+1) previous_data[j] = live_data(j);
+    for (integer j=0; j<rdepth_o; j=j+1) previous_returns[j] = dut.rstack_q[j];
   end
 
 endmodule

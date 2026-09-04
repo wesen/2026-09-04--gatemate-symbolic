@@ -16,6 +16,7 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "tools"))
 
 from asm20 import assemble  # noqa: E402
 from stack_model import run_program  # noqa: E402
+from state_checks import assert_architectural_states, initial_stack_args
 
 ROOT = os.path.join(os.path.dirname(__file__), "..")
 BUILD = os.path.join(ROOT, "build")
@@ -54,7 +55,7 @@ def _ensure_hex(name: str) -> str:
     return hex_path
 
 
-def _run_rtl(hex_path: str, stack_depth: int, stall_seed=None, rom_depth=1024):
+def _run_rtl(hex_path: str, stack_depth: int, stall_seed=None, rom_depth=1024, initial_stack=()):
     """Compile (per stack-depth config) and run the register-core testbench."""
     tag = f"tb_reg_d{stack_depth}"
     vvp = os.path.join(BUILD, f"{tag}.vvp")
@@ -68,6 +69,7 @@ def _run_rtl(hex_path: str, stack_depth: int, stall_seed=None, rom_depth=1024):
     ]
     subprocess.run(compile_cmd, check=True, capture_output=True)
     cmd = ["vvp", vvp, f"+rom={hex_path}"]
+    cmd += initial_stack_args(hex_path, initial_stack, stack_depth)
     if stall_seed is not None:
         cmd.append(f"+stall_seed={stall_seed}")
     out = subprocess.run(cmd, check=True, capture_output=True, text=True,
@@ -77,6 +79,7 @@ def _run_rtl(hex_path: str, stack_depth: int, stall_seed=None, rom_depth=1024):
                              "ASSERT_FAIL"))]
     tb_pass = any(l.startswith("TB_PASS") for l in lines)
     assert tb_pass, f"testbench reported errors:\n{out.stdout}"
+    assert_architectural_states(out.stdout, hex_path, stack_depth, rom_depth, initial_stack)
     return [l for l in lines if l.startswith(("TRACE", "FINAL"))]
 
 
