@@ -2,17 +2,34 @@
 Title: Investigation diary
 Ticket: GATEMATE-SYMBOLIC-002
 Status: active
-Topics: [fpga, gatemate, symbolic-computers, architecture]
+Topics:
+    - fpga
+    - gatemate
+    - symbolic-computers
+    - architecture
 DocType: reference
 Intent: long-term
 Owners: []
-RelatedFiles: []
+RelatedFiles:
+    - Path: repo://ttmp/2026/09/04/GATEMATE-SYMBOLIC-002--tagged-stack-evaluator-implementation-review-and-intern-guide/design-doc/01-tagged-stack-evaluator-analysis-design-and-implementation-review.md
+      Note: Primary review deliverable
+    - Path: repo://ttmp/2026/09/04/GATEMATE-SYMBOLIC-002--tagged-stack-evaluator-implementation-review-and-intern-guide/scripts/01-review-probes.py
+      Note: Reproducible model and RTL counterexamples
+    - Path: repo://ttmp/2026/09/04/GATEMATE-SYMBOLIC-002--tagged-stack-evaluator-implementation-review-and-intern-guide/scripts/02-baseline.sh
+      Note: Baseline validation workflow
+    - Path: repo://ttmp/2026/09/04/GATEMATE-SYMBOLIC-002--tagged-stack-evaluator-implementation-review-and-intern-guide/scripts/03-collect-sources.sh
+      Note: Defuddle source archive workflow
+    - Path: repo://ttmp/2026/09/04/GATEMATE-SYMBOLIC-002--tagged-stack-evaluator-implementation-review-and-intern-guide/scripts/04-upload-review.sh
+      Note: ReMarkable delivery workflow
+    - Path: repo://ttmp/2026/09/04/GATEMATE-SYMBOLIC-002--tagged-stack-evaluator-implementation-review-and-intern-guide/sources/README.md
+      Note: Source provenance
 ExternalSources: []
 Summary: Chronological evidence gathering, review authoring, validation, and delivery.
 LastUpdated: 2026-09-04T15:40:00-04:00
 WhatFor: Reproduce the investigation and distinguish current evidence from earlier claims.
 WhenToUse: Reviewing or continuing the implementation review.
 ---
+
 
 # Diary
 
@@ -99,3 +116,80 @@ The existing suite passes, but small programs exercising adjacent instructions a
 - Toolchain: OSS CAD Suite `20260825`, Yosys `0.68+130`, Icarus Verilog `14.0 (devel)`, Python `3.11.6`.
 - Traces use zero-based sequence and PC; data-stack depth is post-retirement, except a fault preserves the prior depth.
 - Probe artifacts are evidence of baseline behavior, not passing correctness regressions.
+
+## Step 2: Write the technical review and proposed remediation design
+
+I wrote a roughly 9,500-word guide that explains the architectural machine before its physical representations. It covers instruction encoding, type and fault rules, the assembler/model APIs, clocked staging, both stacks, BRAM reads and refills, output ownership, UART framing, reset, synthesis, tests, and the earlier implementation history. The review separates fresh evidence from historical hardware observations throughout.
+
+Nine finding groups connect concrete source locations to observed discrepancies or verification gaps. The report then proposes four design decisions, phased implementation work, and a validation matrix. It is a review deliverable: proposed changes are explicitly labeled and the production implementation remains unchanged.
+
+### Prompt Context
+
+**User prompt (verbatim):** (see Step 1)
+
+**Assistant interpretation:** Turn the investigation into a complete intern-oriented analysis and implementation review, including actionable remedies.
+
+**Inferred user intent:** Make the current system safe to reason about and extend by understanding both its working design and its limitations.
+
+**Commit (review artifacts):** `9c09a92` — "review: bootstrap GATEMATE-SYMBOLIC-002 and preserve baseline probes"
+
+### What I did
+
+- Wrote the primary design document with 15 sections, complete ISA/fault tables, five fixed-width explanatory diagrams, API/file references, pseudocode, finding severities, four proposed decisions, and five implementation phases.
+- Archived the official Yosys synth_gatemate and Olimex board pages using defuddle; added `sources/README.md` with URLs, collection method, and original-book provenance.
+- Ran `source /home/manuel/fpga/oss-cad-suite/environment && make synth PROG=fib` from `symbolic_eval/`, retaining the command output and full Yosys log.
+- Related seven core implementation files to the primary report with `docmgr doc relate`.
+- Verified findings against raw diffs, current test collection, and source declarations; corrected the blink-top parameter reference to LED_BIT during review.
+
+### Why
+
+- A novice needs the meaning of a state transition before the FSM and BRAM optimization can make sense.
+- A useful review must say what to change, why, and which observations would demonstrate that the change worked.
+- Resource counts need their tool phase attached: synthesis CC_L2T4 cells and routed packed CPEs are different measurements.
+
+### What worked
+
+- Source collection succeeded using the versioned Yosys URL after the errors recorded in Step 1.
+- Fresh synthesis completed: two CC_BRAM_20K, one CC_MULT, 495 CC_L2T4 cells.
+- The direct call/return trace matches the model while the cycle monitor reveals early return-depth publication, making a useful concrete example of verification limits.
+- The first review milestone committed successfully after using the approved Git-metadata escalation.
+
+### What didn't work
+
+- Initial `git add <ticket> && git commit ...` failed with `fatal: Unable to create '/home/manuel/code/wesen/2026-09-04--gatemate-symbolic/.git/index.lock': Read-only file system`. Repeating the authorized commit with filesystem escalation succeeded.
+- Synthesis emitted `Warning: Replacing memory \rstack_q with list of registers. See rtl/stack_core_bram.sv:731` and `Warning: Resizing cell port top.u_rom.mem.0.0.A_DO from 10 bits to 20 bits.` The build completed; these warnings are preserved rather than mislabeled as simulation failures.
+
+### What I learned
+
+- The original instruction metadata's generator claim is aspirational: the inspected RTL constants and testbench name tables are manually mirrored.
+- A synchronized button input followed by an async-assert reset synchronizer does not make the physical button-to-reset path asynchronous end to end.
+- The default BRAM read can collide with a spill into empty RAM; correctness depends on not consuming that incidental read result, rather than the comment's stronger no-collision claim.
+
+### What was tricky to build
+
+- The report must describe the intended precise machine while clearly identifying where implementation diverges; each finding is separated from the explanatory contract and has an observed result.
+- Historical hardware claims are easily mistaken for fresh validation. The report ties previous observations to original diary steps and distinguishes them from this review's synthesis and simulation.
+- PDF portability favors fixed-width diagrams over unrendered Mermaid source. The report uses plain text diagrams and avoids needing an external diagram-rendering service.
+
+### What warrants a second pair of eyes
+
+- DR-2's suggested wider PC also requires a FETCH fault representation in the RTL trace; merely widening one register is insufficient.
+- Full-state snapshots must reconstruct tc=1 and tc=2 correctly and compare only live values.
+- The proposed fault-context read must preserve the first-fault contract and all stack state while it completes.
+
+### What should be done in the future
+
+- Execute the report's five phases in a separate correctness implementation ticket.
+- Re-establish routed timing and hardware captures after the fixes, preserving commit and program image identity.
+
+### Code review instructions
+
+- Read sections 1 and 10 first for the verdict and findings; sections 4–8 explain the system needed to assess them.
+- Compare each reproduced finding against `reference/validation/` and its cited RTL/Python source.
+- Check sections 11–12 for explicit decisions, file-level work, and acceptance observations.
+
+### Technical details
+
+- No production files changed. Baseline remains `c7f9dc9` for implementation references.
+- Web pages: Yosys v0.50 command documentation and official Olimex product page; actual installed compiler version is recorded separately.
+- The full report and diary will be bundled with a depth-two table of contents for reMarkable; delivery receipt follows in Step 3.

@@ -1,0 +1,9 @@
+python3 tools/asm20.py programs/fib.asm -o build -n fib
+programs/fib.asm: 19 words -> build/fib.hex
+cp build/fib.hex build/prog.hex
+yosys -ql build/yosys.log scripts/synth.ys
+Warning: Replacing memory \rstack_q with list of registers. See rtl/stack_core_bram.sv:731
+Warning: Resizing cell port top.u_rom.mem.0.0.A_DO from 10 bits to 20 bits.
+        2   CC_BRAM_20K
+      495   CC_L2T4
+        1   CC_MULT

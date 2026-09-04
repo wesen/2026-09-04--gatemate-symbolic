@@ -1,58 +1,39 @@
 ---
 Title: Tagged stack evaluator implementation review and intern guide
 Ticket: GATEMATE-SYMBOLIC-002
-Status: active
-Topics:
-    - fpga
-    - gatemate
-    - symbolic-computers
-    - architecture
+Status: review
+Topics: [fpga, gatemate, symbolic-computers, architecture]
 DocType: index
 Intent: long-term
 Owners: []
 RelatedFiles: []
 ExternalSources: []
-Summary: ""
-LastUpdated: 2026-09-04T15:31:09.777236968-04:00
-WhatFor: ""
-WhenToUse: ""
+Summary: Complete intern guide and implementation review at c7f9dc9 with reproducible correctness findings.
+LastUpdated: 2026-09-04T15:50:00-04:00
+WhatFor: Review the implemented evaluator and plan correctness improvements.
+WhenToUse: Onboarding or preparing implementation changes after the laboratory demonstration.
 ---
 
 # Tagged stack evaluator implementation review and intern guide
 
 ## Overview
 
-<!-- Provide a brief overview of the ticket, its goals, and current status -->
+The review explains the complete Python/SystemVerilog evaluator and its board workflow. All 123 existing tests pass, while targeted probes expose instruction semantics, stack staging, PC bounds, fault metadata, and assembler validation gaps. The report includes an explicit remediation design; production code was not changed.
 
-## Key Links
+## Deliverables
 
-- **Related Files**: See frontmatter RelatedFiles field
-- **External Sources**: See frontmatter ExternalSources field
+- [Analysis, design, and implementation review](design-doc/01-tagged-stack-evaluator-analysis-design-and-implementation-review.md): approximately 9,500 words, architecture diagrams, ISA/fault tables, APIs, nine finding groups, decisions, and phased acceptance plan.
+- [Investigation diary](reference/01-investigation-diary.md): chronology, commands, failures, commits, and delivery evidence.
+- [Structured probe results](reference/validation/probe-results.json): model-versus-RTL observations and assembler counterexamples.
+- [Scripts](scripts/): reproducible investigation and source collection.
+- [Source provenance](sources/README.md): official pages archived through defuddle and original book location.
 
-## Status
+## Validation
 
-Current status: **active**
+Baseline commit: `c7f9dc9`. Fresh tests: **123 passed**. Fresh Fibonacci synthesis: **2 CC_BRAM_20K, 1 CC_MULT, 495 CC_L2T4**. Routed timing and physical-board results in the report are explicitly historical.
 
-## Topics
+Ticket status is **review** because this is a review deliverable, not a claim that the identified implementation defects are resolved. See [tasks](tasks.md) for documentation delivery progress and [changelog](changelog.md) for milestones.
 
-- fpga
-- gatemate
-- symbolic-computers
-- architecture
+## Delivery
 
-## Tasks
-
-See [tasks.md](./tasks.md) for the current task list.
-
-## Changelog
-
-See [changelog.md](./changelog.md) for recent changes and decisions.
-
-## Structure
-
-- design/ - Architecture and design documents
-- reference/ - Prompt packs, API contracts, context summaries
-- playbooks/ - Command sequences and test procedures
-- scripts/ - Temporary code and tooling
-- various/ - Working notes and research
-- archive/ - Deprecated or reference-only artifacts
+Planned reMarkable destination: `/ai/2026/09/04/GATEMATE-SYMBOLIC-002/`. The final upload receipt is recorded in the diary.

@@ -1,0 +1,7 @@
+DRY: layout=default
+DRY: bundle name=GATEMATE-SYMBOLIC-002 Implementation Review
+DRY: remote-dir=/ai/2026/09/04/GATEMATE-SYMBOLIC-002
+DRY: include /home/manuel/code/wesen/2026-09-04--gatemate-symbolic/ttmp/2026/09/04/GATEMATE-SYMBOLIC-002--tagged-stack-evaluator-implementation-review-and-intern-guide/design-doc/01-tagged-stack-evaluator-analysis-design-and-implementation-review.md (title="01-tagged-stack-evaluator-analysis-design-and-implementation-review")
+DRY: include /home/manuel/code/wesen/2026-09-04--gatemate-symbolic/ttmp/2026/09/04/GATEMATE-SYMBOLIC-002--tagged-stack-evaluator-implementation-review-and-intern-guide/reference/01-investigation-diary.md (title="01-investigation-diary")
+DRY: pandoc <bundle> -> <tmp>/GATEMATE-SYMBOLIC-002 Implementation Review.pdf
+DRY: upload GATEMATE-SYMBOLIC-002 Implementation Review.pdf -> /ai/2026/09/04/GATEMATE-SYMBOLIC-002

@@ -1,21 +1,11 @@
-# Tagged stack evaluator implementation review and intern guide
+# GATEMATE-SYMBOLIC-002
 
-This is the document workspace for ticket GATEMATE-SYMBOLIC-002.
+Start with [the ticket index](index.md), then read the [technical review](design-doc/01-tagged-stack-evaluator-analysis-design-and-implementation-review.md).
 
-## Structure
+Reproduce the investigation from the repository root with:
 
-- **design/**: Design documents and architecture notes
-- **reference/**: Reference documentation and API contracts
-- **playbooks/**: Operational playbooks and procedures
-- **scripts/**: Utility scripts and automation
-- **sources/**: External sources and imported documents
-- **various/**: Scratch or meeting notes, working notes
-- **archive/**: Optional space for deprecated or reference-only artifacts
+```bash
+bash ttmp/2026/09/04/GATEMATE-SYMBOLIC-002*/scripts/02-baseline.sh
+```
 
-## Getting Started
-
-Use docmgr commands to manage this workspace:
-
-- Add documents: `docmgr doc add --ticket GATEMATE-SYMBOLIC-002 --doc-type design-doc --title "My Design"`
-- Import sources: `docmgr import file --ticket GATEMATE-SYMBOLIC-002 --file /path/to/doc.md`
-- Update metadata: `docmgr meta update --ticket GATEMATE-SYMBOLIC-002 --field Status --value review`
+Scripts are under `scripts/`, downloaded reference pages under `sources/`, and generated evidence under `reference/validation/`. Probe mismatches document the baseline implementation; the investigation runner is not a correctness test that requires every match to be true.
