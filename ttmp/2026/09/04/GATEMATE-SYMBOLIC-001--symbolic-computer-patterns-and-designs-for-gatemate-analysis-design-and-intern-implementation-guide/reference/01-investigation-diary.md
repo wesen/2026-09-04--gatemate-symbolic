@@ -643,3 +643,53 @@ The book lists CALL/RET as the first Laboratory 1 extension; recursion is the in
 
 ### Technical details
 - Budget after extension: 2 x CC_BRAM_20K, 392 CPEs, 16.56 MHz, 1 CC_MULT.
+
+## Step 13: Vault report — deep-dive project report published
+
+The user asked for a detailed project report in the Obsidian vault (go-go-parc) as a deep-dive
+technical analysis blog post in textbook writing style (no analogies). We wrote the report
+following the obsidian-vault-writing skill (PROJECT REPORT note shape, dated folder,
+frontmatter, summary callout, wikilinks to the MATE-16/PCA-Z80/Uxn notes) and the
+textbook-authoring style rules (foundational first, prose that develops ideas, concrete traces
+and tables, no analogies, no hedged claims). All numbers in the report were verified against
+the repo (123 tests = 36+12+17+52+6; 2 CC_BRAM_20K; 392 CPEs; 16.56 MHz; board captures).
+Committed and pushed the vault.
+
+### Prompt Context
+
+**User prompt (verbatim):** "write a detailed project report for the obsidian vault as a deep dive technical analysis blog post using a textbook writing style (no analogies, see skill). Commit and push the bsidian vault when done (go-go-parc vault)."
+
+**Assistant interpretation:** Produce the vault deliverable: a durable, blog-length deep-dive report on the Laboratory 1 machine, then push the go-go-parc repository.
+
+### What I did
+- Read the obsidian-vault-writing and textbook-authoring skills; read the ZK Tool exemplar and the Uxn area-optimization report for the vault's report voice.
+- Wrote `Projects/2026/09/04/PROJECT REPORT - GateMate Symbolic - A Precise Tagged Stack Evaluator from Abstract Machine to Hardware.md` (~29 KB): commitment levels, ISA/fault tables, method (frozen trace contract + mermaid differential-loop diagram), register core staging discipline, BRAM top-cache refinement with the two-sequential-reads case, EMIT acceptance-vs-transmission lesson, CALL/RET + fib stack discipline, hardware budgets and evidence, LED polarity lesson, yosys∩iverilog portability table, verification inventory, reproduction commands, open items.
+- Verified all quantitative claims (pytest --collect-only per suite) and the three wikilink targets exist.
+- Vault commit 5e3c5e1, pushed to main (65638c2..5e3c5e1); only the new note staged.
+
+### Why
+The vault is the durable knowledge layer; the report makes the project's method (model-first, differential traces, stop-build budgets) reusable beyond this repo.
+
+### What worked
+- Report numbers matched the collected test counts exactly on first verification.
+
+### What didn't work
+- None.
+
+### What I learned
+- The vault's existing GateMate cluster (MATE-16, PCA-Z80, Uxn) gives the report a natural lineage to link into.
+
+### What was tricky to build
+- Keeping textbook style (prose-first, no analogies, no hedging) while staying strictly factual to repo evidence — every section was written against the diary's recorded facts rather than memory.
+
+### What warrants a second pair of eyes
+- The report's "What remains open" section sets expectations for trace-RAM; if it is implemented later, add a follow-up note rather than editing this one (append-only rule).
+
+### What should be done in the future
+- If Laboratories 2-5 are built, one report per laboratory in the same style.
+
+### Code review instructions
+- Open the note in Obsidian (mermaid renders natively); spot-check claims against `symbolic_eval/README.md` and the diary.
+
+### Technical details
+- Vault: /home/manuel/code/wesen/go-go-golems/go-go-parc, note in Projects/2026/09/04/, commit 5e3c5e1 pushed to origin/main.
