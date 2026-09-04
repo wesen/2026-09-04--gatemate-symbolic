@@ -467,3 +467,5 @@ Source the OSS CAD Suite environment and run make test in queens_rollback. Read 
 ### Technical details
 
 Implementation commits: cf52672 model/oracle; 0f15376 snapshots; 214a39a trail; 1a5194f boundary verification; ca666fd board integration. Yosys 0.68+130 dd83bbad2-dirty; router2 seed 2; 10 MHz board clock. Choice high-water 6, trail high-water 32. Two 8-second enumeration captures and one 8-second cut capture matched exactly.
+
+The measured-results package was committed as `6c7b2d3`. The final P5 completion slip printed successfully at 2026-09-04T22:01:44Z and links that commit. All eleven requested receipts report `printed: true`: one overall plan and a start/completion pair for each of five phases. `docmgr doctor --ticket GATEMATE-SYMBOLIC-004 --fail-on error` passed; all seven ticket tasks are checked. The ticket remains available for implementation review.
