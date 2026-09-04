@@ -43,3 +43,8 @@ P5 synthesis investigation: board countdown mismatch reproduced in mapped netlis
 
 Implementation complete and ready for review: 198 tests, all nine faults and both branches exercised, 16.03 MHz Fibonacci route at 10 MHz target, four matching board streams. Final constructor repair is 605f41d; full diary and original failures retained.
 
+
+## 2026-09-04
+
+Published an 8,073-word CPU architecture article to go-go-parc in pushed vault commit 0b45d4a. Added reproducible model examples and article validation; preserved the historical vault report. Diary Step 10 records the source-based research and delivery.
+

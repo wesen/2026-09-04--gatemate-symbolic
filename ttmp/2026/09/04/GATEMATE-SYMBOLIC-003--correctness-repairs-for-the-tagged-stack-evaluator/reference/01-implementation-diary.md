@@ -526,3 +526,68 @@ Run ticket scripts/13-validate-delivery.py to check 198 tests, coverage, four ca
 ### Technical details
 
 Final countdown image SHA256: 6d2c0fe0283de49faca2efcd49d56427d29f316a431ef8a8ce15dfd4e17cbd03. Printer receipt rendered at 2026-09-04T20:31:12Z with printed: true. Full final tests took 18.35 seconds. Task status is review and all six task entries are checked.
+
+## Step 10: Publish the CPU architecture deep dive to the Obsidian vault
+
+The user requested a textbook-style account of the implemented CPU rather than another construction history. I wrote a new 8,073-word architecture article, verified its examples against the model and its timing explanations against the RTL, and published it as a separate vault note. The existing historical report remains unchanged.
+
+### Prompt Context
+
+**User prompt (verbatim):**
+
+> write a detailed project report for the obsidian vault as a deep dive technical analysis blog post using a textbook writing style (no analogies, see skill).
+> Commit and push the bsidian vault when done (go-go-parc vault).
+>
+> The report is about how the implemented CPU works, what the principles behind it are, examples of execution. Basically a deep dive into the thing we built, less so than about how we built it. It's a research report basically.
+
+**Assistant interpretation:** Explain the CPU's architecture, semantics, physical representation, and execution directly, using prose, examples, pseudocode, and diagrams; add a new article to go-go-parc, then commit and push it.
+
+**Inferred user intent:** Preserve a substantial technical explanation that a reader can use to understand the actual machine independently of the implementation diary.
+
+**Commit (vault publication):** `0b45d4adf4da6d6f470563bcf78484896113b810` — `docs: explain the tagged stack CPU architecture and execution`.
+
+### What I did
+
+- Read the textbook-authoring and obsidian-vault-writing skills, the previous vault report, current Python semantics, both RTL cores, memory wrappers, output buffer, printer, and UART.
+- Added `scripts/20-report-examples.py`, which records assembled words, labels, before/after architectural snapshots, exact traces, output text, and depth statistics.
+- Wrote the new article at `Projects/2026/09/04/ARTICLE - GateMate Symbolic - Inside a Tagged Stack CPU.md` in go-go-parc.
+- Added `scripts/21-validate-article.py` to validate metadata, quoted records, model statistics, source paths, vault links, and the executable Python example.
+- Committed only the new vault note and pushed `origin main`; verified HEAD and origin/main both equal `0b45d4a` and the vault worktree is clean.
+
+### Why
+
+The architectural explanation needs to distinguish logical state from physical cache occupancy, retirement from preparation, and output acceptance from later serial transmission. Those relationships are central to the CPU and can be lost in a chronological account of implementation work.
+
+### What worked
+
+The article has 13 numbered teaching sections, complete ISA and execution tables, three Mermaid diagrams, and direct file/API references. Eleven quoted TRACE/FINAL records match the replayed evidence. The embedded Python example executes and leaves integer twelve on a halted machine. YAML metadata and all three related vault links validate.
+
+The replay measures fib(10) at 1,681 events, maximum operand depth twelve, and maximum return depth ten. It also demonstrates ordinary-bytecode overflow and the successful RET followed by a one-past-ROM FETCH fault. These provide concrete support for claims that are easy to misstate from memory.
+
+### What didn't work
+
+A batched source-inspection command ended with an accidental `sed` operand ` /dev/null`, yielding `sed: can't read  /dev/null: No such file or directory`; the relevant preceding source reads succeeded. Searching an absent vault `.agents` directory produced `rg: .agents: No such file or directory`; parent and destination AGENTS files were checked separately. Copying the completed article with `cp -n` succeeded but emitted its non-portability warning; `cmp` confirmed byte-for-byte equality. No article validation, commit, or push failed.
+
+### What I learned
+
+The earlier historical article contains statements that should not be carried into the current architecture explanation, including treating small literals as preventing practical ADD overflow and treating compact trace equality as full-state equivalence. The new report derives these points from current code and runnable examples without rewriting the historical note.
+
+### What was tricky to build
+
+The cache can legally contain one value above a nonempty deep region; a binary instruction in that state can need two sequential reads. The explanation therefore separates operand acquisition from survivor refill and accounts for seven controller cycles on that path. The report also distinguishes actual routed timing and board observations from derived throughput ceilings and model event counts.
+
+### What warrants a second pair of eyes
+
+Review the cache abstraction and cycle table against `S_DECODE`, `S_RDWAIT`, `S_EXECUTE`, and `S_COMMIT`. Check that the report does not imply complete synthesis equivalence or expose unimplemented heap semantics from reserved tag names. The recorded 392-CPE packing message is explicitly distinguished from final utilization categories.
+
+### What should be done in the future
+
+Update with a new dated article when actual heap operations, multi-cycle arithmetic, or architectural trace transport are implemented. No additional implementation was performed for this writing task.
+
+### Code review instructions
+
+Run `python3 scripts/20-report-examples.py` from this ticket's script context, or invoke it by full path. Run `scripts/21-validate-article.py` with the vault article path. Read `reference/validation/report-examples.json` for exact machine states and `report-validation.json` for the article checks. The article describes source revision `9acc6cc`; its publication is vault commit `0b45d4a`.
+
+### Technical details
+
+The vault root is `/home/manuel/code/wesen/go-go-golems/go-go-parc`. Its push output was `25fd4af..0b45d4a main -> main`. No external resources were downloaded: this report is grounded in local primary source code and existing recorded hardware evidence. All new scripts remain under this ticket's `scripts/` folder.
