@@ -1,0 +1,5 @@
+make: Entering directory '/home/manuel/code/wesen/2026-09-04--gatemate-symbolic/queens_rollback'
+python3 -m pytest sim -q
+..........................................................               [100%]
+58 passed in 28.92s
+make: Leaving directory '/home/manuel/code/wesen/2026-09-04--gatemate-symbolic/queens_rollback'

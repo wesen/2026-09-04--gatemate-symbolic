@@ -22,7 +22,7 @@ export default function App() {
   const choosePreset = (g: Graph) => { setVertices(g.vertices); setColors(g.colors); setEdges(edgeText(g)); setFirstOnly(g.firstOnly); setMessage('') };
   const accept = (next: State) => { dispatch(api.util.upsertQueryData('state', undefined, next)); setMessage('') };
   const action = async (name: Action) => { try { accept(await control(name).unwrap()) } catch (error) { setMessage(errorText(error)) } };
-  const submit = async () => { try { accept(await load(parseGraph(vertices, colors, edges, firstOnly)).unwrap()) } catch (error) { setMessage(errorText(error)) } };
+  const submit = async () => { if (inspecting || busy || state?.running || connectionError || isLoading) return; try { accept(await load(parseGraph(vertices, colors, edges, firstOnly)).unwrap()) } catch (error) { setMessage(errorText(error)) } };
   const status = state?.error ? 'LINK ERROR' : state?.running ? 'RUNNING' : state?.latest.kind === 11 ? 'FAULT' : state?.latest.kind === 10 ? state.latest.count === 0 ? 'UNSATISFIABLE' : 'COMPLETE' : state?.loaded ? 'PAUSED' : 'NO GRAPH';
   return <div className="microscope">
     <header className="instrument-header">
@@ -50,7 +50,7 @@ export default function App() {
             <div className="row g-2 my-2"><label className="col-6 form-label">Vertices<input className="form-control" type="number" min="1" max="8" value={vertices} onChange={(e) => setVertices(Number(e.target.value))} /></label><label className="col-6 form-label">Colors<input className="form-control" type="number" min="1" max="8" value={colors} onChange={(e) => setColors(Number(e.target.value))} /></label></div>
             <label className="form-label w-100">Edges<textarea className="form-control font-monospace" rows={3} value={edges} onChange={(e) => setEdges(e.target.value)} aria-describedby="edge-help" /></label><div id="edge-help" className="small text-secondary mb-3">Example: 0-1, 1-2. Leave empty for isolated vertices.</div>
             <label className="form-check mb-3"><input className="form-check-input" type="checkbox" checked={firstOnly} onChange={(e) => setFirstOnly(e.target.checked)} /><span className="form-check-label">Stop after first solution</span></label>
-            <button className="btn btn-success w-100" disabled={busy || state?.running || !!connectionError || isLoading}>Load graph</button>
+            <button className="btn btn-success w-100" disabled={inspecting || busy || state?.running || !!connectionError || isLoading}>Load graph</button>
           </form>
           {state?.loaded && <div className="loaded-note"><strong>Loaded configuration</strong><br />{state.graph.vertices} vertices · {state.graph.colors} colors<br />{state.graph.firstOnly ? 'First solution only' : 'Enumerate all labeled colorings'}<br /><span className="text-secondary">Run generation {state.generation}</span></div>}
           <p className="small text-secondary mt-3 mb-0">Loading replaces the current search. Preset and form edits take effect only when loaded.</p>

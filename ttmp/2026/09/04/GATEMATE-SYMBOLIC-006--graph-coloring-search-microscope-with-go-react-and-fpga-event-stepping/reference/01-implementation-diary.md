@@ -513,3 +513,165 @@ Run pnpm --dir web test; pnpm --dir web check; python3 scripts/build-web.py. In 
 ### Technical details
 
 Production build measured app.js 284.62 kB and app.css 234.68 kB before gzip. The browser explicitly identified FPGA live device. Unit UI tests use a fetch mock; the separate browser check used real UART hardware.
+
+## Step 10: P6 dependency scan and Go patch update
+
+The initial final-check run passed race tests, frontend tests, both build modes, and lint, then stopped at govulncheck. The scan identified standard-library vulnerabilities in Go 1.26.1.
+
+### Prompt Context
+
+**User prompt (verbatim, JSON encoded):**
+
+(see Step 1)
+
+**Assistant interpretation:** Design, publish, and implement the graph-coloring FPGA microscope with Go and React, committed milestones, a detailed diary, and physical phase slips.
+
+**Inferred user intent:** Deliver a working next laboratory with enough explanation and evidence for an intern to maintain it.
+
+### What I did
+
+Preserved the failing scan as P6-vulnerabilities-before.log, checked official Go release history, archived it with Defuddle, and raised the root go directive to 1.26.8. Restarted final validation in tmux.
+
+### Why
+
+The scanner reported 12 reachable standard-library advisories. The latest required fixed version in those reports was 1.26.6; 1.26.8 is the current patch on the existing branch.
+
+### What worked
+
+The initial Go race run included all seven UART simulations and passed. All 10 frontend tests passed; default and embed builds and matched Glazed analyzer passed.
+
+### What didn't work
+
+make govulncheck exited 2 after the scanner exited 3, reporting 12 reachable vulnerabilities. The fail-fast script correctly did not run queens regressions after that failure. This is the first repair attempt for the dependency failure.
+
+### What I learned
+
+The system Go version is older than the available security patch releases; a module go directive can select the patched toolchain without replacing the system installation.
+
+### What was tricky to build
+
+A scan call graph can include transitive formatting/template/TLS paths; preserve the actual scanner evidence rather than making unsupported exploitability claims.
+
+### What warrants a second pair of eyes
+
+Review go.mod patch requirement and the before/after vulnerability logs.
+
+### What should be done in the future
+
+Verify the patched scan and finish the embedded physical browser checks.
+
+### Code review instructions
+
+Run scripts/06-final-validation.sh in this ticket; inspect P6-checks.exit and P6-vulnerabilities.log.
+
+### Technical details
+
+Official source https://go.dev/doc/devel/release is archived in sources/go-release-history.md. No third-party dependency version was changed by this repair.
+
+## Step 11: P6 physical integration and final historical-load correction
+
+The patched final validation completed successfully, including 58 queens regressions and zero reachable vulnerability findings. The embedded production server completed four physical graph runs. Mobile screenshot review found one missing historical-mode guard on Load graph.
+
+### Prompt Context
+
+**User prompt (verbatim, JSON encoded):**
+
+(see Step 1)
+
+**Assistant interpretation:** Design, publish, and implement the graph-coloring FPGA microscope with Go and React, committed milestones, a detailed diary, and physical phase slips.
+
+**Inferred user intent:** Deliver a working next laboratory with enough explanation and evidence for an intern to maintain it.
+
+### What I did
+
+Verified six/zero/two/one physical solution counts, selected a real trail entry and historical snapshot, captured desktop/mobile screenshots, and checked the console and page width. Added inspecting to the Load button guard and guarded form submission, with an assertion in the existing interaction test.
+
+### Why
+
+The historical banner promises that device controls require the live view; loading a replacement graph must follow that same rule, including keyboard form submission.
+
+### What worked
+
+Go 1.26.8 resolved the scanner failure on the first repair attempt. All 58 queens tests passed in 28.92 seconds. Embedded physical API runs returned 86/26/32/12 events and 6/0/2/1 solutions. Browser console had zero errors and mobile width did not overflow.
+
+### What didn't work
+
+Mobile screenshot inspection showed Load still enabled in historical mode. This is the first correction attempt for that UI omission; frontend checks and rebuilt embedded assets are being verified before restarting the service.
+
+### What I learned
+
+Visual review exposed a behavioral inconsistency that the original Step-only history assertion missed.
+
+### What was tricky to build
+
+Disabled buttons alone do not express the complete form contract; submit must also refuse historical or busy state.
+
+### What warrants a second pair of eyes
+
+Review the historical submit guard and confirm the final screenshot shows Load disabled.
+
+### What should be done in the future
+
+Upload the reconciled implementation guide under a new name, print P6 completion, and commit/push delivery receipts.
+
+### Code review instructions
+
+Run pnpm --dir web test and go generate ./internal/microscope, rebuild with embed, then inspect a historical event in the browser.
+
+### Technical details
+
+The running server uses tmux graph-embedded and /tmp/graph-api.log, avoiding changes to committed logs during continued use. The P4 service log is a fixed snapshot. Evidence files remain in reference/validation.
+
+## Step 12: P6 final verification and completed guide delivery
+
+The final UI correction passed on its first attempt. The completed 6161-word intern guide was uploaded successfully as a separate reMarkable document after a successful dry run. All implementation phases now meet their acceptance criteria.
+
+### Prompt Context
+
+**User prompt (verbatim, JSON encoded):**
+
+(see Step 1)
+
+**Assistant interpretation:** Design, publish, and implement the graph-coloring FPGA microscope with Go and React, committed milestones, a detailed diary, and physical phase slips.
+
+**Inferred user intent:** Deliver a working next laboratory with enough explanation and evidence for an intern to maintain it.
+
+### What I did
+
+Rebuilt the embedded application, restarted the physical service, loaded a triangle, stepped two actual events, verified historical Step and Load guards, captured final desktop/mobile screenshots and accessibility snapshot, and returned the browser to live trail inspection. Updated the guide, source map, API contracts, measurements, README, ticket overview, and file relations.
+
+### Why
+
+The final handoff must match the running implementation and preserve reviewable evidence of physical execution and document delivery.
+
+### What worked
+
+Ten frontend tests and the embedded build passed after the guard correction. Browser assertions confirmed historical=true, stepDisabled=true, loadDisabled=true, viewport=390 and document width=375. Console errors=0. Docmgr doctor passed. Upload receipt: OK: uploaded GATEMATE 006 Implemented Microscope Guide.pdf -> /ai/2026/09/04/GATEMATE-SYMBOLIC-006.
+
+### What didn't work
+
+The sandboxed build emitted a read-only module stat-cache warning while still exiting zero; the authorized final go run used the writable normal cache and started successfully. No remaining test, browser, or delivery failure.
+
+### What I learned
+
+The physical UI now has a consistent live-versus-history mutation contract, and both the original design and reconciled implementation guide remain available on reMarkable.
+
+### What was tricky to build
+
+Completion slips need immutable commit hashes, so the implementation/evidence commit precedes the final print; its receipt is committed separately.
+
+### What warrants a second pair of eyes
+
+Review graph_microscope/README.md, the final guide walkthrough, meaningful event deltas, historical guards, and before/after vulnerability evidence.
+
+### What should be done in the future
+
+Potential future tickets can add persistent traces or broader constraints; those are outside this completed eight-vertex graph laboratory.
+
+### Code review instructions
+
+Open http://127.0.0.1:8086. The physical engine is paused at event 2 with one checkpoint and one trail entry. Use Step event or Run, or Load a different preset. Refer to reference/validation and scripts/06-final-validation.sh for reproducible checks.
+
+### Technical details
+
+Server: tmux graph-final, go run -tags embed ./cmd/search-microscope --engine serial --listen 127.0.0.1:8086. Live logs: /tmp/graph-api.log. The board remains programmed with the P3 image. Final delivery preserves annotations by using a new document name.

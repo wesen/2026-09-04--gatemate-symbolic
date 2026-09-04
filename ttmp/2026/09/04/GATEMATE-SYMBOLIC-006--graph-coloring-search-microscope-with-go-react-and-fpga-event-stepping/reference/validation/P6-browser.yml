@@ -1,0 +1,138 @@
+- generic [ref=f2e3]:
+  - banner [ref=f2e4]:
+    - generic [ref=f2e5]:
+      - generic [ref=f2e6]: GATEMATE / LAB 03
+      - heading "Graph search microscope" [level=1] [ref=f2e7]
+      - paragraph [ref=f2e8]: Inspect propagation, choices, and reversible state.
+    - generic [ref=f2e9]: FPGA · live device
+  - main [ref=f2e11]:
+    - generic [ref=f2e12]:
+      - generic [ref=f2e13]:
+        - button "Step event" [ref=f2e73] [cursor=pointer]
+        - button "Run" [ref=f2e74] [cursor=pointer]
+        - button "Pause" [disabled]
+        - button "Reset graph" [ref=f2e75] [cursor=pointer]
+      - generic [ref=f2e14]:
+        - generic [ref=f2e15]: PAUSED
+        - generic [ref=f2e16]: event 2
+        - generic [ref=f2e17]: 0 accepted
+    - generic [ref=f2e18]:
+      - complementary [ref=f2e19]:
+        - generic [ref=f2e20]: 01 / CONFIGURE
+        - heading "Graph input" [level=2] [ref=f2e21]
+        - paragraph [ref=f2e22]: Vertices are numbered from 0. An edge requires different endpoint colors.
+        - generic [ref=f2e23]:
+          - button "Triangle · 3 colors" [ref=f2e24] [cursor=pointer]
+          - button "Triangle · 2 colors" [ref=f2e25] [cursor=pointer]
+          - button "Path · 2 colors" [ref=f2e26] [cursor=pointer]
+          - button "Square · 3 colors" [ref=f2e27] [cursor=pointer]
+        - generic [ref=f2e28]:
+          - generic [ref=f2e29]:
+            - generic [ref=f2e30]:
+              - text: Vertices
+              - spinbutton "Vertices" [ref=f2e31]: "3"
+            - generic [ref=f2e32]:
+              - text: Colors
+              - spinbutton "Colors" [ref=f2e33]: "3"
+          - generic [ref=f2e34]:
+            - text: Edges
+            - textbox "Edges" [ref=f2e35]: 0-1, 1-2, 0-2
+          - generic [ref=f2e36]: "Example: 0-1, 1-2. Leave empty for isolated vertices."
+          - generic [ref=f2e37]:
+            - checkbox "Stop after first solution" [ref=f2e38]
+            - text: Stop after first solution
+          - button "Load graph" [ref=f2e76] [cursor=pointer]
+        - generic [ref=f2e77]:
+          - strong [ref=f2e78]: Loaded configuration
+          - text: 3 vertices · 3 colorsEnumerate all labeled colorings
+          - generic [ref=f2e79]: Run generation 1
+        - paragraph [ref=f2e39]: Loading replaces the current search. Preset and form edits take effect only when loaded.
+      - generic [ref=f2e40]:
+        - generic [ref=f2e41]: 02 / OBSERVE
+        - generic [ref=f2e42]:
+          - heading "Domains & propagation" [level=2] [ref=f2e43]
+          - generic [ref=f2e44]: WRITE
+        - img "Graph and candidate colors" [ref=f2e172]:
+          - button "Vertex 0, candidates 0" [pressed] [ref=f2e243] [cursor=pointer]:
+            - generic [ref=f2e177]: v0
+            - generic [ref=f2e178]: C0
+          - button "Vertex 1, candidates 0, 1, 2" [ref=f2e183] [cursor=pointer]:
+            - generic [ref=f2e185]: v1
+            - generic [ref=f2e186]: C0 C1 C2
+          - button "Vertex 2, candidates 0, 1, 2" [ref=f2e191] [cursor=pointer]:
+            - generic [ref=f2e193]: v2
+            - generic [ref=f2e194]: C0 C1 C2
+        - table [ref=f2e200]:
+          - rowgroup [ref=f2e201]:
+            - row [ref=f2e202]:
+              - columnheader "Vertex" [ref=f2e203]
+              - columnheader "Mask" [ref=f2e204]
+              - columnheader "Candidate colors" [ref=f2e205]
+              - columnheader "Propagated" [ref=f2e206]
+          - rowgroup [ref=f2e207]:
+            - row [ref=f2e244]:
+              - cell [ref=f2e209]:
+                - button "v0" [ref=f2e210] [cursor=pointer]
+              - cell "0x01" [ref=f2e245]
+              - cell "C0" [ref=f2e246]
+              - cell "No" [ref=f2e216]
+            - row [ref=f2e217]:
+              - cell [ref=f2e218]:
+                - button "v1" [ref=f2e219] [cursor=pointer]
+              - cell "0x07" [ref=f2e220]
+              - cell "C0 C1 C2" [ref=f2e221]:
+                - generic [ref=f2e222]: C0
+                - generic [ref=f2e223]: C1
+                - generic [ref=f2e224]: C2
+              - cell "No" [ref=f2e225]
+            - row [ref=f2e226]:
+              - cell [ref=f2e227]:
+                - button "v2" [ref=f2e228] [cursor=pointer]
+              - cell "0x07" [ref=f2e229]
+              - cell "C0 C1 C2" [ref=f2e230]:
+                - generic [ref=f2e231]: C0
+                - generic [ref=f2e232]: C1
+                - generic [ref=f2e233]: C2
+              - cell "No" [ref=f2e234]
+      - complementary [ref=f2e46]:
+        - generic [ref=f2e47]: 03 / INSPECT
+        - heading "Event history" [level=2] [ref=f2e48]
+        - paragraph [ref=f2e49]: Newest first. Up to 256 immutable snapshots; viewing history does not reverse the FPGA.
+        - generic [ref=f2e50]:
+          - 'button "Event 2: WRITE" [ref=f2e159] [cursor=pointer]':
+            - generic [ref=f2e160]: "2"
+            - strong [ref=f2e161]: WRITE
+            - generic [ref=f2e162]: C 1 / T 1
+          - 'button "Event 1: CREATE" [ref=f2e143] [cursor=pointer]':
+            - generic [ref=f2e144]: "1"
+            - strong [ref=f2e145]: CREATE
+            - generic [ref=f2e146]: C 1 / T 0
+      - generic [ref=f2e52]:
+        - generic [ref=f2e53]: 04 / RECOVER
+        - generic [ref=f2e54]:
+          - generic [ref=f2e55]:
+            - heading "Choice stack 1" [level=2] [ref=f2e147]
+            - paragraph [ref=f2e57]: Each checkpoint retains alternatives and a restoration mark.
+            - table [ref=f2e59]:
+              - rowgroup [ref=f2e60]:
+                - row [ref=f2e61]:
+                  - columnheader "Level" [ref=f2e62]
+                  - columnheader "Vertex" [ref=f2e63]
+                  - columnheader "Remaining" [ref=f2e64]
+                  - columnheader "Mark" [ref=f2e65]
+                  - columnheader "Saved P" [ref=f2e66]
+              - rowgroup [ref=f2e148]:
+                - row [ref=f2e235]:
+                  - cell "1" [ref=f2e236]
+                  - cell "v0" [ref=f2e237]
+                  - cell "C1 C2" [ref=f2e238]
+                  - cell "0" [ref=f2e239]
+                  - cell "F8" [ref=f2e240]
+          - generic [ref=f2e68]:
+            - heading "Mutation trail 1" [level=2] [ref=f2e247]
+            - paragraph [ref=f2e70]: "Select a record to locate its vertex. Undo restores old masks in reverse order. Base: 0."
+            - button "Trail entry 0 restores vertex 0" [active] [ref=f2e248] [cursor=pointer]:
+              - generic [ref=f2e249]: "#0 · level 1"
+              - strong [ref=f2e250]: v0 ← 0x07
+              - generic [ref=f2e251]: Restore C0 C1 C2
+    - generic [ref=f2e72]: Deterministic search · singleton propagation · synchronous rollback · events from physical GateMate hardware

@@ -1,0 +1,6 @@
+DRY: layout=default
+DRY: bundle name=GATEMATE 006 Implemented Microscope Guide
+DRY: remote-dir=/ai/2026/09/04/GATEMATE-SYMBOLIC-006
+DRY: include /home/manuel/code/wesen/2026-09-04--gatemate-symbolic/ttmp/2026/09/04/GATEMATE-SYMBOLIC-006--graph-coloring-search-microscope-with-go-react-and-fpga-event-stepping/design-doc/01-graph-coloring-search-microscope-intern-analysis-design-and-implementation-guide.md (title="01-graph-coloring-search-microscope-intern-analysis-design-and-implementation-guide")
+DRY: pandoc <bundle> -> <tmp>/GATEMATE 006 Implemented Microscope Guide.pdf
+DRY: upload GATEMATE 006 Implemented Microscope Guide.pdf -> /ai/2026/09/04/GATEMATE-SYMBOLIC-006

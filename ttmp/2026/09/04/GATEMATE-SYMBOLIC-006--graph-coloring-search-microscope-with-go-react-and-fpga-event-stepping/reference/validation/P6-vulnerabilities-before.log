@@ -1,0 +1,133 @@
+GOBIN=/tmp go install golang.org/x/vuln/cmd/govulncheck@v1.1.4
+cp /tmp/govulncheck /tmp/gatemate-govulncheck
+/tmp/gatemate-govulncheck ./...
+=== Symbol Results ===
+
+Vulnerability #1: GO-2026-6090
+    Limit handshake messages we are willing to accept post-handshake in
+    crypto/tls
+  More info: https://pkg.go.dev/vuln/GO-2026-6090
+  Standard library
+    Found in: crypto/tls@go1.26.1
+    Fixed in: crypto/tls@go1.26.6
+    Example traces found:
+      #1: cmd/search-microscope/main.go:65:31: search.Run calls http.Server.ListenAndServe, which eventually calls tls.Conn.HandshakeContext
+      #2: cmd/search-microscope/main.go:87:41: search.main calls errors.withMessage.Error, which eventually calls tls.Conn.Read
+      #3: pkg/microscope/serial.go:76:21: microscope.Serial.exchange calls fmt.Fprintf, which calls tls.Conn.Write
+
+Vulnerability #2: GO-2026-6089
+    Apply ReadHeaderTimeout when doing unencrypted HTTP/2 check in net/http
+  More info: https://pkg.go.dev/vuln/GO-2026-6089
+  Standard library
+    Found in: net/http@go1.26.1
+    Fixed in: net/http@go1.26.6
+    Example traces found:
+      #1: cmd/search-microscope/main.go:65:31: search.Run calls http.Server.ListenAndServe
+
+Vulnerability #3: GO-2026-5972
+    Enforce maximum recursion depth in encoding/asn1
+  More info: https://pkg.go.dev/vuln/GO-2026-5972
+  Standard library
+    Found in: encoding/asn1@go1.26.1
+    Fixed in: encoding/asn1@go1.26.6
+    Example traces found:
+      #1: internal/microscope/session.go:51:10: microscope.NewSession calls errgroup.Group.Go, which eventually calls asn1.Unmarshal
+
+Vulnerability #4: GO-2026-5856
+    Invoking Encrypted Client Hello privacy leak in crypto/tls
+  More info: https://pkg.go.dev/vuln/GO-2026-5856
+  Standard library
+    Found in: crypto/tls@go1.26.1
+    Fixed in: crypto/tls@go1.26.5
+    Example traces found:
+      #1: cmd/search-microscope/main.go:65:31: search.Run calls http.Server.ListenAndServe, which eventually calls tls.Conn.HandshakeContext
+      #2: cmd/search-microscope/main.go:87:41: search.main calls errors.withMessage.Error, which eventually calls tls.Conn.Read
+      #3: pkg/microscope/serial.go:76:21: microscope.Serial.exchange calls fmt.Fprintf, which calls tls.Conn.Write
+
+Vulnerability #5: GO-2026-5039
+    Arbitrary inputs are included in errors without any escaping in
+    net/textproto
+  More info: https://pkg.go.dev/vuln/GO-2026-5039
+  Standard library
+    Found in: net/textproto@go1.26.1
+    Fixed in: net/textproto@go1.26.4
+    Example traces found:
+      #1: cmd/search-microscope/main.go:65:31: search.Run calls http.Server.ListenAndServe, which eventually calls textproto.Reader.ReadMIMEHeader
+
+Vulnerability #6: GO-2026-5037
+    Inefficient candidate hostname parsing in crypto/x509
+  More info: https://pkg.go.dev/vuln/GO-2026-5037
+  Standard library
+    Found in: crypto/x509@go1.26.1
+    Fixed in: crypto/x509@go1.26.4
+    Example traces found:
+      #1: pkg/microscope/serial.go:76:21: microscope.Serial.exchange calls fmt.Fprintf, which eventually calls x509.Certificate.Verify
+      #2: pkg/microscope/serial.go:76:21: microscope.Serial.exchange calls fmt.Fprintf, which eventually calls x509.Certificate.VerifyHostname
+      #3: pkg/microscope/serial.go:76:21: microscope.Serial.exchange calls fmt.Fprintf, which eventually calls x509.HostnameError.Error
+
+Vulnerability #7: GO-2026-4971
+    Panic in Dial and LookupPort when handling NUL byte on Windows in net
+  More info: https://pkg.go.dev/vuln/GO-2026-4971
+  Standard library
+    Found in: net@go1.26.1
+    Fixed in: net@go1.26.3
+    Example traces found:
+      #1: cmd/search-microscope/main.go:65:31: search.Run calls http.Server.ListenAndServe, which calls net.Listen
+
+Vulnerability #8: GO-2026-4947
+    Unexpected work during chain building in crypto/x509
+  More info: https://pkg.go.dev/vuln/GO-2026-4947
+  Standard library
+    Found in: crypto/x509@go1.26.1
+    Fixed in: crypto/x509@go1.26.2
+    Example traces found:
+      #1: pkg/microscope/serial.go:76:21: microscope.Serial.exchange calls fmt.Fprintf, which eventually calls x509.Certificate.Verify
+
+Vulnerability #9: GO-2026-4946
+    Inefficient policy validation in crypto/x509
+  More info: https://pkg.go.dev/vuln/GO-2026-4946
+  Standard library
+    Found in: crypto/x509@go1.26.1
+    Fixed in: crypto/x509@go1.26.2
+    Example traces found:
+      #1: pkg/microscope/serial.go:76:21: microscope.Serial.exchange calls fmt.Fprintf, which eventually calls x509.Certificate.Verify
+
+Vulnerability #10: GO-2026-4870
+    Unauthenticated TLS 1.3 KeyUpdate record can cause persistent connection
+    retention and DoS in crypto/tls
+  More info: https://pkg.go.dev/vuln/GO-2026-4870
+  Standard library
+    Found in: crypto/tls@go1.26.1
+    Fixed in: crypto/tls@go1.26.2
+    Example traces found:
+      #1: cmd/search-microscope/main.go:65:31: search.Run calls http.Server.ListenAndServe, which eventually calls tls.Conn.HandshakeContext
+      #2: cmd/search-microscope/main.go:87:41: search.main calls errors.withMessage.Error, which eventually calls tls.Conn.Read
+      #3: pkg/microscope/serial.go:76:21: microscope.Serial.exchange calls fmt.Fprintf, which calls tls.Conn.Write
+
+Vulnerability #11: GO-2026-4866
+    Case-sensitive excludedSubtrees name constraints cause Auth Bypass in
+    crypto/x509
+  More info: https://pkg.go.dev/vuln/GO-2026-4866
+  Standard library
+    Found in: crypto/x509@go1.26.1
+    Fixed in: crypto/x509@go1.26.2
+    Example traces found:
+      #1: pkg/microscope/serial.go:76:21: microscope.Serial.exchange calls fmt.Fprintf, which eventually calls x509.Certificate.Verify
+
+Vulnerability #12: GO-2026-4865
+    JsBraceDepth Context Tracking Bugs (XSS) in html/template
+  More info: https://pkg.go.dev/vuln/GO-2026-4865
+  Standard library
+    Found in: html/template@go1.26.1
+    Fixed in: html/template@go1.26.2
+    Example traces found:
+      #1: pkg/microscope/serial.go:76:21: microscope.Serial.exchange calls fmt.Fprintf, which eventually calls template.Error.Error
+      #2: cmd/search-microscope/main.go:11:2: search.init calls cli.init, which eventually calls template.Template.Parse
+      #3: pkg/microscope/serial.go:76:21: microscope.Serial.exchange calls fmt.Fprintf, which eventually calls template.context.String
+
+Your code is affected by 12 vulnerabilities from the Go standard library.
+This scan also found 15 vulnerabilities in packages you import and 7
+vulnerabilities in modules you require, but your code doesn't appear to call
+these vulnerabilities.
+Use '-show verbose' for more details.
+make: *** [Makefile:23: govulncheck] Error 3

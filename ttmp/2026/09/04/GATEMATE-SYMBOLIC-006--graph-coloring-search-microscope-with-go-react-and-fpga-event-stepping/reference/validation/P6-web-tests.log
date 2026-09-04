@@ -1,0 +1,16 @@
+
+> graph-search-microscope@0.1.0 test /home/manuel/code/wesen/2026-09-04--gatemate-symbolic/web
+> vitest run
+
+
+ RUN  v4.0.18 /home/manuel/code/wesen/2026-09-04--gatemate-symbolic/web
+
+ ✓ src/graph.test.ts (7 tests) 6ms
+ ✓ src/App.test.tsx (3 tests) 740ms
+   ✓ loads a preset, steps, selects trail records, and inspects history safely  516ms
+
+ Test Files  2 passed (2)
+      Tests  10 passed (10)
+   Start at  19:26:10
+   Duration  1.39s (transform 110ms, setup 221ms, import 160ms, tests 747ms, environment 672ms)
+

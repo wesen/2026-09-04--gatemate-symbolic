@@ -21,3 +21,7 @@ P3 complete (b2ead24): all seven UART simulation cases and five physical graph e
 ## 2026-09-04
 
 P4 complete: Go serialized session, strict HTTP API, bounded immutable history, Glazed server, and serial recovery. Race tests, build, vet, and version-matched analyzer pass; real-device API smoke covers triangle, unsatisfiable, path, and first-only.
+
+## 2026-09-04
+
+Completed React microscope and physical embedded-service acceptance; all final tests passed, Go patched to 1.26.8 after vulnerability scan, guide reconciled with implemented API and measured results.

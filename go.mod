@@ -1,6 +1,6 @@
 module github.com/wesen/2026-09-04--gatemate-symbolic
 
-go 1.26.1
+go 1.26.8
 
 require (
 	github.com/go-go-golems/glazed v1.4.2

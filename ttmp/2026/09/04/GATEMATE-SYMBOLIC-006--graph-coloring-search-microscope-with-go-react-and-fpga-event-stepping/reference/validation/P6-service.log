@@ -1,0 +1,2 @@
+{"level":"info","listen":"127.0.0.1:8086","engine":"serial","time":"2026-09-04T19:26:48-04:00","message":"search microscope started"}
+{"level":"info","vertices":3,"colors":3,"time":"2026-09-04T19:27:02-04:00","message":"graph loaded"}

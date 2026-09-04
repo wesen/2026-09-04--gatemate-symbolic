@@ -54,6 +54,7 @@ it('loads a preset, steps, selects trail records, and inspects history safely', 
   await user.click(screen.getByRole('button', { name: /Event 1: CREATE/ }));
   await screen.findByText(/Inspecting recorded event 1/);
   expect(screen.getByRole('button', { name: 'Step event' })).toBeDisabled();
+  expect(screen.getByRole('button', { name: 'Load graph' })).toBeDisabled();
   await user.click(screen.getByRole('button', { name: 'Return to live' }));
   expect(screen.getByRole('button', { name: 'Step event' })).toBeEnabled();
 });

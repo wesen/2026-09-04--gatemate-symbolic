@@ -1,0 +1,13 @@
+
+> graph-search-microscope@0.1.0 build /home/manuel/code/wesen/2026-09-04--gatemate-symbolic/web
+> tsc --noEmit && vite build
+
+vite v7.3.6 building client environment for production...
+transforming...
+✓ 47 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html    0.39 kB │ gzip:  0.26 kB
+dist/app.css     234.68 kB │ gzip: 32.00 kB
+dist/app.js      284.66 kB │ gzip: 92.26 kB
+✓ built in 980ms
