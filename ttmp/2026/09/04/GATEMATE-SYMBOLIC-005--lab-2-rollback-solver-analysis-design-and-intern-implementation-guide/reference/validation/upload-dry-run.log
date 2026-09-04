@@ -1,0 +1,14 @@
+{
+  "words": 7312,
+  "images": 2,
+  "metadata": "valid",
+  "experiment": "92 ordered solutions; snapshot/trail agreement",
+  "draft_recovered": true,
+  "delivery_source": "/tmp/gatemate005-delivery/guide.md"
+}
+DRY: layout=default
+DRY: bundle name=GATEMATE-SYMBOLIC-005 Lab 2 Design and Intern Guide
+DRY: remote-dir=/ai/2026/09/04/GATEMATE-SYMBOLIC-005
+DRY: include /tmp/gatemate005-delivery/guide.md (title="guide")
+DRY: pandoc <bundle> -> <tmp>/GATEMATE-SYMBOLIC-005 Lab 2 Design and Intern Guide.pdf
+DRY: upload GATEMATE-SYMBOLIC-005 Lab 2 Design and Intern Guide.pdf -> /ai/2026/09/04/GATEMATE-SYMBOLIC-005

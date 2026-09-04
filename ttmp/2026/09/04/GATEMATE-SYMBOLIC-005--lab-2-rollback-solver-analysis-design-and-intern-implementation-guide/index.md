@@ -24,7 +24,9 @@ WhenToUse: ""
 
 Design investigation for the Laboratory 2 project in GATEMATE-SYMBOLIC-004. The saved software experiment validates all 92 ordered solutions and agreement between snapshot and trail restoration. Diagram sources and rendered figures are available.
 
-**Incomplete:** the primary design document is still a generated template. Saving the authored guide failed, followed by two unsuccessful recovery runs. Work stopped under the user's debugging rule. No reMarkable upload has occurred. The current commit preserves this investigation checkpoint, not a completed guide.
+The complete 7,261-word guide has now been recovered and validated after the user resumed work. It explains the existing infrastructure, proposed solver APIs, snapshot-to-trail refactoring, memory schedules, precise faults, result acceptance, and implementation/testing phases. Production Lab 2 implementation remains under GATEMATE-SYMBOLIC-004.
+
+See [the complete design and intern guide](design-doc/01-lab-2-snapshot-to-trail-refactoring-and-intern-implementation-guide.md). Delivery records are kept under reference/validation.
 
 ## Key Links
 

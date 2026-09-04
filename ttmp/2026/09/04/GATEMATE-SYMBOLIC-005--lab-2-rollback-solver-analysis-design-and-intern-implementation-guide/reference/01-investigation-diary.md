@@ -75,3 +75,55 @@ Start with `scripts/01-queens-design-experiment.py` and `reference/validation/de
 ### Technical details
 
 The first board is `[0,4,7,5,2,6,1,3]`, packed as `672be0`. All new scripts and experiment outputs are inside this ticket. The user's publication request authorizes pushing this checkpoint despite the incomplete guide.
+
+## Step 2: Resume, recover the complete guide, and validate PDF delivery
+
+The user resumed normal work after retracting an unrelated formatting instruction. I corrected recovery to select only the exact target document patch, recovered the complete 7,261-word draft, and reviewed it against the saved experiment. The guide now exists as a real deliverable, with two rendered diagrams, proposed APIs, timing tables, implementation phases, and explicit evidence limits.
+
+### Prompt Context
+
+**User prompt (verbatim):** "sorry this was actually unrelated (the color stuff), forget abou tit and continue normally"
+
+**Assistant interpretation:** Ignore the unrelated formatting preference and resume the unfinished Lab 2 design and reMarkable delivery.
+
+**Inferred user intent:** Complete the originally requested technical guide and deliver it normally.
+
+### What I did
+
+Required the exact Add File target when selecting the archived authored patch. Added a delivery preparation script that validates metadata, experiment results, fenced blocks, and image paths. Rendered a local PDF preview with pandoc and inspected page four, including the architecture figure and packed record tables. Related five primary sources and ran docmgr doctor successfully.
+
+### Why
+
+The previous recovery selected another tool call containing the same text marker. Matching the target path fixes selection without rewriting the authored analysis or discarding its details.
+
+### What worked
+
+Recovery succeeded on the first resumed repair attempt. The document checks passed, the local preview rendered to 16 pages without warnings, and the inspected diagram/table page was legible. The reMarkable dry-run succeeded. The upload input uses absolute asset paths and a conventional lowercase title field so temporary bundle rendering can resolve the images and title.
+
+### What didn't work
+
+No resumed recovery or PDF-render failure. Historical errors remain in Step 1. The reMarkable upload is recorded separately after its command completes.
+
+### What I learned
+
+Exact artifact identity is a better recovery discriminator than a phrase that can recur in diagnostic source code. Render preparation can preserve relative image links in the source while giving the uploader absolute paths.
+
+### What was tricky to build
+
+The guide distinguishes precise protected-write faults from search contradictions, bitmap restoration from individual trail pops, and semantic events from memory cycles. The software experiment is explicitly not presented as synchronous-memory or hardware cut verification.
+
+### What warrants a second pair of eyes
+
+Review the proposed conservative 64-entry trail bound and 8-entry choice bound, reserved-entry publication sequence, result acceptance/cut timing, and baseline-versus-trail traffic accounting.
+
+### What should be done in the future
+
+Implement the design under project ticket GATEMATE-SYMBOLIC-004 after review. This documentation ticket does not implement production Lab 2 RTL.
+
+### Code review instructions
+
+Read the complete design document and saved experiment JSON. Run scripts/06-prepare-delivery.py and docmgr doctor for this ticket. Inspect the PDF preview or delivered reMarkable document for the diagrams and tables.
+
+### Technical details
+
+The local preview is /tmp/gatemate005-delivery/preview.pdf. Reproducible source files and validation logs remain in the ticket. The intended remote folder is /ai/2026/09/04/GATEMATE-SYMBOLIC-005.

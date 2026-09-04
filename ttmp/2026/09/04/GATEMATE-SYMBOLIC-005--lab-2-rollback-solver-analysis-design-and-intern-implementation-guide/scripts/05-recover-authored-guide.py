@@ -27,7 +27,9 @@ for line in Path(sys.argv[1]).read_text().splitlines():
             argument = candidate.split(prefix,1)[1]
             if not argument.startswith('"'): continue
             patch,_ = json.JSONDecoder().raw_decode(argument)
-            if isinstance(patch,str) and marker in patch: patches.append(patch)
+            if (isinstance(patch,str) and marker in patch
+                    and f'*** Add File: {target}\n' in patch):
+                patches.append(patch)
 assert patches, 'Authored patch not found; no files changed'
 patch = patches[-1]
 body = patch.split(f'*** Add File: {target}\n',1)[1].split('*** End Patch',1)[0]
