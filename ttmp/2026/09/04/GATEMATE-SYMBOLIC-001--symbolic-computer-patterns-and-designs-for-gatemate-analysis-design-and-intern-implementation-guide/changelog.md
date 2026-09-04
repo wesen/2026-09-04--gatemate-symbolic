@@ -59,3 +59,12 @@ Impl P2: asm20.py two-pass assembler + 11 programs, 42 tests green
 
 - /home/manuel/code/wesen/2026-09-04--gatemate-symbolic/symbolic_eval/tools/asm20.py — assembler
 
+
+## 2026-09-04
+
+Impl P3: register-stack RTL + differential tests, 54 green, book trace exact on RTL
+
+### Related Files
+
+- /home/manuel/code/wesen/2026-09-04--gatemate-symbolic/symbolic_eval/rtl/stack_core.sv — register-stack core
+

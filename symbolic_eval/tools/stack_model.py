@@ -117,10 +117,10 @@ class TraceRecord:
         s = (f"TRACE {self.seq} {self.pc_old} {self.pc_new} "
              f"{self.op} {self.depth} {EVENT_NAMES[self.event]}")
         if self.event == EVENT_FAULT:
-            s += (f" {self.fault_code.name} {self.fault_tag1:X} "
-                  f"{self.fault_tag0:X}")
+            s += (f" {self.fault_code.name} {self.fault_tag1:x} "
+                  f"{self.fault_tag0:x}")
         if self.event == EVENT_OUTPUT:
-            s += f" {self.out_value.tag:X} {self.out_value.payload:08X}"
+            s += f" {self.out_value.tag:x} {self.out_value.payload:08x}"
         return s
 
 

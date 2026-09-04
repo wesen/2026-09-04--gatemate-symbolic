@@ -1,0 +1,514 @@
+// stack_core.sv — Laboratory 1 tagged stack evaluator, register-stack
+// version (book Lab 1, "Register-stack version").
+//
+// Contract (design doc §6):
+//   * No architectural mutation before all checks pass: EXECUTE validates
+//     everything and stages complete next-state data; COMMIT is the single
+//     mutation owner and the only place registers and the stack change.
+//   * A commit pulse fires only in COMMIT, on output acceptance in
+//     OUTPUT_WAIT, or on entry to a precise fault state.
+//   * EMIT pops only when the output channel accepts (Delayed Irreversible
+//     Store): out_valid is held stable with out_data while blocked.
+//   * Faults are precise: pc and depth stay at their pre-instruction values.
+//
+// Check order per instruction (must match the model exactly):
+//   capacity/underflow -> operand tags -> canonicality -> branch target.
+`default_nettype none
+
+module stack_core #(
+  parameter int ROM_DEPTH   = 1024,   // 1K x 20 instruction ROM
+  parameter int STACK_DEPTH = 32      // register stack (P3 version)
+) (
+  input  logic clk,
+  input  logic rst_n,        // async-assert, sync-release (reset_sync output)
+
+  // Program ROM port: synchronous read, data valid one cycle after addr.
+  output logic [$clog2(ROM_DEPTH)-1:0] rom_addr,
+  input  logic [19:0] rom_data,
+
+  // Commit trace (one-cycle pulse per retired instruction / fault / output).
+  output logic        trace_valid,
+  output logic [31:0] trace_seq,
+  output logic [$clog2(ROM_DEPTH)-1:0] trace_pc_old,
+  output logic [$clog2(ROM_DEPTH)-1:0] trace_pc_new,
+  output logic [4:0]  trace_op,
+  output logic [$clog2(STACK_DEPTH+1)-1:0] trace_depth,
+  output logic [1:0]  trace_event,          // EV_COMMIT / EV_OUTPUT / EV_FAULT
+  output logic [2:0]  trace_fault,           // valid when EV_FAULT
+  output logic [3:0]  trace_tag1, trace_tag0,
+  output logic [3:0]  trace_out_tag,         // valid when EV_OUTPUT
+  output logic [31:0] trace_out_payload,
+
+  // Output channel (ready/valid).
+  output logic        out_valid,
+  output logic [39:0] out_data,
+  input  logic        out_ready,
+
+  // Precise fault record (first fault wins; machine stops).
+  output logic        fault_valid,
+  output logic [2:0]  fault_code,
+  output logic [$clog2(ROM_DEPTH)-1:0] fault_pc,
+  output logic [4:0]  fault_op,
+  output logic [$clog2(STACK_DEPTH+1)-1:0] fault_depth,
+  output logic [3:0]  fault_tag1,
+  output logic [3:0]  fault_tag0,
+
+  output logic        halted,
+  output logic [$clog2(ROM_DEPTH)-1:0] pc_o,
+  output logic [$clog2(STACK_DEPTH+1)-1:0] depth_o
+);
+
+  import symbolic_types_pkg::*;
+
+  // ---------------------------------------------------------------- states
+  typedef enum logic [3:0] {
+    S_RESET, S_FETCH, S_FETCH_WAIT, S_DECODE, S_EXECUTE, S_COMMIT,
+    S_OUTPUT_WAIT, S_FAULT, S_HALTED
+  } state_t;
+
+  state_t state_q, state_d;
+
+  // ------------------------------------------------- architectural state
+  logic [$clog2(ROM_DEPTH)-1:0]        pc_q, pc_d;
+  logic [$clog2(STACK_DEPTH+1)-1:0]    depth_q, depth_d;
+  value40_t                            stack_q [0:STACK_DEPTH-1];
+  logic [19:0]                         ir_q, ir_d;
+  logic [31:0]                         seq_q, seq_d;
+  logic                                halted_q, halted_d;
+
+  // staged next-state (EXECUTE -> COMMIT): complete before any mutation
+  logic [$clog2(ROM_DEPTH)-1:0]        npc_q, npc_d;
+  logic [$clog2(STACK_DEPTH+1)-1:0]    ndepth_q, ndepth_d;
+  logic                                wrA_en_q, wrA_en_d;
+  logic                                wrB_en_q, wrB_en_d;
+  logic [$clog2(STACK_DEPTH)-1:0]      wrA_addr_q, wrA_addr_d;
+  logic [$clog2(STACK_DEPTH)-1:0]      wrB_addr_q, wrB_addr_d;
+  value40_t                            wrA_data_q, wrA_data_d;
+  value40_t                            wrB_data_q, wrB_data_d;
+  value40_t                            pending_q, pending_d;
+  logic                                halt_stage_q, halt_stage_d;
+
+  // fault record
+  logic                                fv_q, fv_d;
+  logic [2:0]                          fc_q, fc_d;
+  logic [$clog2(ROM_DEPTH)-1:0]        fpc_q, fpc_d;
+  logic [4:0]                          fop_q, fop_d;
+  logic [$clog2(STACK_DEPTH+1)-1:0]    fdepth_q, fdepth_d;
+  logic [3:0]                          ft1_q, ft1_d;
+  logic [3:0]                          ft0_q, ft0_d;
+
+  // trace snapshot registers (valid for one cycle after trace_valid pulses)
+  logic        trace_valid_q, trace_valid_d;
+  logic [31:0] trace_seq_q, trace_seq_d;
+  logic [$clog2(ROM_DEPTH)-1:0] trace_pc_old_q, trace_pc_old_d;
+  logic [$clog2(ROM_DEPTH)-1:0] trace_pc_new_q, trace_pc_new_d;
+  logic [4:0]  trace_op_q, trace_op_d;
+  logic [$clog2(STACK_DEPTH+1)-1:0] trace_depth_q, trace_depth_d;
+  logic [1:0]  trace_event_q, trace_event_d;
+  logic [2:0]  trace_fault_q, trace_fault_d;
+  logic [3:0]  trace_tag1_q, trace_tag1_d;
+  logic [3:0]  trace_tag0_q, trace_tag0_d;
+  logic [3:0]  trace_out_tag_q, trace_out_tag_d;
+  logic [31:0] trace_out_payload_q, trace_out_payload_d;
+
+  // ------------------------------------------------------- decode helpers
+  logic [4:0]  op;
+  logic [14:0] imm;
+  assign op  = ir_q[19:15];
+  assign imm = ir_q[14:0];
+
+  value40_t top0_w, top1_w;
+  always_comb begin
+    top0_w = '0;
+    top1_w = '0;
+    if (depth_q >= 1) top0_w = stack_q[depth_q-1];  // newest
+    if (depth_q >= 2) top1_w = stack_q[depth_q-2];  // next
+  end
+
+  // 64-bit arithmetic with precise signed 32-bit overflow detection (DR-2).
+  logic signed [63:0] add_w, sub_w, mul_w;
+  logic add_ovf, sub_ovf, mul_ovf;
+  always_comb begin
+    add_w = 64'($signed(top1_w.payload)) + 64'($signed(top0_w.payload));
+    sub_w = 64'($signed(top1_w.payload)) - 64'($signed(top0_w.payload));
+    mul_w = 64'($signed(top1_w.payload)) * 64'($signed(top0_w.payload));
+    add_ovf = (add_w[63:32] != {32{add_w[31]}});
+    sub_ovf = (sub_w[63:32] != {32{sub_w[31]}});
+    mul_ovf = (mul_w[63:32] != {32{mul_w[31]}});
+  end
+
+  // ------------------------------------------------------------- the FSM
+  always_comb begin
+    // defaults: hold everything
+    state_d     = state_q;
+    pc_d       = pc_q;
+    depth_d    = depth_q;
+    ir_d       = ir_q;
+    seq_d      = seq_q;
+    halted_d   = halted_q;
+    npc_d      = npc_q;
+    ndepth_d   = ndepth_q;
+    wrA_en_d   = 1'b0;
+    wrB_en_d   = 1'b0;
+    wrA_addr_d = wrA_addr_q;
+    wrB_addr_d = wrB_addr_q;
+    wrA_data_d = wrA_data_q;
+    wrB_data_d = wrB_data_q;
+    pending_d  = pending_q;
+    halt_stage_d = halt_stage_q;
+    fv_d       = fv_q;
+    fc_d       = fc_q;
+    fpc_d      = fpc_q;
+    fop_d      = fop_q;
+    fdepth_d   = fdepth_q;
+    ft1_d      = ft1_q;
+    ft0_d      = ft0_q;
+    trace_valid_d       = 1'b0;
+    trace_seq_d         = trace_seq_q;
+    trace_pc_old_d      = trace_pc_old_q;
+    trace_pc_new_d      = trace_pc_new_q;
+    trace_op_d          = trace_op_q;
+    trace_depth_d       = trace_depth_q;
+    trace_event_d       = trace_event_q;
+    trace_fault_d       = trace_fault_q;
+    trace_tag1_d        = trace_tag1_q;
+    trace_tag0_d        = trace_tag0_q;
+    trace_out_tag_d     = trace_out_tag_q;
+    trace_out_payload_d = trace_out_payload_q;
+    rom_addr   = pc_q;
+    out_valid  = 1'b0;
+
+    case (state_q)
+      S_RESET: begin
+        if (rst_n) begin
+          state_d = S_FETCH;
+        end
+      end
+
+      S_FETCH: begin
+        state_d = S_FETCH_WAIT;   // rom_addr = pc_q; data next cycle
+      end
+
+      S_FETCH_WAIT: begin
+        ir_d    = rom_data;
+        state_d = S_DECODE;
+      end
+
+      S_DECODE: begin
+        state_d = S_EXECUTE;
+      end
+
+      // All precondition checks happen here. Nothing architectural is
+      // mutated; EXECUTE only stages complete next-state data.
+      S_EXECUTE: begin
+        case (op)
+          OP_PUSH_S15, OP_PUSH_TRUE, OP_PUSH_FALSE: begin
+            if (depth_q == STACK_DEPTH[$clog2(STACK_DEPTH+1)-1:0]) begin
+              do_fault(F_STACK_OVERFLOW);
+            end else begin
+              wrA_en_d   = 1'b1;
+              wrA_addr_d = depth_q[$clog2(STACK_DEPTH)-1:0];
+              wrA_data_d = (op == OP_PUSH_S15)  ? mk_int(sx15(imm)) :
+                           (op == OP_PUSH_TRUE) ? mk_bool(1'b1)    :
+                                                  mk_bool(1'b0);
+              ndepth_d = depth_q + 1'b1;
+              npc_d    = pc_q + 1'b1;
+              state_d  = S_COMMIT;
+            end
+          end
+
+          OP_ADD, OP_SUB, OP_MUL, OP_EQ, OP_LT: begin
+            if (depth_q < 2) begin
+              do_fault(F_STACK_UNDERFLOW);
+            end else if (op != OP_EQ &&
+                         (top1_w.tag != TAG_INT || top0_w.tag != TAG_INT)) begin
+              do_fault(F_TYPE_FAULT);
+            end else if (op == OP_ADD && add_ovf) begin
+              do_fault(F_ARITH_OVERFLOW);
+            end else if (op == OP_SUB && sub_ovf) begin
+              do_fault(F_ARITH_OVERFLOW);
+            end else if (op == OP_MUL && mul_ovf) begin
+              do_fault(F_ARITH_OVERFLOW);
+            end else begin
+              wrA_en_d   = 1'b1;
+              wrA_addr_d = depth_q - 2;
+              unique case (op)
+                OP_ADD: wrA_data_d = mk_int(add_w[31:0]);
+                OP_SUB: wrA_data_d = mk_int(sub_w[31:0]);
+                OP_MUL: wrA_data_d = mk_int(mul_w[31:0]);
+                OP_EQ:  wrA_data_d = mk_bool(top1_w == top0_w);
+                OP_LT:  wrA_data_d = mk_bool($signed(top1_w.payload) <
+                                             $signed(top0_w.payload));
+                default: ;
+              endcase
+              ndepth_d = depth_q - 1;
+              npc_d    = pc_q + 1'b1;
+              state_d  = S_COMMIT;
+            end
+          end
+
+          OP_DUP: begin
+            if (depth_q == 0) begin
+              do_fault(F_STACK_UNDERFLOW);
+            end else if (depth_q == STACK_DEPTH[$clog2(STACK_DEPTH+1)-1:0]) begin
+              do_fault(F_STACK_OVERFLOW);
+            end else begin
+              wrA_en_d   = 1'b1;
+              wrA_addr_d = depth_q[$clog2(STACK_DEPTH)-1:0];
+              wrA_data_d = top0_w;
+              ndepth_d   = depth_q + 1'b1;
+              npc_d      = pc_q + 1'b1;
+              state_d    = S_COMMIT;
+            end
+          end
+
+          OP_DROP, OP_JZ: begin
+            if (depth_q == 0) begin
+              do_fault(F_STACK_UNDERFLOW);
+            end else if (op == OP_JZ && top0_w.tag != TAG_BOOL) begin
+              do_fault(F_TYPE_FAULT);
+            end else if (op == OP_JZ && top0_w.payload > 32'd1) begin
+              do_fault(F_NONCANON_BOOL);
+            end else if (op == OP_JZ && imm >= ROM_DEPTH[14:0]) begin
+              do_fault(F_BAD_BRANCH);
+            end else begin
+              if (op == OP_JZ && top0_w.payload == 32'd0)
+                npc_d = imm;
+              else
+                npc_d = pc_q + 1'b1;
+              ndepth_d = depth_q - 1;
+              state_d  = S_COMMIT;
+            end
+          end
+
+          OP_SWAP: begin
+            if (depth_q < 2) begin
+              do_fault(F_STACK_UNDERFLOW);
+            end else begin
+              wrA_en_d   = 1'b1;   // position NOS <- old TOS
+              wrA_addr_d = depth_q - 2;
+              wrA_data_d = top0_w;
+              wrB_en_d   = 1'b1;   // position TOS <- old NOS
+              wrB_addr_d = depth_q - 1;
+              wrB_data_d = top1_w;
+              npc_d      = pc_q + 1'b1;
+              state_d    = S_COMMIT;
+            end
+          end
+
+          OP_JMP: begin
+            if (imm >= ROM_DEPTH[14:0]) begin
+              do_fault(F_BAD_BRANCH);
+            end else begin
+              npc_d   = imm;
+              state_d = S_COMMIT;
+            end
+          end
+
+          OP_EMIT: begin
+            if (depth_q == 0) begin
+              do_fault(F_STACK_UNDERFLOW);
+            end else begin
+              pending_d = top0_w;
+              state_d   = S_OUTPUT_WAIT;
+            end
+          end
+
+          OP_HALT: begin
+            halt_stage_d = 1'b1;
+            npc_d        = pc_q;      // pc stays at HALT
+            ndepth_d     = depth_q;
+            state_d      = S_COMMIT;
+          end
+
+          default: begin
+            do_fault(F_BAD_OPCODE);
+          end
+        endcase
+      end
+
+      // The single mutation owner: apply staged state, pulse the trace.
+      S_COMMIT: begin
+        pc_d    = npc_q;
+        depth_d = ndepth_q;
+        seq_d   = seq_q + 1'b1;
+        trace_valid_d  = 1'b1;
+        trace_seq_d    = seq_q;
+        trace_pc_old_d = pc_q;
+        trace_pc_new_d = npc_q;
+        trace_op_d     = op;
+        trace_depth_d  = ndepth_q;
+        trace_event_d  = EV_COMMIT;
+        if (halt_stage_q) begin
+          halted_d = 1'b1;
+          state_d  = S_HALTED;
+        end else begin
+          state_d = S_FETCH;
+        end
+      end
+
+      // EMIT: hold the value stable until the channel accepts it; the pop
+      // and the pc advance happen only on the acceptance edge.
+      S_OUTPUT_WAIT: begin
+        out_valid = 1'b1;
+        if (out_ready) begin
+          depth_d        = depth_q - 1'b1;
+          pc_d           = pc_q + 1'b1;
+          seq_d          = seq_q + 1'b1;
+          trace_valid_d  = 1'b1;
+          trace_seq_d    = seq_q;
+          trace_pc_old_d = pc_q;
+          trace_pc_new_d = pc_q + 1'b1;
+          trace_op_d     = op;
+          trace_depth_d  = depth_q - 1'b1;
+          trace_event_d  = EV_OUTPUT;
+          trace_out_tag_d     = pending_q.tag;
+          trace_out_payload_d = pending_q.payload;
+          state_d        = S_FETCH;
+        end
+      end
+
+      S_FAULT: begin
+        // Precise fault latched in EXECUTE (pulse fired there); stay here.
+        state_d = S_FAULT;
+      end
+
+      S_HALTED: begin
+        state_d = S_HALTED;
+      end
+
+      default: state_d = S_RESET;
+    endcase
+  end
+
+  // Stage a precise fault and fire the FAULT trace pulse in the same cycle
+  // (called from the EXECUTE comb block only).
+  task automatic do_fault(input logic [2:0] code);
+    fv_d     = 1'b1;
+    fc_d     = code;
+    fpc_d    = pc_q;
+    fop_d    = op;
+    fdepth_d = depth_q;
+    ft1_d    = top1_w.tag;
+    ft0_d    = top0_w.tag;
+    state_d  = S_FAULT;
+    seq_d         = seq_q + 1'b1;
+    trace_valid_d = 1'b1;
+    trace_seq_d   = seq_q;
+    trace_pc_old_d = pc_q;
+    trace_pc_new_d = pc_q;      // precise: pc unchanged
+    trace_op_d     = op;
+    trace_depth_d  = depth_q;   // precise: depth unchanged
+    trace_event_d  = EV_FAULT;
+    trace_fault_d  = code;
+    trace_tag1_d   = top1_w.tag;
+    trace_tag0_d   = top0_w.tag;
+  endtask
+
+  // ------------------------------------------------------ one mutation owner
+  always_ff @(posedge clk or negedge rst_n) begin
+    if (!rst_n) begin
+      state_q       <= S_RESET;
+      pc_q          <= '0;
+      depth_q       <= '0;
+      ir_q          <= '0;
+      seq_q         <= '0;
+      halted_q      <= 1'b0;
+      npc_q         <= '0;
+      ndepth_q      <= '0;
+      wrA_en_q      <= 1'b0;
+      wrB_en_q      <= 1'b0;
+      wrA_addr_q    <= '0;
+      wrB_addr_q    <= '0;
+      wrA_data_q    <= '0;
+      wrB_data_q    <= '0;
+      pending_q     <= '0;
+      halt_stage_q  <= 1'b0;
+      fv_q          <= 1'b0;
+      fc_q          <= F_NONE;
+      fpc_q         <= '0;
+      fop_q         <= '0;
+      fdepth_q      <= '0;
+      ft1_q         <= '0;
+      ft0_q         <= '0;
+      trace_valid_q <= 1'b0;
+      // stack_q contents are NOT reset: depth_q = 0 invalidates them
+      // (book ch. 15: "Reset invalidates occupancy; it does not need to
+      // clear data_q because invalid data is never observed").
+    end else begin
+      state_q       <= state_d;
+      pc_q          <= pc_d;
+      depth_q       <= depth_d;
+      ir_q          <= ir_d;
+      seq_q         <= seq_d;
+      halted_q      <= halted_d;
+      npc_q         <= npc_d;
+      ndepth_q      <= ndepth_d;
+      wrA_en_q      <= wrA_en_d;
+      wrB_en_q      <= wrB_en_d;
+      wrA_addr_q    <= wrA_addr_d;
+      wrB_addr_q    <= wrB_addr_d;
+      wrA_data_q    <= wrA_data_d;
+      wrB_data_q    <= wrB_data_d;
+      pending_q     <= pending_d;
+      halt_stage_q  <= halt_stage_d;
+      fv_q          <= fv_d;
+      fc_q          <= fc_d;
+      fpc_q         <= fpc_d;
+      fop_q         <= fop_d;
+      fdepth_q      <= fdepth_d;
+      ft1_q         <= ft1_d;
+      ft0_q         <= ft0_d;
+      trace_valid_q <= trace_valid_d;
+      trace_seq_q         <= trace_seq_d;
+      trace_pc_old_q      <= trace_pc_old_d;
+      trace_pc_new_q      <= trace_pc_new_d;
+      trace_op_q          <= trace_op_d;
+      trace_depth_q       <= trace_depth_d;
+      trace_event_q       <= trace_event_d;
+      trace_fault_q       <= trace_fault_d;
+      trace_tag1_q        <= trace_tag1_d;
+      trace_tag0_q        <= trace_tag0_d;
+      trace_out_tag_q     <= trace_out_tag_d;
+      trace_out_payload_q <= trace_out_payload_d;
+
+      // Stack writes happen only in COMMIT (the single mutation owner).
+      if (state_q == S_COMMIT) begin
+        if (wrA_en_q) stack_q[wrA_addr_q] <= wrA_data_q;
+        if (wrB_en_q) stack_q[wrB_addr_q] <= wrB_data_q;
+      end
+    end
+  end
+
+  // ------------------------------------------------------------- outputs
+  assign trace_seq          = trace_seq_q;
+  assign trace_pc_old       = trace_pc_old_q;
+  assign trace_pc_new       = trace_pc_new_q;
+  assign trace_op           = trace_op_q;
+  assign trace_depth        = trace_depth_q;
+  assign trace_event        = trace_event_q;
+  assign trace_fault        = trace_fault_q;
+  assign trace_tag1         = trace_tag1_q;
+  assign trace_tag0         = trace_tag0_q;
+  assign trace_out_tag      = trace_out_tag_q;
+  assign trace_out_payload  = trace_out_payload_q;
+  assign trace_valid        = trace_valid_q;
+
+  always_comb begin
+    out_data = pending_q;
+  end
+
+  assign fault_valid = fv_q;
+  assign fault_code  = fc_q;
+  assign fault_pc    = fpc_q;
+  assign fault_op    = fop_q;
+  assign fault_depth = fdepth_q;
+  assign fault_tag1  = ft1_q;
+  assign fault_tag0  = ft0_q;
+  assign halted      = halted_q;
+  assign pc_o        = pc_q;
+  assign depth_o     = depth_q;
+
+endmodule
+
+`default_nettype wire

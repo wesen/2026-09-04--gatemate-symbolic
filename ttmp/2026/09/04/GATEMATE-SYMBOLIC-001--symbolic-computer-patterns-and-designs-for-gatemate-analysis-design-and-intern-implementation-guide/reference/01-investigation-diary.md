@@ -386,3 +386,57 @@ The assembler + programs are the inputs to every RTL directed test in P3/P4.
 
 ### Technical details
 - Exit criteria verified at model level: arith -> FINAL 1 NONE 8 0 1, output BOOL(1); typefault -> FINAL 0 TYPE_FAULT 2 2 0.
+
+## Step 8: Implementation P3 — register-stack RTL, differentially verified
+
+We implemented `rtl/symbolic_types_pkg.sv` (tags, value40_t, opcodes, faults, events — mirrors
+tools/opcodes.py) and `rtl/stack_core.sv` (register-stack version of the Lab 1 evaluator:
+9-state FSM, one mutation owner, precise faults, EMIT commitment via ready/valid, 64-bit
+arithmetic with precise signed 32-bit overflow detection), plus `sim/tb_stack_core.sv` (ROM
+host, random backpressure, blocked-output-stability and pc-stability assertions, model-format
+TRACE/FINAL output) and `sim/test_directed.py` (differential: model vs RTL line-by-line, plus
+stall-seed reruns). 54 tests green; the RTL reproduces the book's Program A commit trace
+exactly.
+
+### Prompt Context
+
+**User prompt (verbatim):** (see Step 5)
+
+**Assistant interpretation:** Implement guide phase P3: register-stack RTL + directed differential tests.
+
+### What I did
+- `rtl/symbolic_types_pkg.sv`, `rtl/stack_core.sv` (EXECUTE stages complete next-state data: npc/ndepth/two write slots/pending/halt; COMMIT is the single mutation owner; faults pulse from EXECUTE with precise pc/depth).
+- `sim/tb_stack_core.sv`: +rom/+stall_seed plusargs, registered stall bit, pre-edge-sampled monitors, watchdog.
+- `sim/test_directed.py`: 11 programs x (model trace == RTL trace), 5 stall-seed reruns, exit-criteria assertions.
+
+### Why
+The register version isolates semantics and interface behavior from RAM latency (book Lab 1 "Register-stack version").
+
+### What worked
+- First full run of arith on the RTL printed the book's expected commit trace character-for-character after the trace-register fix.
+
+### What didn't work
+- iverilog: `string`-typed ternary in $display ("Data types string and bool") -> replaced with an if/else into a local string.
+- Trace snapshot regs were declared and defaulted but never assigned in the always_ff (only trace_valid_q was) -> all trace fields printed X; fixed by registering all twelve snapshot regs.
+- tb assertion races: monitors that sample with `#1` after posedge mixed pre/post-NBA values with the randomizer also using `#1` -> spurious "blocked output not stable". Fixed by making out_ready a registered stall bit and sampling monitors with pre-edge blocking reads + NBA capture.
+- Model/RTL hex case mismatch (%08X vs %h lowercase) -> standardized on lowercase in the model.
+- My exit-criteria test indexed rtl[-2] forgetting the FINAL line is included.
+
+### What I learned
+- In iverilog, keep monitors race-free: registered stimulus, blocking reads at posedge, NBA capture of previous-cycle values.
+- iverilog emits "sorry: constant selects..." notes for part-selects in always_comb — informational, not errors.
+
+### What was tricky to build
+- Making EXECUTE stage *complete* next-state data (two write slots for SWAP, staged halt, staged fault record with trace pulse fired from the EXECUTE comb block via a task) so COMMIT stays the only place registers mutate.
+
+### What warrants a second pair of eyes
+- The do_fault task fires the FAULT trace pulse in the EXECUTE cycle (not a dedicated FAULT state cycle); the state machine then sits in S_FAULT. Confirm no double-pulse path exists (state_d=S_FAULT only entered once since EXECUTE is not re-entered).
+
+### What should be done in the future
+- P4: BRAM stack + two-entry top cache + spill/refill boundary tests + random legal/illegal instruction tests.
+
+### Code review instructions
+- `cd symbolic_eval && python3 -m pytest sim/ -q` (54 passed).
+
+### Technical details
+- Check order frozen: capacity/underflow -> tags -> canonicality -> branch target.
