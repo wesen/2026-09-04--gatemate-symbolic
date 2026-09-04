@@ -1,0 +1,14 @@
+=== RUN   TestPhysicalGraphEvents
+=== RUN   TestPhysicalGraphEvents/triangle
+=== RUN   TestPhysicalGraphEvents/unsatisfiable
+=== RUN   TestPhysicalGraphEvents/path
+=== RUN   TestPhysicalGraphEvents/first
+=== RUN   TestPhysicalGraphEvents/root
+--- PASS: TestPhysicalGraphEvents (1.33s)
+    --- PASS: TestPhysicalGraphEvents/triangle (0.81s)
+    --- PASS: TestPhysicalGraphEvents/unsatisfiable (0.18s)
+    --- PASS: TestPhysicalGraphEvents/path (0.22s)
+    --- PASS: TestPhysicalGraphEvents/first (0.09s)
+    --- PASS: TestPhysicalGraphEvents/root (0.03s)
+PASS
+ok  	github.com/wesen/2026-09-04--gatemate-symbolic/pkg/microscope	1.329s

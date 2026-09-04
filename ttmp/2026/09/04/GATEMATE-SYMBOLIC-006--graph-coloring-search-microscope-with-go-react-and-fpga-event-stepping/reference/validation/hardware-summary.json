@@ -1,0 +1,37 @@
+[
+  {
+    "events": 86,
+    "graph": "triangle",
+    "match": true,
+    "solutions": 6,
+    "terminal": "COMPLETE"
+  },
+  {
+    "events": 26,
+    "graph": "unsatisfiable",
+    "match": true,
+    "solutions": 0,
+    "terminal": "COMPLETE"
+  },
+  {
+    "events": 32,
+    "graph": "path",
+    "match": true,
+    "solutions": 2,
+    "terminal": "COMPLETE"
+  },
+  {
+    "events": 12,
+    "graph": "first",
+    "match": true,
+    "solutions": 1,
+    "terminal": "COMPLETE"
+  },
+  {
+    "events": 3,
+    "graph": "root",
+    "match": true,
+    "solutions": 0,
+    "terminal": "COMPLETE"
+  }
+]

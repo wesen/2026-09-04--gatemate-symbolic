@@ -295,3 +295,59 @@ Run the Go suite under the CAD environment. Physical test is opt-in: go test ./p
 ### Technical details
 
 The board build began from base commit 4160f5b with the P3 sources in the working tree; the following milestone commit records those source files. P3-build-commit.txt is a base-revision marker, not a claim that the RTL existed in that earlier commit.
+
+## Step 6: P3 physical graph execution verified
+
+The graph bitstream passed synthesis, routing, loading, and all five physical event comparisons. A single loaded image accepted multiple runtime graphs, produced exact modeled event streams, and reset each graph with sequence numbering restarting at one.
+
+### Prompt Context
+
+**User prompt (verbatim, JSON encoded):**
+
+(see Step 1)
+
+**Assistant interpretation:** Design, publish, and implement the graph-coloring FPGA microscope with Go and React, committed milestones, a detailed diary, and physical phase slips.
+
+**Inferred user intent:** Deliver a working next laboratory with enough explanation and evidence for an intern to maintain it.
+
+**Commit:** b2ead24
+
+### What I did
+
+Ran the tmux build/load script and opt-in TestPhysicalGraphEvents. Archived UART commands/responses, model comparisons, image hash, loader output, and Yosys/nextpnr logs.
+
+### Why
+
+This establishes actual configurable FPGA execution before the browser is built.
+
+### What worked
+
+Physical triangle, unsatisfiable triangle, path, first-only, and root contradiction all passed in 1.33 seconds total. Final routed Fmax is 26.76 MHz, passing 10 MHz; mapping reports 4242 CPE_LT, 1007 CPE_FF, and 2 RAM_HALF. The full Go/model/UART simulation suite also passed in 7.224 seconds.
+
+### What didn't work
+
+No synthesis, route, physical load, or semantic event mismatch occurred. The prior reset-monitor repair passed and did not require another attempt.
+
+### What I learned
+
+Runtime adjacency validation and configuration reset worked without rebuilding between graphs. Full UART events make physical recovery behavior directly checkable, unlike the previous result-only firmware.
+
+### What was tricky to build
+
+The build base marker predates the RTL commit because the build started while P3 files were uncommitted. b2ead24 records the exact P3 source content used; no RTL source changed during the build.
+
+### What warrants a second pair of eyes
+
+Review hardware-summary.json alongside the raw hardware-*-wire.log records and final route frequency. Instrumentation adds logic, so these resources should not be presented as an uninstrumented solver comparison.
+
+### What should be done in the future
+
+Build the serialized Go HTTP session and serve it locally, then implement the React views.
+
+### Code review instructions
+
+Repeat scripts/04-build-and-check-board.sh in tmux with exclusive UART access. Its exit file is 0. All captured physical events passed the same checked projection as the Go model.
+
+### Technical details
+
+FPGA remains programmed with graph firmware. The final physical test resets the root graph and accepts its first event; a service load will replace that configuration atomically.
