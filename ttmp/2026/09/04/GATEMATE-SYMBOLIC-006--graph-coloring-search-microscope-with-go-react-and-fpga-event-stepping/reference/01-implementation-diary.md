@@ -675,3 +675,59 @@ Open http://127.0.0.1:8086. The physical engine is paused at event 2 with one ch
 ### Technical details
 
 Server: tmux graph-final, go run -tags embed ./cmd/search-microscope --engine serial --listen 127.0.0.1:8086. Live logs: /tmp/graph-api.log. The board remains programmed with the P3 image. Final delivery preserves annotations by using a new document name.
+
+## Step 13: Completion slip and repository handoff
+
+The completed implementation and evidence were committed as 7ca4145. The final physical completion slip printed successfully, completing the overall plan and all six phase start/done pairs.
+
+### Prompt Context
+
+**User prompt (verbatim, JSON encoded):**
+
+(see Step 1)
+
+**Assistant interpretation:** Design, publish, and implement the graph-coloring FPGA microscope with Go and React, committed milestones, a detailed diary, and physical phase slips.
+
+**Inferred user intent:** Deliver a working next laboratory with enough explanation and evidence for an intern to maintain it.
+
+**Commit:** 7ca4145
+
+### What I did
+
+Printed P6 done with the immutable implementation hash and verified the printer receipt. Prepared the final receipt commit and push to origin/main.
+
+### Why
+
+The ticket must retain physical delivery evidence alongside the implementation milestones.
+
+### What worked
+
+P6-done.log reports printed: true, status_code: 200, and rendered_at 2026-09-04T23:30:15Z. All thirteen slip logs contain successful physical print receipts.
+
+### What didn't work
+
+No print failure or remaining implementation failure.
+
+### What I learned
+
+Every phase has an auditable design/implementation boundary and a physical completion record.
+
+### What was tricky to build
+
+The final receipt necessarily follows the commit whose hash appears on the printed slip.
+
+### What warrants a second pair of eyes
+
+Check the phase receipts and the clean final Git status after push.
+
+### What should be done in the future
+
+Review and use the completed microscope; no required work remains in this ticket.
+
+### Code review instructions
+
+Count 13 reference/slips/*.log files, confirm printed: true in each, and check origin/main matches HEAD after push.
+
+### Technical details
+
+Implementation milestones: 812e5b9 design, 4160f5b Go contract, b2ead24 RTL, db2fb14 physical evidence, f11e401 service, cc9a6f9 React, 7ca4145 integrated handoff. The final receipt commit records this last print.
