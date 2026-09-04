@@ -1,0 +1,292 @@
+.F.F.FF.F.....FFFFFFF.                                                   [100%]
+=================================== FAILURES ===================================
+___________________ test_instruction_guards[DUP\nHALT-bram] ____________________
+
+tmp_path = PosixPath('/tmp/pytest-of-manuel/pytest-108/test_instruction_guards_DUP_nH1')
+core = 'bram', source = 'DUP\nHALT'
+
+    @pytest.mark.parametrize('core', ['reg', 'bram'])
+    @pytest.mark.parametrize('source', [
+        'DUP\nHALT',
+        'PUSH_TRUE\nDROP\nDUP\nHALT',
+        'PUSH_TRUE\nEMIT\nDUP\nHALT',
+        'PUSH_S15 7\nEMIT\nJMP end\nend: HALT',
+        'PUSH_S15 1\nPUSH_S15 2\nPUSH_S15 3\nEMIT\nSWAP\nEMIT\nEMIT\nHALT',
+        'PUSH_TRUE\n' * 8 + 'DUP\nHALT',
+        'PUSH_S15 9\nDUP\nEMIT\nEMIT\nHALT',
+    ])
+    def test_instruction_guards(tmp_path, core, source):
+>       compare_program(tmp_path, source, core)
+
+sim/test_repairs.py:33: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+tmp_path = PosixPath('/tmp/pytest-of-manuel/pytest-108/test_instruction_guards_DUP_nH1')
+source = 'DUP\nHALT', core = 'bram', total_depth = 8, stall_seed = 7
+
+    def compare_program(tmp_path, source, core, total_depth=8, stall_seed=7):
+        words, _, _ = assemble(source)
+        image = tmp_path / 'program.hex'
+        image.write_text(''.join(f'{w:05x}\n' for w in words + [0] * (1024-len(words))))
+        model = run_program(words, total_depth=total_depth)
+        expected = [r.line() for r in model.trace] + [model.final_line()]
+        runner = _run_rtl if core == 'reg' else _run_rtl_bram
+        depth = total_depth if core == 'reg' else total_depth-2
+>       assert runner(str(image), depth, stall_seed=stall_seed) == expected
+E       AssertionError: assert ['TRACE 0 0 1...NONE 1 1 0 0'] == ['TRACE 0 0 0...FLOW 0 0 0 0']
+E         
+E         At index 0 diff: 'TRACE 0 0 1 DUP 1 COMMIT' != 'TRACE 0 0 0 DUP 0 FAULT STACK_UNDERFLOW 0 0'
+E         Left contains one more item: 'FINAL 1 NONE 1 1 0 0'
+E         Use -v to get more diff
+
+sim/test_repairs.py:18: AssertionError
+___________ test_instruction_guards[PUSH_TRUE\nDROP\nDUP\nHALT-bram] ___________
+
+tmp_path = PosixPath('/tmp/pytest-of-manuel/pytest-108/test_instruction_guards_PUSH_T1')
+core = 'bram', source = 'PUSH_TRUE\nDROP\nDUP\nHALT'
+
+    @pytest.mark.parametrize('core', ['reg', 'bram'])
+    @pytest.mark.parametrize('source', [
+        'DUP\nHALT',
+        'PUSH_TRUE\nDROP\nDUP\nHALT',
+        'PUSH_TRUE\nEMIT\nDUP\nHALT',
+        'PUSH_S15 7\nEMIT\nJMP end\nend: HALT',
+        'PUSH_S15 1\nPUSH_S15 2\nPUSH_S15 3\nEMIT\nSWAP\nEMIT\nEMIT\nHALT',
+        'PUSH_TRUE\n' * 8 + 'DUP\nHALT',
+        'PUSH_S15 9\nDUP\nEMIT\nEMIT\nHALT',
+    ])
+    def test_instruction_guards(tmp_path, core, source):
+>       compare_program(tmp_path, source, core)
+
+sim/test_repairs.py:33: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+tmp_path = PosixPath('/tmp/pytest-of-manuel/pytest-108/test_instruction_guards_PUSH_T1')
+source = 'PUSH_TRUE\nDROP\nDUP\nHALT', core = 'bram', total_depth = 8
+stall_seed = 7
+
+    def compare_program(tmp_path, source, core, total_depth=8, stall_seed=7):
+        words, _, _ = assemble(source)
+        image = tmp_path / 'program.hex'
+        image.write_text(''.join(f'{w:05x}\n' for w in words + [0] * (1024-len(words))))
+        model = run_program(words, total_depth=total_depth)
+        expected = [r.line() for r in model.trace] + [model.final_line()]
+        runner = _run_rtl if core == 'reg' else _run_rtl_bram
+        depth = total_depth if core == 'reg' else total_depth-2
+>       assert runner(str(image), depth, stall_seed=stall_seed) == expected
+E       AssertionError: assert ['TRACE 0 0 1...NONE 3 1 0 0'] == ['TRACE 0 0 1...FLOW 2 0 0 0']
+E         
+E         At index 2 diff: 'TRACE 2 2 3 DUP 1 COMMIT' != 'TRACE 2 2 2 DUP 0 FAULT STACK_UNDERFLOW 0 0'
+E         Left contains one more item: 'FINAL 1 NONE 3 1 0 0'
+E         Use -v to get more diff
+
+sim/test_repairs.py:18: AssertionError
+___________ test_instruction_guards[PUSH_TRUE\nEMIT\nDUP\nHALT-bram] ___________
+
+tmp_path = PosixPath('/tmp/pytest-of-manuel/pytest-108/test_instruction_guards_PUSH_T3')
+core = 'bram', source = 'PUSH_TRUE\nEMIT\nDUP\nHALT'
+
+    @pytest.mark.parametrize('core', ['reg', 'bram'])
+    @pytest.mark.parametrize('source', [
+        'DUP\nHALT',
+        'PUSH_TRUE\nDROP\nDUP\nHALT',
+        'PUSH_TRUE\nEMIT\nDUP\nHALT',
+        'PUSH_S15 7\nEMIT\nJMP end\nend: HALT',
+        'PUSH_S15 1\nPUSH_S15 2\nPUSH_S15 3\nEMIT\nSWAP\nEMIT\nEMIT\nHALT',
+        'PUSH_TRUE\n' * 8 + 'DUP\nHALT',
+        'PUSH_S15 9\nDUP\nEMIT\nEMIT\nHALT',
+    ])
+    def test_instruction_guards(tmp_path, core, source):
+>       compare_program(tmp_path, source, core)
+
+sim/test_repairs.py:33: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+tmp_path = PosixPath('/tmp/pytest-of-manuel/pytest-108/test_instruction_guards_PUSH_T3')
+source = 'PUSH_TRUE\nEMIT\nDUP\nHALT', core = 'bram', total_depth = 8
+stall_seed = 7
+
+    def compare_program(tmp_path, source, core, total_depth=8, stall_seed=7):
+        words, _, _ = assemble(source)
+        image = tmp_path / 'program.hex'
+        image.write_text(''.join(f'{w:05x}\n' for w in words + [0] * (1024-len(words))))
+        model = run_program(words, total_depth=total_depth)
+        expected = [r.line() for r in model.trace] + [model.final_line()]
+        runner = _run_rtl if core == 'reg' else _run_rtl_bram
+        depth = total_depth if core == 'reg' else total_depth-2
+>       assert runner(str(image), depth, stall_seed=stall_seed) == expected
+E       AssertionError: assert ['TRACE 0 0 1...NONE 3 1 1 0'] == ['TRACE 0 0 1...FLOW 2 0 1 0']
+E         
+E         At index 2 diff: 'TRACE 2 2 3 DUP 1 COMMIT' != 'TRACE 2 2 2 DUP 0 FAULT STACK_UNDERFLOW 0 0'
+E         Left contains one more item: 'FINAL 1 NONE 3 1 1 0'
+E         Use -v to get more diff
+
+sim/test_repairs.py:18: AssertionError
+______ test_instruction_guards[PUSH_S15 7\nEMIT\nJMP end\nend: HALT-reg] _______
+
+tmp_path = PosixPath('/tmp/pytest-of-manuel/pytest-108/test_instruction_guards_PUSH_S0')
+core = 'reg', source = 'PUSH_S15 7\nEMIT\nJMP end\nend: HALT'
+
+    @pytest.mark.parametrize('core', ['reg', 'bram'])
+    @pytest.mark.parametrize('source', [
+        'DUP\nHALT',
+        'PUSH_TRUE\nDROP\nDUP\nHALT',
+        'PUSH_TRUE\nEMIT\nDUP\nHALT',
+        'PUSH_S15 7\nEMIT\nJMP end\nend: HALT',
+        'PUSH_S15 1\nPUSH_S15 2\nPUSH_S15 3\nEMIT\nSWAP\nEMIT\nEMIT\nHALT',
+        'PUSH_TRUE\n' * 8 + 'DUP\nHALT',
+        'PUSH_S15 9\nDUP\nEMIT\nEMIT\nHALT',
+    ])
+    def test_instruction_guards(tmp_path, core, source):
+>       compare_program(tmp_path, source, core)
+
+sim/test_repairs.py:33: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+tmp_path = PosixPath('/tmp/pytest-of-manuel/pytest-108/test_instruction_guards_PUSH_S0')
+source = 'PUSH_S15 7\nEMIT\nJMP end\nend: HALT', core = 'reg', total_depth = 8
+stall_seed = 7
+
+    def compare_program(tmp_path, source, core, total_depth=8, stall_seed=7):
+        words, _, _ = assemble(source)
+        image = tmp_path / 'program.hex'
+        image.write_text(''.join(f'{w:05x}\n' for w in words + [0] * (1024-len(words))))
+        model = run_program(words, total_depth=total_depth)
+        expected = [r.line() for r in model.trace] + [model.final_line()]
+        runner = _run_rtl if core == 'reg' else _run_rtl_bram
+        depth = total_depth if core == 'reg' else total_depth-2
+>       assert runner(str(image), depth, stall_seed=stall_seed) == expected
+E       AssertionError: assert ['TRACE 0 0 1...NONE 3 1 1 0'] == ['TRACE 0 0 1...NONE 3 0 1 0']
+E         
+E         At index 2 diff: 'TRACE 2 2 3 JMP 1 COMMIT' != 'TRACE 2 2 3 JMP 0 COMMIT'
+E         Use -v to get more diff
+
+sim/test_repairs.py:18: AssertionError
+_ test_instruction_guards[PUSH_S15 1\nPUSH_S15 2\nPUSH_S15 3\nEMIT\nSWAP\nEMIT\nEMIT\nHALT-reg] _
+
+tmp_path = PosixPath('/tmp/pytest-of-manuel/pytest-108/test_instruction_guards_PUSH_S2')
+core = 'reg'
+source = 'PUSH_S15 1\nPUSH_S15 2\nPUSH_S15 3\nEMIT\nSWAP\nEMIT\nEMIT\nHALT'
+
+    @pytest.mark.parametrize('core', ['reg', 'bram'])
+    @pytest.mark.parametrize('source', [
+        'DUP\nHALT',
+        'PUSH_TRUE\nDROP\nDUP\nHALT',
+        'PUSH_TRUE\nEMIT\nDUP\nHALT',
+        'PUSH_S15 7\nEMIT\nJMP end\nend: HALT',
+        'PUSH_S15 1\nPUSH_S15 2\nPUSH_S15 3\nEMIT\nSWAP\nEMIT\nEMIT\nHALT',
+        'PUSH_TRUE\n' * 8 + 'DUP\nHALT',
+        'PUSH_S15 9\nDUP\nEMIT\nEMIT\nHALT',
+    ])
+    def test_instruction_guards(tmp_path, core, source):
+>       compare_program(tmp_path, source, core)
+
+sim/test_repairs.py:33: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+tmp_path = PosixPath('/tmp/pytest-of-manuel/pytest-108/test_instruction_guards_PUSH_S2')
+source = 'PUSH_S15 1\nPUSH_S15 2\nPUSH_S15 3\nEMIT\nSWAP\nEMIT\nEMIT\nHALT'
+core = 'reg', total_depth = 8, stall_seed = 7
+
+    def compare_program(tmp_path, source, core, total_depth=8, stall_seed=7):
+        words, _, _ = assemble(source)
+        image = tmp_path / 'program.hex'
+        image.write_text(''.join(f'{w:05x}\n' for w in words + [0] * (1024-len(words))))
+        model = run_program(words, total_depth=total_depth)
+        expected = [r.line() for r in model.trace] + [model.final_line()]
+        runner = _run_rtl if core == 'reg' else _run_rtl_bram
+        depth = total_depth if core == 'reg' else total_depth-2
+>       assert runner(str(image), depth, stall_seed=stall_seed) == expected
+E       AssertionError: assert ['TRACE 0 0 1...0000003', ...] == ['TRACE 0 0 1...0000001', ...]
+E         
+E         At index 4 diff: 'TRACE 4 4 5 SWAP 3 COMMIT' != 'TRACE 4 4 5 SWAP 2 COMMIT'
+E         Use -v to get more diff
+
+sim/test_repairs.py:18: AssertionError
+______________ test_malformed_assembly_is_rejected[PUSH_S15 1 2] _______________
+
+line = 'PUSH_S15 1 2'
+
+    @pytest.mark.parametrize('line', ['PUSH_S15 1 2', 'HALT extra tokens', 'label:: HALT', '@bad'])
+    def test_malformed_assembly_is_rejected(line):
+>       with pytest.raises(ValueError, match='line 2'):
+E       Failed: DID NOT RAISE ValueError
+
+sim/test_repairs.py:38: Failed
+____________ test_malformed_assembly_is_rejected[HALT extra tokens] ____________
+
+line = 'HALT extra tokens'
+
+    @pytest.mark.parametrize('line', ['PUSH_S15 1 2', 'HALT extra tokens', 'label:: HALT', '@bad'])
+    def test_malformed_assembly_is_rejected(line):
+>       with pytest.raises(ValueError, match='line 2'):
+E       Failed: DID NOT RAISE ValueError
+
+sim/test_repairs.py:38: Failed
+______________ test_malformed_assembly_is_rejected[label:: HALT] _______________
+
+line = 'label:: HALT'
+
+    @pytest.mark.parametrize('line', ['PUSH_S15 1 2', 'HALT extra tokens', 'label:: HALT', '@bad'])
+    def test_malformed_assembly_is_rejected(line):
+>       with pytest.raises(ValueError, match='line 2'):
+E       Failed: DID NOT RAISE ValueError
+
+sim/test_repairs.py:38: Failed
+__________________ test_malformed_assembly_is_rejected[@bad] ___________________
+
+line = '@bad'
+
+    @pytest.mark.parametrize('line', ['PUSH_S15 1 2', 'HALT extra tokens', 'label:: HALT', '@bad'])
+    def test_malformed_assembly_is_rejected(line):
+>       with pytest.raises(ValueError, match='line 2'):
+E       Failed: DID NOT RAISE ValueError
+
+sim/test_repairs.py:38: Failed
+_______ test_all_emission_paths_enforce_capacity[WORD 0\nWORD 0\nWORD 0] _______
+
+source = 'WORD 0\nWORD 0\nWORD 0'
+
+    @pytest.mark.parametrize('source', ['WORD 0\nWORD 0\nWORD 0', 'HALT\nWORD 0\nWORD 0',
+                                      'WORD 0\nPUSH_S15 1\nWORD 0'])
+    def test_all_emission_paths_enforce_capacity(source):
+>       with pytest.raises(ValueError, match='ROM depth 2'):
+E       Failed: DID NOT RAISE ValueError
+
+sim/test_repairs.py:45: Failed
+________ test_all_emission_paths_enforce_capacity[HALT\nWORD 0\nWORD 0] ________
+
+source = 'HALT\nWORD 0\nWORD 0'
+
+    @pytest.mark.parametrize('source', ['WORD 0\nWORD 0\nWORD 0', 'HALT\nWORD 0\nWORD 0',
+                                      'WORD 0\nPUSH_S15 1\nWORD 0'])
+    def test_all_emission_paths_enforce_capacity(source):
+>       with pytest.raises(ValueError, match='ROM depth 2'):
+E       Failed: DID NOT RAISE ValueError
+
+sim/test_repairs.py:45: Failed
+_____ test_all_emission_paths_enforce_capacity[WORD 0\nPUSH_S15 1\nWORD 0] _____
+
+source = 'WORD 0\nPUSH_S15 1\nWORD 0'
+
+    @pytest.mark.parametrize('source', ['WORD 0\nWORD 0\nWORD 0', 'HALT\nWORD 0\nWORD 0',
+                                      'WORD 0\nPUSH_S15 1\nWORD 0'])
+    def test_all_emission_paths_enforce_capacity(source):
+>       with pytest.raises(ValueError, match='ROM depth 2'):
+E       Failed: DID NOT RAISE ValueError
+
+sim/test_repairs.py:45: Failed
+=========================== short test summary info ============================
+FAILED sim/test_repairs.py::test_instruction_guards[DUP\nHALT-bram] - Asserti...
+FAILED sim/test_repairs.py::test_instruction_guards[PUSH_TRUE\nDROP\nDUP\nHALT-bram]
+FAILED sim/test_repairs.py::test_instruction_guards[PUSH_TRUE\nEMIT\nDUP\nHALT-bram]
+FAILED sim/test_repairs.py::test_instruction_guards[PUSH_S15 7\nEMIT\nJMP end\nend: HALT-reg]
+FAILED sim/test_repairs.py::test_instruction_guards[PUSH_S15 1\nPUSH_S15 2\nPUSH_S15 3\nEMIT\nSWAP\nEMIT\nEMIT\nHALT-reg]
+FAILED sim/test_repairs.py::test_malformed_assembly_is_rejected[PUSH_S15 1 2]
+FAILED sim/test_repairs.py::test_malformed_assembly_is_rejected[HALT extra tokens]
+FAILED sim/test_repairs.py::test_malformed_assembly_is_rejected[label:: HALT]
+FAILED sim/test_repairs.py::test_malformed_assembly_is_rejected[@bad] - Faile...
+FAILED sim/test_repairs.py::test_all_emission_paths_enforce_capacity[WORD 0\nWORD 0\nWORD 0]
+FAILED sim/test_repairs.py::test_all_emission_paths_enforce_capacity[HALT\nWORD 0\nWORD 0]
+FAILED sim/test_repairs.py::test_all_emission_paths_enforce_capacity[WORD 0\nPUSH_S15 1\nWORD 0]
+12 failed, 10 passed in 0.47s

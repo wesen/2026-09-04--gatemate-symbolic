@@ -98,6 +98,8 @@ module stack_core #(
   logic [$clog2(RSTACK_DEPTH)-1:0]    wrR_addr_q, wrR_addr_d;
   logic [$clog2(ROM_DEPTH)-1:0]       wrR_data_q, wrR_data_d;
 
+  logic [$clog2(RSTACK_DEPTH+1)-1:0] nrdepth_q, nrdepth_d;
+
   // fault record
   logic                                fv_q, fv_d;
   logic [3:0]                          fc_q, fc_d;
@@ -168,6 +170,7 @@ module stack_core #(
     pending_d  = pending_q;
     halt_stage_d = halt_stage_q;
     rdepth_d   = rdepth_q;
+    nrdepth_d  = nrdepth_q;
     wrR_en_d   = 1'b0;
     wrR_addr_d = wrR_addr_q;
     wrR_data_d = wrR_data_q;
@@ -216,6 +219,7 @@ module stack_core #(
       // All precondition checks happen here. Nothing architectural is
       // mutated; EXECUTE only stages complete next-state data.
       S_EXECUTE: begin
+        nrdepth_d = rdepth_q;
         // Build a complete candidate from current architectural state.
         // EMIT retires outside COMMIT, so previous staged depth is stale.
         npc_d = pc_q + 1'b1;
@@ -350,7 +354,7 @@ module stack_core #(
               wrR_en_d   = 1'b1;
               wrR_addr_d = rdepth_q[$clog2(RSTACK_DEPTH)-1:0];
               wrR_data_d = pc_q + 1'b1;
-              rdepth_d   = rdepth_q + 1'b1;
+              nrdepth_d  = rdepth_q + 1'b1;
               npc_d      = imm;
               ndepth_d   = depth_q;
               state_d    = S_COMMIT;
@@ -362,7 +366,7 @@ module stack_core #(
               do_fault(symbolic_types_pkg::F_RSTACK_UNDERFLOW);
             end else begin
               npc_d    = rstack_q[rdepth_q-1];
-              rdepth_d = rdepth_q - 1'b1;
+              nrdepth_d = rdepth_q - 1'b1;
               ndepth_d = depth_q;
               state_d  = S_COMMIT;
             end
@@ -376,6 +380,7 @@ module stack_core #(
 
       // The single mutation owner: apply staged state, pulse the trace.
       S_COMMIT: begin
+        rdepth_d = nrdepth_q;
         pc_d    = npc_q;
         depth_d = ndepth_q;
         seq_d   = seq_q + 1'b1;
@@ -462,6 +467,7 @@ module stack_core #(
       seq_q         <= '0;
       halted_q      <= 1'b0;
       rdepth_q      <= '0;
+      nrdepth_q <= '0;
       wrR_en_q      <= 1'b0;
       wrR_addr_q    <= '0;
       wrR_data_q    <= '0;
@@ -494,6 +500,7 @@ module stack_core #(
       seq_q         <= seq_d;
       halted_q      <= halted_d;
       rdepth_q      <= rdepth_d;
+      nrdepth_q <= nrdepth_d;
       wrR_en_q      <= wrR_en_d;
       wrR_addr_q    <= wrR_addr_d;
       wrR_data_q    <= wrR_data_d;

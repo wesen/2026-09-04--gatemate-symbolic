@@ -76,7 +76,7 @@ module stack_core_bram #(
 
   // read purposes (why RAM[dc-1] or RAM[dc-2] was requested)
   typedef enum logic [2:0] {
-    R_NONE, R_OPND, R_FILL, R_POP, R_FILL2
+    R_NONE, R_OPND, R_FILL, R_FILL2
   } rpurpose_t;
 
   state_t state_q, state_d;
@@ -126,6 +126,8 @@ module stack_core_bram #(
   logic                               wrR_en_q, wrR_en_d;
   logic [$clog2(RSTACK_DEPTH)-1:0]   wrR_addr_q, wrR_addr_d;
   logic [$clog2(ROM_DEPTH)-1:0]      wrR_data_q, wrR_data_d;
+
+  logic [$clog2(RSTACK_DEPTH+1)-1:0] nrdepth_q, nrdepth_d;
 
   // fault record
   logic fv_q, fv_d;
@@ -213,6 +215,7 @@ module stack_core_bram #(
     halt_stage_d = halt_stage_q;
     pending_d = pending_q;
     rdepth_d   = rdepth_q;
+    nrdepth_d  = nrdepth_q;
     wrR_en_d   = 1'b0;
     wrR_addr_d = wrR_addr_q;
     wrR_data_d = wrR_data_q;
@@ -254,9 +257,7 @@ module stack_core_bram #(
       // checks can never change architectural behavior or fault records.
       S_DECODE: begin
         rp_d = R_NONE;
-        if (((op == symbolic_types_pkg::OP_ADD) || (op == symbolic_types_pkg::OP_SUB) || (op == symbolic_types_pkg::OP_MUL) ||
-             (op == symbolic_types_pkg::OP_EQ) || (op == symbolic_types_pkg::OP_LT) || (op == symbolic_types_pkg::OP_SWAP)) &&
-            (tc_q == 2'd1) && (dc_q != 0)) begin
+        if ((tc_q == 2'd1) && (dc_q != 0)) begin
           rp_d = R_OPND;             // operand a lives at RAM[dc-1]
           ram_rd_addr = dc_q - 1'b1;
           state_d = S_RDWAIT;
@@ -264,11 +265,6 @@ module stack_core_bram #(
                       (op == symbolic_types_pkg::OP_EQ) || (op == symbolic_types_pkg::OP_LT)) &&
                      (tc_q == 2'd2) && (dc_q != 0)) begin
           rp_d = R_FILL;             // post-op top1 lives at RAM[dc-1]
-          ram_rd_addr = dc_q - 1'b1;
-          state_d = S_RDWAIT;
-        end else if (((op == symbolic_types_pkg::OP_DROP) || (op == symbolic_types_pkg::OP_JZ) || (op == symbolic_types_pkg::OP_EMIT)) &&
-                     (tc_q == 2'd1) && (dc_q != 0)) begin
-          rp_d = R_POP;              // post-pop top0 lives at RAM[dc-1]
           ram_rd_addr = dc_q - 1'b1;
           state_d = S_RDWAIT;
         end else begin
@@ -279,9 +275,13 @@ module stack_core_bram #(
       // Capture the read data (valid in this cycle) and continue.
       S_RDWAIT: begin
         unique case (rp_q)
-          R_OPND:  opnd_d = ram_rd_data;
+          R_OPND: begin
+            // All instructions need accurate top-two fault context;
+            // the same read supplies the post-pop top for DROP/JZ/EMIT.
+            opnd_d = ram_rd_data;
+            pf_d = ram_rd_data;
+          end
           R_FILL:  rf_d = ram_rd_data;
-          R_POP:   pf_d = ram_rd_data;
           R_FILL2: rf_d = ram_rd_data;
           default: ;
         endcase
@@ -295,6 +295,7 @@ module stack_core_bram #(
       // All precondition checks; stage complete next-state data. No
       // architectural mutation happens here.
       S_EXECUTE: begin
+        nrdepth_d = rdepth_q;
         case (op)
           symbolic_types_pkg::OP_PUSH_S15, symbolic_types_pkg::OP_PUSH_TRUE, symbolic_types_pkg::OP_PUSH_FALSE, symbolic_types_pkg::OP_DUP: begin
             if (op == symbolic_types_pkg::OP_DUP && depth_q == 0) begin
@@ -460,7 +461,7 @@ module stack_core_bram #(
               wrR_en_d   = 1'b1;
               wrR_addr_d = rdepth_q[$clog2(RSTACK_DEPTH)-1:0];
               wrR_data_d = pc_q + 1'b1;
-              rdepth_d   = rdepth_q + 1'b1;
+              nrdepth_d  = rdepth_q + 1'b1;
               npc_d      = imm;
               ndepth_d   = depth_q;
               stc_d      = tc_q;
@@ -474,7 +475,7 @@ module stack_core_bram #(
               do_fault(symbolic_types_pkg::F_RSTACK_UNDERFLOW);
             end else begin
               npc_d    = rstack_q[rdepth_q-1];
-              rdepth_d = rdepth_q - 1'b1;
+              nrdepth_d = rdepth_q - 1'b1;
               ndepth_d = depth_q;
               stc_d    = tc_q;
               sdc_d    = dc_q;
@@ -491,6 +492,7 @@ module stack_core_bram #(
       // The single mutation owner (plus EMIT acceptance below): apply the
       // staged representation update and pulse the trace.
       S_COMMIT: begin
+        rdepth_d = nrdepth_q;
         pc_d = npc_q;
         depth_d = ndepth_q;
         seq_d = seq_q + 1'b1;
@@ -638,6 +640,7 @@ module stack_core_bram #(
       seq_q <= '0;
       halted_q <= 1'b0;
       rdepth_q <= '0;
+      nrdepth_q <= '0;
       wrR_en_q <= 1'b0;
       wrR_addr_q <= '0;
       wrR_data_q <= '0;
@@ -687,6 +690,7 @@ module stack_core_bram #(
       seq_q <= seq_d;
       halted_q <= halted_d;
       rdepth_q <= rdepth_d;
+      nrdepth_q <= nrdepth_d;
       wrR_en_q <= wrR_en_d;
       wrR_addr_q <= wrR_addr_d;
       wrR_data_q <= wrR_data_d;

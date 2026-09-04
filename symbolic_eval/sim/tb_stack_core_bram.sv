@@ -261,4 +261,15 @@ module tb_stack_core_bram;
     $finish;
   end
 
+  // Return depth is architectural: publish it on retirement only.
+  logic [$clog2(16+1)-1:0] rdepth_prev = '0;
+  always @(posedge clk) begin
+    #2;
+    if (rst_n && cycle > 4 && !trace_valid && rdepth_o !== rdepth_prev) begin
+      $display("ASSERT_FAIL: return depth changed without retirement");
+      errors = errors + 1;
+    end
+    rdepth_prev = rdepth_o;
+  end
+
 endmodule

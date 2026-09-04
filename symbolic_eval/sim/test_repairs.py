@@ -49,3 +49,14 @@ def test_all_emission_paths_enforce_capacity(source):
 def test_exact_capacity_and_comments():
     words, symbols, _ = assemble('; comment\n\nstart: WORD 0\nHALT ; done', rom_depth=2)
     assert len(words) == 2 and symbols == {'start': 0}
+
+
+@pytest.mark.parametrize('core', ['reg', 'bram'])
+@pytest.mark.parametrize('ending', ['WORD 0xF8000', 'WORD 0x5ffff', 'RET', 'JZ 0', 'WORD 0x7ffff'])
+def test_deep_fault_context(tmp_path, core, ending):
+    compare_program(tmp_path, 'PUSH_TRUE\nPUSH_S15 2\nPUSH_S15 3\nDROP\n' + ending, core)
+
+
+@pytest.mark.parametrize('core', ['reg', 'bram'])
+def test_call_return_retirement(tmp_path, core):
+    compare_program(tmp_path, 'CALL sub\nHALT\nsub: CALL leaf\nRET\nleaf: RET', core)

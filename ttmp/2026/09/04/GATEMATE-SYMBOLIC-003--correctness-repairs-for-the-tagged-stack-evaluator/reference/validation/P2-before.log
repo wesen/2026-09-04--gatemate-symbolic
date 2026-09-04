@@ -1,0 +1,285 @@
+.......................F.F.F.F.FFF                                       [100%]
+=================================== FAILURES ===================================
+__________________ test_deep_fault_context[WORD 0xF8000-bram] __________________
+
+tmp_path = PosixPath('/tmp/pytest-of-manuel/pytest-110/test_deep_fault_context_WORD_01')
+core = 'bram', ending = 'WORD 0xF8000'
+
+    @pytest.mark.parametrize('core', ['reg', 'bram'])
+    @pytest.mark.parametrize('ending', ['WORD 0xF8000', 'WORD 0x5ffff', 'RET', 'JZ 0', 'WORD 0x7ffff'])
+    def test_deep_fault_context(tmp_path, core, ending):
+>       compare_program(tmp_path, 'PUSH_TRUE\nPUSH_S15 2\nPUSH_S15 3\nDROP\n' + ending, core)
+
+sim/test_repairs.py:57: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+tmp_path = PosixPath('/tmp/pytest-of-manuel/pytest-110/test_deep_fault_context_WORD_01')
+source = 'PUSH_TRUE\nPUSH_S15 2\nPUSH_S15 3\nDROP\nWORD 0xF8000', core = 'bram'
+total_depth = 8, stall_seed = 7
+
+    def compare_program(tmp_path, source, core, total_depth=8, stall_seed=7):
+        words, _, _ = assemble(source)
+        image = tmp_path / 'program.hex'
+        image.write_text(''.join(f'{w:05x}\n' for w in words + [0] * (1024-len(words))))
+        model = run_program(words, total_depth=total_depth)
+        expected = [r.line() for r in model.trace] + [model.final_line()]
+        runner = _run_rtl if core == 'reg' else _run_rtl_bram
+        depth = total_depth if core == 'reg' else total_depth-2
+>       assert runner(str(image), depth, stall_seed=stall_seed) == expected
+E       AssertionError: assert ['TRACE 0 0 1...CODE 4 2 0 0'] == ['TRACE 0 0 1...CODE 4 2 0 0']
+E         
+E         At index 4 diff: 'TRACE 4 4 4 BAD 2 FAULT BAD_OPCODE 0 0' != 'TRACE 4 4 4 BAD 2 FAULT BAD_OPCODE 1 0'
+E         Use -v to get more diff
+
+sim/test_repairs.py:18: AssertionError
+__________________ test_deep_fault_context[WORD 0x5ffff-bram] __________________
+
+tmp_path = PosixPath('/tmp/pytest-of-manuel/pytest-110/test_deep_fault_context_WORD_03')
+core = 'bram', ending = 'WORD 0x5ffff'
+
+    @pytest.mark.parametrize('core', ['reg', 'bram'])
+    @pytest.mark.parametrize('ending', ['WORD 0xF8000', 'WORD 0x5ffff', 'RET', 'JZ 0', 'WORD 0x7ffff'])
+    def test_deep_fault_context(tmp_path, core, ending):
+>       compare_program(tmp_path, 'PUSH_TRUE\nPUSH_S15 2\nPUSH_S15 3\nDROP\n' + ending, core)
+
+sim/test_repairs.py:57: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+tmp_path = PosixPath('/tmp/pytest-of-manuel/pytest-110/test_deep_fault_context_WORD_03')
+source = 'PUSH_TRUE\nPUSH_S15 2\nPUSH_S15 3\nDROP\nWORD 0x5ffff', core = 'bram'
+total_depth = 8, stall_seed = 7
+
+    def compare_program(tmp_path, source, core, total_depth=8, stall_seed=7):
+        words, _, _ = assemble(source)
+        image = tmp_path / 'program.hex'
+        image.write_text(''.join(f'{w:05x}\n' for w in words + [0] * (1024-len(words))))
+        model = run_program(words, total_depth=total_depth)
+        expected = [r.line() for r in model.trace] + [model.final_line()]
+        runner = _run_rtl if core == 'reg' else _run_rtl_bram
+        depth = total_depth if core == 'reg' else total_depth-2
+>       assert runner(str(image), depth, stall_seed=stall_seed) == expected
+E       AssertionError: assert ['TRACE 0 0 1...RGET 4 2 0 0'] == ['TRACE 0 0 1...RGET 4 2 0 0']
+E         
+E         At index 4 diff: 'TRACE 4 4 4 JMP 2 FAULT BAD_BRANCH_TARGET 0 0' != 'TRACE 4 4 4 JMP 2 FAULT BAD_BRANCH_TARGET 1 0'
+E         Use -v to get more diff
+
+sim/test_repairs.py:18: AssertionError
+______________________ test_deep_fault_context[RET-bram] _______________________
+
+tmp_path = PosixPath('/tmp/pytest-of-manuel/pytest-110/test_deep_fault_context_RET_br0')
+core = 'bram', ending = 'RET'
+
+    @pytest.mark.parametrize('core', ['reg', 'bram'])
+    @pytest.mark.parametrize('ending', ['WORD 0xF8000', 'WORD 0x5ffff', 'RET', 'JZ 0', 'WORD 0x7ffff'])
+    def test_deep_fault_context(tmp_path, core, ending):
+>       compare_program(tmp_path, 'PUSH_TRUE\nPUSH_S15 2\nPUSH_S15 3\nDROP\n' + ending, core)
+
+sim/test_repairs.py:57: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+tmp_path = PosixPath('/tmp/pytest-of-manuel/pytest-110/test_deep_fault_context_RET_br0')
+source = 'PUSH_TRUE\nPUSH_S15 2\nPUSH_S15 3\nDROP\nRET', core = 'bram'
+total_depth = 8, stall_seed = 7
+
+    def compare_program(tmp_path, source, core, total_depth=8, stall_seed=7):
+        words, _, _ = assemble(source)
+        image = tmp_path / 'program.hex'
+        image.write_text(''.join(f'{w:05x}\n' for w in words + [0] * (1024-len(words))))
+        model = run_program(words, total_depth=total_depth)
+        expected = [r.line() for r in model.trace] + [model.final_line()]
+        runner = _run_rtl if core == 'reg' else _run_rtl_bram
+        depth = total_depth if core == 'reg' else total_depth-2
+>       assert runner(str(image), depth, stall_seed=stall_seed) == expected
+E       AssertionError: assert ['TRACE 0 0 1...FLOW 4 2 0 0'] == ['TRACE 0 0 1...FLOW 4 2 0 0']
+E         
+E         At index 4 diff: 'TRACE 4 4 4 RET 2 FAULT RSTACK_UNDERFLOW 0 0' != 'TRACE 4 4 4 RET 2 FAULT RSTACK_UNDERFLOW 1 0'
+E         Use -v to get more diff
+
+sim/test_repairs.py:18: AssertionError
+______________________ test_deep_fault_context[JZ 0-bram] ______________________
+
+tmp_path = PosixPath('/tmp/pytest-of-manuel/pytest-110/test_deep_fault_context_JZ_0_b0')
+core = 'bram', ending = 'JZ 0'
+
+    @pytest.mark.parametrize('core', ['reg', 'bram'])
+    @pytest.mark.parametrize('ending', ['WORD 0xF8000', 'WORD 0x5ffff', 'RET', 'JZ 0', 'WORD 0x7ffff'])
+    def test_deep_fault_context(tmp_path, core, ending):
+>       compare_program(tmp_path, 'PUSH_TRUE\nPUSH_S15 2\nPUSH_S15 3\nDROP\n' + ending, core)
+
+sim/test_repairs.py:57: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+tmp_path = PosixPath('/tmp/pytest-of-manuel/pytest-110/test_deep_fault_context_JZ_0_b0')
+source = 'PUSH_TRUE\nPUSH_S15 2\nPUSH_S15 3\nDROP\nJZ 0', core = 'bram'
+total_depth = 8, stall_seed = 7
+
+    def compare_program(tmp_path, source, core, total_depth=8, stall_seed=7):
+        words, _, _ = assemble(source)
+        image = tmp_path / 'program.hex'
+        image.write_text(''.join(f'{w:05x}\n' for w in words + [0] * (1024-len(words))))
+        model = run_program(words, total_depth=total_depth)
+        expected = [r.line() for r in model.trace] + [model.final_line()]
+        runner = _run_rtl if core == 'reg' else _run_rtl_bram
+        depth = total_depth if core == 'reg' else total_depth-2
+>       assert runner(str(image), depth, stall_seed=stall_seed) == expected
+E       AssertionError: assert ['TRACE 0 0 1...AULT 4 2 0 0'] == ['TRACE 0 0 1...AULT 4 2 0 0']
+E         
+E         At index 4 diff: 'TRACE 4 4 4 JZ 2 FAULT TYPE_FAULT 0 0' != 'TRACE 4 4 4 JZ 2 FAULT TYPE_FAULT 1 0'
+E         Use -v to get more diff
+
+sim/test_repairs.py:18: AssertionError
+__________________ test_deep_fault_context[WORD 0x7ffff-bram] __________________
+
+tmp_path = PosixPath('/tmp/pytest-of-manuel/pytest-110/test_deep_fault_context_WORD_05')
+core = 'bram', ending = 'WORD 0x7ffff'
+
+    @pytest.mark.parametrize('core', ['reg', 'bram'])
+    @pytest.mark.parametrize('ending', ['WORD 0xF8000', 'WORD 0x5ffff', 'RET', 'JZ 0', 'WORD 0x7ffff'])
+    def test_deep_fault_context(tmp_path, core, ending):
+>       compare_program(tmp_path, 'PUSH_TRUE\nPUSH_S15 2\nPUSH_S15 3\nDROP\n' + ending, core)
+
+sim/test_repairs.py:57: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+tmp_path = PosixPath('/tmp/pytest-of-manuel/pytest-110/test_deep_fault_context_WORD_05')
+source = 'PUSH_TRUE\nPUSH_S15 2\nPUSH_S15 3\nDROP\nWORD 0x7ffff', core = 'bram'
+total_depth = 8, stall_seed = 7
+
+    def compare_program(tmp_path, source, core, total_depth=8, stall_seed=7):
+        words, _, _ = assemble(source)
+        image = tmp_path / 'program.hex'
+        image.write_text(''.join(f'{w:05x}\n' for w in words + [0] * (1024-len(words))))
+        model = run_program(words, total_depth=total_depth)
+        expected = [r.line() for r in model.trace] + [model.final_line()]
+        runner = _run_rtl if core == 'reg' else _run_rtl_bram
+        depth = total_depth if core == 'reg' else total_depth-2
+>       assert runner(str(image), depth, stall_seed=stall_seed) == expected
+E       AssertionError: assert ['TRACE 0 0 1...RGET 4 2 0 0'] == ['TRACE 0 0 1...RGET 4 2 0 0']
+E         
+E         At index 4 diff: 'TRACE 4 4 4 CALL 2 FAULT BAD_BRANCH_TARGET 0 0' != 'TRACE 4 4 4 CALL 2 FAULT BAD_BRANCH_TARGET 1 0'
+E         Use -v to get more diff
+
+sim/test_repairs.py:18: AssertionError
+_______________________ test_call_return_retirement[reg] _______________________
+
+tmp_path = PosixPath('/tmp/pytest-of-manuel/pytest-110/test_call_return_retirement_re0')
+core = 'reg'
+
+    @pytest.mark.parametrize('core', ['reg', 'bram'])
+    def test_call_return_retirement(tmp_path, core):
+>       compare_program(tmp_path, 'CALL sub\nHALT\nsub: CALL leaf\nRET\nleaf: RET', core)
+
+sim/test_repairs.py:62: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+sim/test_repairs.py:18: in compare_program
+    assert runner(str(image), depth, stall_seed=stall_seed) == expected
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+hex_path = '/tmp/pytest-of-manuel/pytest-110/test_call_return_retirement_re0/program.hex'
+stack_depth = 8, stall_seed = 7
+
+    def _run_rtl(hex_path: str, stack_depth: int, stall_seed=None):
+        """Compile (per stack-depth config) and run the register-core testbench."""
+        tag = f"tb_reg_d{stack_depth}"
+        vvp = os.path.join(BUILD, f"{tag}.vvp")
+        compile_cmd = [
+            "iverilog", "-g2012", "-s", "tb_stack_core", "-o", vvp,
+            os.path.join(ROOT, "rtl", "symbolic_types_pkg.sv"),
+            os.path.join(ROOT, "rtl", "stack_core.sv"),
+            os.path.join(ROOT, "sim", "tb_stack_core.sv"),
+            f"-Ptb_stack_core.STACK_DEPTH={stack_depth}",
+        ]
+        subprocess.run(compile_cmd, check=True, capture_output=True)
+        cmd = ["vvp", vvp, f"+rom={hex_path}"]
+        if stall_seed is not None:
+            cmd.append(f"+stall_seed={stall_seed}")
+        out = subprocess.run(cmd, check=True, capture_output=True, text=True,
+                              timeout=120)
+        lines = [l for l in out.stdout.splitlines()
+                 if l.startswith(("TRACE", "FINAL", "TB_", "FAIL",
+                                 "ASSERT_FAIL"))]
+        tb_pass = any(l.startswith("TB_PASS") for l in lines)
+>       assert tb_pass, f"testbench reported errors:\n{out.stdout}"
+E       AssertionError: testbench reported errors:
+E         ASSERT_FAIL: return depth changed without retirement
+E         TRACE 0 0 2 CALL 0 COMMIT
+E         ASSERT_FAIL: return depth changed without retirement
+E         TRACE 1 2 4 CALL 0 COMMIT
+E         ASSERT_FAIL: return depth changed without retirement
+E         TRACE 2 4 3 RET 0 COMMIT
+E         ASSERT_FAIL: return depth changed without retirement
+E         TRACE 3 3 1 RET 0 COMMIT
+E         TRACE 4 1 1 HALT 0 COMMIT
+E         FINAL 1 NONE 1 0 0 0
+E         TB_FAIL 4
+E         /home/manuel/code/wesen/2026-09-04--gatemate-symbolic/symbolic_eval/sim/../sim/tb_stack_core.sv:247: $finish called at 3150000 (1ps)
+E         
+E       assert False
+
+sim/test_directed.py:78: AssertionError
+______________________ test_call_return_retirement[bram] _______________________
+
+tmp_path = PosixPath('/tmp/pytest-of-manuel/pytest-110/test_call_return_retirement_br0')
+core = 'bram'
+
+    @pytest.mark.parametrize('core', ['reg', 'bram'])
+    def test_call_return_retirement(tmp_path, core):
+>       compare_program(tmp_path, 'CALL sub\nHALT\nsub: CALL leaf\nRET\nleaf: RET', core)
+
+sim/test_repairs.py:62: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+sim/test_repairs.py:18: in compare_program
+    assert runner(str(image), depth, stall_seed=stall_seed) == expected
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+hex_path = '/tmp/pytest-of-manuel/pytest-110/test_call_return_retirement_br0/program.hex'
+deep_depth = 6, stall_seed = 7
+
+    def _run_rtl_bram(hex_path, deep_depth, stall_seed=None):
+        tag = f"tb_bram_d{deep_depth}"
+        vvp = os.path.join(BUILD, f"{tag}.vvp")
+        subprocess.run([
+            "iverilog", "-g2012", "-s", "tb_stack_core_bram", "-o", vvp,
+            os.path.join(ROOT, "rtl", "symbolic_types_pkg.sv"),
+            os.path.join(ROOT, "rtl", "sync_sdp_ram.sv"),
+            os.path.join(ROOT, "rtl", "stack_core_bram.sv"),
+            os.path.join(ROOT, "sim", "tb_stack_core_bram.sv"),
+            f"-Ptb_stack_core_bram.DEEP_DEPTH={deep_depth}",
+        ], check=True, capture_output=True)
+        cmd = ["vvp", vvp, f"+rom={hex_path}"]
+        if stall_seed is not None:
+            cmd.append(f"+stall_seed={stall_seed}")
+        out = subprocess.run(cmd, check=True, capture_output=True, text=True,
+                             timeout=120)
+        lines = [l for l in out.stdout.splitlines()
+                 if l.startswith(("TRACE", "FINAL", "TB_", "FAIL",
+                                 "ASSERT_FAIL"))]
+>       assert any(l.startswith("TB_PASS") for l in lines), out.stdout
+E       AssertionError: ASSERT_FAIL: return depth changed without retirement
+E         TRACE 0 0 2 CALL 0 COMMIT
+E         ASSERT_FAIL: return depth changed without retirement
+E         TRACE 1 2 4 CALL 0 COMMIT
+E         ASSERT_FAIL: return depth changed without retirement
+E         TRACE 2 4 3 RET 0 COMMIT
+E         ASSERT_FAIL: return depth changed without retirement
+E         TRACE 3 3 1 RET 0 COMMIT
+E         TRACE 4 1 1 HALT 0 COMMIT
+E         FINAL 1 NONE 1 0 0 0
+E         TB_FAIL 4
+E         /home/manuel/code/wesen/2026-09-04--gatemate-symbolic/symbolic_eval/sim/../sim/tb_stack_core_bram.sv:261: $finish called at 3150000 (1ps)
+E         
+E       assert False
+E        +  where False = any(<generator object _run_rtl_bram.<locals>.<genexpr> at 0x7292e064c740>)
+
+sim/test_bram.py:49: AssertionError
+=========================== short test summary info ============================
+FAILED sim/test_repairs.py::test_deep_fault_context[WORD 0xF8000-bram] - Asse...
+FAILED sim/test_repairs.py::test_deep_fault_context[WORD 0x5ffff-bram] - Asse...
+FAILED sim/test_repairs.py::test_deep_fault_context[RET-bram] - AssertionErro...
+FAILED sim/test_repairs.py::test_deep_fault_context[JZ 0-bram] - AssertionErr...
+FAILED sim/test_repairs.py::test_deep_fault_context[WORD 0x7ffff-bram] - Asse...
+FAILED sim/test_repairs.py::test_call_return_retirement[reg] - AssertionError...
+FAILED sim/test_repairs.py::test_call_return_retirement[bram] - AssertionErro...
+7 failed, 27 passed in 0.85s

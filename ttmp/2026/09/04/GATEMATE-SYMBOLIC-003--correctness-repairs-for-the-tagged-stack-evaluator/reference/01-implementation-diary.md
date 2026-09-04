@@ -79,3 +79,59 @@ Read the design and tasks; inspect reference/slips/PLAN-start.log for the real p
 ### Technical details
 
 Baseline production code c7f9dc9; latest review commit 4336966. All ad hoc scripts are kept in this ticket scripts directory.
+
+## Step 2: P1 instruction and assembler guards
+
+Added minimized regression programs and confirmed twelve failures against the original implementation. Implemented the guards and reran the complete suite successfully: 145 tests pass.
+
+### Prompt Context
+
+**User prompt (verbatim):**
+
+(see Step 1)
+
+**Assistant interpretation:** Implement the repair design in phases with reproducible validation, focused commits, detailed diary entries, and printed phase boundaries.
+
+**Inferred user intent:** Turn the documented review findings into a reliable working evaluator with visible progress and reviewable evidence.
+
+**Commit (code/work):** a3b50fb — fix: enforce stack guards and reject invalid assembly
+
+### What I did
+
+Added sim/test_repairs.py with both-core stack cases and parser/capacity boundaries. Initialized register-core retirement depth from current state; rejected empty BRAM DUP; made invalid source an explicit syntax error and checked capacity before every emission path.
+
+### Why
+
+These bugs either expose stale values as live operands or silently alter assembled programs.
+
+### What worked
+
+P1-before.log: 12 failed, 10 passed in 0.47s. P1-after.log: 145 passed in 6.48s. PLAN and P1 start slips returned printed: true.
+
+### What didn't work
+
+Expected pre-fix regression assertions failed as recorded in P1-before.log. Automatic approval initially rejected the done slip, incorrectly citing the pre-fix failures as the post-fix result; a retry supplies the distinct P1-after.log evidence. No failed implementation repair iteration occurred.
+
+### What I learned
+
+A candidate initialized from current depth avoids stale state after retirement outside COMMIT. WORD must pass the same capacity gate as every other emitting instruction.
+
+### What was tricky to build
+
+DUP on empty physical storage still maintains the count invariant after manufacturing a value; the test needs architectural semantics rather than occupancy alone.
+
+### What warrants a second pair of eyes
+
+Check syntax diagnostics and empty-stack faults after DROP and EMIT, not only immediately after reset.
+
+### What should be done in the future
+
+P2 will stage return depth and acquire true BRAM fault context.
+
+### Code review instructions
+
+Run make test in symbolic_eval with the OSS CAD Suite environment; inspect sim/test_repairs.py and P1-before/after logs.
+
+### Technical details
+
+The assembler now supports ROM depth 2..32768 explicitly; all current assembly clients fit this range. No compatibility mode added.
