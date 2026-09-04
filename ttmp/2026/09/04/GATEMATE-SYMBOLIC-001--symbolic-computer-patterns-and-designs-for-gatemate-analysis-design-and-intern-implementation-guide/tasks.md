@@ -7,4 +7,4 @@
 - [x] P3: Design analysis mapping Laboratory 1 onto GateMate + prior infra <!-- t:7z2j -->
 - [x] P4: Write intern onboarding guide (prose, pseudocode, diagrams, API/file refs) <!-- t:6ozc -->
 - [x] P5: Validate docs (docmgr doctor) + upload bundle to reMarkable <!-- t:9p77 -->
-- [ ] P6: Final handoff, work slip, wrap-up <!-- t:rbyh -->
+- [x] P6: Final handoff, work slip, wrap-up <!-- t:rbyh -->
