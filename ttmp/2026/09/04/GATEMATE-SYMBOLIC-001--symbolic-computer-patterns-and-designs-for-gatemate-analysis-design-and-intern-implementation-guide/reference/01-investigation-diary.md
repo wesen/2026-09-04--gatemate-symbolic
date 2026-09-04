@@ -101,3 +101,54 @@ Establish the evidence base before writing any guide; the guide must reference r
 
 ### Technical details
 - Book structure: `grep -n "^# " sources/Composable_Hardware_Patterns_for_Symbolic_Computers.md`.
+
+## Step 2: Deep study of the pattern catalog and Laboratory 1
+
+We read the pattern-catalog chapters relevant to Laboratory 1 — semantic/refinement patterns
+(Abstract-Machine Contract, Explicit Semantic State Vector, Structure/Representation Firewall,
+Common Fast Path / Precise Slow Path), representation patterns (Tagged Value Word,
+Immediate-or-Boxed Split), the reusable substrates of Part III (symbolic_types_pkg with
+value40_t/event80_t, rv_reg elastic register and ready/valid ownership rules), the GateMate
+substrate chapter (stop-build budgets, block-RAM discipline, toolchain loop), and the complete
+Laboratory 1 specification. Together with the MATE-16/PCA-Z80 infrastructure survey, this is
+the full evidence base for the intern guide.
+
+### Prompt Context
+
+**User prompt (verbatim):** (see Step 1)
+
+**Assistant interpretation:** Read the book deeply enough to write an accurate intern guide, not a summary.
+
+### What I did
+- Extracted `symbolic_types_pkg` (value40_t, event80_t, tag table) verbatim from Part III.
+- Extracted the ready/valid ownership rule and `rv_reg` reference implementation.
+- Mapped the 8 patterns composed by Laboratory 1 to their catalog pattern cards.
+- Confirmed the GateMate toolchain loop (Yosys, nextpnr-himbaechel, gmpack, openFPGALoader) matches the Makefile targets of both prior projects.
+
+### Why
+Every claim in the guide must be traceable to a book section or a verified file in a sibling project.
+
+### What worked
+- Pattern numbering from the catalog (Pattern 1-5 in ch.7, Pattern 6+ in ch.8 etc.) gives clean API references for the guide.
+
+### What didn't work
+- N/A.
+
+### What I learned
+- Lab 1 composes exactly 8 named patterns; the guide can be organized around them.
+- One-mutation-owner and "no architectural mutation before all checks pass" are the two core invariants.
+
+### What was tricky to build
+- N/A (reading phase).
+
+### What warrants a second pair of eyes
+- N/A.
+
+### What should be done in the future
+- Phase 3/4: write the guide.
+
+### Code review instructions
+- `sed -n '4211,4569p' sources/Composable_Hardware_Patterns_for_Symbolic_Computers.md` = full Lab 1 spec.
+
+### Technical details
+- Stop-build budget Lab 1: 2 BRAM blocks / 2,000 CPEs.
