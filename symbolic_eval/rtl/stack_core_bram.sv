@@ -297,7 +297,9 @@ module stack_core_bram #(
       S_EXECUTE: begin
         case (op)
           symbolic_types_pkg::OP_PUSH_S15, symbolic_types_pkg::OP_PUSH_TRUE, symbolic_types_pkg::OP_PUSH_FALSE, symbolic_types_pkg::OP_DUP: begin
-            if (depth_q == TOTAL_DEPTH[$clog2(TOTAL_DEPTH+1)-1:0]) begin
+            if (op == symbolic_types_pkg::OP_DUP && depth_q == 0) begin
+              do_fault(symbolic_types_pkg::F_STACK_UNDERFLOW);
+            end else if (depth_q == TOTAL_DEPTH[$clog2(TOTAL_DEPTH+1)-1:0]) begin
               do_fault(symbolic_types_pkg::F_STACK_OVERFLOW);
             end else begin
               sval_d = (op == symbolic_types_pkg::OP_PUSH_S15)  ? symbolic_types_pkg::mk_int(symbolic_types_pkg::sx15(imm)) :

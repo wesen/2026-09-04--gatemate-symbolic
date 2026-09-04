@@ -10,7 +10,7 @@ Syntax:
     MNEMONIC            opcode with no immediate (ADD, HALT, ...)
     PUSH_S15 k          signed 15-bit immediate (-16384..16383)
     JMP t / JZ t        branch target: label, or absolute integer
-    WORD 0x1F           raw 20-bit word (fault-case construction)
+    WORD 0xF8000        raw 20-bit word (undefined opcode)
 """
 
 from __future__ import annotations
@@ -29,11 +29,11 @@ _TOKEN = re.compile(r"^\s*(?:(\w+):)?\s*(?:(\w+)(?:\s+([^\s;]+))?)?\s*(?:;.*)?$"
 def _parse_line(line: str, path: str, lineno: int
                 ) -> Tuple[Optional[str], Optional[str], Optional[str]]:
     """Return (label, mnemonic, operand) — any may be None."""
-    m = _TOKEN.match(line)
-    if not m or (not m.group(1) and not m.group(2)):
+    if not line.strip() or line.lstrip().startswith(';'):
         return None, None, None
-    if not m.group(1) and not m.group(2):
-        return None, None, None
+    m = _TOKEN.fullmatch(line)
+    if not m:
+        raise ValueError(f"{path}: invalid syntax at line {lineno}: {line!r}")
     return m.group(1), m.group(2).upper() if m.group(2) else None, m.group(3)
 
 
@@ -49,11 +49,13 @@ def _parse_int(text: str) -> int:
 def assemble(source: str, rom_depth: int = 1024
              ) -> Tuple[List[int], Dict[str, int], List[str]]:
     """Assemble source text -> (words, symbols, listing lines)."""
+    if not 2 <= rom_depth <= 32768:
+        raise ValueError("ROM depth must be between 2 and 32768")
     # ---------------- pass 1: sizes and labels ----------------
     words: List[Optional[int]] = []
     symbols: Dict[str, int] = {}
     listing: List[str] = []
-    pending: List[Tuple[int, str, Optional[str], str, int]] = []
+    pending: List[Tuple[int, int, str, str, str, int]] = []
 
     for lineno, raw in enumerate(source.splitlines(), 1):
         label, mnem, operand = _parse_line(raw, "<src>", lineno)
@@ -68,6 +70,10 @@ def assemble(source: str, rom_depth: int = 1024
         if mnem is None:
             listing.append(f"{len(words):04d}                ; {raw}")
             continue
+
+        # Every emitting path, including WORD and unresolved immediates.
+        if len(words) >= rom_depth:
+            raise ValueError(f"program exceeds ROM depth {rom_depth} (line {lineno})")
 
         if mnem == "WORD":
             if operand is None:
@@ -100,9 +106,6 @@ def assemble(source: str, rom_depth: int = 1024
             words.append(None)  # placeholder
             listing.append(f"{len(words)-1:04d} ?????           {mnem} {operand}")
 
-        if len(words) > rom_depth:
-            raise ValueError(f"program exceeds ROM depth {rom_depth}")
-
     # ---------------- pass 2: resolve immediates ----------------
     for index, listing_pos, mnem, operand, path, lineno in pending:
         ins = BY_MNEMONIC[mnem]
@@ -129,7 +132,7 @@ def assemble(source: str, rom_depth: int = 1024
         listing[listing_pos] = (f"{index:04d} {w:05x}            "
                                f"{mnem} {operand} (= {value})")
 
-    # Pad to ROM depth with zero words (defined behavior: PUSH_S15 0).
+    # Only the CLI hex writer pads the returned instruction words.
     assert all(w is not None for w in words)
     return [int(w) for w in words], symbols, listing
 

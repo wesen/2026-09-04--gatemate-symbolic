@@ -216,6 +216,11 @@ module stack_core #(
       // All precondition checks happen here. Nothing architectural is
       // mutated; EXECUTE only stages complete next-state data.
       S_EXECUTE: begin
+        // Build a complete candidate from current architectural state.
+        // EMIT retires outside COMMIT, so previous staged depth is stale.
+        npc_d = pc_q + 1'b1;
+        ndepth_d = depth_q;
+        halt_stage_d = 1'b0;
         case (op)
           symbolic_types_pkg::OP_PUSH_S15, symbolic_types_pkg::OP_PUSH_TRUE, symbolic_types_pkg::OP_PUSH_FALSE: begin
             if (depth_q == STACK_DEPTH[$clog2(STACK_DEPTH+1)-1:0]) begin
