@@ -60,14 +60,14 @@ def test_program_a_board_stream():
     stdout = _run_top(_ensure_hex("arith"))
     got = _bytes_to_str(_uart_lines(stdout))
     assert got == "T1:00000001\r\n"
-    assert "TOPDONE 1 0 8 0" in stdout
+    assert "TOPDONE 1 0 8 0 0" in stdout
 
 
 def test_program_b_board_stream():
     stdout = _run_top(_ensure_hex("typefault"))
     got = _bytes_to_str(_uart_lines(stdout))
     assert got == ""                      # no output transfer
-    assert "TOPDONE 0 1 2 2" in stdout    # faulted, pc=2, depth=2
+    assert "TOPDONE 0 1 2 2 0" in stdout    # faulted, pc=2, depth=2
 
 
 def test_smoke_board_stream_matches_model():
@@ -76,7 +76,22 @@ def test_smoke_board_stream_matches_model():
     expected = "".join(
         f"T{v.tag:x}:{v.payload:08X}\r\n" for v in _model_emits("smoke"))
     assert got == expected
-    assert "TOPDONE 1 0 10 0" in stdout
+    assert "TOPDONE 1 0 10 0 0" in stdout
+
+
+def test_fib_board_stream():
+    stdout = _run_top(_ensure_hex("fib"))
+    got = _bytes_to_str(_uart_lines(stdout))
+    assert got == "T0:00000037\r\n"          # fib(10) = 55
+    assert "TOPDONE 1 0 3 0 0" in stdout
+
+
+def test_countdown_board_stream():
+    stdout = _run_top(_ensure_hex("countdown"))
+    got = _bytes_to_str(_uart_lines(stdout))
+    assert got == "".join(f"T0:0000000{n}\r\n" for n in range(5, 0, -1)) + \
+        "T1:00000001\r\n"
+    assert "TOPDONE 1 0 12 0 0" in stdout
 
 
 def test_deep_board_stream_matches_model():
@@ -85,4 +100,4 @@ def test_deep_board_stream_matches_model():
     expected = "".join(
         f"T{v.tag:x}:{v.payload:08X}\r\n" for v in _model_emits("deep"))
     assert got == expected
-    assert "TOPDONE 1 0 18 1" in stdout
+    assert "TOPDONE 1 0 18 1 0" in stdout

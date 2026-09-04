@@ -33,6 +33,11 @@ PROGRAMS = [
     ("badbranch", 32, []),
     ("jztype", 32, []),
     ("stackoverflow", 8, []),
+    ("fib", 32, [11]),
+    ("sq", 32, []),
+    ("countdown", 32, [4]),
+    ("retunderflow", 32, []),
+    ("calloverflow", 32, []),
 ]
 
 
@@ -106,6 +111,6 @@ def test_exit_criteria_book():
     rtl = _run_rtl(hex_a, 32)
     assert rtl[-3] == "TRACE 7 7 8 EMIT 0 OUTPUT 1 00000001"
     assert rtl[-2] == "TRACE 8 8 8 HALT 0 COMMIT"
-    assert rtl[-1] == "FINAL 1 NONE 8 0 1"
+    assert rtl[-1] == "FINAL 1 NONE 8 0 1 0"
     rtl_b = _run_rtl(_ensure_hex("typefault"), 32)
-    assert rtl_b[-1] == "FINAL 0 TYPE_FAULT 2 2 0"
+    assert rtl_b[-1] == "FINAL 0 TYPE_FAULT 2 2 0 0"

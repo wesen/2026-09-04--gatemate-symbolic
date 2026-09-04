@@ -23,7 +23,8 @@
 
 module stack_core_bram #(
   parameter int ROM_DEPTH  = 1024,    // 1K x 20 instruction ROM
-  parameter int DEEP_DEPTH = 512      // deep stack slots in RAM
+  parameter int DEEP_DEPTH  = 512,   // deep stack slots in RAM
+  parameter int RSTACK_DEPTH = 16    // return-address stack (registers)
 ) (
   input  logic clk,
   input  logic rst_n,
@@ -38,7 +39,7 @@ module stack_core_bram #(
   output logic [4:0]  trace_op,
   output logic [$clog2(DEEP_DEPTH+3)-1:0] trace_depth,
   output logic [1:0]  trace_event,
-  output logic [2:0]  trace_fault,
+  output logic [3:0]  trace_fault,
   output logic [3:0]  trace_tag1,
   output logic [3:0]  trace_tag0,
   output logic [3:0]  trace_out_tag,
@@ -49,7 +50,7 @@ module stack_core_bram #(
   input  logic        out_ready,
 
   output logic        fault_valid,
-  output logic [2:0]  fault_code,
+  output logic [3:0]  fault_code,
   output logic [$clog2(ROM_DEPTH)-1:0] fault_pc,
   output logic [4:0]  fault_op,
   output logic [$clog2(DEEP_DEPTH+3)-1:0] fault_depth,
@@ -59,6 +60,7 @@ module stack_core_bram #(
   output logic        halted,
   output logic [$clog2(ROM_DEPTH)-1:0] pc_o,
   output logic [$clog2(DEEP_DEPTH+3)-1:0] depth_o,
+  output logic [$clog2(RSTACK_DEPTH+1)-1:0] rdepth_o,
 
   // debug observation (tb asserts depth_o == tc_o + dc_o)
   output logic [1:0]  tc_o,
@@ -118,9 +120,16 @@ module stack_core_bram #(
   symbolic_types_pkg::value40_t pending_q;
   symbolic_types_pkg::value40_t pending_d;
 
+  // return-address stack (continuation state; book Lab 1 extension)
+  logic [$clog2(ROM_DEPTH)-1:0]       rstack_q [0:RSTACK_DEPTH-1];
+  logic [$clog2(RSTACK_DEPTH+1)-1:0]  rdepth_q, rdepth_d;
+  logic                               wrR_en_q, wrR_en_d;
+  logic [$clog2(RSTACK_DEPTH)-1:0]   wrR_addr_q, wrR_addr_d;
+  logic [$clog2(ROM_DEPTH)-1:0]      wrR_data_q, wrR_data_d;
+
   // fault record
   logic fv_q, fv_d;
-  logic [2:0] fc_q, fc_d;
+  logic [3:0] fc_q, fc_d;
   logic [$clog2(ROM_DEPTH)-1:0] fpc_q, fpc_d;
   logic [4:0] fop_q, fop_d;
   logic [$clog2(TOTAL_DEPTH+1)-1:0] fdepth_q, fdepth_d;
@@ -134,7 +143,7 @@ module stack_core_bram #(
   logic [4:0]  trace_op_q, trace_op_d;
   logic [$clog2(TOTAL_DEPTH+1)-1:0] trace_depth_q, trace_depth_d;
   logic [1:0]  trace_event_q, trace_event_d;
-  logic [2:0]  trace_fault_q, trace_fault_d;
+  logic [3:0]  trace_fault_q, trace_fault_d;
   logic [3:0]  trace_tag1_q, trace_tag1_d, trace_tag0_q, trace_tag0_d;
   logic [3:0]  trace_out_tag_q, trace_out_tag_d;
   logic [31:0] trace_out_payload_q, trace_out_payload_d;
@@ -203,6 +212,10 @@ module stack_core_bram #(
     sswapread_d = sswapread_q;
     halt_stage_d = halt_stage_q;
     pending_d = pending_q;
+    rdepth_d   = rdepth_q;
+    wrR_en_d   = 1'b0;
+    wrR_addr_d = wrR_addr_q;
+    wrR_data_d = wrR_data_q;
     fv_d = fv_q; fc_d = fc_q; fpc_d = fpc_q; fop_d = fop_q;
     fdepth_d = fdepth_q; ft1_d = ft1_q; ft0_d = ft0_q;
     trace_valid_d = 1'b0;
@@ -436,6 +449,37 @@ module stack_core_bram #(
             state_d = S_COMMIT;
           end
 
+          symbolic_types_pkg::OP_CALL: begin
+            if (rdepth_q == RSTACK_DEPTH[$clog2(RSTACK_DEPTH+1)-1:0]) begin
+              do_fault(symbolic_types_pkg::F_RSTACK_OVERFLOW);
+            end else if (imm >= ROM_DEPTH[14:0]) begin
+              do_fault(symbolic_types_pkg::F_BAD_BRANCH);
+            end else begin
+              wrR_en_d   = 1'b1;
+              wrR_addr_d = rdepth_q[$clog2(RSTACK_DEPTH)-1:0];
+              wrR_data_d = pc_q + 1'b1;
+              rdepth_d   = rdepth_q + 1'b1;
+              npc_d      = imm;
+              ndepth_d   = depth_q;
+              stc_d      = tc_q;
+              sdc_d      = dc_q;
+              state_d    = S_COMMIT;
+            end
+          end
+
+          symbolic_types_pkg::OP_RET: begin
+            if (rdepth_q == 0) begin
+              do_fault(symbolic_types_pkg::F_RSTACK_UNDERFLOW);
+            end else begin
+              npc_d    = rstack_q[rdepth_q-1];
+              rdepth_d = rdepth_q - 1'b1;
+              ndepth_d = depth_q;
+              stc_d    = tc_q;
+              sdc_d    = dc_q;
+              state_d  = S_COMMIT;
+            end
+          end
+
           default: begin
             do_fault(symbolic_types_pkg::F_BAD_OPCODE);
           end
@@ -559,7 +603,7 @@ module stack_core_bram #(
   // Stage a precise fault and fire the FAULT trace pulse in the same cycle.
   // Operand tags are guarded by depth: the cache registers hold stale
   // values when the stack is shallower than two.
-  task automatic do_fault(input logic [2:0] code);
+  task automatic do_fault(input logic [3:0] code);
     fv_d = 1'b1;
     fc_d = code;
     fpc_d = pc_q;
@@ -591,6 +635,10 @@ module stack_core_bram #(
       ir_q <= '0;
       seq_q <= '0;
       halted_q <= 1'b0;
+      rdepth_q <= '0;
+      wrR_en_q <= 1'b0;
+      wrR_addr_q <= '0;
+      wrR_data_q <= '0;
       top0_q <= '0;
       top1_q <= '0;
       tc_q <= 2'd0;
@@ -636,6 +684,10 @@ module stack_core_bram #(
       ir_q <= ir_d;
       seq_q <= seq_d;
       halted_q <= halted_d;
+      rdepth_q <= rdepth_d;
+      wrR_en_q <= wrR_en_d;
+      wrR_addr_q <= wrR_addr_d;
+      wrR_data_q <= wrR_data_d;
       top0_q <= top0_d;
       top1_q <= top1_d;
       tc_q <= tc_d;
@@ -673,6 +725,10 @@ module stack_core_bram #(
       trace_tag0_q <= trace_tag0_d;
       trace_out_tag_q <= trace_out_tag_d;
       trace_out_payload_q <= trace_out_payload_d;
+
+      // Return-stack writes happen only in COMMIT (single mutation owner).
+      if (state_q == S_COMMIT && wrR_en_q)
+        rstack_q[wrR_addr_q] <= wrR_data_q;
     end
   end
 
@@ -704,6 +760,7 @@ module stack_core_bram #(
   assign halted = halted_q;
   assign pc_o = pc_q;
   assign depth_o = depth_q;
+  assign rdepth_o = rdepth_q;
   assign tc_o = tc_q;
   assign dc_o = dc_q;
 

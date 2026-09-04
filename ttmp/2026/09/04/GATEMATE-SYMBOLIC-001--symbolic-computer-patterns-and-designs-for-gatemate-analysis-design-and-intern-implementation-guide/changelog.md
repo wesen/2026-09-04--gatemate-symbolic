@@ -95,3 +95,12 @@ Impl P6: README finalized, 105 tests green, wrap-up
 
 - /home/manuel/code/wesen/2026-09-04--gatemate-symbolic/symbolic_eval/README.md — final documentation
 
+
+## 2026-09-04
+
+Extension: LED polarity fixed (active-low), CALL/RET + return stack + fib/sq/countdown programs, 123 tests, fib(10)=55 on hardware
+
+### Related Files
+
+- /home/manuel/code/wesen/2026-09-04--gatemate-symbolic/symbolic_eval/rtl/stack_core_bram.sv — CALL/RET extension
+

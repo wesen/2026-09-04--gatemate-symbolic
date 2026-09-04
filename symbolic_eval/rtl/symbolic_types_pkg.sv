@@ -48,16 +48,21 @@ package symbolic_types_pkg;
   localparam [4:0] OP_JZ        = 5'h0C;
   localparam [4:0] OP_EMIT      = 5'h0D;
   localparam [4:0] OP_HALT      = 5'h0E;
+  localparam [4:0] OP_CALL      = 5'h0F;
+  localparam [4:0] OP_RET       = 5'h10;
 
   // ---------------------------------------------------------------- faults
-  localparam [2:0] F_NONE            = 3'd0;
-  localparam [2:0] F_STACK_UNDERFLOW = 3'd1;
-  localparam [2:0] F_STACK_OVERFLOW  = 3'd2;
-  localparam [2:0] F_TYPE_FAULT      = 3'd3;
-  localparam [2:0] F_ARITH_OVERFLOW  = 3'd4;
-  localparam [2:0] F_BAD_OPCODE      = 3'd5;
-  localparam [2:0] F_BAD_BRANCH      = 3'd6;
-  localparam [2:0] F_NONCANON_BOOL   = 3'd7;
+  // (4 bits: the Lab 1 set plus the CALL/RET extension's return-stack faults)
+  localparam [3:0] F_NONE            = 4'd0;
+  localparam [3:0] F_STACK_UNDERFLOW = 4'd1;
+  localparam [3:0] F_STACK_OVERFLOW  = 4'd2;
+  localparam [3:0] F_TYPE_FAULT      = 4'd3;
+  localparam [3:0] F_ARITH_OVERFLOW  = 4'd4;
+  localparam [3:0] F_BAD_OPCODE      = 4'd5;
+  localparam [3:0] F_BAD_BRANCH      = 4'd6;
+  localparam [3:0] F_NONCANON_BOOL   = 4'd7;
+  localparam [3:0] F_RSTACK_UNDERFLOW = 4'd8;
+  localparam [3:0] F_RSTACK_OVERFLOW = 4'd9;
 
   // ---------------------------------------------------------- trace events
   localparam [1:0] EV_COMMIT = 2'd0;

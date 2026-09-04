@@ -69,6 +69,8 @@ class Fault(IntEnum):
     BAD_OPCODE = 0x05
     BAD_BRANCH_TARGET = 0x06
     NONCANONICAL_BOOL = 0x07
+    RSTACK_UNDERFLOW = 0x08
+    RSTACK_OVERFLOW = 0x09
 
 
 # ---------------------------------------------------------------------------
@@ -130,6 +132,10 @@ _INSTRUCTIONS = [
                 "send top0 to the output channel; pop only on acceptance"),
     Instruction(0x0E, "HALT", "none", 0, 0, "( -- )",
                 "enter halted state"),
+    Instruction(0x0F, "CALL", "u15", 0, 0, "( -- )",
+                "push return address (pc+1) on the return stack, jump"),
+    Instruction(0x10, "RET", "none", 0, 0, "( -- )",
+                "pop the return address and jump to it"),
 ]
 
 INSTRUCTIONS: Dict[int, Instruction] = {i.opcode: i for i in _INSTRUCTIONS}
@@ -137,7 +143,7 @@ BY_MNEMONIC: Dict[str, Instruction] = {i.mnemonic: i for i in _INSTRUCTIONS}
 
 OPCODE_BITS = 5
 IMM_BITS = 15
-OPCODE_ILLEGAL_MIN = 0x0F  # first undefined opcode -> BAD_OPCODE
+OPCODE_ILLEGAL_MIN = 0x11  # first undefined opcode -> BAD_OPCODE
 
 # Event codes on the commit trace (book Lab 1: commit / output / fault).
 EVENT_COMMIT = 0

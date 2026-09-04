@@ -16,8 +16,9 @@
 `default_nettype none
 
 module stack_core #(
-  parameter int ROM_DEPTH   = 1024,   // 1K x 20 instruction ROM
-  parameter int STACK_DEPTH = 32      // register stack (P3 version)
+  parameter int ROM_DEPTH    = 1024,   // 1K x 20 instruction ROM
+  parameter int STACK_DEPTH = 32,     // register stack (P3 version)
+  parameter int RSTACK_DEPTH = 16    // return-address stack (registers)
 ) (
   input  logic clk,
   input  logic rst_n,        // async-assert, sync-release (reset_sync output)
@@ -34,7 +35,7 @@ module stack_core #(
   output logic [4:0]  trace_op,
   output logic [$clog2(STACK_DEPTH+1)-1:0] trace_depth,
   output logic [1:0]  trace_event,          // symbolic_types_pkg::EV_COMMIT / symbolic_types_pkg::EV_OUTPUT / symbolic_types_pkg::EV_FAULT
-  output logic [2:0]  trace_fault,           // valid when symbolic_types_pkg::EV_FAULT
+  output logic [3:0]  trace_fault,           // valid when symbolic_types_pkg::EV_FAULT
   output logic [3:0]  trace_tag1, trace_tag0,
   output logic [3:0]  trace_out_tag,         // valid when symbolic_types_pkg::EV_OUTPUT
   output logic [31:0] trace_out_payload,
@@ -46,7 +47,7 @@ module stack_core #(
 
   // Precise fault record (first fault wins; machine stops).
   output logic        fault_valid,
-  output logic [2:0]  fault_code,
+  output logic [3:0]  fault_code,
   output logic [$clog2(ROM_DEPTH)-1:0] fault_pc,
   output logic [4:0]  fault_op,
   output logic [$clog2(STACK_DEPTH+1)-1:0] fault_depth,
@@ -55,7 +56,8 @@ module stack_core #(
 
   output logic        halted,
   output logic [$clog2(ROM_DEPTH)-1:0] pc_o,
-  output logic [$clog2(STACK_DEPTH+1)-1:0] depth_o
+  output logic [$clog2(STACK_DEPTH+1)-1:0] depth_o,
+  output logic [$clog2(RSTACK_DEPTH+1)-1:0] rdepth_o
 );
 
   // ---------------------------------------------------------------- states
@@ -89,9 +91,16 @@ module stack_core #(
   symbolic_types_pkg::value40_t pending_d;
   logic                                halt_stage_q, halt_stage_d;
 
+  // return-address stack (continuation state; book Lab 1 extension)
+  logic [$clog2(ROM_DEPTH)-1:0]        rstack_q [0:RSTACK_DEPTH-1];
+  logic [$clog2(RSTACK_DEPTH+1)-1:0]  rdepth_q, rdepth_d;
+  logic                                wrR_en_q, wrR_en_d;
+  logic [$clog2(RSTACK_DEPTH)-1:0]    wrR_addr_q, wrR_addr_d;
+  logic [$clog2(ROM_DEPTH)-1:0]       wrR_data_q, wrR_data_d;
+
   // fault record
   logic                                fv_q, fv_d;
-  logic [2:0]                          fc_q, fc_d;
+  logic [3:0]                          fc_q, fc_d;
   logic [$clog2(ROM_DEPTH)-1:0]        fpc_q, fpc_d;
   logic [4:0]                          fop_q, fop_d;
   logic [$clog2(STACK_DEPTH+1)-1:0]    fdepth_q, fdepth_d;
@@ -106,7 +115,7 @@ module stack_core #(
   logic [4:0]  trace_op_q, trace_op_d;
   logic [$clog2(STACK_DEPTH+1)-1:0] trace_depth_q, trace_depth_d;
   logic [1:0]  trace_event_q, trace_event_d;
-  logic [2:0]  trace_fault_q, trace_fault_d;
+  logic [3:0]  trace_fault_q, trace_fault_d;
   logic [3:0]  trace_tag1_q, trace_tag1_d;
   logic [3:0]  trace_tag0_q, trace_tag0_d;
   logic [3:0]  trace_out_tag_q, trace_out_tag_d;
@@ -158,6 +167,10 @@ module stack_core #(
     wrB_data_d = wrB_data_q;
     pending_d  = pending_q;
     halt_stage_d = halt_stage_q;
+    rdepth_d   = rdepth_q;
+    wrR_en_d   = 1'b0;
+    wrR_addr_d = wrR_addr_q;
+    wrR_data_d = wrR_data_q;
     fv_d       = fv_q;
     fc_d       = fc_q;
     fpc_d      = fpc_q;
@@ -323,6 +336,33 @@ module stack_core #(
             state_d      = S_COMMIT;
           end
 
+          symbolic_types_pkg::OP_CALL: begin
+            if (rdepth_q == RSTACK_DEPTH[$clog2(RSTACK_DEPTH+1)-1:0]) begin
+              do_fault(symbolic_types_pkg::F_RSTACK_OVERFLOW);
+            end else if (imm >= ROM_DEPTH[14:0]) begin
+              do_fault(symbolic_types_pkg::F_BAD_BRANCH);
+            end else begin
+              wrR_en_d   = 1'b1;
+              wrR_addr_d = rdepth_q[$clog2(RSTACK_DEPTH)-1:0];
+              wrR_data_d = pc_q + 1'b1;
+              rdepth_d   = rdepth_q + 1'b1;
+              npc_d      = imm;
+              ndepth_d   = depth_q;
+              state_d    = S_COMMIT;
+            end
+          end
+
+          symbolic_types_pkg::OP_RET: begin
+            if (rdepth_q == 0) begin
+              do_fault(symbolic_types_pkg::F_RSTACK_UNDERFLOW);
+            end else begin
+              npc_d    = rstack_q[rdepth_q-1];
+              rdepth_d = rdepth_q - 1'b1;
+              ndepth_d = depth_q;
+              state_d  = S_COMMIT;
+            end
+          end
+
           default: begin
             do_fault(symbolic_types_pkg::F_BAD_OPCODE);
           end
@@ -385,7 +425,7 @@ module stack_core #(
 
   // Stage a precise fault and fire the FAULT trace pulse in the same cycle
   // (called from the EXECUTE comb block only).
-  task automatic do_fault(input logic [2:0] code);
+  task automatic do_fault(input logic [3:0] code);
     fv_d     = 1'b1;
     fc_d     = code;
     fpc_d    = pc_q;
@@ -416,6 +456,10 @@ module stack_core #(
       ir_q          <= '0;
       seq_q         <= '0;
       halted_q      <= 1'b0;
+      rdepth_q      <= '0;
+      wrR_en_q      <= 1'b0;
+      wrR_addr_q    <= '0;
+      wrR_data_q    <= '0;
       npc_q         <= '0;
       ndepth_q      <= '0;
       wrA_en_q      <= 1'b0;
@@ -444,6 +488,10 @@ module stack_core #(
       ir_q          <= ir_d;
       seq_q         <= seq_d;
       halted_q      <= halted_d;
+      rdepth_q      <= rdepth_d;
+      wrR_en_q      <= wrR_en_d;
+      wrR_addr_q    <= wrR_addr_d;
+      wrR_data_q    <= wrR_data_d;
       npc_q         <= npc_d;
       ndepth_q      <= ndepth_d;
       wrA_en_q      <= wrA_en_d;
@@ -478,6 +526,7 @@ module stack_core #(
       if (state_q == S_COMMIT) begin
         if (wrA_en_q) stack_q[wrA_addr_q] <= wrA_data_q;
         if (wrB_en_q) stack_q[wrB_addr_q] <= wrB_data_q;
+        if (wrR_en_q) rstack_q[wrR_addr_q] <= wrR_data_q;
       end
     end
   end
@@ -510,6 +559,7 @@ module stack_core #(
   assign halted      = halted_q;
   assign pc_o        = pc_q;
   assign depth_o     = depth_q;
+  assign rdepth_o    = rdepth_q;
 
 endmodule
 

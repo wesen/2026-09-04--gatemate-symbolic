@@ -73,8 +73,8 @@ module tb_top;
     // times) for the wire to go quiet.
     #(60 * 10 * BIT_NS);
 
-    $display("TOPDONE %0d %0d %0d %0d", dut.halted, dut.fault_valid,
-             dut.pc_dbg, dut.depth_dbg);
+    $display("TOPDONE %0d %0d %0d %0d %0d", dut.halted, dut.fault_valid,
+             dut.pc_dbg, dut.depth_dbg, dut.rdepth_dbg);
     $finish;
   end
 

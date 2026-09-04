@@ -66,6 +66,7 @@ module top #(
   logic        halted;
   logic [$clog2(ROM_DEPTH)-1:0] pc_dbg;
   logic [$clog2(DEEP_DEPTH+3)-1:0] depth_dbg;
+  logic [$clog2(16+1)-1:0] rdepth_dbg;
 
   stack_core_bram #(
     .ROM_DEPTH (ROM_DEPTH),
@@ -100,6 +101,7 @@ module top #(
     .halted(halted),
     .pc_o(pc_dbg),
     .depth_o(depth_dbg),
+    .rdepth_o(rdepth_dbg),
     .tc_o(),
     .dc_o()
   );

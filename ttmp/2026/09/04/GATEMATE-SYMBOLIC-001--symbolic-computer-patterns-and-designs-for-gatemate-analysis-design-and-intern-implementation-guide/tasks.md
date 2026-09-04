@@ -15,6 +15,6 @@
 - [x] P4: BRAM stack + top cache + random stall tests <!-- t:8yua -->
 - [x] P5: board top + synthesis + budget + load <!-- t:g89i -->
 - [x] P6: README, diary, wrap-up <!-- t:ezo5 -->
-- [ ] E1: fix LED polarity (active-low user_led_n) in top.sv <!-- t:mdbi -->
-- [ ] E2: CALL/RET extension (model+asm+RTL+rstack faults) + interesting programs <!-- t:k9z7 -->
-- [ ] E3: board re-verification (fib on hardware, LED visible) <!-- t:9dsx -->
+- [x] E1: fix LED polarity (active-low user_led_n) in top.sv <!-- t:mdbi -->
+- [x] E2: CALL/RET extension (model+asm+RTL+rstack faults) + interesting programs <!-- t:k9z7 -->
+- [x] E3: board re-verification (fib on hardware, LED visible) <!-- t:9dsx -->

@@ -37,17 +37,18 @@ module tb_stack_core;
   logic [4:0]  trace_op;
   logic [$clog2(STACK_DEPTH+1)-1:0] trace_depth;
   logic [1:0]  trace_event;
-  logic [2:0]  trace_fault;
+  logic [3:0]  trace_fault;
   logic [3:0]  trace_tag1, trace_tag0, trace_out_tag;
   logic [31:0] trace_out_payload;
   logic        fault_valid;
-  logic [2:0]  fault_code;
+  logic [3:0]  fault_code;
   logic [$clog2(ROM_DEPTH)-1:0] fault_pc;
   logic [4:0]  fault_op;
   logic [$clog2(STACK_DEPTH+1)-1:0] fault_depth;
   logic [3:0]  fault_tag1, fault_tag0;
   logic        halted;
   logic [$clog2(ROM_DEPTH)-1:0] pc_o;
+  logic [$clog2(16+1)-1:0] rdepth_o;
   logic [$clog2(STACK_DEPTH+1)-1:0] depth_o;
 
   stack_core #(
@@ -66,7 +67,8 @@ module tb_stack_core;
     .fault_valid(fault_valid), .fault_code(fault_code),
     .fault_pc(fault_pc), .fault_op(fault_op), .fault_depth(fault_depth),
     .fault_tag1(fault_tag1), .fault_tag0(fault_tag0),
-    .halted(halted), .pc_o(pc_o), .depth_o(depth_o)
+    .halted(halted), .pc_o(pc_o), .depth_o(depth_o),
+    .rdepth_o(rdepth_o)
   );
 
   // synchronous ROM read (one-cycle latency contract)
@@ -90,20 +92,24 @@ module tb_stack_core;
       5'h0C: return "JZ";
       5'h0D: return "EMIT";
       5'h0E: return "HALT";
+      5'h0F: return "CALL";
+      5'h10: return "RET";
       default: return "BAD";
     endcase
   endfunction
 
-  function automatic string fault_name(input logic [2:0] f);
+  function automatic string fault_name(input logic [3:0] f);
     case (f)
-      3'd0: return "NONE";
-      3'd1: return "STACK_UNDERFLOW";
-      3'd2: return "STACK_OVERFLOW";
-      3'd3: return "TYPE_FAULT";
-      3'd4: return "ARITH_OVERFLOW";
-      3'd5: return "BAD_OPCODE";
-      3'd6: return "BAD_BRANCH_TARGET";
-      3'd7: return "NONCANONICAL_BOOL";
+      4'd0: return "NONE";
+      4'd1: return "STACK_UNDERFLOW";
+      4'd2: return "STACK_OVERFLOW";
+      4'd3: return "TYPE_FAULT";
+      4'd4: return "ARITH_OVERFLOW";
+      4'd5: return "BAD_OPCODE";
+      4'd6: return "BAD_BRANCH_TARGET";
+      4'd7: return "NONCANONICAL_BOOL";
+      4'd8: return "RSTACK_UNDERFLOW";
+      4'd9: return "RSTACK_OVERFLOW";
       default: return "?";
     endcase
   endfunction
@@ -231,8 +237,8 @@ module tb_stack_core;
       string fname;
       fname = "NONE";
       if (fault_valid) fname = fault_name(fault_code);
-      $display("FINAL %0d %s %0d %0d %0d", halted, fname,
-               pc_o, depth_o, emit_count);
+      $display("FINAL %0d %s %0d %0d %0d %0d", halted, fname,
+               pc_o, depth_o, emit_count, rdepth_o);
     end
     if (errors == 0)
       $display("TB_PASS");

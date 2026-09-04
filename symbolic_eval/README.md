@@ -19,12 +19,16 @@ Program B:  BOOL(true) + INT(4) -> TYPE_FAULT at the ADD
 ## Machine summary
 
 - **value40**: tag[3:0], flags[3:0], payload[31:0] (INT, BOOL, REF, ...).
-- **ISA**: 15 opcodes (PUSH_S15, PUSH_TRUE/FALSE, ADD, SUB, MUL, EQ, LT,
-  DUP, DROP, SWAP, JMP, JZ, EMIT, HALT) in a 20-bit word `[19:15] opcode,
-  [14:0] imm`.
+- **ISA**: 17 opcodes (PUSH_S15, PUSH_TRUE/FALSE, ADD, SUB, MUL, EQ, LT,
+  DUP, DROP, SWAP, JMP, JZ, EMIT, HALT, CALL, RET) in a 20-bit word
+  `[19:15] opcode, [14:0] imm`.
+- **CALL/RET extension** (book Lab 1 extension): a separate 16-entry
+  return-address stack (registers). CALL pushes pc+1 and jumps; RET pops
+  and jumps. Empty RET / full-call-stack fault precisely.
 - **Precise faults**: STACK_UNDERFLOW, STACK_OVERFLOW, TYPE_FAULT,
-  ARITH_OVERFLOW, BAD_OPCODE, BAD_BRANCH_TARGET, NONCANONICAL_BOOL — each
-  leaves pc and stack exactly as before the failing instruction.
+  ARITH_OVERFLOW, BAD_OPCODE, BAD_BRANCH_TARGET, NONCANONICAL_BOOL,
+  RSTACK_UNDERFLOW, RSTACK_OVERFLOW — each leaves pc and stacks exactly as
+  before the failing instruction.
 - **Commitment**: no architectural mutation before all checks pass; COMMIT
   is the single mutation owner; EMIT pops only on output-channel acceptance.
 - **Two implementations of the same contract** (differentially tested
@@ -51,7 +55,9 @@ rtl/           symbolic_types_pkg, stack_core (reg), stack_core_bram + sync_sdp_
                program_rom, rv_reg, uart_tx, reset_sync, top
 tools/         opcodes.py, stack_model.py, asm20.py
 programs/      arith, typefault (exit criteria), smoke, deep, branch,
-               muloverflow, underflow, badop, badbranch, jztype, stackoverflow
+               muloverflow, underflow, badop, badbranch, jztype,
+               stackoverflow, fib (recursive CALL/RET), sq, countdown,
+               retunderflow, calloverflow
 sim/           tb_stack_core, tb_stack_core_bram, tb_top + pytest suites
 scripts/       synth.ys
 build/         generated (gitignored)
@@ -88,16 +94,16 @@ e.g. `INT(5)` -> `T0:00000005`, `BOOL(true)` -> `T1:00000001`.
 |---|---|
 | Block RAM | 2 x CC_BRAM_20K (1Kx20 ROM + 512x40 stack) |
 | CPEs (packed) | 392 / 20480 |
-| Max frequency (routed) | 17.11 MHz (PASS at 10 MHz board clock) |
+| Max frequency (routed, with CALL/RET) | 16.56 MHz (PASS at 10 MHz board clock) |
 | Multipliers | 1 (CC_MULT, 34x34 MUL) |
 
-## LED codes
+## LED codes (the EVB user LED is active-LOW: pin low = LED lit)
 
 - running: slow blink (~0.6 Hz)
-- halted (success): solid ON
+- halted (success): solid ON — e.g. fib leaves it lit after ~2 ms
 - faulted: fast blink (~2.4 Hz)
 
-## Test inventory (105 green)
+## Test inventory (123 green)
 
 - `test_model.py` (30): book Program A trace exact, Program B precise
   fault, every opcode at minimum depth, all fault cases (constructed
@@ -107,7 +113,10 @@ e.g. `INT(5)` -> `T0:00000005`, `BOOL(true)` -> `T1:00000001`.
   random output stalls.
 - `test_bram.py` (47): BRAM core on all programs + refinement invariant +
   24 random-program differential tests + 12 register-core random tests.
-- `test_top.py` (4): full-board sim, UART byte stream vs model EMITs.
+- `test_top.py` (6): full-board sim, UART byte stream vs model EMITs
+  (incl. fib and countdown).
+- `test_model.py` CALL/RET: return addresses, nested calls, precise
+  RSTACK_UNDERFLOW / RSTACK_OVERFLOW, recursive fib(10)=55.
 
 ## Portability notes (yosys ∩ iverilog SystemVerilog subset)
 
@@ -129,5 +138,6 @@ e.g. `INT(5)` -> `T0:00000005`, `BOOL(true)` -> `T1:00000001`.
 - P4 BRAM + top cache — done (invariant + random tests)
 - P5 board — done (both exit criteria on hardware)
 
-Extensions (book): CALL/RET, boxed integers, capability REF descriptors,
+Extensions still open (book): boxed integers, capability REF descriptors,
 replayable multi-cycle MUL, trace RAM / ILA capture of fault records.
+CALL/RET is DONE (recursive fib verified on hardware: `T0:00000037`).

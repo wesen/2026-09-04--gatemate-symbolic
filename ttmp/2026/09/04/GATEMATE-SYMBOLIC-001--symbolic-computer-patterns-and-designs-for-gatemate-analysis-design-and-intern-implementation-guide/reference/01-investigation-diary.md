@@ -589,3 +589,57 @@ An intern must be able to reproduce and extend the work from the README alone.
 
 ### Technical details
 - Final: 105 tests, 2 BRAM, 392 CPEs, 17.11 MHz, board evidence captured for both exit criteria.
+
+## Step 12: Extension — LED polarity fix and CALL/RET with interesting programs
+
+User feedback: "Is this working according to plan? can you make more interesting programs?
+with CALL/RET? how hard is trace-RAM/ILA? can you blink the LED? I don't see the LED being
+on." We fixed the LED (the EVB user LED is active-low; our "solid ON" drove the pin high =
+dark), implemented the book's CALL/RET extension (separate 16-entry return-address stack,
+two new precise faults, fault codes widened to 4 bits), wrote recursive fib(10) plus sq,
+countdown, and both rstack fault programs, and verified everything differentially (123
+tests) and on hardware (fib emits `T0:00000037` = 55).
+
+### Prompt Context
+
+**User prompt (verbatim):** "Is this working according to plan? can you make more interesting programs? with CALL/RET? how hard is trace-RAM/ILA? can you blink the LED? I don't see the LED being on."
+
+**Assistant interpretation:** Confirm overall status; fix the LED visibility bug; add CALL/RET with genuinely interesting programs; estimate trace-RAM/ILA effort.
+
+**Inferred user intent:** The machine should be visibly, demonstrably alive on the board and do something more impressive than one arithmetic EMIT.
+
+### What I did
+- E1 LED: `assign user_led = ~led_logic` (LiteX names the pin `user_led_n`; halted now lights it solid).
+- E2 CALL/RET: `opcodes.py` OP_CALL=0x0F (u15), OP_RET=0x10; fault codes widened 3->4 bits (RSTACK_UNDERFLOW=8, RSTACK_OVERFLOW=9); model return stack + semantics (CALL: capacity check then target; RET: underflow check); both RTL cores got a 16x10-bit register return stack with the staged-write/single-mutation-owner discipline; tbs print rdepth in FINAL/TOPDONE; `programs/fib.asm` (recursive fib(10)), `sq.asm`, `countdown.asm`, `retunderflow.asm`, `calloverflow.asm`.
+- E3: synth (2 CC_BRAM_20K, 392 CPEs, 16.56 MHz — budget unchanged), loaded fib on the board, captured `T0:00000037\r\n`.
+
+### Why
+The book lists CALL/RET as the first Laboratory 1 extension; recursion is the interesting case for a continuation state (exercise 4).
+
+### What worked
+- fib(10)=55 first try on hardware after the tb mnemonic fix; all 123 tests green.
+
+### What didn't work
+- A series of silently non-matching patch patterns (comments had been rewritten by the earlier qualification pass; whitespace differed): the EXECUTE CALL/RET insert, the BRAM RSTACK_DEPTH parameter, and a port-width fix all no-oped while printing "patched". Symptom: RTL executed PUSH then BAD_OPCODE at the CALL; the model diff caught everything. Lesson recorded: every scripted patch now asserts the pattern count and the result (grep) before moving on.
+- My first countdown.asm was wrong twice over (the subroutine kept its argument AND the loop fed JZ an INT): model caught TYPE_FAULT at pc 6; rewrote with show consuming the copy and an EQ-based zero test.
+- The tb op_name lacked CALL/RET so correct traces printed "BAD" as the mnemonic.
+
+### What I learned
+- The EVB LED polarity is active-low (user_led_n) — the only reason "halted" looked dead while the machine was fine (UART proved it).
+- fib's stack discipline on a pure data stack: keep n alive across both recursive calls via DUP-before-CALL and SWAP between them.
+
+### What was tricky to build
+- Widening the fault-code field touched every layer (pkg localparams, core ports/regs, do_fault, tb display) — a frozen-format change (FINAL/TOPDONE lines gained an rdepth field) that had to stay identical across model, both tbs, and all hardcoded test expectations.
+
+### What warrants a second pair of eyes
+- rdepth in the trace FAULT records is still the DATA depth (rstack depth only in FINAL); confirm that is the intended contract.
+- The random-program generator does not emit CALL/RET (directed programs cover it); extending it would exercise rstack boundaries randomly.
+
+### What should be done in the future
+- Trace-RAM (estimate: ~1-2 h, +1 CC_BRAM_20K excluded from the stop-build budget as debug instrumentation): record commit packets into a RAM on trace_valid, stream them over the existing UART in the TRACE line format after HALT/FAULT, diff against the model — closes the model<->hardware loop fully. The GateMate ILA itself needs the proprietary Cologne Chip flow (nextpnr cannot insert one), so trace-RAM is the OSS-native answer.
+
+### Code review instructions
+- `python3 -m pytest sim/ -q` (123 passed); `make bit PROG=fib && make load` -> board prints `T0:00000037`, LED solid ON after ~2 ms.
+
+### Technical details
+- Budget after extension: 2 x CC_BRAM_20K, 392 CPEs, 16.56 MHz, 1 CC_MULT.

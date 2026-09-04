@@ -12,6 +12,8 @@ from opcodes import (EVENT_COMMIT, EVENT_OUTPUT, Fault, Tag, encode)
 from stack_model import (Machine, Value40, load_hex, make_bool, make_int,
                          run_program)
 
+from asm20 import assemble as _assemble
+
 # The book's first program: ((7 + 5) * 3) == 36 -> BOOL(true).
 PROGRAM_A = [
     encode(0x00, 7),    # 0: PUSH_S15 7
@@ -57,7 +59,7 @@ class TestProgramA:
         assert m.output == [make_bool(True)]
         assert m.halted and m.fault is None
         assert m.depth == 0
-        assert m.final_line() == "FINAL 1 NONE 8 0 1"
+        assert m.final_line() == "FINAL 1 NONE 8 0 1 0"
 
     def test_stack_values_along_the_way(self):
         m = Machine(program=PROGRAM_A)
@@ -237,6 +239,63 @@ class TestFaults:
         for prog, code in cases:
             m = run_program(prog)
             assert m.pc == m.fault_pc
+
+
+class TestCallRet:
+    """CALL/RET extension: return-address stack, precise rstack faults."""
+
+    def _words(self, name):
+        w, _, _ = _assemble(open(f"programs/{name}.asm").read())
+        return w
+
+    def test_call_ret_return_address(self):
+        prog = [encode(0x0F, 3),   # 0: CALL 3
+                encode(0x0E),      # 1: HALT (return lands here)
+                encode(0x0E),     # 2: HALT (unreachable)
+                encode(0x01),      # 3: sub: PUSH_TRUE
+                encode(0x0D),      # 4: EMIT
+                encode(0x10)]      # 5: RET
+        m = run_program(prog)
+        assert m.output == [make_bool(True)]
+        assert m.halted and m.pc == 1 and m.rstack == []
+
+    def test_nested_calls(self):
+        prog = [encode(0x0F, 3),   # 0: CALL a
+                encode(0x0E),      # 1: HALT
+                encode(0x0E),      # 2: (unreachable)
+                encode(0x0F, 6),  # 3: a: CALL b
+                encode(0x10),      # 4: RET
+                encode(0x0E),      # 5: (unreachable)
+                encode(0x00, 42), # 6: b: PUSH 42
+                encode(0x10)]      # 7: RET
+        m = run_program(prog)
+        assert m.stack == [make_int(42)]
+        assert m.halted and m.pc == 1 and m.rstack == []
+
+    def test_ret_underflow_precise(self):
+        m = run_program([encode(0x10)])
+        assert m.fault is Fault.RSTACK_UNDERFLOW
+        assert m.pc == 0 and m.rstack == []
+        assert m.trace[-1].line() == "TRACE 0 0 0 RET 0 FAULT RSTACK_UNDERFLOW 0 0"
+
+    def test_call_overflow_precise(self):
+        prog = [encode(0x0F, 0), encode(0x0E)]   # self: CALL self
+        m = run_program(prog, rstack_depth=4)
+        assert m.fault is Fault.RSTACK_OVERFLOW
+        assert m.pc == 0 and len(m.rstack) == 4  # precise: 4 live, 5th refused
+
+    def test_fib_recursive(self):
+        m = run_program(self._words("fib"))
+        assert m.output == [make_int(55)]
+        assert m.halted and m.rstack == [] and m.depth == 0
+
+    def test_countdown_and_sq(self):
+        m = run_program(self._words("countdown"))
+        assert [v.text() for v in m.output] == \
+            ["INT(5)", "INT(4)", "INT(3)", "INT(2)", "INT(1)", "BOOL(1)"]
+        assert m.halted and m.rstack == []
+        m = run_program(self._words("sq"))
+        assert m.output == [make_int(25)]
 
 
 class TestValue40:

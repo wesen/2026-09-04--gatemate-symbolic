@@ -19,7 +19,13 @@ Semantics decisions (design doc decision records):
 - HALT: pc stays at the HALT instruction (stack effect "unchanged"); the event
   is a normal COMMIT and the machine is halted afterwards.
 - Check order per instruction (all checks precede any mutation):
-  underflow/overflow capacity -> operand tags -> canonicality -> branch target.
+  underflow/overflow capacity -> operand tags -> canonicality -> branch
+  target. For CALL: return-stack capacity first, then branch target.
+- CALL pushes pc+1 (the return address) on a separate return-address stack
+  (default 16 entries, matching the RTL RSTACK_DEPTH); RET pops it. Empty
+  RET -> RSTACK_UNDERFLOW; CALL on a full return stack -> RSTACK_OVERFLOW.
+- The commit trace's `depth` field is the DATA stack depth; the return-stack
+  depth appears in the FINAL line (last field).
 - JZ pops the condition only when all checks pass; a non-BOOL operand is
   TYPE_FAULT, a BOOL with payload not in {0,1} is NONCANONICAL_BOOL.
 """
@@ -136,9 +142,11 @@ class Machine:
     program: List[int]                      # 20-bit words
     rom_depth: int = 1024                  # BAD_BRANCH_TARGET threshold
     total_depth: int = 32                  # STACK_OVERFLOW threshold
+    rstack_depth: int = 16                  # RSTACK_OVERFLOW threshold
 
     pc: int = 0
     stack: List[Value40] = field(default_factory=list)  # [-1] is top0
+    rstack: List[int] = field(default_factory=list)    # return addresses
     output: List[Value40] = field(default_factory=list)
     fault: Optional[Fault] = None
     fault_pc: int = 0
@@ -286,6 +294,20 @@ class Machine:
             self.trace.append(rec)
             return rec
 
+        if op == "CALL":
+            if len(self.rstack) >= self.rstack_depth:
+                return self._fault(Fault.RSTACK_OVERFLOW, op)
+            if imm >= self.rom_depth:
+                return self._fault(Fault.BAD_BRANCH_TARGET, op)
+            self.rstack.append(self.pc + 1)
+            return self._commit(op, [], imm)
+
+        if op == "RET":
+            if not self.rstack:
+                return self._fault(Fault.RSTACK_UNDERFLOW, op)
+            target = self.rstack.pop()
+            return self._commit(op, [], target)
+
         raise AssertionError(f"unhandled opcode {op}")
 
     def _commit(self, op: str, new_tops: List[Value40], next_pc: int) -> TraceRecord:
@@ -318,7 +340,7 @@ class Machine:
     def final_line(self) -> str:
         code = self.fault.name if self.fault else "NONE"
         return (f"FINAL {int(self.halted)} {code} {self.pc} {self.depth} "
-                f"{len(self.output)}")
+                f"{len(self.output)} {len(self.rstack)}")
 
 
 def assemble_words(text_lines: List[str]) -> List[int]:
@@ -338,8 +360,9 @@ def load_hex(path: str) -> List[int]:
 
 
 def run_program(words: List[int], rom_depth: int = 1024,
-                total_depth: int = 32, max_steps: int = 100_000
-                ) -> Machine:
-    m = Machine(program=words, rom_depth=rom_depth, total_depth=total_depth)
+                total_depth: int = 32, rstack_depth: int = 16,
+                max_steps: int = 100_000) -> Machine:
+    m = Machine(program=words, rom_depth=rom_depth, total_depth=total_depth,
+                rstack_depth=rstack_depth)
     m.run(max_steps)
     return m
