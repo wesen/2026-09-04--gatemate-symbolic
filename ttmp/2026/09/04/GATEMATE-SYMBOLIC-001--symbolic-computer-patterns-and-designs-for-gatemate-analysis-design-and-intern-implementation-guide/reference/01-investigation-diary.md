@@ -492,3 +492,57 @@ The book's exercise 2 asks to prove the two-entry top-cache refinement across pu
 
 ### Technical details
 - BRAM configs tested: DEEP_DEPTH=30 (total 32) and DEEP_DEPTH=6 (total 8, overflow program).
+
+## Step 10: Implementation P5 — board integration, budget, hardware evidence
+
+We integrated the board top (`rtl/top.sv`: CC_USR_RSTN + reset_sync + button-abort restart,
+stack_core_bram, program_rom, rv_reg elastic output stage, 13-byte-per-value UART printer,
+LED status), verified it end-to-end in simulation (tb_top decodes the UART pin at 115200 8N1),
+synthesized within the stop-build budget, and captured the book's two exit criteria on real
+hardware over the RP2040 USB serial link.
+
+### Prompt Context
+
+**User prompt (verbatim):** (see Step 5)
+
+**Assistant interpretation:** Implement guide phase P5: board top, synthesis budget check, load, hardware evidence.
+
+### What I did
+- `rtl/rv_reg.sv` (book ch. 15 elastic register), `rtl/program_rom.sv` (PROG_HEX macro init, sync read), `rtl/top.sv`.
+- `sim/tb_top.sv` + `sim/test_top.py`: full-board sim; UART byte stream compared against the model's EMIT values (`T<tag>:<PAYLOAD-hex>\r\n`).
+- `scripts/synth.ys` (MATE-16 pattern); Makefile synth/pnr/bit/load now target `top`.
+- Loaded both exit-criteria programs on the GateMateA1-EVB and captured UART.
+
+### Why
+The laboratory's completion definition is hardware evidence, not simulation.
+
+### What worked
+- Yosys stats: 2 x CC_BRAM_20K (exactly the book's 2-block budget: 1Kx20 ROM + 512x40 stack), 1 CC_MULT, 1894 cells -> 392 CPEs after packing (budget ~2000). nextpnr: 17.11 MHz max (PASS at 10 MHz).
+- Hardware: Program A sent exactly `T1:00000001\r\n` (BOOL(true)) at 115200 8N1 over /dev/ttyACM0, then halted. Program B sent nothing (precise TYPE_FAULT, no output transfer).
+
+### What didn't work
+- A chain of yosys SV limitations, each fixed portably (no `return` in functions -> classic function-name assignment; no file-scope/module-header `import` -> fully-qualified `pkg::name` references everywhere via a scripted pass; no multi-declarator struct typedefs -> one per line; no `parameter string` and macro-string $readmemh via -D on the command line -> .ys script file with yosys's own tokenizer, per the MATE-16 pattern; enum-typed struct fields broke width inference in package functions -> plain logic [3:0] tag field).
+- First hardware capture was empty: the program runs at configuration time and its output was gone before the port opened; fixed by reading the serial port concurrently with the bitstream load (and the button-abort restart exists for re-runs).
+- tb_top initially waited only 40 bit-times after halt, truncating the printer drain (EMIT commits at rv_reg acceptance, not at wire transmission) -> extended to 60 byte-times.
+- test_top expected lowercase payload hex; the printer deliberately emits uppercase -> fixed the test.
+- The diary append for this step used `../../ttmp/...` from inside symbolic_eval/ and silently failed (bash: No such file or directory); re-appended from the repo root - always run diary writes from the ticket root.
+
+### What I learned
+- "EMIT commits at acceptance" means acceptance by the elastic stage; the E-level (wire) event can come tens of thousands of cycles later - the tb drain window must cover it.
+- On this board, /dev/ttyACM0 is the RP2040 CDC UART; ACM1 is the JTAG control channel.
+
+### What was tricky to build
+- Keeping one code base synthesizable by yosys AND simulatable by iverilog: every SV feature used had to be in the intersection; the qualification pass (pkg:: prefix) had to avoid comments and port names (word-boundary regex on a fixed name list).
+
+### What warrants a second pair of eyes
+- The board evidence for Program B is "no UART bytes + documented LED coding"; an ILA or trace-RAM capture of the fault record would make it undeniable - left as an extension.
+
+### What should be done in the future
+- P6: README finalization, ticket wrap-up.
+
+### Code review instructions
+- `cd symbolic_eval && make bit PROG=arith && make load` (board prints `T1:00000001`).
+- `python3 -m pytest sim/ -q` (105 passed).
+
+### Technical details
+- Hardware capture: `stty -F /dev/ttyACM0 115200 raw -echo; cat /dev/ttyACM0` during `openFPGALoader -b olimex_gatemateevb build/top.bit`.
