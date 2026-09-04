@@ -405,3 +405,111 @@ Run go test -race ./internal/microscope ./pkg/microscope ./cmd/search-microscope
 ### Technical details
 
 The public routes are /api/state, /api/graph, /api/control, /api/events/{sequence}?generation=N, /, and /static/{path}. Production assets use go:embed under the embed build tag; default builds remain valid before frontend generation.
+
+## Step 8: P5 first UI checks and timeline accessibility
+
+Implemented the React microscope and its first interaction tests. TypeScript checking passed and nine tests passed; one timeline-selection test could not identify the intended button from concatenated inline text.
+
+### Prompt Context
+
+**User prompt (verbatim, JSON encoded):**
+
+(see Step 1)
+
+**Assistant interpretation:** Design, publish, and implement the graph-coloring FPGA microscope with Go and React, committed milestones, a detailed diary, and physical phase slips.
+
+**Inferred user intent:** Deliver a working next laboratory with enough explanation and evidence for an intern to maintain it.
+
+### What I did
+
+Added pinned pnpm/Vite/React/Redux/RTK Query/Bootstrap dependencies, graph editing and presets, device controls, SVG domains, choice/trail tables, bounded historical inspection, explicit engine identity, and frontend interaction tests.
+
+### Why
+
+The interface must make search state inspectable without confusing historical views with live hardware controls.
+
+### What worked
+
+pnpm install and pnpm check passed. Graph parsing, validation/error display, and simulator labeling tests passed. The failing test had already loaded the graph and reached event one.
+
+### What didn't work
+
+Command: pnpm --dir web test. Failure: App.test.tsx > loads a preset, steps, selects trail records, and inspects history safely; TestingLibraryElementError: Unable to find role="button" and name /1 CREATE/ at App.test.tsx:49. Nine tests passed, one failed. No repair has yet been attempted.
+
+### What I learned
+
+A timeline button should expose an explicit event number/name rather than relying on whitespace inferred from adjacent inline elements.
+
+### What was tricky to build
+
+Historical queries use currentData rather than data so changing the selected event cannot briefly display the previous event under the new sequence label.
+
+### What warrants a second pair of eyes
+
+Add an accessible event label and use it in the interaction test; keep the test exercising actual selection and disabled live controls.
+
+### What should be done in the future
+
+Rerun the focused frontend correction, build assets, and inspect the real browser against the serial service.
+
+### Code review instructions
+
+Run pnpm --dir web test and pnpm --dir web check.
+
+### Technical details
+
+The pnpm install reported a deprecated transitive whatwg-encoding package and skipped the esbuild install script; no tool failure resulted. Assets have not yet been built because the fail-fast test command stopped before build.
+
+## Step 9: P5 React interface verified against the FPGA
+
+Implemented the graph editor and state microscope with React, Redux Toolkit Query, and Bootstrap. The first accessibility repair resolved the only frontend test failure.
+
+### Prompt Context
+
+**User prompt (verbatim, JSON encoded):**
+
+(see Step 1)
+
+**Assistant interpretation:** Design, publish, and implement the graph-coloring FPGA microscope with Go and React, committed milestones, a detailed diary, and physical phase slips.
+
+**Inferred user intent:** Deliver a working next laboratory with enough explanation and evidence for an intern to maintain it.
+
+### What I did
+
+Added typed API hooks, graph validation and presets, SVG domains, choice and trail inspection, and generation-scoped historical snapshots. Added an explicit accessible name to event buttons and a data favicon.
+
+### Why
+
+The browser must explain actual semantic state and distinguish retained history from hardware execution.
+
+### What worked
+
+All 10 Vitest tests passed, TypeScript passed, and Vite produced the three expected production assets. Browser loaded a two-color triangle on the physical board, stepped CREATE and WRITE, selected trail vertex 0, and inspected event 1 with Step disabled.
+
+### What didn't work
+
+The first test lookup expected spaced child text; explicit Event 1: CREATE labeling fixed it on repair attempt one. Browser reported only a missing favicon, addressed with an inline empty icon. One Playwright selector used unsupported exact=true syntax; correcting the selector resumed interaction.
+
+### What I learned
+
+Accessible names make timeline behavior explicit for both assistive technology and tests.
+
+### What was tricky to build
+
+Historical responses must use currentData to avoid showing a cached event under a different selection; generation changes clear selection.
+
+### What warrants a second pair of eyes
+
+Review pending mutation controls, history generation boundaries, and API failure presentation.
+
+### What should be done in the future
+
+Finish embedded-server integration, original lab regressions, dependency checks, and final guide delivery.
+
+### Code review instructions
+
+Run pnpm --dir web test; pnpm --dir web check; python3 scripts/build-web.py. In the browser select an earlier event and verify controls remain disabled until Return to live.
+
+### Technical details
+
+Production build measured app.js 284.62 kB and app.css 234.68 kB before gzip. The browser explicitly identified FPGA live device. Unit UI tests use a fetch mock; the separate browser check used real UART hardware.
