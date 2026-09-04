@@ -1,6 +1,6 @@
 `timescale 1ns/1ps
 module tb_queens;
-  parameter integer FIRST_ONLY=0, CHOICE_CAPACITY=8;
+  parameter integer FIRST_ONLY=0, CHOICE_CAPACITY=8, USE_TRAIL=0, TRAIL_CAPACITY=64;
   reg clk=0; always #5 clk=~clk;
   reg rst_n=0;
   wire valid,done,fault,trace_valid;
@@ -11,7 +11,8 @@ module tb_queens;
   wire [7:0] prop;
   wire [6:0] ttop,base;
   wire [31:0] count,cycles,writes,hwrites,hreads,cwrites,stalls;
-  queens_core #(.FIRST_ONLY(FIRST_ONLY),.CHOICE_CAPACITY(CHOICE_CAPACITY)) dut(
+  queens_core #(.FIRST_ONLY(FIRST_ONLY),.CHOICE_CAPACITY(CHOICE_CAPACITY),
+               .USE_TRAIL(USE_TRAIL),.TRAIL_CAPACITY(TRAIL_CAPACITY)) dut(
     .clk(clk),.rst_n(rst_n),.result_valid(valid),.result_ready(ready),.result_data(data),
     .done(done),.fault_valid(fault),.fault_code(code),.solution_count(count),
     .trace_valid(trace_valid),.trace_kind(kind),.domains_o(domains),.propagated_o(prop),
@@ -44,7 +45,7 @@ module tb_queens;
       if(trace_valid) begin
         $display("E %0d %016x %02x %0d %0d %0d %0d %06x %0d",kind,domains,prop,ctop,ttop,base,count,data,code);
         $write("C");for(i=0;i<ctop;i=i+1) $write(" %026x",dut.u_choices.mem[i]);$display("");
-        $display("T");
+        $write("T");for(i=0;i<ttop;i=i+1) $write(" %05x",dut.u_trail.mem[i]);$display("");
       end
       if(done||fault) begin
         $display("STATS %0d %0d %0d %0d %0d %0d",cycles,writes,hwrites,hreads,cwrites,stalls);

@@ -1,0 +1,30 @@
+{
+  "snapshot": {
+    "cycles": 53951,
+    "domain_writes": 3980,
+    "history_writes": 257,
+    "history_reads": 672,
+    "choice_writes": 672,
+    "result_stalls": 0,
+    "max_choices": 6,
+    "max_trail": 0,
+    "solutions": 92,
+    "protected_history_write_bits": 18504,
+    "protected_history_read_bits": 48384,
+    "choice_metadata_write_bits": 26880
+  },
+  "trail": {
+    "cycles": 74523,
+    "domain_writes": 3980,
+    "history_writes": 3980,
+    "history_reads": 3980,
+    "choice_writes": 672,
+    "result_stalls": 0,
+    "max_choices": 6,
+    "max_trail": 32,
+    "solutions": 92,
+    "protected_history_write_bits": 79600,
+    "protected_history_read_bits": 79600,
+    "choice_metadata_write_bits": 26880
+  }
+}

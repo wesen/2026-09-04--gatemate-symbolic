@@ -191,3 +191,59 @@ Source the documented CAD environment and run python3 -m pytest sim -q in queens
 ### Technical details
 
 Snapshot records are 104 bits: 64 domain bits plus the proposed 40-bit choice metadata. No production board integration yet.
+
+## Step 4: P3 trail backend and measured recovery comparison
+
+Implemented trail storage and reverse restoration behind the same deterministic controller. Complete semantic event and live-record comparisons pass for both backends, including near-capacity runs.
+
+### Prompt Context
+
+**User prompt (verbatim):**
+
+(see Step 2)
+
+**Assistant interpretation:** Implement the Lab 2 guide in tested phases, with committed milestones and printed boundaries.
+
+**Inferred user intent:** Deliver a working and measurable rollback solver with reproducible evidence and a detailed implementation record.
+
+**Commit (code/work):** 0f15376
+
+### What I did
+
+Added compile-time USE_TRAIL and TRAIL_CAPACITY, 20-bit synchronous trail memory, 40-bit choice metadata, log-before-apply sequencing, reverse reads, and cut base publication. Added backend profiling.
+
+### Why
+
+Sharing search control keeps the experiment focused on recovery representation while allowing synthesis to remove the unused backend.
+
+### What worked
+
+36 tests pass. Unstalled complete enumeration takes 53951 snapshot cycles and 74523 trail cycles, each producing all 92 ordered boards and 3980 effective domain writes.
+
+### What didn't work
+
+No P3 compile or simulation failures.
+
+### What I learned
+
+The trail is slower and writes more history for this eight-byte domain state. Logical snapshot payload accounting differs from physical full-record requests, especially when updating remaining alternatives.
+
+### What was tricky to build
+
+Trail entries are physically stored in LOG_WRITE and become reachable with the domain update at APPLY. Reverse restoration captures synchronous reads before updating domain and decrementing the top together.
+
+### What warrants a second pair of eyes
+
+Check mark bounds, FIRST_ONLY base changes, and exact full live trail comparison. Read physical request metrics separately from logical payload metrics.
+
+### What should be done in the future
+
+Add per-cycle stability, reset interruption, integrity injection, and stronger result stall/cut tests.
+
+### Code review instructions
+
+Run python3 -m pytest sim -q and ticket scripts/04-profile-backends.py under the documented CAD environment.
+
+### Technical details
+
+Default logical trail64/choice8; observed trail32/choice6. Snapshot and trail output order match the independent oracle. First-only retains the winning trail and discards all choices.

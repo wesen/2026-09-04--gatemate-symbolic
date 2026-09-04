@@ -1,6 +1,9 @@
-// Deterministic full-snapshot baseline. Every observable write has one owner.
+// One deterministic search controller with snapshot or trail recovery storage.
+// Every observable write has one owner; trail persistence precedes publication.
 `default_nettype none
 module queens_core #(
+  parameter bit USE_TRAIL=0,
+  parameter int TRAIL_CAPACITY=64,
   parameter int CHOICE_CAPACITY=8,
   parameter bit FIRST_ONLY=0
 ) (
@@ -22,7 +25,8 @@ module queens_core #(
 );
   typedef enum logic [4:0] {S_SCAN,S_CHOOSE,S_CP_WRITE,S_CP_PUBLISH,
     S_MUTATE,S_AFTER_WRITE,S_PROP,S_PROP_ADV,S_BACK,S_CP_WAIT,S_CP_CAPTURE,
-    S_RESTORE,S_RETRY,S_UPDATE_WRITE,S_UPDATE_PUBLISH,S_OUTPUT,S_COMPLETE,S_STOP} state_t;
+    S_RESTORE,S_RETRY,S_UPDATE_WRITE,S_OUTPUT,S_COMPLETE,S_STOP,
+    S_LOG_WRITE,S_APPLY,S_TCHECK,S_TWAIT,S_TCAPTURE,S_TAPPLY} state_t;
   state_t state_q, write_resume_q;
   logic [7:0] domains_q[0:7];
   logic [7:0] propagated_q;
@@ -31,20 +35,31 @@ module queens_core #(
   logic [2:0] source_q,row_q,target_q,mut_col_q;
   logic [7:0] mut_mask_q;
   logic [23:0] pending_q;
+  logic [6:0] trail_top_q, trail_base_q;
+  logic [7:0] old_mask_q;
+  logic [19:0] trail_entry_q;
   logic zero_found, source_found, unresolved_found;
   logic [2:0] next_source,next_variable;
-  wire [103:0] cp_rd_data;
+  localparam integer CP_WIDTH=USE_TRAIL ? 40 : 104;
+  wire [CP_WIDTH-1:0] cp_ram_data;
+  wire [103:0] cp_rd_data={{(104-CP_WIDTH){1'b0}},cp_ram_data};
   wire cp_wr_en = state_q==S_CP_WRITE || state_q==S_UPDATE_WRITE;
   wire [2:0] cp_wr_addr = state_q==S_CP_WRITE ? choice_top_q[2:0] : 3'(choice_top_q-1'b1);
   wire [2:0] cp_rd_addr = choice_top_q != 0 ? 3'(choice_top_q-1'b1) : 3'd0;
-  sync_sdp_ram #(.DEPTH(8),.WIDTH(104)) u_choices(
-    .clk(clk),.wr_en(cp_wr_en),.wr_addr(cp_wr_addr),.wr_data(cp_q),
-    .rd_addr(cp_rd_addr),.rd_data(cp_rd_data));
+  sync_sdp_ram #(.DEPTH(8),.WIDTH(CP_WIDTH)) u_choices(
+    .clk(clk),.wr_en(cp_wr_en),.wr_addr(cp_wr_addr),.wr_data(cp_q[CP_WIDTH-1:0]),
+    .rd_addr(cp_rd_addr),.rd_data(cp_ram_data));
+  wire [19:0] trail_rd_data;
+  wire [5:0] trail_rd_addr=trail_top_q!=0 ? 6'(trail_top_q-1'b1) : 6'd0;
+  wire [19:0] trail_wr_data={mut_col_q,old_mask_q,1'b0,choice_top_q,4'd0};
+  sync_sdp_ram #(.DEPTH(64),.WIDTH(20)) u_trail(
+    .clk(clk),.wr_en(USE_TRAIL && state_q==S_LOG_WRITE),.wr_addr(trail_top_q[5:0]),
+    .wr_data(trail_wr_data),.rd_addr(trail_rd_addr),.rd_data(trail_rd_data));
 
   assign propagated_o=propagated_q;
   assign choice_top_o=choice_top_q;
-  assign trail_top_o=0;
-  assign trail_base_o=0;
+  assign trail_top_o=trail_top_q;
+  assign trail_base_o=trail_base_q;
   assign result_valid=state_q==S_OUTPUT;
   assign result_data=pending_q;
   genvar g;
@@ -77,6 +92,7 @@ module queens_core #(
       state_q<=S_SCAN; write_resume_q<=S_SCAN;
       for(c=0;c<8;c=c+1) domains_q[c]<=8'hff;
       propagated_q<=0; choice_top_q<=0; cp_q<=0;
+      trail_top_q<=0;trail_base_q<=0;old_mask_q<=0;trail_entry_q<=0;
       source_q<=0;row_q<=0;target_q<=0;mut_col_q<=0;mut_mask_q<=0;pending_q<=0;
       done<=0;fault_valid<=0;fault_code<=0;solution_count<=0;
       trace_valid<=0;trace_kind<=0;
@@ -100,27 +116,36 @@ module queens_core #(
         end
         S_CHOOSE: begin
           if(choice_top_q>=CHOICE_CAPACITY) fault(queens_types_pkg::F_CHOICE_FULL);
+          else if(USE_TRAIL && trail_top_q>=TRAIL_CAPACITY) fault(queens_types_pkg::F_TRAIL_FULL);
           else begin
-            cp_q<={domains_o,next_variable,
+            cp_q<={(USE_TRAIL ? 64'd0 : domains_o),next_variable,
               (domains_q[next_variable] & ~queens_types_pkg::first_bit(domains_q[next_variable])),
-              7'd0,propagated_q,14'd0};
+              trail_top_q,propagated_q,14'd0};
             mut_col_q<=next_variable;
             mut_mask_q<=queens_types_pkg::first_bit(domains_q[next_variable]);
             write_resume_q<=S_SCAN;state_q<=S_CP_WRITE;
           end
         end
-        S_CP_WRITE: begin state_q<=S_CP_PUBLISH;history_writes<=history_writes+1;end
+        S_CP_WRITE: begin
+          state_q<=S_CP_PUBLISH;
+          if(!USE_TRAIL) history_writes<=history_writes+1;
+        end
         S_CP_PUBLISH: begin
           choice_top_q<=choice_top_q+1'b1;trace_valid<=1;trace_kind<=queens_types_pkg::E_CREATE;
           state_q<=S_MUTATE;
         end
         S_MUTATE: begin
-          if(domains_q[mut_col_q]!=mut_mask_q) begin
-            domains_q[mut_col_q]<=mut_mask_q;
-            propagated_q<=propagated_q & ~(8'b1<<mut_col_q);
-            domain_writes<=domain_writes+1;
-            trace_valid<=1;trace_kind<=queens_types_pkg::E_WRITE;
-          end
+          if(domains_q[mut_col_q]==mut_mask_q) state_q<=S_AFTER_WRITE;
+          else if(USE_TRAIL && trail_top_q>=TRAIL_CAPACITY) fault(queens_types_pkg::F_TRAIL_FULL);
+          else begin old_mask_q<=domains_q[mut_col_q];state_q<=USE_TRAIL ? S_LOG_WRITE : S_APPLY;end
+        end
+        S_LOG_WRITE: begin history_writes<=history_writes+1;state_q<=S_APPLY;end
+        S_APPLY: begin
+          domains_q[mut_col_q]<=mut_mask_q;
+          propagated_q<=propagated_q & ~(8'b1<<mut_col_q);
+          if(USE_TRAIL) trail_top_q<=trail_top_q+1'b1;
+          domain_writes<=domain_writes+1;
+          trace_valid<=1;trace_kind<=queens_types_pkg::E_WRITE;
           state_q<=S_AFTER_WRITE;
         end
         S_AFTER_WRITE: state_q<=write_resume_q;
@@ -141,12 +166,28 @@ module queens_core #(
         end
         S_BACK: begin
           if(choice_top_q==0) state_q<=S_COMPLETE;
-          else begin state_q<=S_CP_WAIT;history_reads<=history_reads+1;end
+          else begin
+            state_q<=S_CP_WAIT;
+            if(!USE_TRAIL) history_reads<=history_reads+1;
+          end
         end
         S_CP_WAIT: state_q<=S_CP_CAPTURE;
-        S_CP_CAPTURE: begin cp_q<=cp_rd_data;state_q<=S_RESTORE;end
+        S_CP_CAPTURE: begin cp_q<=cp_rd_data;state_q<=USE_TRAIL ? S_TCHECK : S_RESTORE;end
+        S_TCHECK: begin
+          if(cp_q[28:22]>trail_top_q || cp_q[28:22]<trail_base_q)
+            fault(queens_types_pkg::F_TRAIL_INTEGRITY);
+          else if(trail_top_q==cp_q[28:22]) state_q<=S_RESTORE;
+          else begin history_reads<=history_reads+1;state_q<=S_TWAIT;end
+        end
+        S_TWAIT: state_q<=S_TCAPTURE;
+        S_TCAPTURE: begin trail_entry_q<=trail_rd_data;state_q<=S_TAPPLY;end
+        S_TAPPLY: begin
+          domains_q[trail_entry_q[19:17]]<=trail_entry_q[16:9];
+          trail_top_q<=trail_top_q-1'b1;
+          trace_valid<=1;trace_kind<=queens_types_pkg::E_RESTORE;state_q<=S_TCHECK;
+        end
         S_RESTORE: begin
-          for(c=0;c<8;c=c+1) domains_q[c]<=cp_q[40+8*c+:8];
+          if(!USE_TRAIL) for(c=0;c<8;c=c+1) domains_q[c]<=cp_q[40+8*c+:8];
           propagated_q<=cp_q[21:14];
           trace_valid<=1;trace_kind<=queens_types_pkg::E_RESTORED;state_q<=S_RETRY;
         end
@@ -154,7 +195,8 @@ module queens_core #(
           if(cp_q[36:29]==0) begin
             choice_top_q<=choice_top_q-1'b1;trace_valid<=1;
             trace_kind<=queens_types_pkg::E_POP;state_q<=S_BACK;
-          end else begin
+          end else if(USE_TRAIL && trail_top_q>=TRAIL_CAPACITY) fault(queens_types_pkg::F_TRAIL_FULL);
+          else begin
             mut_col_q<=cp_q[39:37];mut_mask_q<=queens_types_pkg::first_bit(cp_q[36:29]);
             cp_q[36:29]<=cp_q[36:29] & ~queens_types_pkg::first_bit(cp_q[36:29]);
             write_resume_q<=S_SCAN;state_q<=S_UPDATE_WRITE;
@@ -166,7 +208,7 @@ module queens_core #(
         S_OUTPUT: begin
           if(result_ready) begin
             solution_count<=solution_count+1;trace_valid<=1;trace_kind<=queens_types_pkg::E_OUTPUT;
-            if(FIRST_ONLY) begin choice_top_q<=0;state_q<=S_COMPLETE;end
+            if(FIRST_ONLY) begin choice_top_q<=0;trail_base_q<=trail_top_q;state_q<=S_COMPLETE;end
             else state_q<=S_BACK;
           end else result_stalls<=result_stalls+1;
         end
@@ -178,6 +220,7 @@ module queens_core #(
   end
   initial begin
     if(CHOICE_CAPACITY<0 || CHOICE_CAPACITY>8) $fatal(1,"invalid choice capacity");
+    if(TRAIL_CAPACITY<0 || TRAIL_CAPACITY>64) $fatal(1,"invalid trail capacity");
   end
 endmodule
 `default_nettype wire
