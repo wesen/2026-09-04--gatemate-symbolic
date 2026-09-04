@@ -199,3 +199,46 @@ The guide is the ticket's primary artifact and the reMarkable upload payload.
 
 ### Technical details
 - Guide sections: 1 exec summary ... 15 glossary; phased plan P0-P6; stop-build budget 2 BRAM / 2000 CPE.
+
+## Step 4: Validation and reMarkable delivery
+
+Doctor passed after adding the missing topic vocabulary (fpga, gatemate, symbolic-computers,
+architecture). The design doc + diary were dry-run validated and uploaded as one bundle PDF
+to the reMarkable at /ai/2026/09/04/GATEMATE-SYMBOLIC-001.
+
+### Prompt Context
+
+**User prompt (verbatim):** (see Step 1)
+
+**Assistant interpretation:** Validate doc quality, then deliver to reMarkable.
+
+### What I did
+- `docmgr vocab add` for 4 topics; `docmgr doctor` -> all checks passed.
+- `remarquee upload bundle --dry-run` then real upload; verified with `remarquee cloud ls`.
+
+### Why
+Guardrails of the ticket-research skill: doctor-clean before upload, dry-run first.
+
+### What worked
+- One-shot doctor pass after vocab fix; upload succeeded first try.
+
+### What didn't work
+- None.
+
+### What I learned
+- N/A.
+
+### What was tricky to build
+- None this step.
+
+### What warrants a second pair of eyes
+- Verify the bundle PDF renders the SystemVerilog blocks readably on the tablet.
+
+### What should be done in the future
+- Handoff: report ticket path, docs, validation, upload path.
+
+### Code review instructions
+- `remarquee cloud ls /ai/2026/09/04/GATEMATE-SYMBOLIC-001 --long`.
+
+### Technical details
+- Upload: "GATEMATE-SYMBOLIC-001 Intern Guide.pdf", toc-depth 2, 2 docs.

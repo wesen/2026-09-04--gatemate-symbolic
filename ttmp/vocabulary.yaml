@@ -5,6 +5,14 @@ topics:
       description: Backend services
     - slug: websocket
       description: WebSocket lifecycle & events
+    - slug: fpga
+      description: fpga related work
+    - slug: gatemate
+      description: gatemate related work
+    - slug: symbolic-computers
+      description: symbolic-computers related work
+    - slug: architecture
+      description: architecture related work
 docTypes:
     - slug: design-doc
       description: Structured rationale and architecture notes
