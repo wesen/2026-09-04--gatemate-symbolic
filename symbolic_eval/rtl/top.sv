@@ -240,14 +240,21 @@ module top #(
       led_counter <= led_counter + 24'd1;
   end
 
+  // The EVB user LED is active-LOW (LiteX names the pin user_led_n):
+  // driving the pin low lights it. led_logic is the logical LED state
+  // (1 = lit); the pin is its inversion.
+  logic led_logic;
+
   always_comb begin
     if (halted)
-      user_led = 1'b1;                 // success: solid on
+      led_logic = 1'b1;               // success: solid ON (pin low)
     else if (fault_valid)
-      user_led = led_counter[21];      // fault: fast blink
+      led_logic = led_counter[21];     // fault: fast blink
     else
-      user_led = led_counter[23];      // running: slow blink
+      led_logic = led_counter[23];     // running: slow blink
   end
+
+  assign user_led = ~led_logic;
 
 endmodule
 
