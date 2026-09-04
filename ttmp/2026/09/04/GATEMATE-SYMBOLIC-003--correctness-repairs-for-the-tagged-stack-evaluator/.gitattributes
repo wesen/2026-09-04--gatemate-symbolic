@@ -1,0 +1,2 @@
+reference/validation/*.bin -text
+reference/validation/before-constructor-fix/*.bin -text

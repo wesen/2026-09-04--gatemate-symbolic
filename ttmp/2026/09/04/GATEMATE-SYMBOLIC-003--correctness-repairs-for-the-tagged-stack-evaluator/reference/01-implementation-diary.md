@@ -411,3 +411,57 @@ Compare P5-countdown-repeat.bin, P5-production-simulation.log, and the mapped si
 ### Technical details
 
 The user reiterated: commit at appropriate intervals and keep a detailed diary as you work (using the diary format from the skill). This investigation evidence is committed before attempting a new implementation repair.
+
+## Step 8: P5 repair constant constructors after synthesis reproducer
+
+The first targeted repair succeeded: assigning complete packed values preserves tags and flags through Yosys constant folding. The minimal synthesized regression and all 198 tests pass; board reruns remain pending.
+
+### Prompt Context
+
+**User prompt (verbatim):**
+
+(see Step 1)
+
+**Assistant interpretation:** Implement the repair design in phases with reproducible validation, focused commits, detailed diary entries, and printed phase boundaries.
+
+**Inferred user intent:** Turn the documented review findings into a reliable working evaluator with visible progress and reviewable evidence.
+
+### What I did
+
+Added constructor_probe.sv, tb_constructor.sv and test_synthesis.py. Changed mk_int and mk_bool to packed concatenation assignments. Archived all initial hardware evidence before rebuilding and marked raw serial captures as binary in Git.
+
+### Why
+
+Countdown emitted INT 1 instead of BOOL 1 on the board despite passing RTL simulation. Synthesized netlist simulation reproduced it, isolating the error from serial capture and board transport.
+
+### What worked
+
+Generic lowering showed 40-hxx00000001 for constant true. The isolated regression failed with true=xx00000001 false=xx00000000 zero=xx00000000. Packed assignment passes that regression and the full suite: 198 passed in 18.35s.
+
+### What didn't work
+
+Before repair: FATAL: sim/tb_constructor.sv:11: constructor tags/flags lost: true=xx00000001 false=xx00000000 zero=xx00000000 int=00ffffffff bool=1000000001. No unsuccessful source repair attempts occurred.
+
+### What I learned
+
+Constant and dynamic arguments take distinct frontend paths; only testing dynamic arithmetic results masked constant constructor corruption.
+
+### What was tricky to build
+
+RTL field assignments were semantically valid, but their constant-folded struct temporary lost upper bits in this Yosys frontend. Whole packed assignments remove that lowering ambiguity without changing the value format.
+
+### What warrants a second pair of eyes
+
+Review both signed integer bit preservation and Boolean canonicalization. The regression executes the emitted generic netlist, rather than merely examining RTL text.
+
+### What should be done in the future
+
+Rebuild and repeat all four board captures, then publish final validation and print the P5 completion slip.
+
+### Code review instructions
+
+Source the documented OSS CAD Suite environment; run python3 -m pytest sim/test_synthesis.py -q, then python3 -m pytest -q in symbolic_eval. Read P5-constructor-before.log and P5-final-tests.log.
+
+### Technical details
+
+Initial failing image and UART results remain under reference/validation/before-constructor-fix. User instruction remains: commit at appropriate intervals and keep a detailed diary as you work (using the diary format from the skill).

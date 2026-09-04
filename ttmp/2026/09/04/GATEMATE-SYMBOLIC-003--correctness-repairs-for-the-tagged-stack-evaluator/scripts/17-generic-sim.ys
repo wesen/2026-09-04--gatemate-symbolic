@@ -1,0 +1,7 @@
+read_verilog -defer -sv -DPROG_HEX="build/prog.hex" rtl/program_rom.sv
+read_verilog -defer -sv rtl/symbolic_types_pkg.sv rtl/sync_sdp_ram.sv rtl/stack_core_bram.sv rtl/rv_reg.sv rtl/reset_sync.sv rtl/uart_tx.sv rtl/top.sv
+hierarchy -top top
+proc
+flatten
+opt
+write_verilog -noattr build/generic.v

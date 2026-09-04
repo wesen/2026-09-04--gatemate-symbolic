@@ -1,0 +1,27 @@
+F                                                                        [100%]
+=================================== FAILURES ===================================
+________________________ test_synthesized_constructors _________________________
+
+tmp_path = PosixPath('/tmp/pytest-of-manuel/pytest-120/test_synthesized_constructors0')
+
+    def test_synthesized_constructors(tmp_path):
+        root = Path(__file__).resolve().parents[1]
+        netlist = tmp_path / 'constructors.v'
+        script = (f'read_verilog -sv rtl/symbolic_types_pkg.sv sim/constructor_probe.sv; '
+                  f'hierarchy -top constructor_probe; proc; opt; write_verilog -noattr {netlist}')
+        subprocess.run(['yosys', '-Q', '-q', '-p', script], cwd=root, check=True, capture_output=True)
+        binary = tmp_path / 'constructors.vvp'
+        subprocess.run(['iverilog', '-g2012', '-s', 'tb_constructor', '-o', str(binary),
+                        str(netlist), 'sim/tb_constructor.sv'], cwd=root, check=True, capture_output=True)
+        result = subprocess.run(['vvp', str(binary)], text=True, capture_output=True)
+>       assert result.returncode == 0, result.stdout + result.stderr
+E       AssertionError: FATAL: sim/tb_constructor.sv:11: constructor tags/flags lost: true=xx00000001 false=xx00000000 zero=xx00000000 int=00ffffffff bool=1000000001
+E                Time: 1  Scope: tb_constructor
+E         
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['vvp', '/tmp/pytest-of-manuel/pytest-120/test_synthesized_constructors0/constructors.vvp'], ret...1 false=xx00000000 zero=xx00000000 int=00ffffffff bool=1000000001\n       Time: 1  Scope: tb_constructor\n', stderr='').returncode
+
+sim/test_synthesis.py:16: AssertionError
+=========================== short test summary info ============================
+FAILED sim/test_synthesis.py::test_synthesized_constructors - AssertionError:...
+1 failed in 0.05s

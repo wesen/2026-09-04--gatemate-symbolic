@@ -17,7 +17,7 @@ try:
     for program in ['fib','arith','typefault','countdown']:
         if program!='fib':
             with (OUT/f'P5-{program}-build.log').open('w') as log:
-                subprocess.run(['make','bit',f'PROG={program}'],cwd=PROJECT,stdout=log,stderr=subprocess.STDOUT,check=True)
+                subprocess.run(['make','bit',f'PROG={program}'],cwd=PROJECT,stdout=log,stderr=subprocess.STDOUT,check=True,timeout=180)
         image=(PROJECT/'build/top.bit').read_bytes()
         words,_,_=assemble((PROJECT/f'programs/{program}.asm').read_text())
         model=run_program(words,total_depth=514)

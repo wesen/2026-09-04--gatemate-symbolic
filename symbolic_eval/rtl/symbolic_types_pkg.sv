@@ -73,19 +73,13 @@ package symbolic_types_pkg;
   // (classic function-name assignment style: yosys does not accept the
   // `return` statement in functions)
   function automatic value40_t mk_int(input logic signed [31:0] x);
-    value40_t v;
-    v.tag     = 4'h0;              // TAG_INT
-    v.flags   = 4'h0;
-    v.payload = x;
-    mk_int = v;
+    // Assign all packed bits together: constant-folded field assignments
+    // lose tag/flags in the supported Yosys frontend (see test_synthesis.py).
+    mk_int = {4'h0, 4'h0, x};
   endfunction
 
   function automatic value40_t mk_bool(input logic b);
-    value40_t v;
-    v.tag     = 4'h1;              // TAG_BOOL
-    v.flags   = 4'h0;
-    v.payload = b ? 32'd1 : 32'd0;
-    mk_bool = v;
+    mk_bool = {4'h1, 4'h0, 31'b0, b};
   endfunction
 
   // Sign-extend a 15-bit immediate.
