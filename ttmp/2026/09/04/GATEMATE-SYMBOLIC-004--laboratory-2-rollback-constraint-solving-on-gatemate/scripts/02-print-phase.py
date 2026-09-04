@@ -31,7 +31,8 @@ else:
     cmd += ['--did' if a.state=='done' else '--phase',phases[a.phase]]
     cmd += ['--next','review completed solver' if a.phase=='P5' and a.state=='done' else 'continue tested implementation']
 if a.commit and a.state=='done':
-    cmd += ['--commit',a.commit,'--repo','wesen/2026-09-04--gatemate-symbolic']
+    commit=subprocess.check_output(['git','rev-parse',a.commit],text=True).strip()
+    cmd += ['--commit',commit,'--repo','wesen/2026-09-04--gatemate-symbolic']
 for fact in a.fact: cmd += ['--fact',fact]
 result=subprocess.run(cmd,text=True,stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
 (out/f'{a.phase}-{a.state}.log').write_text(result.stdout)

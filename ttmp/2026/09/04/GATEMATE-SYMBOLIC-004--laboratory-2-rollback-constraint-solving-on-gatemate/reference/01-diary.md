@@ -135,3 +135,59 @@ Run python3 -m pytest sim/test_model.py -q from queens_rollback.
 ### Technical details
 
 P1 model tests: 16. Snapshot and trail share deterministic propagation order but have distinct restore events. No Lab 1 runtime files changed.
+
+## Step 3: P2 synchronous snapshot RTL baseline
+
+Implemented the deterministic snapshot controller and synchronous 104-bit checkpoint memory. The model and RTL now agree on every observed domain state and every live checkpoint, with complete ordered outputs.
+
+### Prompt Context
+
+**User prompt (verbatim):**
+
+(see Step 2)
+
+**Assistant interpretation:** Implement the Lab 2 guide in tested phases, with committed milestones and printed boundaries.
+
+**Inferred user intent:** Deliver a working and measurable rollback solver with reproducible evidence and a detailed implementation record.
+
+**Commit (code/work):** cf52672
+
+### What I did
+
+Added queens_types_pkg.sv, queens_core.sv, tb_queens.sv and differential RTL tests. Reused the existing synchronous RAM module directly. Updated choice-record publication to emit its event on the memory-write edge.
+
+### Why
+
+A tested snapshot baseline isolates search semantics before changing restoration storage. Complete checkpoint comparison catches errors hidden by solution counts.
+
+### What worked
+
+23 combined tests pass: 16 model and seven snapshot RTL cases, including stalls, FIRST_ONLY and choices 0/1/5.
+
+### What didn't work
+
+No RTL compile or simulation failure. The P1 commit check initially rejected blank quoted lines with trailing spaces; the diary helper now avoids them.
+
+### What I learned
+
+Checkpoint creation can write an inactive slot before publishing its top. Updating an already live checkpoint must expose its event on the actual write edge.
+
+### What was tricky to build
+
+Synchronous checkpoint reads have explicit wait and capture states. Snapshot restore publishes domains and propagated bitmap together. The shared controller will select a storage backend in P3 rather than duplicate the propagation algorithm.
+
+### What warrants a second pair of eyes
+
+Check full C record comparison and result-ready ownership in the bench. The P1 slip used HEAD as its reference; subsequent slips resolve immutable hashes.
+
+### What should be done in the future
+
+Add trail storage and reverse restoration to the same controller with compile-time backend selection.
+
+### Code review instructions
+
+Source the documented CAD environment and run python3 -m pytest sim -q in queens_rollback.
+
+### Technical details
+
+Snapshot records are 104 bits: 64 domain bits plus the proposed 40-bit choice metadata. No production board integration yet.
