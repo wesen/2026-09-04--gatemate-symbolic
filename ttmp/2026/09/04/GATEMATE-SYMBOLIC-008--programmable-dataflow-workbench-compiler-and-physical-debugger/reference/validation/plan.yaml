@@ -1,0 +1,62 @@
+almanach_studio_version: 1
+theme: brutalist
+paperWidth: 384
+bodyScale: 1
+feedLines: 8
+blocks:
+- id: head
+  type: row
+  data:
+    cols:
+    - w: 1fr
+      text: GATEMATE-008
+      preset: micro
+    - w: 1fr
+      text: STATUS
+      preset: micro
+      align: right
+- id: r1
+  type: rule
+  data:
+    weight: heavy
+- id: gap1
+  type: space
+  data:
+    size: s
+- id: title
+  type: text
+  data:
+    text: Programmable Dataflow Workbench
+    preset: h1
+    lines: 3
+- id: gap3
+  type: space
+  data:
+    size: m
+- id: planhead
+  type: text
+  data:
+    text: PLAN
+    preset: h2
+- id: plan
+  type: checks
+  data:
+    items:
+    - P1 intern guide and contracts
+    - P2 graph model and typed compiler
+    - P3 programmable FPGA descriptors
+    - P4 hardware breakpoints and trace
+    - P5 React compiler and debugger UI
+    - P6 physical qualification and docs
+- id: r2
+  type: rule
+  data:
+    weight: hair
+- id: facts
+  type: kv
+  data:
+    items:
+    - - PHASES
+      - '6'
+    - - NEXT
+      - P1 design and upload
