@@ -1,0 +1,2 @@
+PASS completion-full hardware breakpoint and simultaneous-event loss accounting
+sim/tb_debug.sv:26: $finish called at 670000 (1ps)

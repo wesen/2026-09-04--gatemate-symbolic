@@ -442,3 +442,72 @@ Replaced the incremental dynamic writer bitmap with fixed descriptor-pair compar
 - Added a dedicated physical test for 96 compiled expressions across three different programs, descriptor readback, issue breakpoints, held halt, resume, overflow and trace clear. It remains unexecuted until the new bitstream is timing-qualified and programmed.
 - Code review identified a potential model-only load-window reopening after counter wrap. A dedicated started flag now matches the physical pristine-state intent; a targeted wrap test passes.
 - A mobile browser check at 390 pixels passed without horizontal overflow; screenshot `04-model-mobile.png` is retained.
+
+## Step 7: Registered graph validation after the first repair missed timing
+
+The first targeted repair completed routing at 9.88 MHz, improving the original 9.31 MHz result but still failing the 10 MHz requirement. The new critical path continued through the accumulated graph_acceptable decision into staging control. This is the first failed repair attempt.
+
+The second and final permitted repair expresses independent node, edge and duplicate predicates as wires with explicit reductions, then registers the validation result. The UART G command now waits three clocks after selecting the count before consulting it. Directed tests also allow that defined settling boundary. The second physical build is running; if it fails timing, work must stop under the user's debugging rule.
+
+### Prompt Context
+
+**User prompt (verbatim):** See Step 1.
+
+**Assistant interpretation:** Build the programmable graph/compiler/debugger workbench with an intern guide, physical evidence, and phased delivery.
+
+**Inferred user intent:** Make the existing FPGA execution engine programmable and inspectable while preserving a reviewable account of its correctness.
+
+### What I did
+
+- Archived p6-timing-repair1.log with the 9.88 MHz failure and critical path.
+- Replaced procedural graph-acceptable priority updates with independent predicate arrays and reductions.
+- Registered validation result and count; invalidate cached validity during descriptor writes/commit.
+- Added an explicit G validation wait in the UART link.
+- Ran all twelve directed configurations, programmable graph, UART and debug simulations successfully before starting the second build.
+
+### Why
+
+- The first parallel equality change left the combined procedural validity decision on a long timing path.
+- Loading occurs while computation is pristine and paused, so a few explicit control clocks are available without changing arithmetic semantics.
+
+### What worked
+
+- The second repair passed the complete directed/UART suite, including partial/invalid graph activation and runtime breakpoint behavior.
+- The completion-full and simultaneous-event loss test also passed.
+
+### What didn't work
+
+- ERROR: Max frequency for clock 'link.clk': 9.88 MHz (FAIL at 10.00 MHz)
+- The first repair critical path remained 101.20 ns from staged state through graph_acceptable to staged_valid control.
+
+### What I learned
+
+- Independent source-level comparisons are insufficient if the final validity accumulator is still represented as a procedural priority chain.
+
+### What was tricky to build
+
+- The cached result must not acknowledge a different staged image or count. Writes/commit invalidate it, count identity is checked, and G waits for the newly selected count to propagate.
+
+### What warrants a second pair of eyes
+
+- Review registered validation ownership and the G wait boundary against direct-core graph activation tests.
+
+### What should be done in the future
+
+- Inspect the second build's final routed timing. Stop if this second repair fails; do not attempt another local timing repair.
+
+### Code review instructions
+
+- p6-repair2-regression.log and p6-repair2-debug.log contain passing simulations.
+- p4-board-build.log contains the current build; final timing is not yet known.
+
+### Technical details
+
+- Initial failure 9.31 MHz; first repair 9.88 MHz; second repair pending.
+- The 10 MHz constraint is unchanged. No timing exception or reduced clock was introduced.
+
+### Second-repair qualification continuation
+
+- Registered validation and the explicit G wait are committed as `b03729e`; the final routed result remains pending.
+- Final model ownership review removed the obsolete exported mutable reset descriptor table and unused fixed-finality completion helper. `ResetGraph()` now constructs a fresh value directly. This cleanup is committed as `2c984d3`, with race-test results in `p6-final-model-review.log`.
+- The physical qualification script now refuses programming unless the packed bitstream is newer than the routing report, in addition to rejecting timing errors. This prevents an incomplete build from accidentally selecting the previous laboratory bitstream.

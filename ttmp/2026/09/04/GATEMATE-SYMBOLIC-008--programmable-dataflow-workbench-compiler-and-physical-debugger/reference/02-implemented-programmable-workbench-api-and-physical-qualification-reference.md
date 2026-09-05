@@ -69,7 +69,7 @@ Loaded graphs use forward-only destinations, exactly one final node, no duplicat
 
 Graph loading requires a pristine reset state before any accepted input, enabled tick, or cancellation. The physical core retains a dedicated pristine flag, so counter wrap cannot reopen the loading window. The Go transaction model checks its corresponding execution state. Reset restores the original seven-node laboratory graph. That built-in graph has non-topological COPY node IDs; it is initialized directly, not accepted as an arbitrary loaded image.
 
-The physical image is staged first. `W` writes one shadow descriptor and marks its bitmap entry. `G` checks that all active rows were staged and validates the graph before activation. Rejection leaves the active graph intact. Successful activation clears the staging bitmap and zeros inactive descriptors. All exchanges remain stop-and-wait under one serial owner.
+The physical image is staged first. `W` writes one shadow descriptor and marks its bitmap entry. `G` checks that all active rows were staged and validates the graph before activation. The validity result is registered; G waits three system clocks after selecting its count before deciding, so activation cannot use a stale result. Descriptor writes and commits invalidate the cached result. Rejection leaves the active graph intact. Successful activation clears the staging bitmap and zeros inactive descriptors. All exchanges remain stop-and-wait under one serial owner.
 
 ## UART version two
 
