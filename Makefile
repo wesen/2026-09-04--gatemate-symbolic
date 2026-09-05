@@ -7,7 +7,7 @@ test:
 	go test ./... -count=1
 frontend:
 	pnpm --dir web install --frozen-lockfile
-	go generate ./internal/microscope ./internal/dataflowide
+	go generate ./internal/microscope ./internal/dataflowide ./internal/lazyide
 build: frontend
 	go build -tags embed ./...
 lint: glazed-lint
@@ -31,3 +31,9 @@ dataflow-frontend:
 	go generate ./internal/dataflowide
 dataflow-dev:
 	go run ./cmd/dataflow-ide
+
+.PHONY: lazy-frontend lazy-dev
+lazy-frontend:
+	go generate ./internal/lazyide
+lazy-dev:
+	go run ./cmd/lazy-ide

@@ -49,5 +49,5 @@ it('requires a fresh compilation after edits and exposes trace loss',async()=>{
  expect(screen.getByText(/Incomplete trace: 3 events/)).toBeInTheDocument();
  expect(screen.getByRole('button',{name:'Resume execution'})).toBeEnabled();
  await user.selectOptions(screen.getByLabelText('Snapshot history'),'1');
- expect(screen.getByRole('button',{name:'Apply breakpoint'})).toBeDisabled();
+ await waitFor(()=>expect(screen.getByRole('button',{name:'Apply breakpoint'})).toBeDisabled());
 });
