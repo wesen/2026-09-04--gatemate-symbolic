@@ -21,12 +21,14 @@ WhenToUse: ""
 
 ## Overview
 
-<!-- Provide a brief overview of the ticket, its goals, and current status -->
+Build a programmable typed expression workbench on the existing elastic dataflow engine: validated graph loading, compiler and fanout lowering, hardware breakpoints, bounded trace, and a Go/React interface. P1–P5 are implemented and verified in software/RTL; P6 physical qualification is in progress.
 
 ## Key Links
 
-- **Related Files**: See frontmatter RelatedFiles field
-- **External Sources**: See frontmatter ExternalSources field
+- [Intern analysis, design, and implementation guide](design-doc/01-programmable-dataflow-workbench-intern-analysis-design-and-implementation-guide.md)
+- [Implemented API and qualification reference](reference/02-implemented-programmable-workbench-api-and-physical-qualification-reference.md)
+- [Detailed implementation diary](reference/01-implementation-diary.md)
+- reMarkable design delivery: `/ai/2026/09/04/GATEMATE-SYMBOLIC-008`
 
 ## Status
 

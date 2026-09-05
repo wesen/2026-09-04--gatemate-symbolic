@@ -1,0 +1,7 @@
+ok  	github.com/wesen/2026-09-04--gatemate-symbolic/cmd/dataflow-ide	1.039s
+ok  	github.com/wesen/2026-09-04--gatemate-symbolic/cmd/dataflow-lab	1.069s
+ok  	github.com/wesen/2026-09-04--gatemate-symbolic/cmd/search-microscope	1.066s
+ok  	github.com/wesen/2026-09-04--gatemate-symbolic/internal/dataflowide	1.113s
+ok  	github.com/wesen/2026-09-04--gatemate-symbolic/internal/microscope	1.114s
+ok  	github.com/wesen/2026-09-04--gatemate-symbolic/pkg/dataflow	1.153s
+ok  	github.com/wesen/2026-09-04--gatemate-symbolic/pkg/microscope	1.548s

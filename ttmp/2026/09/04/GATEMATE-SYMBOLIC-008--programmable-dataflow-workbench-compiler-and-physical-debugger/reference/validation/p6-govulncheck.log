@@ -1,0 +1,12 @@
+GOBIN=/tmp go install golang.org/x/vuln/cmd/govulncheck@v1.1.4
+cp /tmp/govulncheck /tmp/gatemate-govulncheck
+/tmp/gatemate-govulncheck ./...
+=== Symbol Results ===
+
+No vulnerabilities found.
+
+Your code is affected by 0 vulnerabilities.
+This scan also found 1 vulnerability in packages you import and 5
+vulnerabilities in modules you require, but your code doesn't appear to call
+these vulnerabilities.
+Use '-show verbose' for more details.

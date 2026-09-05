@@ -1,0 +1,8 @@
+PASS go-race
+PASS go-build
+PASS go-embed-build
+PASS go-vet
+PASS glazed-lint
+PASS govulncheck
+PASS frontend-types
+PASS frontend-tests

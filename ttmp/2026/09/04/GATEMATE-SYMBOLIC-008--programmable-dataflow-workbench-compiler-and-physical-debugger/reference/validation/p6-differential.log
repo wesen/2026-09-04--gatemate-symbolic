@@ -1,0 +1,28 @@
+=== RUN   TestRTLDifferential
+=== RUN   TestRTLDifferential/depth-1-latency-1.log
+=== RUN   TestRTLDifferential/depth-1-latency-2.log
+=== RUN   TestRTLDifferential/depth-1-latency-4.log
+=== RUN   TestRTLDifferential/depth-1-latency-8.log
+=== RUN   TestRTLDifferential/depth-2-latency-1.log
+=== RUN   TestRTLDifferential/depth-2-latency-2.log
+=== RUN   TestRTLDifferential/depth-2-latency-4.log
+=== RUN   TestRTLDifferential/depth-2-latency-8.log
+=== RUN   TestRTLDifferential/depth-8-latency-1.log
+=== RUN   TestRTLDifferential/depth-8-latency-2.log
+=== RUN   TestRTLDifferential/depth-8-latency-4.log
+=== RUN   TestRTLDifferential/depth-8-latency-8.log
+--- PASS: TestRTLDifferential (0.06s)
+    --- PASS: TestRTLDifferential/depth-1-latency-1.log (0.01s)
+    --- PASS: TestRTLDifferential/depth-1-latency-2.log (0.01s)
+    --- PASS: TestRTLDifferential/depth-1-latency-4.log (0.00s)
+    --- PASS: TestRTLDifferential/depth-1-latency-8.log (0.01s)
+    --- PASS: TestRTLDifferential/depth-2-latency-1.log (0.00s)
+    --- PASS: TestRTLDifferential/depth-2-latency-2.log (0.00s)
+    --- PASS: TestRTLDifferential/depth-2-latency-4.log (0.00s)
+    --- PASS: TestRTLDifferential/depth-2-latency-8.log (0.00s)
+    --- PASS: TestRTLDifferential/depth-8-latency-1.log (0.00s)
+    --- PASS: TestRTLDifferential/depth-8-latency-2.log (0.00s)
+    --- PASS: TestRTLDifferential/depth-8-latency-4.log (0.00s)
+    --- PASS: TestRTLDifferential/depth-8-latency-8.log (0.00s)
+PASS
+ok  	github.com/wesen/2026-09-04--gatemate-symbolic/pkg/dataflow	0.070s

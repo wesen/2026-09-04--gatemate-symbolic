@@ -9,13 +9,24 @@ Topics:
 DocType: reference
 Intent: long-term
 Owners: []
-RelatedFiles: []
+RelatedFiles:
+    - Path: repo://elastic_dataflow/rtl/dataflow_core.sv
+      Note: Programmable descriptors, breakpoint state and trace storage
+    - Path: repo://pkg/dataflow/compiler.go
+      Note: Compiler implementation and source-map ownership
+    - Path: repo://pkg/dataflow/workbench_physical_test.go
+      Note: Compiled physical qualification contract
+    - Path: repo://ttmp/2026/09/04/GATEMATE-SYMBOLIC-008--programmable-dataflow-workbench-compiler-and-physical-debugger/scripts/16-parallel-graph-validation.py
+      Note: Recorded targeted timing repair
+    - Path: repo://web/src/dataflow/Workbench.tsx
+      Note: Workbench implementation and browser evidence
 ExternalSources: []
 Summary: ""
 LastUpdated: 2026-09-04T22:09:27.769234375-04:00
 WhatFor: ""
 WhenToUse: ""
 ---
+
 
 # Implementation diary
 
@@ -360,3 +371,74 @@ Browser qualification compiled the default six-node program, loaded it, supplied
 - Screenshots: 01-model-breakpoint.png, 02-model-result.png, 03-model-history.png.
 - Browser result record: reference/validation/p5-browser-model.json.
 - Program source files use .df under the existing confined project root; scenario files remain .json.
+
+## Step 6: Physical timing evidence and first targeted repair
+
+The first expanded design completed placement and routing but failed the required 10 MHz constraint. The timing report identifies a path from staged descriptor bits through duplicate-writer validation to the UART acknowledgement register. This is a load-time control path, not the arithmetic datapath.
+
+Replaced the incremental dynamic writer bitmap with fixed descriptor-pair comparisons. The bitmap caused each later destination check to depend on earlier variable-index updates, producing a serial shift/multiplexer chain. Pairwise comparisons express independent equality checks followed by a reduction. Physical qualification remains open until the rebuilt design meets timing.
+
+### Prompt Context
+
+**User prompt (verbatim):** See Step 1.
+
+**Assistant interpretation:** Build the programmable graph/compiler/debugger workbench with an intern guide, physical evidence, and phased delivery.
+
+**Inferred user intent:** Make the existing FPGA execution engine programmable and inspectable while preserving a reviewable account of its correctness.
+
+### What I did
+
+- Archived the failing timing report as p6-timing-first.log.
+- Read the source and destination registers and net definitions of the 107.37 ns critical path.
+- Changed duplicate-writer validation to compare fixed descriptor pairs in parallel.
+- Started the directed RTL/UART regression before rebuilding.
+
+### Why
+
+- The required clock remains 10 MHz; reducing it would alter the delivered hardware contract.
+- The measured path provides a specific implementation cause for a targeted repair rather than changing placement seeds blindly.
+
+### What worked
+
+- The first build fit the device with 18413 CPE_LT cells (44%) and 4146 CPE_FF cells (10%).
+- The report clearly attributes the longest path to staged descriptor validation.
+
+### What didn't work
+
+- ERROR: Max frequency for clock 'link.clk': 9.31 MHz (FAIL at 10.00 MHz)
+- make: *** [Makefile:9: bit] Error 1
+- Critical path: 107.37 ns total, 26.06 ns logic and 81.31 ns routing.
+
+### What I learned
+
+- A compact behavioral bitmap algorithm can serialize variable-index writes after synthesis even for only fourteen possible destination ports.
+
+### What was tricky to build
+
+- Graph validation is combinational and feeds the UART acceptance decision. Its source-level loops must describe bounded parallel circuitry to meet the same clock as the compute engine.
+
+### What warrants a second pair of eyes
+
+- Check duplicate detection for both destinations of one producer and for destinations shared across different producers.
+
+### What should be done in the future
+
+- Complete first repair qualification; if another repair is needed, obey the two-failed-repair stopping rule.
+
+### Code review instructions
+
+- scripts/08-rtl-checks.sh
+- Rebuild with scripts/11-build-board.sh and inspect the actual timing report.
+
+### Technical details
+
+- This records the initial timing failure and the first repair, whose physical result is not yet known.
+
+### P6 qualification continuation
+
+- The first timing repair is committed as `0c42939`; its placement report shows a pre-routing estimate of 20.06 MHz, which is not yet the final routed result.
+- Full repository checks passed: race, ordinary/embedded build, vet, Glazed lint, vulnerability scan, TypeScript, and fifteen frontend tests.
+- The twelve-configuration randomized RTL differential suite passed. Additional graph tests reject a destination shared by separate producers and a write to an unused unary B port.
+- Added a dedicated physical test for 96 compiled expressions across three different programs, descriptor readback, issue breakpoints, held halt, resume, overflow and trace clear. It remains unexecuted until the new bitstream is timing-qualified and programmed.
+- Code review identified a potential model-only load-window reopening after counter wrap. A dedicated started flag now matches the physical pristine-state intent; a targeted wrap test passes.
+- A mobile browser check at 390 pixels passed without horizontal overflow; screenshot `04-model-mobile.png` is retained.

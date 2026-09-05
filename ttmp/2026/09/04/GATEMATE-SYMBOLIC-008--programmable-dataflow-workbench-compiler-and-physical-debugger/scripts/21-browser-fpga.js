@@ -1,0 +1,33 @@
+async (page) => {
+ const dir='/home/manuel/code/wesen/2026-09-04--gatemate-symbolic/ttmp/2026/09/04/GATEMATE-SYMBOLIC-008--programmable-dataflow-workbench-compiler-and-physical-debugger/reference/screenshots';
+ await page.setViewportSize({width:1800,height:1100});await page.goto('http://127.0.0.1:8087/');
+ await page.getByText('PHYSICAL FPGA',{exact:true}).waitFor();
+ await page.getByRole('button',{name:'Compile program',exact:true}).click();await page.getByRole('button',{name:'Load program',exact:true}).click();
+ await page.getByText('Program loaded and descriptor readback verified.').waitFor();
+ await page.getByRole('button',{name:'Apply breakpoint',exact:true}).click();
+ await page.waitForFunction(async()=>(await(await fetch('/api/dataflow/state')).json()).current.snapshot.debug.mask===1);
+ await page.getByRole('button',{name:'Supply named inputs',exact:true}).click();
+ await page.waitForFunction(async()=>(await(await fetch('/api/dataflow/state')).json()).current.snapshot.counters.source===6);
+ await page.getByLabel('Cycles to advance').fill('100');await page.getByRole('button',{name:'Advance',exact:true}).click();
+ await page.waitForFunction(async()=>(await(await fetch('/api/dataflow/state')).json()).current.snapshot.debug.halted);
+ const halted=await page.evaluate(async()=>await(await fetch('/api/dataflow/state')).json());
+ if(halted.current.snapshot.source!=='serial'||!halted.current.snapshot.debug.events.some(e=>e.kind===2&&e.token.value===9))throw new Error('physical issue provenance/value missing');
+ await page.screenshot({path:dir+'/05-fpga-breakpoint.png',fullPage:true});
+ await page.getByRole('button',{name:'Advance',exact:true}).click();
+ await page.waitForFunction(async id=>(await(await fetch('/api/dataflow/state')).json()).current.id>id,halted.current.id);
+ const held=await page.evaluate(async()=>await(await fetch('/api/dataflow/state')).json());
+ if(held.current.cycle!==halted.current.cycle)throw new Error('halted hardware advanced');
+ await page.getByRole('button',{name:'Resume execution',exact:true}).click();
+ await page.waitForFunction(async()=>!(await(await fetch('/api/dataflow/state')).json()).current.snapshot.debug.halted);
+ await page.getByRole('button',{name:'Advance',exact:true}).click();
+ await page.waitForFunction(async()=>(await(await fetch('/api/dataflow/state')).json()).current.snapshot.output.length===1);
+ await page.getByRole('button',{name:'Poll result',exact:true}).click();
+ await page.waitForFunction(async()=>(await(await fetch('/api/dataflow/state')).json()).results[0]?.value===30);
+ const completed=await page.evaluate(async()=>await(await fetch('/api/dataflow/state')).json());
+ await page.screenshot({path:dir+'/06-fpga-result-trace.png',fullPage:true});
+ await page.getByLabel('Snapshot history',{exact:true}).selectOption(String(halted.current.id));
+ if(await page.getByRole('button',{name:'Apply breakpoint',exact:true}).isEnabled())throw new Error('historical physical controls enabled');
+ await page.screenshot({path:dir+'/07-fpga-history.png',fullPage:true});
+ await page.getByRole('button',{name:'Return to live',exact:true}).click();
+ return {halted:halted.current,completed:completed.current,result:completed.results[0]};
+}

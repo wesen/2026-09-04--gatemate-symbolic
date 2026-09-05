@@ -1,0 +1,22 @@
+
+> graph-search-microscope@0.1.0 test /home/manuel/code/wesen/2026-09-04--gatemate-symbolic/web
+> vitest run
+
+
+[1m[46m RUN [49m[22m [36mv4.0.18 [39m[90m/home/manuel/code/wesen/2026-09-04--gatemate-symbolic/web[39m
+
+ [32m✓[39m src/graph.test.ts [2m([22m[2m7 tests[22m[2m)[22m[32m 26[2mms[22m[39m
+ [32m✓[39m src/dataflow/types.test.ts [2m([22m[2m1 test[22m[2m)[22m[32m 14[2mms[22m[39m
+ [32m✓[39m src/App.test.tsx [2m([22m[2m3 tests[22m[2m)[22m[33m 2852[2mms[22m[39m
+   [33m[2m✓[22m[39m loads a preset, steps, selects trail records, and inspects history safely [33m 2028[2mms[22m[39m
+   [33m[2m✓[22m[39m shows graph validation and device errors rather than implying success [33m 726[2mms[22m[39m
+ [32m✓[39m src/dataflow/App.test.tsx [2m([22m[2m4 tests[22m[2m)[22m[33m 4801[2mms[22m[39m
+   [33m[2m✓[22m[39m labels physical state and makes history strictly observational [33m 2135[2mms[22m[39m
+   [33m[2m✓[22m[39m blocks invalid source and displays device failures [33m 1290[2mms[22m[39m
+   [33m[2m✓[22m[39m requires a fresh compilation after edits and exposes trace loss [33m 1168[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m4 passed[39m[22m[90m (4)[39m
+[2m      Tests [22m [1m[32m15 passed[39m[22m[90m (15)[39m
+[2m   Start at [22m 22:45:46
+[2m   Duration [22m 7.62s[2m (transform 854ms, setup 1.61s, import 1.52s, tests 7.69s, environment 6.12s)[22m
+
