@@ -514,3 +514,5 @@ After cancellation, context two is at epoch one and produces final 12. The two s
 ![Physical FPGA cancellation completed](screenshots/09-fpga-cancellation-complete.png)
 
 The complete ten-image inventory, source labels, and report-use captions are in [the screenshot atlas](03-implemented-laboratory-handoff-and-screenshot-atlas.md#screenshot-atlas-for-the-diary-and-later-report).
+
+Final delivery checkpoint: commit `045cca3` contains the completed handoff, physical screenshots, validation evidence, and successful upload receipt. P7 completion slip links to that commit and reports `printed: true`. The delivery audit confirms ten screenshots, sixteen successfully printed receipts (two plans and seven phase pairs), all tasks checked, complete ticket status, ten passing final-check groups, valid handoff/index file links, and successful reMarkable delivery. The physical IDE remains running on port 8087. Git push follows this documentation checkpoint.

@@ -1,0 +1,19 @@
+{
+  "ticket": "complete",
+  "screenshots": 10,
+  "printedReceipts": 16,
+  "checks": [
+    "PASS generate",
+    "PASS go-race",
+    "PASS go-build",
+    "PASS go-embed-build",
+    "PASS go-vet",
+    "PASS glazed-lint",
+    "PASS govulncheck",
+    "PASS frontend-tests",
+    "PASS frontend-types",
+    "PASS whitespace"
+  ],
+  "localLinks": "valid",
+  "remarkable": "uploaded"
+}
