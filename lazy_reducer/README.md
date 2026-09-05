@@ -41,8 +41,10 @@ the dataflow image cannot serve this protocol. Board SRAM programming is volatil
 Validation: 400 Go generated graph comparisons, 120 RTL graph comparisons,
 directed UART tests, Go race/build/vet/Glazed/vulnerability checks, seventeen
 frontend tests and model browser checks. Final routed timing passed at
-24.65 MHz for the 10 MHz constraint. **Physical programming and qualification
-are pending: the board was disconnected at the first programming attempt.**
+24.65 MHz for the 10 MHz constraint. Physical SRAM programming and qualification passed after reconnection: 60
+randomized graphs, five directed examples, live claims, held/repeated results,
+nested updates, trace overflow and 512-frame overflow unwinding. Physical
+browser checks passed with five screenshots and no console errors or warnings.
 
 The [ticket](../ttmp/2026/09/05/GATEMATE-SYMBOLIC-009--laboratory-4-lazy-graph-reducer-and-heap-inspector/index.md)
 contains the intern guide, implemented API reference, detailed diary, scripts,

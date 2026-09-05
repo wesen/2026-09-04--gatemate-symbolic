@@ -1,7 +1,7 @@
 ---
 Title: Laboratory 4 lazy graph reducer and heap inspector
 Ticket: GATEMATE-SYMBOLIC-009
-Status: active
+Status: complete
 Topics:
     - fpga
     - gatemate
@@ -14,10 +14,11 @@ RelatedFiles:
       Note: Synchronous heap and stack memory building block
 ExternalSources: []
 Summary: ""
-LastUpdated: 2026-09-05T17:05:15.016837927-04:00
+LastUpdated: 2026-09-05T17:59:58.261342027-04:00
 WhatFor: ""
 WhenToUse: ""
 ---
+
 
 
 # Laboratory 4 lazy graph reducer and heap inspector
@@ -26,7 +27,7 @@ WhenToUse: ""
 
 Implement Laboratory 4 as an inspectable single-evaluator lazy graph machine: a 1024x40 heap, 512x80 continuation stack, checked signed arithmetic, memoized values/errors, UART control and a Go/React heap inspector.
 
-P1–P4 are complete. Go model/reference, RTL/protocol and browser checks passed; final routed timing is 24.65 MHz at the required 10 MHz. P5 physical qualification is waiting for the disconnected GateMate board. The initial JTAG programming attempt could not open the device; no physical pass is claimed.
+P1–P5 are complete. Model, RTL, host and browser validation passed. The GateMate was programmed successfully after reconnection; 60 randomized physical graphs, five directed examples, bounds tests and physical browser checks passed. Final routed timing is 24.65 MHz at the required 10 MHz. The physical inspector is available at http://127.0.0.1:18090/ while its tmux server and board remain connected.
 
 ## Key Links
 

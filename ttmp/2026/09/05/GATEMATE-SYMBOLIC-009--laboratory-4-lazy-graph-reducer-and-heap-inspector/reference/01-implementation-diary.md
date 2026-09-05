@@ -334,3 +334,86 @@ The implemented API reference now contains exact node/frame encoding, UART frami
 - The illustrated bundle upload completed: `OK: uploaded GATEMATE 009 Implemented Lazy Reducer and Inspector.pdf -> /ai/2026/09/05/GATEMATE-SYMBOLIC-009`.
 - The delivery audit passed for both upload receipts, five model PNGs, Markdown/frontmatter/image references and eleven successful print receipts. Those receipts are the overall plan, P1–P4 starts/completions, P5 START and P5 WAIT. There is deliberately no P5 DONE receipt yet.
 - A final device-node check still found no `/dev/ttyACM0` or `/dev/ttyACM1`; retained evidence is in `p5-device-nodes.log` and `p5-usb-enumeration.log`. The pending reconnection question remains the required external input.
+
+## Step 6: Qualify the reconnected GateMate and inspect physical execution
+
+The user reconnected the board, resolving the external blocker recorded in Step 5. I programmed the existing routed image, ran the prepared physical qualification suite, and exercised the inspector against the serial engine. No implementation changes were required to obtain passing physical results.
+
+The physical observations establish the expected claim/update sequence, reuse of a shared result, and memoization of cyclic-demand errors. I retained the original disconnected programming failure separately, captured five physical screenshots, and updated the guide and handoff to distinguish measured hardware behavior from the earlier model observations.
+
+### Prompt Context
+
+**User prompt (verbatim):** "gatemate onnected"
+
+**Assistant interpretation:** Resume the remaining physical qualification now that the GateMate is connected.
+
+**Inferred user intent:** Finish the laboratory implementation and delivery with evidence from the actual board.
+
+### What I did
+
+- Confirmed that UART /dev/ttyACM0 and JTAG /dev/ttyACM1 were available.
+- Preserved the original failure as reference/validation/p5-program-board-disconnected.log.
+- Ran scripts/15-physical-qualification.sh: programmed lazy_reducer/build/top.bit and executed TestPhysicalLazyQualification with a retained UART wire log.
+- Started the embedded serial inspector in tmux session lazy009-fpga on 127.0.0.1:18090.
+- Ran scripts/16-browser-fpga.js with an explicit assertion that the captured source is serial.
+- Captured claimed, result, cycle, history and mobile FPGA screenshots, structured browser observations and the browser console log.
+- Updated the README, ticket overview, design delivery note, illustrated handoff and its authoring source using scripts/21-physical-docs.py.
+- Prepared scripts/20-upload-physical-handoff.sh with a distinct final document name, preserving the earlier uploaded edition.
+
+### Why
+
+- Simulation and timing closure did not establish that programming, UART queries and browser controls worked together on the physical board.
+- Preserving the earlier failure keeps the diary chronological while replacing the current qualification status with verified results.
+- A distinct uploaded filename preserves any annotations on the earlier handoff.
+
+### What worked
+
+- JTAG programming completed successfully: Load SRAM via JTAG reached 100% and reported Done.
+- The physical suite passed in 15.108 seconds: 60 randomized graphs, five directed examples, live claim/stack inspection, held output, repeated forcing, 79 nested thunk updates, trace overflow and 512-frame overflow unwind.
+- The shared graph claimed address 3 at enabled cycle 9 and updated it to INT(42) at cycle 61; the result was INT(168), with one multiplication and three additions.
+- Polling and forcing root 6 again retained a multiplication count of one.
+- Cyclic demand claimed address 1 at cycle 3 and memoized ERROR code 3 at cycle 23.
+- Historical controls were disabled, malformed JSON left the frame unchanged, and the 390-pixel viewport had no document overflow.
+- Browser console: Total messages: 0 (Errors: 0, Warnings: 0).
+
+### What didn't work
+
+- No new programming, test or browser failure occurred in this resumed phase.
+- The earlier command failure, JTAG init failed with: DirtyJtag: fails to open device, remains in Step 5 and the preserved disconnected log. Reconnection resolved it without a software fix.
+
+### What I learned
+
+- The model and FPGA agree on observable values and heap updates while scheduling those updates at different enabled cycles.
+- A large requested tick batch includes output stalls: the physical result screenshot shows 1009 cycles and 917 stalls. Its total must not be labeled arithmetic latency.
+- The existing physical test and browser procedures were sufficient to complete qualification after restoring device access.
+
+### What was tricky to build
+
+- UART must have one owner. The physical suite ran before starting the serial web server, avoiding competing command streams.
+- Historical browser frames represent retained observations, not a hardware rollback. The screenshot and disabled controls make that distinction reviewable.
+- The delivered guide previously stated that physical checks had not run. I updated those current-status statements while preserving the historical diary and failure receipt.
+
+### What warrants a second pair of eyes
+
+- Compare p5-browser-fpga.json with the physical screenshots and the mutation page layout in the handoff.
+- Review the physical suite's comparisons of both result and final heap, especially nested UPDATE unwinding and trace loss accounting.
+- Treat generated-graph coverage and directed bounds tests as test evidence, not exhaustive proof.
+
+### What should be done in the future
+
+- N/A for this qualification phase. The bitstream is stored in volatile SRAM and must be programmed again after power loss.
+
+### Code review instructions
+
+- Start with pkg/lazy/physical_test.go, scripts/15-physical-qualification.sh and scripts/16-browser-fpga.js.
+- Inspect reference/validation/p5-physical-tests.log, p5-physical-wire.log, p5-browser-fpga.json and p5-fpga-console.log.
+- To repeat, stop the serial web server with lsof-who -p 18090 -k, run the qualification script, then restart the inspector in tmux.
+- Open http://127.0.0.1:18090/ while the board and lazy009-fpga server remain available.
+
+### Technical details
+
+- Programming command: make -C lazy_reducer load, invoking openFPGALoader -b olimex_gatemateevb build/top.bit.
+- Physical test: GOCACHE=/tmp/gatemate009-go-cache go test ./pkg/lazy -run TestPhysicalLazyQualification -count=1 -v -lazy-physical-device /dev/ttyACM0 -lazy-wire-log PATH.
+- Server: go run -tags embed ./cmd/lazy-ide --engine serial --device /dev/ttyACM0 --listen 127.0.0.1:18090.
+- Final routed frequency remains 24.65 MHz for the required 10 MHz; this phase programmed the previously qualified image.
+- Physical screenshots extend the archive from five model figures to ten total figures.

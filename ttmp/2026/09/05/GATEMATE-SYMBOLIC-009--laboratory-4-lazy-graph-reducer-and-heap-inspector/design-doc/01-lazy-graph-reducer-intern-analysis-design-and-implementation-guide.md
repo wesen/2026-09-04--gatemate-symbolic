@@ -26,7 +26,7 @@ WhenToUse: ""
 
 # Lazy graph reducer: intern analysis, design and implementation guide
 
-The implemented model, RTL, host and inspector are now documented in the [API and qualification handoff](../reference/02-implemented-reducer-api-and-qualification-handoff.md). It contains the final wire/page map, model screenshots, timing results and reproduction commands. Physical qualification remains pending because the board was disconnected at programming time.
+The implemented model, RTL, host and inspector are now documented in the [API and qualification handoff](../reference/02-implemented-reducer-api-and-qualification-handoff.md). It contains the final wire/page map, model screenshots, timing results and reproduction commands. Physical qualification subsequently passed after reconnection: 60 randomized graphs, five directed examples, bounds and memoization checks, and the physical browser workflow. The handoff includes physical screenshots and measured mutation cycles.
 
 ## 1. The computation and its observable contract
 

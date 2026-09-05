@@ -1,0 +1,165 @@
+{
+  "claimed": {
+    "id": 12,
+    "label": "tick",
+    "snapshot": {
+      "source": "serial",
+      "state": "fetch",
+      "address": 2,
+      "result": 0,
+      "valid": false,
+      "heap": [
+        21,
+        2,
+        137438953473,
+        343597383680,
+        68719673347,
+        68719673347,
+        68719738885
+      ],
+      "stack": [
+        {
+          "kind": 1,
+          "op": 1,
+          "address": 5,
+          "value": 0
+        },
+        {
+          "kind": 1,
+          "op": 1,
+          "address": 3,
+          "value": 0
+        },
+        {
+          "kind": 3,
+          "op": 0,
+          "address": 3,
+          "value": 0
+        }
+      ],
+      "counters": {
+        "cycles": 9,
+        "reads": 3,
+        "writes": 1,
+        "claims": 1,
+        "updates": 0,
+        "muls": 0,
+        "adds": 0,
+        "indirections": 0,
+        "blackholes": 0,
+        "maxStack": 3,
+        "stalls": 0,
+        "faults": 0
+      },
+      "trace": [
+        {
+          "cycle": 9,
+          "address": 3,
+          "old": 206158561280,
+          "new": 343597383680
+        }
+      ],
+      "dropped": 0
+    }
+  },
+  "completed": {
+    "id": 13,
+    "label": "tick",
+    "snapshot": {
+      "source": "serial",
+      "state": "output",
+      "address": 3,
+      "result": 168,
+      "valid": true,
+      "heap": [
+        21,
+        2,
+        137438953473,
+        42,
+        68719673347,
+        68719673347,
+        68719738885
+      ],
+      "stack": [],
+      "counters": {
+        "cycles": 1009,
+        "reads": 10,
+        "writes": 2,
+        "claims": 1,
+        "updates": 1,
+        "muls": 1,
+        "adds": 3,
+        "indirections": 0,
+        "blackholes": 0,
+        "maxStack": 4,
+        "stalls": 917,
+        "faults": 0
+      },
+      "trace": [
+        {
+          "cycle": 9,
+          "address": 3,
+          "old": 206158561280,
+          "new": 343597383680
+        },
+        {
+          "cycle": 61,
+          "address": 3,
+          "old": 343597383680,
+          "new": 42
+        }
+      ],
+      "dropped": 0
+    }
+  },
+  "cycle": {
+    "id": 19,
+    "label": "tick",
+    "snapshot": {
+      "source": "serial",
+      "state": "output",
+      "address": 1,
+      "result": 893353197571,
+      "valid": true,
+      "heap": [
+        1,
+        893353197571,
+        68719476737
+      ],
+      "stack": [],
+      "counters": {
+        "cycles": 1000,
+        "reads": 4,
+        "writes": 2,
+        "claims": 1,
+        "updates": 1,
+        "muls": 0,
+        "adds": 0,
+        "indirections": 0,
+        "blackholes": 1,
+        "maxStack": 2,
+        "stalls": 976,
+        "faults": 1
+      },
+      "trace": [
+        {
+          "cycle": 3,
+          "address": 1,
+          "old": 206158561280,
+          "new": 343597383680
+        },
+        {
+          "cycle": 23,
+          "address": 1,
+          "old": 343597383680,
+          "new": 893353197571
+        }
+      ],
+      "dropped": 0
+    }
+  },
+  "width": {
+    "scroll": 390,
+    "client": 390
+  }
+}

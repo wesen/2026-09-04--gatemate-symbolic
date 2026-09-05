@@ -9,6 +9,10 @@ slips=list((root/'reference/validation').glob('*-print.log'))
 for p in slips:assert 'printed: true' in p.read_text(),p
 assert 'OK: uploaded' in (root/'reference/validation/p1-upload.log').read_text()
 assert 'OK: uploaded' in (root/'reference/validation/p5-handoff-upload.log').read_text()
+assert 'OK: uploaded' in (root/'reference/validation/p5-physical-handoff-upload.log').read_text()
+assert '--- PASS: TestPhysicalLazyQualification' in (root/'reference/validation/p5-physical-tests.log').read_text()
+assert 'Errors: 0, Warnings: 0' in (root/'reference/validation/p5-fpga-console.log').read_text()
+assert (root/'reference/validation/p5-browser-fpga.json').is_file()
 images=list((root/'reference/screenshots').glob('*.png'))
 for p in images:assert p.read_bytes().startswith(b'\x89PNG\r\n\x1a\n'),p
-print(json.dumps({'printed_slips':len(slips),'physical_qualification':'pending device connection','images':{p.name:hashlib.sha256(p.read_bytes()).hexdigest() for p in images},'design_uploaded':True,'handoff_uploaded':True},indent=2))
+print(json.dumps({'printed_slips':len(slips),'physical_qualification':'passed','images':{p.name:hashlib.sha256(p.read_bytes()).hexdigest() for p in images},'design_uploaded':True,'handoff_uploaded':True},indent=2))

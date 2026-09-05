@@ -7,7 +7,7 @@ async (page) => {
  await change('Load graph');await change('Force root');
  let current=await state();for(let n=0;n<30&&current.current.snapshot.counters.claims===0;n++)current=await change('Step 1 cycle');
  if(current.current.snapshot.counters.claims!==1||current.current.snapshot.counters.updates!==0||current.current.snapshot.heap[3]!==5*2**36)throw Error('missing live thunk claim');
- const claimed=current.current;const prefix=claimed.snapshot.source==='serial'?'fpga':'model';
+ const claimed=current.current;if(claimed.snapshot.source!=='serial')throw Error('physical browser requires serial engine');const prefix='fpga';
  await page.screenshot({path:dir+'/'+prefix+'-claimed.png',fullPage:true});
  await page.getByLabel('Cycles to advance').fill('1000');current=await change('Advance');
  if(current.current.snapshot.result!==168||!current.current.snapshot.valid||current.current.snapshot.heap[3]!==42||current.current.snapshot.counters.muls!==1)throw Error('shared result or memoization incorrect');

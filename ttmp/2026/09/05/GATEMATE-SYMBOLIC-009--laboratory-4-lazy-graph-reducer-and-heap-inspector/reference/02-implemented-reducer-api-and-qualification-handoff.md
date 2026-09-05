@@ -32,7 +32,7 @@ WhenToUse: ""
 
 The Go model, recursive reference, physical RTL, UART host, CLI and React inspector are implemented. The first routed image passed the unchanged 10 MHz requirement at 24.65 MHz. Four hundred generated model graphs and 120 generated RTL graphs passed, together with directed core/UART checks and host/frontend validation. The five screenshots in this document are **model observations**.
 
-Physical qualification is pending. The initial programming command failed with `JTAG init failed with: DirtyJtag: fails to open device`. Host inspection showed no GateMate/DirtyJTAG USB device and no `/dev/ttyACM0` or `/dev/ttyACM1`. The physical qualification suite and browser procedure are prepared, but neither simulated results nor timing closure is a substitute for a programmed-board result. P5 remains open until the board is reconnected and these checks pass.
+Physical qualification passed on 2026-09-05 after the board was reconnected. SRAM programming succeeded, all directed and randomized physical tests passed, and the browser was exercised against the serial engine with no console errors or warnings. The earlier disconnected-device failure remains in the diary and p5-program-board-disconnected.log.
 
 ## Computation and memory ownership
 
@@ -169,12 +169,38 @@ History selects a retained frame, with mutation controls disabled. The physical 
 
 The graph viewport scrolls internally on narrow displays while the document fits the viewport. The graph renders addresses zero through 31; the paginated heap table permits inspection of the complete image. The continuation and trace tables retain their valid contents in scrollable panels.
 
-## Reproduction and remaining physical phase
+## Reproduction and physical qualification
 
 Run `make lazy-frontend`, then `go run -tags embed ./cmd/lazy-ide --engine model --listen 127.0.0.1:18089` in tmux. The physical default port is 18090. Port 8090 was already occupied by another project; that service was preserved. Static resources use `/static/`. The normal Makefile frontend build includes this entry alongside the prior laboratories.
 
 The current source milestones are model b018ae3, RTL/protocol dd29ede, inspector 858edd2, and diary/evidence checkpoint 42cab97. The build reports 6261/40960 CPE logic tables and 8/64 RAM halves. Full flip-flop and detailed RAM/resource figures remain in the archived synthesis/routing reports. The successful final frequency is 24.65 MHz, rather than the earlier placement estimate of 37.54 MHz.
 
-When the board is connected, run `scripts/15-physical-qualification.sh` from this ticket. It verifies the image is newer than the routing log and refuses any routing error before programming. The suite covers five directed examples, 60 generated physical graphs compared with the recursive heap/result reference, live-claim inspection, held output, repeated forcing, 79 nested thunk updates, trace overflow and a 512-frame overflow unwind. Then run the physical inspector and `scripts/16-browser-fpga.js` for physical screenshots. Those steps remain unexecuted until device access is restored.
+When the board is connected, run `scripts/15-physical-qualification.sh` from this ticket. It verifies the image is newer than the routing log and refuses any routing error before programming. The suite covers five directed examples, 60 generated physical graphs compared with the recursive heap/result reference, live-claim inspection, held output, repeated forcing, 79 nested thunk updates, trace overflow and a 512-frame overflow unwind. Then run the physical inspector and `scripts/16-browser-fpga.js` for physical screenshots. These steps passed after reconnection; p5-physical-tests.log records the 15.108-second successful suite and p5-browser-fpga.json records physical browser observations.
 
 Key code references are `pkg/lazy/model.go`, `reference.go`, `serial.go`, `physical_test.go`, `lazy_reducer/rtl/lazy_core.sv`, `lazy_link.sv`, `internal/lazyide/session.go`, and `web/src/lazy/App.tsx`. The diary records the exact validation commands, timing result, test-harness corrections and physical device failure.
+
+## Observations from the programmed FPGA
+
+The physical inspector connects to the programmed GateMate through the Go serial engine at http://127.0.0.1:18090/. Its source badge reads PHYSICAL FPGA. These observations come from UART query pages, with execution paused during each snapshot. The model and hardware implement the same semantics but use different cycle schedules.
+
+![Physical live claim and continuation stack](screenshots/fpga-claimed.png)
+
+At enabled cycle 9, address 3 has changed from THUNK(body=2) to BLACKHOLE. The current address is 2. The stack has three frames: two EVAL_RIGHT continuations beneath UPDATE(3). Counters report three dispatched heap reads, one write and one claim. This observation verifies that the update obligation exists while the body is being evaluated.
+
+![Physical shared result and mutation trace](screenshots/fpga-result.png)
+
+The shared expression returns INT(168). Address 3 now holds INT(42), and counters report exactly one multiplication, one claim, one update and three additions. The trace records the claim at cycle 9 and replacement at cycle 61. The screenshot was captured at cycle 1009, including 917 output-stall cycles from the requested tick batch; the displayed total is not an execution-latency measurement. Polling and forcing root 6 again preserves the multiplication count of one, demonstrating reuse of the stored value.
+
+![Physical cycle detection and memoized error](screenshots/fpga-cycle.png)
+
+The recursive example returns ERROR(CYCLIC_THUNK), numeric fault code 3. Address 1 changes from THUNK to BLACKHOLE at cycle 3 and from BLACKHOLE to ERROR at cycle 23. The final counters show one claim, one update, one blackhole observation and one generated fault. The held result is the same ERROR word stored in the heap, and the continuation stack has been unwound.
+
+![Historical physical observation](screenshots/fpga-history.png)
+
+Selecting the earlier physical frame restores that observation in the browser and disables mutation controls. It does not rewind the FPGA. The browser also rejects malformed source JSON without creating a new frame or mutating the device.
+
+![Physical inspector on a narrow viewport](screenshots/fpga-mobile.png)
+
+At a 390-pixel viewport, document scroll width and client width are both 390 pixels. Wide graph and table content remains within its own scrolling region. Five physical screenshots complement the five model screenshots retained above.
+
+The physical suite compared 60 randomized graph results and final heaps with the independent recursive reference, then exercised five directed examples, a live claim and stack, stable held results, repeated forcing, 79 nested thunk updates, mutation-trace overflow, and recovery from a 512-frame stack overflow. All passed against the routed image. These tests establish the tested bounds and examples; they are not a formal proof for every possible heap.

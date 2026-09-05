@@ -1,0 +1,5 @@
+=== RUN   TestPhysicalLazyQualification
+    physical_test.go:129: PASS 60 randomized physical graphs, five directed examples, live claim/stack inspection, held result, repeated force, 79 nested thunk updates, trace overflow and 512-frame overflow unwind
+--- PASS: TestPhysicalLazyQualification (15.11s)
+PASS
+ok  	github.com/wesen/2026-09-04--gatemate-symbolic/pkg/lazy	15.108s
