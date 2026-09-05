@@ -9,9 +9,10 @@ import sys
 T = Path(__file__).resolve().parents[1]
 PHASES = {'P1':'intern guide and reMarkable delivery', 'P2':'typed semantic and transaction models',
           'P3':'elastic RTL scheduling and cancellation', 'P4':'UART host control and board execution',
-          'P5':'stress tests measurements and handoff'}
+          'P5':'engine stress tests and measurements', 'P6':'Go React IDE and scenario tools',
+          'P7':'IDE device integration and handoff'}
 p=argparse.ArgumentParser();s=p.add_subparsers(dest='command',required=True)
-x=s.add_parser('slip');x.add_argument('phase',choices=['PLAN',*PHASES]);x.add_argument('state',choices=['start','done']);x.add_argument('--commit');x.add_argument('--fact',action='append',default=[])
+x=s.add_parser('slip');x.add_argument('phase',choices=['PLAN','PLAN2',*PHASES]);x.add_argument('state',choices=['start','done']);x.add_argument('--commit');x.add_argument('--fact',action='append',default=[])
 x=s.add_parser('diary');x.add_argument('entry',type=Path)
 s.add_parser('tidy')
 a=p.parse_args()
@@ -23,10 +24,10 @@ elif a.command=='slip':
     cmd=[sys.executable,'/home/manuel/.pi/agent/skills/brutalist-work-slip/scripts/work_slip.py',
          'status' if a.state=='done' else 'plan','--task','GATEMATE-007','--label',f'{a.phase} {a.state.upper()}',
          '--title','Elastic dataflow expression engine','--out',str(target.with_suffix('.yaml'))]
-    if a.phase=='PLAN':
+    if a.phase.startswith('PLAN'):
         for phase,title in PHASES.items():cmd+=['--phase',phase+' '+title]
     else:cmd+=['--did' if a.state=='done' else '--phase',PHASES[a.phase]]
-    cmd+=['--next','review completed lab' if a.phase=='P5' and a.state=='done' else 'continue validated tasks']
+    cmd+=['--next','review completed lab' if a.phase=='P7' and a.state=='done' else 'continue validated tasks']
     if a.commit:
         commit=subprocess.check_output(['git','rev-parse',a.commit],text=True).strip()
         cmd+=['--commit',commit,'--repo','wesen/2026-09-04--gatemate-symbolic']

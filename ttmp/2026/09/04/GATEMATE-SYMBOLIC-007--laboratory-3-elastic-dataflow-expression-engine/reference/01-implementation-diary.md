@@ -81,3 +81,61 @@ Run docmgr doctor for GATEMATE-SYMBOLIC-007; inspect the guide and archived lab 
 Baseline 7566576. Scope: four contexts, seven fixed nodes including optional COPY fanout, eight-bit epochs, 40-bit typed values in an 80-bit envelope. Eleven slips total for plan plus five start/done pairs.
 
 P1 delivery: docmgr doctor passed; dry-run succeeded; real upload returned `OK: uploaded GATEMATE 007 Elastic Dataflow Intern Guide.pdf -> /ai/2026/09/04/GATEMATE-SYMBOLIC-007`. Implementation starts only after this receipt.
+
+## Step 2: Executable models and IDE scope expansion
+
+Implemented and tested the typed semantic and bounded transaction models. The user added a full React/Go IDE; created a separate 2557-word IDE design and extended the plan with P6 implementation and P7 integration. Debug visibility is now a P3/P4 requirement.
+
+### Prompt Context
+
+**User prompt (verbatim, JSON encoded):**
+
+```json
+"Design a full react + golang IDE for the dataflow engine as well. Create a separate design doc for it. I don't know when it makes sense for you to implement it, so you decide."
+```
+
+**Assistant interpretation:** Design, publish, implement, and validate the book's elastic dataflow laboratory with task commits, detailed diary, and physical work slips.
+
+**Inferred user intent:** Build a working concurrent symbolic machine and preserve enough explanation and evidence for an intern to understand and maintain it.
+
+### What I did
+
+Added pkg/dataflow types, semantic evaluator, transaction model, and tests. Added IDE design for scenario editing/storage, context controls, real snapshots, pipeline/queue inspection, result assertions, and historical viewing. Extended phase helper and task plan.
+
+### Why
+
+The IDE should be implemented after the engine and physical protocol are qualified, but required debug access must be designed before RTL implementation.
+
+### What worked
+
+All seven model test groups passed on the initial ordinary run. Race tests and vet then passed with normal Go cache access. Coverage includes 240 latency/depth/seed cases, 100 randomized four-context expressions, 1000 arithmetic/envelope cases, COPY, isolated faults, in-flight cancellation, held output, and reduced epoch wrap.
+
+### What didn't work
+
+The first sandboxed race command failed before running tests: open /home/manuel/.cache/go-build/de/dec637d79548ebaffb5b5b86fb57ccea5d945cb2f0961c0927dc1400588a38d6-d: read-only file system. Authorized normal-cache execution passed; no software repair was needed.
+
+### What I learned
+
+The model drains with depth-one queues in the tested cases, while per-node activation reservations retain newly ready work. The IDE requires paused debug pages rather than reconstructed imaginary physical state.
+
+### What was tricky to build
+
+A full scenario IDE is useful with fixed descriptors: editable source schedules and assertions are supported, while topology editing must wait for a genuine graph-loader feature. Cancellation tests need explicit enabled-cycle control on the physical board.
+
+### What warrants a second pair of eyes
+
+Review live-versus-historical state, paged snapshot atomicity, source identity, model fault isolation, and exactly-once activation.
+
+### What should be done in the future
+
+Upload IDE guide and revised plan; commit P2; implement RTL and debug ports in P3.
+
+### Code review instructions
+
+go test -race ./pkg/dataflow -count=1 -v; go vet ./pkg/dataflow; docmgr doctor. Inspect P2-model-tests.log and both guide documents.
+
+### Technical details
+
+The original eleven-slip plan is preserved. The expanded plan has seven phase pairs plus original/revised plan receipts, for sixteen total. P1 remains complete; P2 model tests complete; IDE implementation is deliberately scheduled after P5 engine qualification. The subsequent user prompt was: "or maybe you already are doing that".
+
+IDE delivery receipt: `OK: uploaded GATEMATE 007 Dataflow IDE Design.pdf -> /ai/2026/09/04/GATEMATE-SYMBOLIC-007`. Revised plan receipt reports `printed: true`.

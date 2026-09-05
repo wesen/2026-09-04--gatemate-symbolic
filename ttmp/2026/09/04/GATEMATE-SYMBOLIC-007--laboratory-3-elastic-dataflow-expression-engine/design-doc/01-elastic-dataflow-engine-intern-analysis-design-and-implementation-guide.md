@@ -304,3 +304,7 @@ Acceptance requires correct 58 and 12 results keyed by context/epoch, exactly-on
 ## References and reading order
 
 Read the archived `sources/laboratory-3.md` first for the book's experiment and exercises. Then read the existing tagged-value package, elastic register, synchronous RAM wrapper, and UART receiver/transmitter named in section 1. During implementation, proceed through `pkg/dataflow` types and model, `elastic_dataflow/rtl` arithmetic and controller, the UART link, then `cmd/dataflow-lab`. The tests and archived physical records are the authoritative evidence for implemented behavior and measured limits.
+
+## Scope update: full Go React IDE requested during P2
+
+The separate design document `02-dataflow-ide-go-react-architecture-and-intern-implementation-guide.md` specifies the newly requested IDE. P3/P4 now include a paused, paged debug interface and a complete host snapshot API. P5 qualifies the engine and snapshot path; P6 implements the Go service and React workspace; P7 validates the physical IDE and completes handoff. The original printed plan is preserved and a revised plan is printed. With seven phase pairs and two plan receipts, the expanded ticket has sixteen expected slips.

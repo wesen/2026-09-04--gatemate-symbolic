@@ -27,6 +27,7 @@ Implement the book's third laboratory: a concurrent elastic expression engine wi
 ## Documents
 
 - [Intern analysis, design, and implementation guide](design-doc/01-elastic-dataflow-engine-intern-analysis-design-and-implementation-guide.md)
+- [Go/React IDE design](design-doc/02-dataflow-ide-go-react-architecture-and-intern-implementation-guide.md)
 - [Detailed diary](reference/01-implementation-diary.md)
 - [Tasks](tasks.md)
 - [Changelog](changelog.md)

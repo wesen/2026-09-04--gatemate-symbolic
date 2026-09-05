@@ -1,0 +1,16 @@
+=== RUN   TestValuesAndEnvelope
+--- PASS: TestValuesAndEnvelope (0.00s)
+=== RUN   TestDirectedAcrossLatencyAndCapacity
+--- PASS: TestDirectedAcrossLatencyAndCapacity (0.03s)
+=== RUN   TestRandomValuesAgainstIndependentExpression
+--- PASS: TestRandomValuesAgainstIndependentExpression (0.02s)
+=== RUN   TestCancellationDropsInflightMultiplyAndReusesEpoch
+--- PASS: TestCancellationDropsInflightMultiplyAndReusesEpoch (0.00s)
+=== RUN   TestOutputStabilityCancellationAndWrap
+--- PASS: TestOutputStabilityCancellationAndWrap (0.00s)
+=== RUN   TestCopyFanoutAndIsolatedErrors
+--- PASS: TestCopyFanoutAndIsolatedErrors (0.00s)
+=== RUN   TestTickCancellationAndInvalidConfig
+--- PASS: TestTickCancellationAndInvalidConfig (0.00s)
+PASS
+ok  	github.com/wesen/2026-09-04--gatemate-symbolic/pkg/dataflow	1.058s

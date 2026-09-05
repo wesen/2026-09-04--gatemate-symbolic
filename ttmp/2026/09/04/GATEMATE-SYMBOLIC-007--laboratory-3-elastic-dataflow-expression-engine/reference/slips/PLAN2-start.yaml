@@ -1,0 +1,65 @@
+almanach_studio_version: 1
+theme: brutalist
+paperWidth: 384
+bodyScale: 1
+feedLines: 8
+blocks:
+- id: head
+  type: row
+  data:
+    cols:
+    - w: 1fr
+      text: GATEMATE-007
+      preset: micro
+    - w: 1fr
+      text: PLAN2 START
+      preset: micro
+      align: right
+- id: r1
+  type: rule
+  data:
+    weight: heavy
+- id: gap1
+  type: space
+  data:
+    size: s
+- id: title
+  type: text
+  data:
+    text: Elastic dataflow expression engine
+    preset: h1
+    lines: 3
+- id: gap3
+  type: space
+  data:
+    size: m
+- id: planhead
+  type: text
+  data:
+    text: PLAN
+    preset: h2
+- id: plan
+  type: checks
+  data:
+    items:
+    - P1 intern guide and reMarkable delivery
+    - P2 typed semantic and transaction models
+    - P3 elastic RTL scheduling and cancellation
+    - P4 UART host control and board execution
+    - P5 engine stress tests and measurements
+    - P6 Go React IDE and scenario tools
+    - P7 IDE device integration and handoff
+- id: r2
+  type: rule
+  data:
+    weight: hair
+- id: facts
+  type: kv
+  data:
+    items:
+    - - PHASES
+      - '7'
+    - - NEXT
+      - continue validated tasks
+    - - SCOPE
+      - Go React IDE added

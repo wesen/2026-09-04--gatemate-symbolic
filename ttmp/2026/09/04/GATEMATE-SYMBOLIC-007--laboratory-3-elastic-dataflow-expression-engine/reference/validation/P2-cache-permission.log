@@ -1,0 +1,4 @@
+# ./pkg/dataflow
+open /home/manuel/.cache/go-build/de/dec637d79548ebaffb5b5b86fb57ccea5d945cb2f0961c0927dc1400588a38d6-d: read-only file system
+FAIL	./pkg/dataflow [setup failed]
+FAIL

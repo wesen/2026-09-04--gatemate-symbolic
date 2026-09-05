@@ -1,0 +1,6 @@
+DRY: layout=default
+DRY: bundle name=GATEMATE 007 Dataflow IDE Design
+DRY: remote-dir=/ai/2026/09/04/GATEMATE-SYMBOLIC-007
+DRY: include /home/manuel/code/wesen/2026-09-04--gatemate-symbolic/ttmp/2026/09/04/GATEMATE-SYMBOLIC-007--laboratory-3-elastic-dataflow-expression-engine/design-doc/02-dataflow-ide-go-react-architecture-and-intern-implementation-guide.md (title="02-dataflow-ide-go-react-architecture-and-intern-implementation-guide")
+DRY: pandoc <bundle> -> <tmp>/GATEMATE 007 Dataflow IDE Design.pdf
+DRY: upload GATEMATE 007 Dataflow IDE Design.pdf -> /ai/2026/09/04/GATEMATE-SYMBOLIC-007
