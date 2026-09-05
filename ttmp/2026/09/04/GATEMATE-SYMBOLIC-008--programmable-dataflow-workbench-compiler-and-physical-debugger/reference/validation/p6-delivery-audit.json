@@ -1,10 +1,14 @@
 {
-  "printed_slips": 12,
+  "printed_slips": 13,
   "screenshots": {
     "03-model-history.png": "e5201635fde7f2026937d87ac1fe055bd5bb0ec7243a3568af3ce8759deda3f6",
+    "07-fpga-history.png": "fba6a2db442d3768f7b55cb8577aa354813111185311a91c73ef84cc3e858742",
+    "05-fpga-breakpoint.png": "c20c11f700dfadf572bf162da5b4c36cdd8b8d8b8643e7369f95986e60412959",
     "04-model-mobile.png": "193b31511f90fcd4543a53b2db608626e6fc4b95aa5652b3cae84853e46ab4f1",
+    "06-fpga-result-trace.png": "1246f1b257beb0419475a2fc46c9b7e8ba358a736f9a700c72dcaa2b37dd2c2c",
     "01-model-breakpoint.png": "b139847e835c7bc7cb38b8a02361d29fa6e2acb15734722c4cea09ac9f7a61f4",
     "02-model-result.png": "d99c0aeee674bafc9b77abf837e3f8bcd4581813e57c4773da216993f4fc7189"
   },
-  "design_uploaded": true
+  "design_uploaded": true,
+  "illustrated_handoff_uploaded": true
 }

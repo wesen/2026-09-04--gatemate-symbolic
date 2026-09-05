@@ -1,7 +1,7 @@
 ---
 Title: Programmable dataflow workbench compiler and physical debugger
 Ticket: GATEMATE-SYMBOLIC-008
-Status: active
+Status: complete
 Topics:
     - fpga
     - gatemate
@@ -12,10 +12,11 @@ Owners: []
 RelatedFiles: []
 ExternalSources: []
 Summary: ""
-LastUpdated: 2026-09-04T22:09:27.497141388-04:00
+LastUpdated: 2026-09-04T23:34:15.949726282-04:00
 WhatFor: ""
 WhenToUse: ""
 ---
+
 
 # Programmable dataflow workbench compiler and physical debugger
 
@@ -33,7 +34,7 @@ Build a programmable typed expression workbench on the existing elastic dataflow
 
 ## Status
 
-Current status: **active**
+Current status: **complete**
 
 ## Topics
 

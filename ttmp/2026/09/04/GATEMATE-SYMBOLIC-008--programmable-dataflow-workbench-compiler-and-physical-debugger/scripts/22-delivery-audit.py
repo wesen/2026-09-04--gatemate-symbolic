@@ -15,4 +15,7 @@ for path in list((root/'design-doc').glob('*.md'))+list((root/'reference').glob(
  yaml.safe_load(text.split('---',2)[1])
  for target in re.findall(r'!\[[^]]*\]\(([^)]+)\)',text):assert (path.parent/target).is_file(),(path,target)
 assert 'OK: uploaded' in (root/'reference/validation/p1-upload.log').read_text()
-print(json.dumps({'printed_slips':len(slips),'screenshots':{p.name:hashlib.sha256(p.read_bytes()).hexdigest() for p in images},'design_uploaded':True},indent=2))
+assert 'OK: uploaded' in (root/'reference/validation/p6-final-upload.log').read_text()
+assert len(slips)==13,len(slips)
+assert len(images)==7,len(images)
+print(json.dumps({'printed_slips':len(slips),'screenshots':{p.name:hashlib.sha256(p.read_bytes()).hexdigest() for p in images},'design_uploaded':True,'illustrated_handoff_uploaded':True},indent=2))

@@ -582,3 +582,11 @@ The browser then compiled and loaded the default program, checked descriptor rea
 - Resources: 18449/40960 CPE_LT, 4153/40960 CPE_FF, 5/64 RAM_HALF.
 - Physical example: a=3, b=4, c=5; square=9; offset=20; selected=1; output=30.
 - Current physical UI: http://127.0.0.1:8087/. Final guide bundle and phase completion receipt are recorded in the delivery continuation below.
+
+### Delivery continuation
+
+- Physical qualification, screenshots, timing evidence, and this diary step were committed as `5b4117f` — `docs(dataflow): qualify programmable FPGA workbench and capture physical execution`.
+- `scripts/23-upload-handoff.sh` completed successfully: `OK: uploaded GATEMATE 008 Implemented Programmable Workbench.pdf -> /ai/2026/09/04/GATEMATE-SYMBOLIC-008`. The initial design remains a separate previously delivered document.
+- Printed the P6 DONE slip with the physical qualification commit QR. The ticket now retains thirteen successful print receipts: one overall plan, six phase starts, and six phase completions.
+- Checked task `54tm` and closed GATEMATE-SYMBOLIC-008 with all six tasks complete. The final delivery audit checks both upload receipts, thirteen print receipts, seven PNG files, document frontmatter, code fences, and embedded screenshot paths.
+- The physical server remains in tmux session `dataflow008-fpga` on port 8087, and the model server remains on 8088. Finished build, qualification and upload sessions have exited. Unrelated tmux sessions were preserved.
