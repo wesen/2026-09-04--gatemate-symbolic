@@ -1,0 +1,2 @@
+PASS programmable graph: staged activation, dynamic op/finality, generic fanout, readback and guards
+sim/tb_programmable.sv:46: $finish called at 1060000 (1ps)

@@ -1,0 +1,2 @@
+PASS UART pause, ticks, operands, cancellation, polling, reset, bounds, checksum, timeout
+sim/tb_dataflow_link.sv:95: $finish called at 1362675000 (1ps)

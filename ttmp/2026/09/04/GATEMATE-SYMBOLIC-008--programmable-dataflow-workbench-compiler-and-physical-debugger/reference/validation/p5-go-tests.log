@@ -1,0 +1,7 @@
+# ./pkg/dataflow
+open /home/manuel/.cache/go-build/9b/9b31d2fbe6c125ff5b62d9bd52b6d80057403dbe0c0d4b15c267770c18d6a78f-d: read-only file system
+FAIL	./pkg/dataflow [setup failed]
+# github.com/wesen/2026-09-04--gatemate-symbolic/internal/dataflowide
+internal/dataflowide/http.go:13:2: open /home/manuel/.cache/go-build/9b/9b31d2fbe6c125ff5b62d9bd52b6d80057403dbe0c0d4b15c267770c18d6a78f-d: read-only file system
+FAIL	github.com/wesen/2026-09-04--gatemate-symbolic/internal/dataflowide [setup failed]
+FAIL

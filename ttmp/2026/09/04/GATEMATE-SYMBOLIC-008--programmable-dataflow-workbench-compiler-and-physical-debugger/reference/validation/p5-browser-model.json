@@ -1,0 +1,225 @@
+{
+  "source": "model",
+  "result": {
+    "context": 0,
+    "epoch": 0,
+    "node": 5,
+    "port": 0,
+    "final": true,
+    "producer": 5,
+    "subtype": 0,
+    "value": 30
+  },
+  "stop": {
+    "halted": true,
+    "reason": 1,
+    "stopCycle": 5,
+    "mask": 1,
+    "node": 0,
+    "context": 255,
+    "dropped": 0,
+    "events": [
+      {
+        "cycle": 1,
+        "kind": 1,
+        "token": {
+          "context": 0,
+          "epoch": 0,
+          "node": 0,
+          "port": 0,
+          "final": false,
+          "producer": 255,
+          "subtype": 0,
+          "value": 3
+        }
+      },
+      {
+        "cycle": 2,
+        "kind": 1,
+        "token": {
+          "context": 0,
+          "epoch": 0,
+          "node": 0,
+          "port": 1,
+          "final": false,
+          "producer": 255,
+          "subtype": 0,
+          "value": 3
+        }
+      },
+      {
+        "cycle": 3,
+        "kind": 1,
+        "token": {
+          "context": 0,
+          "epoch": 0,
+          "node": 3,
+          "port": 0,
+          "final": false,
+          "producer": 255,
+          "subtype": 0,
+          "value": 3
+        }
+      },
+      {
+        "cycle": 4,
+        "kind": 1,
+        "token": {
+          "context": 0,
+          "epoch": 0,
+          "node": 1,
+          "port": 0,
+          "final": false,
+          "producer": 255,
+          "subtype": 0,
+          "value": 4
+        }
+      },
+      {
+        "cycle": 5,
+        "kind": 1,
+        "token": {
+          "context": 0,
+          "epoch": 0,
+          "node": 3,
+          "port": 1,
+          "final": false,
+          "producer": 255,
+          "subtype": 0,
+          "value": 4
+        }
+      },
+      {
+        "cycle": 5,
+        "kind": 2,
+        "token": {
+          "context": 0,
+          "epoch": 0,
+          "node": 0,
+          "port": 0,
+          "final": false,
+          "producer": 0,
+          "subtype": 0,
+          "value": 9
+        }
+      }
+    ]
+  },
+  "graph": {
+    "count": 6,
+    "descriptors": [
+      {
+        "Op": 0,
+        "Required": 3,
+        "Destinations": [
+          {
+            "Node": 2,
+            "Port": 0
+          },
+          {
+            "Node": 0,
+            "Port": 0
+          }
+        ],
+        "Count": 1,
+        "Final": false
+      },
+      {
+        "Op": 0,
+        "Required": 3,
+        "Destinations": [
+          {
+            "Node": 2,
+            "Port": 1
+          },
+          {
+            "Node": 0,
+            "Port": 0
+          }
+        ],
+        "Count": 1,
+        "Final": false
+      },
+      {
+        "Op": 1,
+        "Required": 3,
+        "Destinations": [
+          {
+            "Node": 5,
+            "Port": 0
+          },
+          {
+            "Node": 0,
+            "Port": 0
+          }
+        ],
+        "Count": 1,
+        "Final": false
+      },
+      {
+        "Op": 2,
+        "Required": 3,
+        "Destinations": [
+          {
+            "Node": 4,
+            "Port": 0
+          },
+          {
+            "Node": 0,
+            "Port": 0
+          }
+        ],
+        "Count": 1,
+        "Final": false
+      },
+      {
+        "Op": 3,
+        "Required": 1,
+        "Destinations": [
+          {
+            "Node": 5,
+            "Port": 1
+          },
+          {
+            "Node": 0,
+            "Port": 0
+          }
+        ],
+        "Count": 1,
+        "Final": false
+      },
+      {
+        "Op": 1,
+        "Required": 3,
+        "Destinations": [
+          {
+            "Node": 0,
+            "Port": 0
+          },
+          {
+            "Node": 0,
+            "Port": 0
+          }
+        ],
+        "Count": 0,
+        "Final": true
+      },
+      {
+        "Op": 0,
+        "Required": 0,
+        "Destinations": [
+          {
+            "Node": 0,
+            "Port": 0
+          },
+          {
+            "Node": 0,
+            "Port": 0
+          }
+        ],
+        "Count": 0,
+        "Final": false
+      }
+    ]
+  }
+}

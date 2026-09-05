@@ -1,0 +1,22 @@
+
+> graph-search-microscope@0.1.0 test /home/manuel/code/wesen/2026-09-04--gatemate-symbolic/web
+> vitest run
+
+
+ RUN  v4.0.18 /home/manuel/code/wesen/2026-09-04--gatemate-symbolic/web
+
+ ✓ src/dataflow/types.test.ts (1 test) 7ms
+ ✓ src/graph.test.ts (7 tests) 15ms
+ ✓ src/App.test.tsx (3 tests) 2113ms
+   ✓ loads a preset, steps, selects trail records, and inspects history safely  1480ms
+   ✓ shows graph validation and device errors rather than implying success  565ms
+ ✓ src/dataflow/App.test.tsx (4 tests) 3464ms
+   ✓ labels physical state and makes history strictly observational  1653ms
+   ✓ blocks invalid source and displays device failures  968ms
+   ✓ requires a fresh compilation after edits and exposes trace loss  731ms
+
+ Test Files  4 passed (4)
+      Tests  15 passed (15)
+   Start at  22:38:45
+   Duration  5.32s (transform 622ms, setup 1.23s, import 876ms, tests 5.60s, environment 3.77s)
+

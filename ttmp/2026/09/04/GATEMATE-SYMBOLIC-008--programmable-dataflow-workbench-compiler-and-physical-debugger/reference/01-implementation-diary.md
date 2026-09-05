@@ -89,3 +89,274 @@ Printed the complete six-phase plan and phase-one start slip. Uploaded the compl
 
 - Source baseline aaad4ff; active count 1..7; four contexts; two outgoing destinations; 32 proposed trace records.
 - Phase task IDs: 13x4, ycgx, g08b, 2bb4, cho9, 54tm.
+
+## Step 2: Typed compiler and per-engine executable graphs
+
+Implemented a bounded graph image and moved semantic and transaction execution to per-engine descriptors. The compiler parses declarations and expressions, checks integer and Boolean types, lowers internal fanout through COPY nodes, orders nodes topologically, and emits named-input bindings and source metadata.
+
+Directed tests execute compiled programs through both models across all four contexts with one-entry queues. They cover a different arithmetic graph, repeated intermediate values, fanout beyond two, signed limits, constants, Boolean conversion, and direct input output.
+
+### Prompt Context
+
+**User prompt (verbatim):** See Step 1.
+
+**Assistant interpretation:** Build the programmable graph/compiler/debugger workbench with an intern guide, physical evidence, and phased delivery.
+
+**Inferred user intent:** Make the existing FPGA execution engine programmable and inspectable while preserving a reviewable account of its correctness.
+
+**Commit (code):** 429e2a2 — feat(dataflow): compile typed expressions into validated per-engine graphs
+
+### What I did
+
+- Added graph.go, compiler.go and compiler_test.go; generalized descriptor access and finality in existing models.
+- Added validated load operations and graph snapshots with detached fixed-size state.
+- Ran go test ./pkg/dataflow ./internal/dataflowide -count=1 and race-enabled package tests.
+
+### Why
+
+- A mutable global descriptor table would allow one engine or historical snapshot to change another engine's graph.
+- Checking complete named inputs before token generation prevents partial injection caused by a later validation error.
+
+### What worked
+
+- All focused model, compiler, session and race checks passed.
+- The four-consumer intermediate program lowers within the seven-node budget and produces the expected result.
+- Malformed graph edges, duplicate writers, invalid types, excessive nesting and graph capacity are rejected.
+
+### What didn't work
+
+- No failed tests or repair attempts in P2.
+
+### What I learned
+
+- External input fanout needs multiple source bindings; only internal producer fanout consumes COPY nodes.
+- Finality must be generated from the active descriptor rather than assuming node five.
+
+### What was tricky to build
+
+- COPY insertion changes dependency ordering; final node IDs are assigned after fanout lowering.
+- Reset retains the original laboratory graph as a built-in program while loaded programs use stricter forward-edge validation.
+
+### What warrants a second pair of eyes
+
+- Review type/range diagnostics and fanout lowering, particularly shared intermediates used three or four times.
+- Graph loading rejects execution state that has already accepted input, ticks or cancellation.
+
+### What should be done in the future
+
+- P3 implements the same descriptor contract in RTL and versioned UART readback.
+
+### Code review instructions
+
+- go test -race ./pkg/dataflow ./internal/dataflowide
+- Read compiler_test.go for independent expected arithmetic results and malformed graph cases.
+
+### Technical details
+
+- P1 design commit af8e50f; P2 implementation commit 429e2a2.
+- reference/validation/p2-go-tests.log retains race-test results.
+
+## Step 3: Programmable RTL descriptors and UART graph transactions
+
+Replaced runtime fixed-node assumptions with active descriptor fields throughout operand validation, issue, routing and finality. Added staged descriptor writes, a fresh-reset load guard, full-image structural validation, atomic activation, version-two capabilities and active graph readback.
+
+The Go serial engine now sends validated descriptor images and commits them under one ownership lock. Snapshot decoding reads physical graph pages. Directed RTL and UART tests execute a two-node multiply fanout graph yielding 84 and a four-node graph yielding 43.
+
+### Prompt Context
+
+**User prompt (verbatim):** See Step 1.
+
+**Assistant interpretation:** Build the programmable graph/compiler/debugger workbench with an intern guide, physical evidence, and phased delivery.
+
+**Inferred user intent:** Make the existing FPGA execution engine programmable and inspectable while preserving a reviewable account of its correctness.
+
+### What I did
+
+- Added shadow and active descriptor banks, write bitmap, validation and graph pages 148..155.
+- Added W/G UART commands and Go serial load encoding with golden-frame tests.
+- Updated all directed simulation harnesses for explicit graph control inputs and capability version two.
+- Ran twelve existing depth/latency configurations, the UART suite, programmable graph tests and focused Go tests.
+
+### Why
+
+- Descriptors must remain stable while tokens are in flight; only a pristine execution state may activate a new graph.
+- Physical snapshots must read actual descriptors rather than assuming the host's last compile request succeeded.
+
+### What worked
+
+- All twelve original RTL configurations passed after generic routing changes.
+- Programmable tests passed changed operations/finality, fanout, graph readback, incomplete activation and invalid edge rejection.
+- UART tests passed staged loading, graph readback, result 84 at node one and late-write rejection.
+
+### What didn't work
+
+- Initial elaboration reported: rtl/dataflow_core.sv:69: error: Unable to bind wire/reg/memory `cancel_fire' in `tb_dataflow.dut'; declaration was later at line 84.
+- Moved cancel_fire before its new use. The next full directed/UART run passed; no second repair attempt was needed.
+
+### What I learned
+
+- The RTL also encoded unary-port validation using node numbers; this was changed to required_ports from the loaded opcode.
+- Forward-only edges, nonempty nonfinal fanout and exactly one final sink establish reachability in this bounded graph.
+
+### What was tricky to build
+
+- G selects graph_size before evaluating validation on the following clock, avoiding acknowledgement against a stale count.
+- Unused physical descriptors read as zero and are decoded separately from active descriptors.
+
+### What warrants a second pair of eyes
+
+- Review graph bitmap/activation ordering and the explicit reset-program exception in readback validation.
+- Hardware placement and timing qualification remain P6 work; simulation success is not physical qualification.
+
+### What should be done in the future
+
+- P4 adds post-edge hardware breakpoints, early tick completion and a bounded trace with loss accounting.
+
+### Code review instructions
+
+- Run scripts/08-rtl-checks.sh under the installed OSS CAD environment.
+- go test ./pkg/dataflow ./internal/dataflowide -count=1
+
+### Technical details
+
+- Wire descriptor: index, opcode<<4 | final<<3 | count, destination0, destination1; destination=node<<1 | port.
+- Capability version is two. All new command payloads retain XOR framing and stop-and-wait ownership.
+
+## Step 4: Post-edge hardware stopping and bounded trace
+
+Added issue, completion-full, and stale-discard breakpoints with an explicit halt latch and stop cycle. UART tick commands return early on halt, and additional ticks preserve computational state until explicit resume. The model exposes the same debug concepts with its own timing.
+
+A 32-record physical trace uses synchronous token and metadata RAMs. Its documented priority chooses one candidate per edge and counts every unrecorded simultaneous candidate as well as buffer overflow. The UI can therefore state when a trace is incomplete instead of reconstructing missing events.
+
+### Prompt Context
+
+**User prompt (verbatim):** See Step 1.
+
+**Assistant interpretation:** Build the programmable graph/compiler/debugger workbench with an intern guide, physical evidence, and phased delivery.
+
+**Inferred user intent:** Make the existing FPGA execution engine programmable and inspectable while preserving a reviewable account of its correctness.
+
+**Commit (code):** 455637e — feat(dataflow): stop on hardware breakpoints and retain bounded execution trace
+
+### What I did
+
+- Added B command, debug status pages 156/157, and token/metadata page pairs 160..223.
+- Added Go debug controls, detached snapshots, model breakpoints and bounded event retention.
+- Expanded UART simulation to check issue halt, trace value 42, no additional halted cycles, resume result 84, overflow after repeated cancellations, and stale halt.
+- Added a dedicated RTL test for completion-full stopping and simultaneous-event loss.
+- Started synthesis and routing in tmux for early physical feasibility while frontend work continues.
+
+### Why
+
+- A bounded tick request must report the actual stopped state when a breakpoint ends it early.
+- Trace observation must disclose losses; a complete-looking partial timeline would mislead the user.
+
+### What worked
+
+- Original RTL regression, programmable graph suite, debug suite and expanded UART tests passed.
+- Go model/debug tests and race checks passed, including snapshot ownership and trace clear.
+- Physical trace read addresses are normalized from page 160 before indexing the RAM.
+
+### What didn't work
+
+- Starting the build tmux session inside the sandbox returned error connecting to /tmp/tmux-1000/default (Operation not permitted). Reissued that authorized operation with escalation.
+- No software test failures in P4.
+
+### What I learned
+
+- A full-queue breakpoint is a sampled pre-edge condition; the published state includes all transitions on the stopping edge.
+- Cancellation and output polling can produce trace records without advancing enabled computational cycles.
+
+### What was tricky to build
+
+- The link sees the halt latch on the following system clock; core clock-enable gating prevents an extra computational edge during that acknowledgement delay.
+- Several stale records may be discarded together. Their count contributes to dropped-event accounting even though one token can be retained.
+
+### What warrants a second pair of eyes
+
+- Review trace priority and the distinction between model capture bandwidth and physical single-record bandwidth.
+- Placement and timing remain to be verified on the expanded design.
+
+### What should be done in the future
+
+- P5 adds source compilation/loading, named inputs, graph layout and truthful debug rendering in React.
+
+### Code review instructions
+
+- Run test-debug.sh and test-link.sh under OSS CAD Suite; read p4-debug.log and p4-uart-debug.log.
+- go test -race ./pkg/dataflow ./internal/dataflowide
+
+### Technical details
+
+- Trace event kinds: operand 1, issue 2, completion 3, route 4, output 5, cancel 6, stale 7.
+- B flags: mask bits 0..2, clear bit 6, resume bit 7; node/context use 255 as wildcard.
+- Debug commit 455637e; graph transport commit 9398755.
+
+## Step 5: Go React program workbench and model browser qualification
+
+Built the typed program editor, graph compilation preview, explicit load/reset path, named inputs, independent .df persistence, dynamic descriptor graph, breakpoint controls, and captured-event table. Loaded source maps are associated with detached historical frames and are attached only after graph readback matches.
+
+Browser qualification compiled the default six-node program, loaded it, supplied 3/4/5, stopped at square issue with value 9, resumed to final result 30, saved/reopened source, rejected an invalid draft, and disabled hardware controls in history. Three screenshots preserve the stopped, completed, and historical model views.
+
+### Prompt Context
+
+**User prompt (verbatim):** See Step 1.
+
+**Assistant interpretation:** Build the programmable graph/compiler/debugger workbench with an intern guide, physical evidence, and phased delivery.
+
+**Inferred user intent:** Make the existing FPGA execution engine programmable and inspectable while preserving a reviewable account of its correctness.
+
+**Commit (code):** a88996c — feat(dataflow): add typed program workbench and physical event debugger UI
+
+### What I did
+
+- Added program.go routes and session operations, compiler source-map cloning, and shared confined file primitives with separate .df/.json namespaces.
+- Replaced fixed SVG edges/op names with active graph descriptors and generalized operand inspector labels.
+- Added ProgramEditor and Debugger components using existing Redux/RTK Query and Bootstrap conventions.
+- Ran Go race tests, TypeScript, 15 frontend tests, embedded frontend generation, and the retained Playwright script.
+
+### Why
+
+- Draft, compiled preview and loaded source must remain distinct to prevent a failed compile from changing physical node interpretation.
+- A visible trace-loss indicator is required because the hardware recorder can omit simultaneous events.
+
+### What worked
+
+- Model browser run stopped at enabled cycle 5 and recorded issue value 9; resumed program returned 30.
+- Invalid named inputs were rejected before mutation, graph/source snapshots were detached, and reset generations invalidated old history.
+- Frontend tests cover stale compilation invalidation, historical breakpoint controls and visible trace loss.
+
+### What didn't work
+
+- Initial TypeScript check identified test fixtures missing new graph/debug fields and Frame.program. Updated the fixtures; the next check and all frontend tests passed.
+- make dataflow-frontend initially failed because /home/manuel/.cache/go-build was read-only in the sandbox. Re-ran with GOCACHE=/tmp/gatemate008-go-cache; generation succeeded.
+
+### What I learned
+
+- Input names are independent from physical destination IDs; the six source tokens for the sample come from only three named inputs.
+- The model can issue another operation within the same stopping edge, consistent with post-edge snapshots.
+
+### What was tricky to build
+
+- Program load resets the session generation and checks the actual descriptor snapshot before attaching source metadata.
+- The reset graph has non-topological IDs, so the renderer uses bounded dependency-depth relaxation rather than assuming increasing IDs.
+
+### What warrants a second pair of eyes
+
+- Review partial named-input injection handling and explicit reset-required state after uncertain serial operations.
+- Physical browser evidence remains P6 work; these three screenshots are explicitly model observations.
+
+### What should be done in the future
+
+- Complete timing and physical qualification, capture hardware workbench screenshots, document final wire/API contracts.
+
+### Code review instructions
+
+- go test -race ./pkg/dataflow ./internal/dataflowide; pnpm --dir web check; pnpm --dir web test.
+- Run scripts/14-browser-model.js against the model server on port 8088.
+
+### Technical details
+
+- Screenshots: 01-model-breakpoint.png, 02-model-result.png, 03-model-history.png.
+- Browser result record: reference/validation/p5-browser-model.json.
+- Program source files use .df under the existing confined project root; scenario files remain .json.

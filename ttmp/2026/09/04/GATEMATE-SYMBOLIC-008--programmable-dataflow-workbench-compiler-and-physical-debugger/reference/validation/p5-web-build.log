@@ -1,0 +1,14 @@
+go generate ./internal/dataflowide
+
+> graph-search-microscope@0.1.0 build:dataflow /home/manuel/code/wesen/2026-09-04--gatemate-symbolic/web
+> tsc --noEmit && vite build --config vite.dataflow.config.ts
+
+vite v7.3.6 building client environment for production...
+transforming...
+✓ 49 modules transformed.
+rendering chunks...
+computing gzip size...
+dist-dataflow/dataflow/index.html    0.38 kB │ gzip:  0.26 kB
+dist-dataflow/app.css              240.09 kB │ gzip: 33.25 kB
+dist-dataflow/app.js               303.12 kB │ gzip: 96.87 kB
+✓ built in 2.09s

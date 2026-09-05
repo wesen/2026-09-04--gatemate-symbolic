@@ -1,0 +1,25 @@
+layout: reference/validation/p5-done.yaml
+dry_run: false
+height: 437
+layout_member: p5-done.yaml
+ok: true
+printed: true
+printer_response:
+    ok: true
+rendered_at: "2026-09-05T02:42:35Z"
+response:
+    height: 437
+    ok: true
+    printed: true
+    printerResponse:
+        ok: true
+    renderedAt: "2026-09-05T02:42:35Z"
+    width: 384
+source_kind: file
+status_code: 200
+url: https://almanach.crib.scapegoat.dev/api/render-and-print
+width: 384
+
+---
+
+printed: yes
