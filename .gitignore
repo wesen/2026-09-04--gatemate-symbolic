@@ -10,3 +10,7 @@ __pycache__/
 *.pyc
 
 /elastic_dataflow/build/
+
+/web/dist-dataflow/
+/internal/dataflowide/assets/
+/elastic_dataflow/projects/

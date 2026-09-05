@@ -1,0 +1,15 @@
+import type {Snapshot,Token} from './types';
+import {nodeNames,valueText,valueType} from './types';
+export function TokenView({token}:{token:Token|null}){return token?<div className="df-token"><strong>{valueText(token.value)}</strong><span>C{token.context} / E{token.epoch} / N{token.node}{token.final?' · FINAL':''}</span><small>{valueType(token.value)} · port {token.port?'B':'A'} · producer {token.producer}</small></div>:<div className="df-token empty"><span>empty</span></div>}
+export function Pipelines({snapshot:s}:{snapshot:Snapshot}){return <section className="df-panel df-pipelines"><div className="df-panel-heading"><h2>Execution & transport</h2><span>valid records only</span></div>
+ <div className="df-unit-row"><label>MUL <small>{s.config.MulLatency} stages</small></label><div className="df-stages">{s.mul.map((t,i)=><div key={i}><small>STAGE {i}</small><TokenView token={t}/></div>)}</div></div>
+ <div className="df-unit-row"><label>ALU <small>1 stage</small></label><TokenView token={s.alu[0]}/></div>
+ <div className="df-queues">{(['input','completion','output'] as const).map(name=><div key={name}><h3>{name} <span>{s[name].length}/{name==='input'?s.config.InputDepth:name==='output'?s.config.OutputDepth:s.config.CompletionDepth}</span></h3><div className="df-queue-tokens">{s[name].length?s[name].map((t,i)=><TokenView token={t} key={i}/>):<span className="text-secondary small">queue empty</span>}</div></div>)}</div>
+ </section>}
+export function Inspector({snapshot:s,context,node}:{snapshot:Snapshot;context:number;node:number}){const slot=s.slots.find(v=>v.context===context&&v.node===node);return <section className="df-panel df-inspector"><div className="df-panel-heading"><h2>Node inspector</h2><span>N{node}</span></div>
+ <h3>{nodeNames[node]}</h3><p className="small text-secondary">Context {context} · epoch {s.epochs[context]}</p>
+ <dl className="df-registers"><dt>required ports</dt><dd>{node===4||node===6?'A':'A + B'}</dd><dt>valid mask</dt><dd>{slot?.valid.toString(2).padStart(2,'0')}</dd><dt>issued</dt><dd>{String(slot?.issued??false)}</dd><dt>pending</dt><dd>{String(slot?.pending??false)}</dd></dl>
+ {[0,1].map(port=><div className="df-operand" key={port}><span>OPERAND {port?'B':'A'}</span><strong>{slot&&(slot.valid&(1<<port))?valueText(slot.values[port]):'not present'}</strong><small>{slot&&(slot.valid&(1<<port))?`${valueType(slot.values[port])} · 0x${slot.values[port].toString(16).padStart(10,'0')}`:'RAM contents are not valid data'}</small></div>)}
+ <h3 className="mt-4">Issue record</h3>{s.issue?<><p className="small">Phase {s.issue.phase}</p><TokenView token={s.issue.token}/><p className="small mt-2">captured A {valueText(s.issue.values[0])} · B {valueText(s.issue.values[1])}</p></>:<p className="small text-secondary">No activation waiting to dispatch.</p>}
+ <h3 className="mt-4">Completion router</h3>{s.router?<><TokenView token={s.router.token}/><p className="small mt-2">delivered mask {s.router.delivered.toString(2).padStart(2,'0')}</p></>:<p className="small text-secondary">No completion being routed.</p>}
+ </section>}

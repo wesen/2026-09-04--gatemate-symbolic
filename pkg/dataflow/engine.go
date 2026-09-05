@@ -167,3 +167,33 @@ func (m *Transaction) Snapshot(ctx context.Context) (Snapshot, error) {
 	return s, nil
 }
 func (m *Transaction) Close() error { return nil }
+
+// Clone detaches all mutable snapshot containers for history and API consumers.
+func (s Snapshot) Clone() Snapshot {
+	s.Slots = append([]SlotSnapshot{}, s.Slots...)
+	s.Input = append([]Token{}, s.Input...)
+	s.Completion = append([]Token{}, s.Completion...)
+	s.Output = append([]Token{}, s.Output...)
+	s.Mul = cloneTokens(s.Mul)
+	s.ALU = cloneTokens(s.ALU)
+	counters := map[string]uint32{}
+	for k, v := range s.Counters {
+		counters[k] = v
+	}
+	s.Counters = counters
+	for c, t := range s.Errors {
+		if t != nil {
+			copy := *t
+			s.Errors[c] = &copy
+		}
+	}
+	if s.Issue != nil {
+		copy := *s.Issue
+		s.Issue = &copy
+	}
+	if s.Router != nil {
+		copy := *s.Router
+		s.Router = &copy
+	}
+	return s
+}

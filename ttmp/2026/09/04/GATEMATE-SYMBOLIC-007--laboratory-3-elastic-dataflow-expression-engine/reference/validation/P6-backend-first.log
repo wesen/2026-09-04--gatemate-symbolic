@@ -1,0 +1,6 @@
+# ./cmd/dataflow-ide
+open /home/manuel/.cache/go-build/aa/aa29f4c5ae5c70b9bb44475402fe2c6dfb6184da25b7e5282f514ad4373b1c19-d: read-only file system
+FAIL	./cmd/dataflow-ide [setup failed]
+ok  	github.com/wesen/2026-09-04--gatemate-symbolic/internal/dataflowide	0.013s
+ok  	github.com/wesen/2026-09-04--gatemate-symbolic/pkg/dataflow	0.012s
+FAIL

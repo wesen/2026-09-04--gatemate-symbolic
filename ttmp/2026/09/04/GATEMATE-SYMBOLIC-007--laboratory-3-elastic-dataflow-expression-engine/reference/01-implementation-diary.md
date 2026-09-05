@@ -384,3 +384,65 @@ scripts/08-physical-examples.sh; scripts/09-physical-stress.sh; elastic_dataflow
 Physical load and run checkpoint builds on commit 2e22871. Phase P5 start slip is confirmed printed. Screenshot request is retained verbatim in this step; no dataflow screenshots exist yet. Board source artifacts remain under ignored elastic_dataflow/build and reproducible Makefile/scripts; generated bitstreams are not committed.
 
 The first opt-in physical stress test stopped before resetting or exercising the board: `physical_test.go:29: open ttmp/2026/09/04/GATEMATE-SYMBOLIC-007--laboratory-3-elastic-dataflow-expression-engine/reference/validation/P5-physical-wire.log: no such file or directory`. Go tests run with the package directory as their working directory. Changed the runner to pass an absolute wire-log path (first repair); retained the original failure and reran the same test.
+
+P5 physical stress completed successfully in 14.95 seconds after the absolute-path repair: 32 randomized four-context batches (128 expressions), a held-output cancellation refusal with unchanged output data across 64 further ticks, and 256 drained cancellations wrapping the physical eight-bit epoch to zero. The final log and complete wire evidence are retained. P4/P5 are now complete; P6 start slip is confirmed printed. No dataflow web server has started yet.
+
+P6 initial browser and frontend checks: the browser ran the book scenario to results 58 and 12 and captured `reference/screenshots/01-model-book-initial.png`. The only browser console error was a missing favicon; the entry HTML now declares an empty data favicon. Screenshot inspection showed overlapping A/B edge labels; they now terminate at separate destination-port heights.
+
+The first React suite passed 13/14 tests. The model-configuration test failed with `Unable to find an element with the text: Model configuration` because the initial loading view prematurely displayed TRANSACTION MODEL before its first API response, so the test's source-label wait was insufficient. Changed the loading badge to CONNECTING and made the configuration assertion await its data. Also restricted example initialization to the first load so clearing the source editor does not repopulate it unexpectedly. Original failing log is retained as `P6-react-first-failure.log`.
+
+## Step 7: Go React scenario IDE and model browser verification
+
+Implemented the separate IDE backend and React workspace, preserving the fixed descriptor graph while making execution schedules editable. The browser now runs the book and cancellation scenarios, saves and reloads projects, validates source, inspects historical frames without enabling mutations, and displays a real occupied model pipeline stage. Captured five screenshots for the diary and later report; physical UI captures follow in P7.
+
+### Prompt Context
+
+**User prompt (verbatim, JSON encoded):**
+
+```json
+"(see Step 1)"
+```
+
+**Assistant interpretation:** Design, publish, implement, and validate the book's elastic dataflow laboratory with task commits, detailed diary, and physical work slips.
+
+**Inferred user intent:** Build a working concurrent symbolic machine and preserve enough explanation and evidence for an intern to understand and maintain it.
+
+### What I did
+
+Added internal/dataflowide scenario validation, confined atomic project storage, a serialized engine session, immutable bounded history, HTTP routes, and embedded assets. Added cmd/dataflow-ide with Glazed flags, loopback binding, zerolog, and errgroup lifecycle. Added React/Redux/RTK Query source editor, graph, node/operand inspector, pipeline/queues, controls, projects, history, counters, and result console. Added independent Vite entry and build generation.
+
+### Why
+
+The user requested a full Go/React IDE and later asked for screenshots. A scenario IDE can exercise the implemented fixed graph honestly without claiming a dynamic graph compiler. Frame identity and reset generations prevent stale browser controls from mutating newer state.
+
+### What worked
+
+Backend ownership/history/project/HTTP tests and race tests pass. All fourteen frontend tests pass, including the prior graph app tests. Production Vite build succeeds. Browser script 15 verified 58/12 results, project save/load, invalid-source execution blocking, historical control disabling, occupied multiply value 42, epoch-one cancellation result 12, and no horizontal overflow at 390 pixels. Current browser console has zero errors or warnings.
+
+### What didn't work
+
+P6 initial Go command build hit the known read-only cache sandbox restriction; rerun with normal cache access passed. First React test exposed an incorrect initial source badge; fixed CONNECTING state and asynchronous test wait. A missing favicon and overlapping graph destination-port labels were fixed after actual screenshot review. Exact earlier failures/logs are recorded above.
+
+### What I learned
+
+The model cancellation screenshot shows value 42 in multiply stage one after six enabled cycles. The corresponding physical stage position may differ; source labels remain explicit. Scenario input actions may include bounded credit ticks when the input queue is full; their frame labels disclose that interval.
+
+### What was tricky to build
+
+Cancellation or a failed exchange during a mutating request must mark engine state uncertain; the UI then requires reset. A source editor must initialize once rather than restoring an example whenever the user clears it. History owns detached snapshots, and reset clears the previous generation. Browser review also motivated clearing old console events on reset and logging each completed action.
+
+### What warrants a second pair of eyes
+
+Review context/source provenance, disabled historical controls plus server-side expected-frame checks, partial-input action errors, atomic rename storage under os.Root, and pause behavior at action boundaries.
+
+### What should be done in the future
+
+Validate the same UI against the physical serial engine, capture physical in-flight/result screenshots, run final repository checks, finish the intern handoff, upload the final document bundle, and push commits.
+
+### Code review instructions
+
+go test -race ./internal/dataflowide ./pkg/dataflow ./cmd/dataflow-ide; pnpm --dir web test; make dataflow-frontend; go run -tags embed ./cmd/dataflow-ide --engine model. Reproduce browser checks with scripts/15-browser-model-checks.js. Screenshots under reference/screenshots.
+
+### Technical details
+
+P4/P5 completion receipts and P6 start receipt are confirmed printed. Screenshots: 01 initial book UI before port-label polish; 02 corrected model book results; 03 historical view with controls disabled; 04 model multiply in flight; 05 mobile viewport. The source of every current image is the transaction model, not hardware. The new server is on 127.0.0.1:8087. The original graph frontend remains its separate entry and API.

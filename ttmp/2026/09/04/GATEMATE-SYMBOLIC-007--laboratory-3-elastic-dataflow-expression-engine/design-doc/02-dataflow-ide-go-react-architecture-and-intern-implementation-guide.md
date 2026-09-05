@@ -11,6 +11,12 @@ DocType: design-doc
 Intent: long-term
 Owners: []
 RelatedFiles:
+    - Path: repo://cmd/dataflow-ide/main.go
+      Note: Go IDE server entrypoint
+    - Path: repo://internal/dataflowide/scenario.go
+      Note: Validated executable scenario language
+    - Path: repo://internal/dataflowide/session.go
+      Note: Serialized execution and bounded detached history
     - Path: repo://internal/microscope/session.go
       Note: Prior session ownership reference
     - Path: repo://pkg/dataflow/transaction.go
@@ -19,12 +25,15 @@ RelatedFiles:
       Note: Token and descriptor contract
     - Path: repo://web/src/App.tsx
       Note: Prior historical-view interaction reference
+    - Path: repo://web/src/dataflow/App.tsx
+      Note: Complete scenario IDE workspace
 ExternalSources: []
 Summary: ""
 LastUpdated: 2026-09-04T20:11:57.781480101-04:00
 WhatFor: ""
 WhenToUse: ""
 ---
+
 
 # Dataflow IDE: Go Service, React Workspace, and Physical Engine Inspection
 

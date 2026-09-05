@@ -8,7 +8,9 @@
     "dev": "vite --host 127.0.0.1",
     "check": "tsc --noEmit",
     "build": "tsc --noEmit && vite build",
-    "test": "vitest run"
+    "test": "vitest run",
+    "build:dataflow": "tsc --noEmit && vite build --config vite.dataflow.config.ts",
+    "dev:dataflow": "vite --config vite.dataflow.config.ts --host 127.0.0.1"
   },
   "dependencies": {
     "@reduxjs/toolkit": "2.12.0",

@@ -1,0 +1,25 @@
+layout: /home/manuel/code/wesen/2026-09-04--gatemate-symbolic/ttmp/2026/09/04/GATEMATE-SYMBOLIC-007--laboratory-3-elastic-dataflow-expression-engine/reference/slips/P4-done.yaml
+dry_run: false
+height: 555
+layout_member: P4-done.yaml
+ok: true
+printed: true
+printer_response:
+    ok: true
+rendered_at: "2026-09-05T00:56:49Z"
+response:
+    height: 555
+    ok: true
+    printed: true
+    printerResponse:
+        ok: true
+    renderedAt: "2026-09-05T00:56:49Z"
+    width: 384
+source_kind: file
+status_code: 200
+url: https://almanach.crib.scapegoat.dev/api/render-and-print
+width: 384
+
+---
+
+printed: yes

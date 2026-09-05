@@ -7,7 +7,7 @@ test:
 	go test ./... -count=1
 frontend:
 	pnpm --dir web install --frozen-lockfile
-	go generate ./internal/microscope
+	go generate ./internal/microscope ./internal/dataflowide
 build: frontend
 	go build -tags embed ./...
 lint: glazed-lint
@@ -25,3 +25,9 @@ dev-backend:
 	go run ./cmd/search-microscope
 dev-frontend:
 	pnpm --dir web dev
+
+.PHONY: dataflow-frontend dataflow-dev
+dataflow-frontend:
+	go generate ./internal/dataflowide
+dataflow-dev:
+	go run ./cmd/dataflow-ide

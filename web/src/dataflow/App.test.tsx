@@ -1,0 +1,38 @@
+import {afterEach,beforeEach,expect,it,vi} from 'vitest';
+import {render,screen,waitFor} from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import {Provider} from 'react-redux';
+import App from './App';
+import {api,makeStore} from './store';
+import type {State,Snapshot} from './types';
+const source=JSON.stringify({version:1,name:'Test',actions:[{kind:'reset'},{kind:'tick',ticks:6}]});
+const snap=():Snapshot=>({source:'serial',config:{InputDepth:8,CompletionDepth:8,OutputDepth:8,MulLatency:4,EpochBits:8},epochs:[0,0,0,0],closed:[false,false,false,false],slots:Array.from({length:28},(_,n)=>({context:Math.floor(n/7),node:n%7,values:[0,0],valid:0,issued:false,pending:false})),issue:null,router:null,mul:[null,null,null,null],alu:[null],input:[],completion:[],output:[],errors:[null,null,null,null],counters:{cycles:6,activations:1},quiescent:false});
+let state:State;let store:ReturnType<typeof makeStore>;let failControl:boolean;let controlCalls:number;
+beforeEach(()=>{
+ state={current:{id:2,generation:1,label:'tick',cycle:6,at:'2026-09-04T00:00:00Z',snapshot:snap()},history:[{id:1,generation:1,label:'reset',cycle:0,at:''},{id:2,generation:1,label:'tick',cycle:6,at:''}],results:[],events:[],running:false,scenario:'Test',step:0,actions:2,error:'',needsReset:false};failControl=false;controlCalls=0;
+ vi.stubGlobal('fetch',vi.fn(async(input:RequestInfo|URL,init?:RequestInit)=>{
+  const req=input instanceof Request?input:new Request(input,init);const path=new URL(req.url).pathname;let data:unknown=state;
+  if(path.endsWith('/examples'))data={book:source,copy:source,fault:source,cancel:source};
+  else if(path.endsWith('/projects'))data=[];
+  else if(path.endsWith('/validate')){const body=await req.json() as {source:string};let valid=true;try{JSON.parse(body.source)}catch{valid=false}data={diagnostics:valid?[]:[{action:-1,message:'Invalid JSON'}],formatted:source,actions:2}}
+  else if(path.includes('/history/'))data={...state.current,id:1,label:'reset',cycle:0,snapshot:{...snap(),counters:{cycles:0}}};
+  else if(path.endsWith('/control')){controlCalls++;if(failControl)return new Response(JSON.stringify({error:'UART state uncertain; reset required'}),{status:502,headers:{'Content-Type':'application/json'}})}
+  return new Response(JSON.stringify(data),{status:200,headers:{'Content-Type':'application/json'}});
+ }));store=makeStore();
+});
+afterEach(()=>{store.dispatch(api.util.resetApiState());vi.unstubAllGlobals()});
+const mount=()=>render(<Provider store={store}><App/></Provider>);
+it('labels physical state and makes history strictly observational',async()=>{
+ const user=userEvent.setup();mount();await screen.findByText('PHYSICAL FPGA');await waitFor(()=>expect(screen.getByRole('button',{name:'Run from start'})).toBeEnabled());
+ await user.selectOptions(screen.getByLabelText('Snapshot history'),'1');await screen.findByText('HISTORICAL SNAPSHOT 1');
+ expect(screen.getByRole('button',{name:'Step 1 cycle'})).toBeDisabled();expect(screen.getByRole('button',{name:'Reset engine'})).toBeDisabled();expect(screen.getByRole('button',{name:'Run from start'})).toBeDisabled();expect(controlCalls).toBe(0);
+ await user.click(screen.getByRole('button',{name:'Return to live'}));expect(screen.getByRole('button',{name:'Step 1 cycle'})).toBeEnabled();
+});
+it('blocks invalid source and displays device failures',async()=>{
+ const user=userEvent.setup();mount();await screen.findByText('PHYSICAL FPGA');await user.clear(screen.getByRole('textbox',{name:'Scenario JSON source'}));await user.type(screen.getByRole('textbox',{name:'Scenario JSON source'}),'invalid');
+ await screen.findByText('Invalid JSON');expect(screen.getByRole('button',{name:'Run from start'})).toBeDisabled();
+ failControl=true;await user.click(screen.getByRole('button',{name:'Step 1 cycle'}));expect(await screen.findByRole('alert')).toHaveTextContent('UART state uncertain');
+});
+it('offers model configuration only for the software source',async()=>{
+ state.current.snapshot.source='model';mount();await screen.findByText('TRANSACTION MODEL');expect(await screen.findByText('Model configuration')).toBeInTheDocument();
+});

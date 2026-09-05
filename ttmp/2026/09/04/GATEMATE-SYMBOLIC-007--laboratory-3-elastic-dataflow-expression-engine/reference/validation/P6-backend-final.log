@@ -1,0 +1,3 @@
+ok  	github.com/wesen/2026-09-04--gatemate-symbolic/internal/dataflowide	0.014s
+ok  	github.com/wesen/2026-09-04--gatemate-symbolic/cmd/dataflow-ide	0.006s
+ok  	github.com/wesen/2026-09-04--gatemate-symbolic/pkg/dataflow	0.012s

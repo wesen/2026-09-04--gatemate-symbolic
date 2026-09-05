@@ -295,6 +295,9 @@ func (m *Transaction) Tick(ctx context.Context) error {
 					m.Metrics.ALU++
 				}
 				m.Trace = append(m.Trace, Activation{m.Metrics.Cycles, i.Context, i.Epoch, i.Node, v})
+				if len(m.Trace) > 4096 {
+					m.Trace = m.Trace[len(m.Trace)-4096:]
+				}
 				m.issue = nil
 			}
 		}

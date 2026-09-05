@@ -1,0 +1,13 @@
+{
+  "script": "scripts/15-browser-model-checks.js",
+  "source": "model",
+  "bookResults": [58, 12],
+  "savedAndReloadedProject": "dataflow-intern-review",
+  "invalidSourceBlocked": true,
+  "historicalControlsDisabled": true,
+  "inFlight": {"context": 2, "epoch": 0, "node": 0, "stage": 1, "value": 42},
+  "cancellationResult": {"context": 2, "epoch": 1, "value": 12},
+  "mobileViewportWidth": 390,
+  "mobileHorizontalOverflow": false,
+  "currentNavigationConsoleErrors": 0
+}
