@@ -424,3 +424,75 @@ The phase plan and S1 START slips printed before coding. Focused tests passed on
 
 - Bounds: one MiB source, 65536 non-EOF tokens, 64 diagnostics and planned 256 parser nesting frames.
 - No CLI, runtime or FPGA code changed in this phase.
+
+## Step 6: Implement Pratt expressions and recursive-descent declarations
+
+The parser now handles complete definitions, right-associative function types, lambdas, lets, conditionals, constructors and cases. Its Pratt loop makes application bind above multiplication, addition/subtraction and nonchaining comparisons, while GroupExpr retains explicit parentheses.
+
+Focused tests passed on their first run. Recovery scans from the failed definition's beginning so case-alternative semicolons are distinguished from top-level terminators; a new def is also a recovery anchor when an earlier brace is missing.
+
+### Prompt Context
+
+**User prompt (verbatim):** (see Step 5)
+
+**Assistant interpretation:** Implement the lexer and handwritten parser described in the preceding exchange, with tested diagnostics, phase slips and commits.
+
+**Inferred user intent:** Turn the agreed parsing design into a usable, documented Go syntax package as the first part of I1.
+
+**Commit (code):** bde6d48 — syntax tree and bounded lexer checkpoint
+
+### What I did
+
+- Added parser.go with Parse(context.Context, string), explicit diagnostics, recursion guards and expression-tree height checks.
+- Added AST-shape tests for precedence, application and signed literals, plus full case/lambda/type structures and byte-range checks.
+- Tested recovery after missing separators, malformed cases, invalid characters, comparison chains and incomplete declarations.
+- Printed S1 DONE and S2 START before parser coding; ran gofmt and focused package tests.
+
+### Why
+
+- Names and annotations remain syntactic data for subsequent binding and type-checking passes.
+- A source with diagnostics must not be treated as an executable program even when recovery returns later complete definitions.
+- Flat operator chains can create deep ASTs without deep recursive parsing, so both structures need bounds.
+
+### What worked
+
+- All S2 tests passed on the first run.
+- n-1 and n - 1 parse identically, while f (-1) is application to a negative literal.
+- Grouped comparisons remain distinguishable from prohibited comparison chains.
+- A malformed case, including a missing closing brace, preserves a following valid definition.
+
+### What didn't work
+
+- No parser or printing failures occurred in this phase.
+
+### What I learned
+
+- A recovery scan needs brace depth from the definition's start, not just the cursor position at the error.
+- The parser must reject truncated token streams instead of treating the lexer-inserted EOF as a complete program.
+
+### What was tricky to build
+
+- Application is implicit and left-associative; its right operand uses a higher minimum binding power to avoid swallowing the next application.
+- The prefix minus case uses strconv.ParseInt with a signed string so the minimum int32 literal is accepted without intermediate signed overflow.
+- The first AST comment overstated interface closure; corrected it because exported embedded Node can be used by external Go clients.
+
+### What warrants a second pair of eyes
+
+- Review recoverDefinition for nested case separators and new-def anchors.
+- Review expr's precedence and finish's AST-height bound.
+- The parser deliberately does not require main or reject duplicate bindings; those are semantic-pass responsibilities.
+
+### What should be done in the future
+
+- S3 adds repository examples, fuzz properties, package documentation and broader validation.
+
+### Code review instructions
+
+- Run go test ./pkg/lazylang/syntax -count=1.
+- Inspect TestPrecedenceAndApplication, TestDiagnosticsAndRecovery and TestParserBoundsAndCancellation.
+
+### Technical details
+
+- Malformed definitions are omitted; diagnostics are stable-sorted by byte start.
+- Compound application arguments require parentheses; bare minus following a left operand is subtraction.
+- Only the parser portion of I1 is being completed; the type checker and evaluator remain open.

@@ -47,7 +47,7 @@ type Parameter struct {
 	Span       Span
 }
 
-// Expr is closed to the node types in this package. GroupExpr preserves explicit
+// Expr is the common expression-node interface. GroupExpr preserves explicit
 // parentheses, including the distinction between chained and grouped comparisons.
 type Expr interface {
 	SourceSpan() Span
