@@ -1,31 +1,15 @@
 ---
-Title: Lazy functional language - intern analysis design and implementation guide
+Title: Lazy Functional Language - Intern Design and Implementation Guide
 Ticket: GATEMATE-SYMBOLIC-010
 Status: review
-Topics:
-    - fpga
-    - gatemate
-    - symbolic-computers
-    - architecture
+Topics: []
 DocType: design-doc
-Intent: long-term
+Intent: ""
 Owners: []
-RelatedFiles:
-    - Path: repo://internal/lazyide/session.go
-      Note: Session identity and uncertain operations
-    - Path: repo://lazy_reducer/rtl/lazy_core.sv
-      Note: Synchronous RAM and write ownership
-    - Path: repo://pkg/lazy/model.go
-      Note: Claim/update and explicit continuations
-    - Path: repo://pkg/lazy/types.go
-      Note: Qualified node and engine contract
-    - Path: repo://ttmp/2026/09/05/GATEMATE-SYMBOLIC-010--lazy-functional-language-compiler-and-source-aware-fpga-ide/scripts/04-contract-check.py
-      Note: Proposed layouts and hand-derived fixture checks
-    - Path: repo://web/src/lazy/types.ts
-      Note: Existing 40-bit frontend representation
+RelatedFiles: []
 ExternalSources: []
 Summary: ""
-LastUpdated: 2026-09-05T19:00:29.979713656-04:00
+LastUpdated: 2026-09-05T19:00:29.980007274-04:00
 WhatFor: ""
 WhenToUse: ""
 ---
@@ -165,17 +149,7 @@ A productive recursive value and a cyclic demand are different. For example, let
 
 Compilation is deterministic and has no device effects. The frontend submits source text; the Go compiler tokenizes it with spans, parses it, resolves names, checks types, lowers expression descriptors, creates the initial heap, and emits an immutable artifact. Only a later Load operation changes an engine.
 
-```mermaid
-flowchart TD
-    S[Source text] --> T[Tokens and source spans]
-    T --> A[Parsed syntax tree]
-    A --> B[Resolved bindings and types]
-    B --> C[Expression code records]
-    C --> H[Initial heap and provenance]
-    H --> P[Validated immutable artifact]
-    P --> M[Go machine]
-    P --> F[FPGA loader]
-```
+![Compiler pipeline from source to a validated artifact](../reference/figures/design-1.png){height=5.5in}
 
 Use tokenize, parse, allocate binding IDs, resolve references, type-check, then lower. Both binding analysis and type checking use the same stable binding IDs. Preserve the parsed tree for the semantic reference so it does not execute the emitted descriptors.
 
@@ -281,22 +255,7 @@ A transaction's initialization writes may be observed in a specialized diagnosti
 
 The conceptual controller has Eval(code, env), Enter(ref), Return(ref), environment lookup, allocation, arithmetic, and Output states. Hardware adds synchronous code/heap/stack wait states. Eval interprets one expression descriptor; Enter demands an existing heap object. Keeping these operations separate avoids treating a code address as a heap address.
 
-```mermaid
-flowchart TD
-    E[Eval code with environment] -->|variable| L[Resolve ENV binding]
-    L --> N[Enter heap reference]
-    E -->|lambda or constructor| A[Allocate complete objects]
-    A --> R[Return WHNF reference]
-    N -->|THUNK| U[Reserve UPDATE and claim]
-    U --> E
-    N -->|IND| N
-    N -->|value or ERROR| R
-    R --> K[Dispatch continuation]
-    K -->|body or selected branch| E
-    K -->|UPDATE| W[BLACKHOLE to IND]
-    W --> R
-    K -->|empty stack| O[Hold result reference]
-```
+![Evaluation and thunk update transitions](../reference/figures/design-2.png){width=95%}
 
 ### Enter and update
 
@@ -429,20 +388,7 @@ Queries do not advance execution. The controller must wait for selected synchron
 
 The IDE is a source editor with a compiled-program view and a runtime inspector. Use Go for compilation, artifact storage and session control; React, TypeScript, Redux and RTK Query for the frontend; Bootstrap for styling; and embedded assets under /static/. Use the repository's top-level go.mod and pnpm workspace. New commands use Glazed and expose --log-level, --engine and --device. Serve the application on an available loopback port, proposed 18091.
 
-```mermaid
-flowchart TD
-    ED[Source editor and diagnostics] --> CP[Compile API]
-    CP --> AR[Immutable artifact]
-    AR --> LV[Typed code and binding viewer]
-    AR --> LD[Explicit load control]
-    LD --> SS[Serialized session]
-    SS --> RT[Model or serial Runtime]
-    RT --> SN[Detached snapshot]
-    SN --> HP[Heap and closure inspector]
-    SN --> ST[Continuation and allocation views]
-    SN --> TR[Source-linked mutation timeline]
-    SN --> LS[Lazy list demand panel]
-```
+![Source-aware IDE and runtime observation architecture](../reference/figures/design-3.png){width=95%}
 
 Provide these proposed HTTP endpoints:
 

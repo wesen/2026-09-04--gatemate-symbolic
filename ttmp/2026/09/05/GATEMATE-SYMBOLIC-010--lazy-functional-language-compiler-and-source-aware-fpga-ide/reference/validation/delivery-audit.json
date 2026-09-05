@@ -1,0 +1,63 @@
+{
+  "documents": {
+    "index.md": {
+      "words": 341,
+      "sha256": "7a39b156c1cd06e095ac63ac4104314e06583c416fa22059d5fd0109317915e8"
+    },
+    "01-lazy-functional-language-intern-analysis-design-and-implementation-guide.md": {
+      "words": 9484,
+      "sha256": "86e29b95ae8f0cca0021ba4ed251bceba28a387c3713c6266616d36e5e056372"
+    },
+    "01-implementation-diary.md": {
+      "words": 2974,
+      "sha256": "3e3355bc2ebb84152dec7d83613cd0ba7f0a8f3db480d2ed6540e6be710c4017"
+    },
+    "02-source-evidence-and-design-decisions.md": {
+      "words": 614,
+      "sha256": "2394e21ba04cf6e6b09b9d66e7569365a60bba1e7991cdc67087db2a90631cd8"
+    }
+  },
+  "figures": {
+    "design-3.png": [
+      1046,
+      630
+    ],
+    "design-1.png": [
+      274,
+      630
+    ],
+    "report-3.png": [
+      692,
+      601
+    ],
+    "design-2.png": [
+      778,
+      518
+    ],
+    "report-4.png": [
+      1452,
+      132
+    ],
+    "report-1.png": [
+      1059,
+      132
+    ],
+    "report-2.png": [
+      222,
+      399
+    ]
+  },
+  "pdfPages": 23,
+  "inspectedFigurePage": 6,
+  "vaultArticleAndAssetsMatch": true,
+  "physicalSlips": {
+    "plan": "pending",
+    "d1-start": "pending",
+    "d1-done": "pending",
+    "d2-start": "pending",
+    "d2-done": "pending",
+    "d3-start": "pending",
+    "d3-done": "pending"
+  },
+  "remarkableUploaded": true
+}

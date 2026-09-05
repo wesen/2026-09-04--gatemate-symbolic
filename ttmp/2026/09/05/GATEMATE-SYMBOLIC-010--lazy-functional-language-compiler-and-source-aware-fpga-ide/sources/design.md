@@ -133,7 +133,7 @@ A productive recursive value and a cyclic demand are different. For example, let
 Compilation is deterministic and has no device effects. The frontend submits source text; the Go compiler tokenizes it with spans, parses it, resolves names, checks types, lowers expression descriptors, creates the initial heap, and emits an immutable artifact. Only a later Load operation changes an engine.
 
 ```mermaid
-flowchart LR
+flowchart TD
     S[Source text] --> T[Tokens and source spans]
     T --> A[Parsed syntax tree]
     A --> B[Resolved bindings and types]

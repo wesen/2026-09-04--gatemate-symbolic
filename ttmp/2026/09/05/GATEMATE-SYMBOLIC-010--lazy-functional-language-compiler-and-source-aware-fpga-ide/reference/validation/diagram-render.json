@@ -1,0 +1,72 @@
+[
+  {
+    "name": "design-1",
+    "svg": true,
+    "bounds": {
+      "x": 24,
+      "y": 24,
+      "width": 273.875,
+      "height": 630
+    }
+  },
+  {
+    "name": "design-2",
+    "svg": true,
+    "bounds": {
+      "x": 24,
+      "y": 24,
+      "width": 777.140625,
+      "height": 517.984375
+    }
+  },
+  {
+    "name": "design-3",
+    "svg": true,
+    "bounds": {
+      "x": 24,
+      "y": 24,
+      "width": 1045.140625,
+      "height": 630
+    }
+  },
+  {
+    "name": "report-1",
+    "svg": true,
+    "bounds": {
+      "x": 24,
+      "y": 24,
+      "width": 1058.0625,
+      "height": 132
+    }
+  },
+  {
+    "name": "report-2",
+    "svg": true,
+    "bounds": {
+      "x": 24,
+      "y": 24,
+      "width": 221.15625,
+      "height": 398.96875
+    }
+  },
+  {
+    "name": "report-3",
+    "svg": true,
+    "bounds": {
+      "x": 24,
+      "y": 24,
+      "width": 691.859375,
+      "height": 600.984375
+    }
+  },
+  {
+    "name": "report-4",
+    "svg": true,
+    "bounds": {
+      "x": 24,
+      "y": 24,
+      "width": 1452,
+      "height": 131.046875
+    }
+  }
+]

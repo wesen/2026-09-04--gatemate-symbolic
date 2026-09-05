@@ -76,7 +76,7 @@ Then commit at appropriate intervals and keep a detailed diary as you work (usin
 ### What worked
 
 - Vault commit 23de3f4 pushed successfully to ssh://github.com/go-go-golems/go-go-parc.
-- The report contains a real seven-node execution, physical mutation cycles 9 and 61, cycle error at 23, all fault codes, three diagrams and five physical screenshots.
+- The report contains a real seven-node execution, physical mutation cycles 9 and 61, cycle error at 23, all fault codes, four diagrams and five physical screenshots.
 - Primary source downloads and PDF text extraction succeeded.
 - The existing unrelated untracked AgentForum vault note was preserved.
 
@@ -206,3 +206,88 @@ I then reviewed the design's cross-component boundaries. The guide now specifies
 - All scripts reside in ticket scripts/; source resources and design fixtures reside in sources/.
 - No compiler, runtime, RTL, CLI or frontend implementation changed in this phase.
 - The proposed target is separate from the qualified Lab 4 experiment and has no compatibility adapter.
+
+## Step 3: Render, audit and deliver the design guide
+
+I rendered all seven Mermaid diagrams from the report and guide using the locally installed Mermaid browser bundle. I prepared a print edition that replaces the guide's three Mermaid blocks with rendered figures, avoiding the uploader's fallback to raw code when mmdc is absent. The local guide-only PDF is 23 pages, and its compiler-pipeline page was visually inspected before final delivery.
+
+The guide uploaded successfully to reMarkable. Automatic approval review rejected an earlier attempt to include the separate source-evidence document, so I narrowed the upload to the explicitly requested guide and kept the evidence appendix in the ticket. The thermal renderer remained unavailable; eight retained slips are tracked as pending, with a replay command and original failure receipts.
+
+### Prompt Context
+
+**User prompt (verbatim):**
+
+(see Step 1)
+
+**Assistant interpretation:** Publish the completed reducer report, then prepare and deliver the follow-up language design with a detailed implementation plan.
+
+**Inferred user intent:** Preserve a technical explanation of the working machine and make the next project concrete enough to implement task by task.
+
+**Commit (documentation):** 2c46643 — docs(lazylang): specify compiler allocated runtime and source-aware FPGA IDE
+
+### What I did
+
+- Generated and ran scripts/06-prepare-diagram-render.py and scripts/07-render-diagrams.js; all three design and four report diagrams rendered to SVG and PNG.
+- Changed the compiler pipeline diagram to a vertical layout and constrained its PDF height for legibility.
+- Prepared sources/design-print.md using scripts/08-prepare-print-edition.py; retained the original Mermaid diagrams in the design document.
+- Rendered a local PDF, inspected its compiler figure page, and audited text, relative links, frontmatter, packed fixture widths, figure signatures and copied vault hashes.
+- Uploaded only the guide as GATEMATE 010 Lazy Functional Language Design.pdf to /ai/2026/09/05/GATEMATE-SYMBOLIC-010.
+- Marked D3 complete and the design document ready for review; left I1–I6 open and added a separate pending-print task.
+- Retained scripts/11-replay-pending-slips.sh and an eight-slip list. Generated D3 START/DONE layouts without claiming they were printed.
+
+### Why
+
+- A successful Markdown upload can still contain raw Mermaid source if the renderer is missing, so the guide needed an explicitly rendered PDF edition.
+- Physical printing receipts must distinguish successful paper output from generated layouts and renderer failures.
+- The source-evidence document was not needed to satisfy the user's explicitly requested guide upload, so removing it was the narrower authorized delivery.
+
+### What worked
+
+- Seven Mermaid diagrams rendered successfully; the guide's three are embedded in the PDF edition.
+- The final guide-only PDF contains 23 pages; pdftotext finds the compiled example, observation-page appendix, resource arithmetic and cyclic-thunk contract.
+- Vault article and all five physical assets match the SHA-256 publication receipt from commit 23de3f4.
+- reMarkable returned: OK: uploaded GATEMATE 010 Lazy Functional Language Design.pdf -> /ai/2026/09/05/GATEMATE-SYMBOLIC-010.
+- Docmgr doctor passed before final bookkeeping; the final delivery audit records remarkableUploaded true.
+
+### What didn't work
+
+- D2 DONE printing failed with remote almanach 500: chrome render stage viewport failed after 20.002s ... websocket url timeout reached. Earlier failures and the new receipt remain intact.
+- Automatic approval review rejected the initial guide-plus-source-evidence upload: the guide was authorized but the additional source-evidence payload was judged insufficiently scoped. Removed that separate document from both upload inputs and the regenerated local PDF. The subsequent guide-only upload was approved and succeeded.
+- mmdc was absent from PATH; inspection of the uploader showed it would leave Mermaid blocks unchanged. Used the existing local Mermaid browser bundle to render the diagrams instead of accepting raw diagram code in the PDF.
+
+### What I learned
+
+- The report has four diagrams, not the three initially counted in its diary summary. Corrected the diary count after rendering all blocks; the published article itself was already complete.
+- The handoff is a 23-page guide alone; the earlier 25-page local bundle included the separate evidence appendix and was replaced before the successful upload.
+- Generated layouts remain useful recovery artifacts but cannot satisfy the phase-time physical printing requirement while the external renderer is unavailable.
+
+### What was tricky to build
+
+- The first pipeline diagram was too wide for a readable printed page. A vertical layout plus a fixed 5.5-inch display height produced a legible inspected figure.
+- The browser rendering script opened and closed a separate page, preserving the physical inspector tab and running servers.
+- Publication metadata and diagram substitutions differ between ticket Markdown and print Markdown, while the technical prose and contracts remain the same.
+
+### What warrants a second pair of eyes
+
+- Read the uploaded guide against the ticket design and format-schema.json; the small checker validates layout/framing, not runtime correctness.
+- Review the pending-print list rather than interpreting D3 completion as proof of physical slip output.
+- I4 must validate actual BRAM packing and timing; no physical resource or execution result for the new language is claimed.
+
+### What should be done in the future
+
+- Start I1 with parser, binding/type checker and independent semantic evaluator, using the guide's exact examples.
+- When the printer renderer recovers, run bash scripts/11-replay-pending-slips.sh --print; it prints the retained slips in order, skips confirmed successes and preserves timestamped replay receipts.
+- Keep the ticket active for I1–I6 and the explicit pending-print task.
+
+### Code review instructions
+
+- Run python3 scripts/10-audit.py and docmgr doctor --ticket GATEMATE-SYMBOLIC-010.
+- Inspect reference/validation/remarkable-upload.log, delivery-audit.json, diagram-render.json and design-figure-page.png.
+- Review the source repository's final commit diff and the vault's path-limited report commit.
+
+### Technical details
+
+- Report vault revision: 23de3f4. Design checkpoint: 2c46643.
+- New guide body: 9388 words. Final guide-only PDF: 23 pages. Rendered diagrams: three design plus four report.
+- Printing status: REPORT START succeeded; REPORT DONE and all seven design-ticket slips remain pending. The replay script defaults to listing, and --print sends the authorized layouts.
+- No runtime software or FPGA image changed during this report/design request.

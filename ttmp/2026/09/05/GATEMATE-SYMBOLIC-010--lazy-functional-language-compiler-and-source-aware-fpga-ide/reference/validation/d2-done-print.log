@@ -1,0 +1,3 @@
+Error: remote almanach returned 500: chrome render stage "viewport" failed after 20.002s (timeout 2m0s): websocket url timeout reached
+error: print command failed (exit 1)
+layout: reference/validation/d2-done.yaml

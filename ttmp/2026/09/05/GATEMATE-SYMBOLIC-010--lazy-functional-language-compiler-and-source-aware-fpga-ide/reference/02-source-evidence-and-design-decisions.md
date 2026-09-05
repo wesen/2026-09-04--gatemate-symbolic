@@ -10,13 +10,28 @@ Topics:
 DocType: reference
 Intent: long-term
 Owners: []
-RelatedFiles: []
+RelatedFiles:
+    - Path: repo://ttmp/2026/09/05/GATEMATE-SYMBOLIC-010--lazy-functional-language-compiler-and-source-aware-fpga-ide/scripts/06-prepare-diagram-render.py
+      Note: Extract report and guide diagrams
+    - Path: repo://ttmp/2026/09/05/GATEMATE-SYMBOLIC-010--lazy-functional-language-compiler-and-source-aware-fpga-ide/scripts/07-render-diagrams.js
+      Note: Validate and capture rendered diagrams
+    - Path: repo://ttmp/2026/09/05/GATEMATE-SYMBOLIC-010--lazy-functional-language-compiler-and-source-aware-fpga-ide/scripts/08-prepare-print-edition.py
+      Note: Prepare readable guide-only PDF source
+    - Path: repo://ttmp/2026/09/05/GATEMATE-SYMBOLIC-010--lazy-functional-language-compiler-and-source-aware-fpga-ide/scripts/09-render-and-upload.sh
+      Note: Scoped guide rendering and upload
+    - Path: repo://ttmp/2026/09/05/GATEMATE-SYMBOLIC-010--lazy-functional-language-compiler-and-source-aware-fpga-ide/scripts/10-audit.py
+      Note: Verify published content and delivery receipts
+    - Path: repo://ttmp/2026/09/05/GATEMATE-SYMBOLIC-010--lazy-functional-language-compiler-and-source-aware-fpga-ide/scripts/11-replay-pending-slips.sh
+      Note: Recover delayed physical printing without claiming success
+    - Path: repo://ttmp/2026/09/05/GATEMATE-SYMBOLIC-010--lazy-functional-language-compiler-and-source-aware-fpga-ide/sources/spineless-tagless-gmachine.pdf
+      Note: Primary closure and update reference
 ExternalSources: []
 Summary: ""
 LastUpdated: 2026-09-05T18:34:33.023928008-04:00
 WhatFor: ""
 WhenToUse: ""
 ---
+
 
 # Source evidence and design decisions
 

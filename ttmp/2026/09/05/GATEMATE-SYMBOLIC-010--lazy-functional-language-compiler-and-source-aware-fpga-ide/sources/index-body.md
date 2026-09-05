@@ -19,4 +19,4 @@ Compile a function application behind a shared binding and return 168 with one m
 
 ## Delivery and printing
 
-The target reMarkable folder is /ai/2026/09/05/GATEMATE-SYMBOLIC-010. Validation and upload receipts are retained under reference/validation. The thermal renderer failed during early phase printing; generated layouts and exact failed receipts are retained. Only logs with printed: true establish physical printing.
+The 23-page guide was uploaded successfully as GATEMATE 010 Lazy Functional Language Design.pdf to /ai/2026/09/05/GATEMATE-SYMBOLIC-010. The separate source-evidence document remains in the ticket. D1–D3 are complete; I1–I6 and the explicit pending-print task remain open. Validation and upload receipts are retained under reference/validation. The thermal renderer failed during early phase printing; generated layouts and exact failed receipts are retained. Only logs with printed: true establish physical printing. Eight report/design slips remain pending; list or replay them with scripts/11-replay-pending-slips.sh. See reference/validation/remarkable-upload.log and delivery-audit.json for delivery evidence.

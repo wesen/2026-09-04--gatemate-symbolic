@@ -14,3 +14,8 @@ D1 complete: qualified baseline reviewed, report published first, primary semant
 
 D2 complete: 9388-word intern guide specifies language, allocated runtime, protocol, source-aware IDE and future implementation gates; checked packed layouts and hand-derived fixture.
 
+
+## 2026-09-05
+
+D3 complete: rendered and inspected 23-page guide uploaded to reMarkable; source evidence retained locally after approval review narrowed upload. Seven diagrams and vault hashes verified. Eight slips pending external printer recovery; replay script retained. Design checkpoint 2c46643.
+

@@ -64,3 +64,7 @@ See [changelog.md](./changelog.md) for recent changes and decisions.
 - scripts/ - Temporary code and tooling
 - various/ - Working notes and research
 - archive/ - Deprecated or reference-only artifacts
+
+## Published project report
+
+The [textbook-style reducer report](reference/03-project-report-inside-the-physically-qualified-lazy-graph-reducer.md) explains the implemented machine with five physical screenshots. It was published to go-go-parc in commit 23de3f4. The lazy-language follow-up design is in GATEMATE-SYMBOLIC-010.

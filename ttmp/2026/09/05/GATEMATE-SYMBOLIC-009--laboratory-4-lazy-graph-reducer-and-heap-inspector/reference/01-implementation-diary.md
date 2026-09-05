@@ -436,7 +436,7 @@ The physical observations establish the expected claim/update sequence, reuse of
 
 ## Step 7: Publish the textbook-style project report in go-go-parc
 
-I wrote a 4,661-word report about the implemented machine and published it with five physical FPGA screenshots. The report explains the reducer's semantics and observable behavior, with prose, pseudocode, three diagrams, representation and API tables, and source references pinned to 79f28e6.
+I wrote a 4,661-word report about the implemented machine and published it with five physical FPGA screenshots. The report explains the reducer's semantics and observable behavior, with prose, pseudocode, four diagrams, representation and API tables, and source references pinned to 79f28e6.
 
 The vault publication was completed before creating follow-up ticket GATEMATE-SYMBOLIC-010. The new ticket's first diary step contains the full user prompt and the combined report/design context.
 

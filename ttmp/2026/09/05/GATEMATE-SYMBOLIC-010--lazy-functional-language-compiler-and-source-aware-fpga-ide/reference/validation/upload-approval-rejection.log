@@ -1,0 +1,3 @@
+Rejected action: launch upload of design-print.md together with reference/02-source-evidence-and-design-decisions.md.
+Automatic approval review reason: This uploads internal design and source-evidence documents to reMarkable; the user authorized the guide upload but not clearly the additional source-evidence payload, so sensitive egress is insufficiently scoped.
+Resolution: remove the separate source-evidence document from the upload and regenerate the local PDF from the guide alone. Retain the source-evidence document in the ticket. The new upload contains only the explicitly requested guide.
