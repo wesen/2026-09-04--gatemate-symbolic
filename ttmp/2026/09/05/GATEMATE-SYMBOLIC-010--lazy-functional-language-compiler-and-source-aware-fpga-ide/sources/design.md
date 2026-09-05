@@ -1,36 +1,3 @@
----
-Title: Lazy functional language - intern analysis design and implementation guide
-Ticket: GATEMATE-SYMBOLIC-010
-Status: active
-Topics:
-    - fpga
-    - gatemate
-    - symbolic-computers
-    - architecture
-DocType: design-doc
-Intent: long-term
-Owners: []
-RelatedFiles:
-    - Path: repo://internal/lazyide/session.go
-      Note: Session identity and uncertain operations
-    - Path: repo://lazy_reducer/rtl/lazy_core.sv
-      Note: Synchronous RAM and write ownership
-    - Path: repo://pkg/lazy/model.go
-      Note: Claim/update and explicit continuations
-    - Path: repo://pkg/lazy/types.go
-      Note: Qualified node and engine contract
-    - Path: repo://ttmp/2026/09/05/GATEMATE-SYMBOLIC-010--lazy-functional-language-compiler-and-source-aware-fpga-ide/scripts/04-contract-check.py
-      Note: Proposed layouts and hand-derived fixture checks
-    - Path: repo://web/src/lazy/types.ts
-      Note: Existing 40-bit frontend representation
-ExternalSources: []
-Summary: ""
-LastUpdated: 2026-09-05T18:34:32.792815061-04:00
-WhatFor: ""
-WhenToUse: ""
----
-
-
 # A Lazy Functional Language and Source-Aware FPGA IDE
 
 ## 1. Purpose, status, and first result

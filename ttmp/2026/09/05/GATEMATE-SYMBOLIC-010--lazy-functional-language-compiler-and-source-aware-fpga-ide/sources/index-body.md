@@ -1,23 +1,3 @@
----
-Title: Lazy functional language compiler and source-aware FPGA IDE
-Ticket: GATEMATE-SYMBOLIC-010
-Status: active
-Topics:
-    - fpga
-    - gatemate
-    - symbolic-computers
-    - architecture
-DocType: index
-Intent: long-term
-Owners: []
-RelatedFiles: []
-ExternalSources: []
-Summary: ""
-LastUpdated: 2026-09-05T18:34:04.738222604-04:00
-WhatFor: ""
-WhenToUse: ""
----
-
 # Lazy functional language compiler and source-aware FPGA IDE
 
 This ticket designs the follow-up to the physically qualified Lab 4 reducer: a typed lazy language with closures, recursive bindings, lazy integer lists, bounded allocation and source-linked inspection on GateMate.

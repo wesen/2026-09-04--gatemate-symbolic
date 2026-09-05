@@ -3,7 +3,7 @@
 ## TODO
 
 - [x] D1: Audit the qualified reducer and record primary source evidence <!-- t:2owd -->
-- [ ] D2: Specify the language, compiler, allocated runtime, protocol and source-aware IDE <!-- t:vjwi -->
+- [x] D2: Specify the language, compiler, allocated runtime, protocol and source-aware IDE <!-- t:vjwi -->
 - [ ] D3: Validate the design package, upload to reMarkable and record delivery <!-- t:tx1q -->
 - [ ] I1: Implement parser, monomorphic type checker and independent semantic evaluator <!-- t:xxed -->
 - [ ] I2: Implement deterministic expression-code compiler and source artifacts <!-- t:6d0s -->

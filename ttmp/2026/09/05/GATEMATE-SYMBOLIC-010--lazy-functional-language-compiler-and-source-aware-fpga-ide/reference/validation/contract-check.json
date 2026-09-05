@@ -1,0 +1,40 @@
+{
+  "checked": "field widths, bounds, golden framing and illustrative static references only",
+  "widths": {
+    "object": 80,
+    "code": 128,
+    "frame": 128,
+    "trace": 256,
+    "capability": 128
+  },
+  "logicalMemoryBits": 540672,
+  "profile": {
+    "heap": {
+      "count": 2048,
+      "width": 80
+    },
+    "code": {
+      "count": 2048,
+      "width": 128
+    },
+    "stack": {
+      "count": 512,
+      "width": 128
+    },
+    "provenance": {
+      "count": 2048,
+      "width": 16
+    },
+    "trace": {
+      "count": 64,
+      "width": 256
+    }
+  },
+  "golden": {
+    "begin": "B000e0011000f000f1f\n",
+    "force": "F000f0f\n",
+    "heapRoot": "H000f0500000d00100000000017\n",
+    "code0": "01000000000000000000000000010000"
+  },
+  "fixtureSha256": "87e279591d78e329e5f0eb2cf3442ca91282cd1365a93b442a334314b5a543e6"
+}

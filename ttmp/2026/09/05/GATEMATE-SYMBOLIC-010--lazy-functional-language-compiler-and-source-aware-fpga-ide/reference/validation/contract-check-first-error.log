@@ -1,0 +1,4 @@
+Command: python3 scripts/04-contract-check.py
+TypeError: pack() got multiple values for argument 'kind'
+Cause: the pack helper's selector parameter collided with the frame field named kind.
+Fix: rename the helper parameter to layout_name; the next run passed.

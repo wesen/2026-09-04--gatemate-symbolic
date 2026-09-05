@@ -1,0 +1,191 @@
+{
+  "layouts": {
+    "object": [
+      [
+        "tag",
+        8
+      ],
+      [
+        "flags",
+        8
+      ],
+      [
+        "a",
+        16
+      ],
+      [
+        "b",
+        16
+      ],
+      [
+        "payload",
+        32
+      ]
+    ],
+    "code": [
+      [
+        "op",
+        8
+      ],
+      [
+        "flags",
+        8
+      ],
+      [
+        "a",
+        16
+      ],
+      [
+        "b",
+        16
+      ],
+      [
+        "c",
+        16
+      ],
+      [
+        "immediate",
+        32
+      ],
+      [
+        "span",
+        16
+      ],
+      [
+        "reserved",
+        16
+      ]
+    ],
+    "frame": [
+      [
+        "kind",
+        8
+      ],
+      [
+        "op",
+        8
+      ],
+      [
+        "a",
+        16
+      ],
+      [
+        "b",
+        16
+      ],
+      [
+        "c",
+        16
+      ],
+      [
+        "d",
+        16
+      ],
+      [
+        "savedRef",
+        16
+      ],
+      [
+        "span",
+        16
+      ],
+      [
+        "reserved",
+        16
+      ]
+    ],
+    "trace": [
+      [
+        "cycle",
+        32
+      ],
+      [
+        "address",
+        16
+      ],
+      [
+        "span",
+        16
+      ],
+      [
+        "kind",
+        8
+      ],
+      [
+        "flags",
+        8
+      ],
+      [
+        "reserved",
+        16
+      ],
+      [
+        "old",
+        80
+      ],
+      [
+        "new",
+        80
+      ]
+    ],
+    "capability": [
+      [
+        "signature",
+        32
+      ],
+      [
+        "version",
+        8
+      ],
+      [
+        "heapCapacity",
+        16
+      ],
+      [
+        "stackCapacity",
+        16
+      ],
+      [
+        "codeCapacity",
+        16
+      ],
+      [
+        "traceCapacity",
+        16
+      ],
+      [
+        "reserved",
+        24
+      ]
+    ]
+  },
+  "widths": {
+    "object": 80,
+    "code": 128,
+    "frame": 128,
+    "trace": 256,
+    "capability": 128
+  },
+  "profile": {
+    "heap": {
+      "count": 2048,
+      "width": 80
+    },
+    "code": {
+      "count": 2048,
+      "width": 128
+    },
+    "stack": {
+      "count": 512,
+      "width": 128
+    },
+    "provenance": {
+      "count": 2048,
+      "width": 16
+    },
+    "trace": {
+      "count": 64,
+      "width": 256
+    }
+  }
+}
