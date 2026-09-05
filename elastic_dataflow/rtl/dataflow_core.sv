@@ -9,7 +9,7 @@ module dataflow_core #(
  input wire cancel_valid,input wire [1:0] cancel_context,output wire cancel_ready,
  input wire debug_control_valid,input wire [7:0] debug_flags,debug_node,debug_context,output reg halted,
  input wire graph_write,graph_commit,input wire [2:0] graph_index,input wire [23:0] graph_descriptor,input wire [3:0] graph_size,
- output wire graph_writable,output reg graph_acceptable,
+ output wire graph_writable,output wire graph_acceptable,
  input wire [7:0] debug_addr,output reg [79:0] debug_data,
  output reg trace_valid,output reg [79:0] trace_token,output wire quiescent
 );
@@ -31,38 +31,44 @@ module dataflow_core #(
  function automatic [79:0] make_completion(input [7:0] ctx,ep,input [5:0] node,input [39:0] value);
    make_completion={ctx,ep,node,1'b0,descriptors[node][19],2'b0,node,8'b0,value};
  endfunction
- integer gn,gi,gfinals,previous_node,previous_port;
- reg [7:0] previous_destination;
- reg [7:0] gd;
- reg [2:0] target_op;
- always @* begin
-   graph_acceptable=pristine&&graph_size>=1&&graph_size<=7;
-   previous_destination=0;gfinals=0;gd=0;target_op=0;
-   for(gn=0;gn<7;gn=gn+1)if(gn<graph_size)begin
-     if(!staged_valid[gn] || staged[gn][23] || staged[gn][18] || staged[gn][22:20]>5 || staged[gn][17:16]>2)graph_acceptable=0;
-     if(staged[gn][19])begin gfinals=gfinals+1;if(staged[gn][17:16]!=0)graph_acceptable=0;end
-     else if(staged[gn][17:16]==0)graph_acceptable=0;
-     for(gi=0;gi<2;gi=gi+1)begin
-       gd=gi==0?staged[gn][15:8]:staged[gn][7:0];
-       if(gi<staged[gn][17:16])begin
-         if(gd[7:1]<=gn || gd[7:1]>=graph_size || gd[7:1]>=7)graph_acceptable=0;
-         else begin
-           target_op=staged[gd[3:1]][22:20];
-           if(gd[0]&&(target_op==3||target_op==4))graph_acceptable=0;
-           // Compare fixed descriptor pairs in parallel. A sequential dynamic
-           // writer bitmap synthesized into a long shift/mux dependency chain.
-           for(previous_node=0;previous_node<7;previous_node=previous_node+1)
-             for(previous_port=0;previous_port<2;previous_port=previous_port+1)
-               if((previous_node<gn || (previous_node==gn&&previous_port<gi)) && previous_port<staged[previous_node][17:16])begin
-                 previous_destination=previous_port==0?staged[previous_node][15:8]:staged[previous_node][7:0];
-                 if(gd==previous_destination)graph_acceptable=0;
-               end
-         end
-       end else if(gd!=0)graph_acceptable=0;
-     end
+ // Independent predicates feed reductions, not procedural priority chains.
+ wire [6:0] node_bad,final_nodes;
+ wire [13:0] edge_bad,edge_active;
+ wire [7:0] edge_destination[0:13];
+ wire [195:0] duplicate_edges;
+ genvar vn,ve,va,vb;
+ generate for(vn=0;vn<7;vn=vn+1)begin:validate_nodes
+   assign final_nodes[vn]=vn<graph_size&&staged[vn][19];
+   assign node_bad[vn]=vn<graph_size&&(!staged_valid[vn]||staged[vn][23]||staged[vn][18]||staged[vn][22:20]>5||staged[vn][17:16]>2||
+     (staged[vn][19]?(staged[vn][17:16]!=0):(staged[vn][17:16]==0)));
+   for(ve=0;ve<2;ve=ve+1)begin:validate_edges
+     wire [7:0] target=ve==0?staged[vn][15:8]:staged[vn][7:0];
+     wire [2:0] target_op=target[7:1]<7?staged[target[3:1]][22:20]:3'd7;
+     assign edge_destination[vn*2+ve]=target;
+     assign edge_active[vn*2+ve]=vn<graph_size&&ve<staged[vn][17:16];
+     assign edge_bad[vn*2+ve]=vn<graph_size&&
+       (ve<staged[vn][17:16]?(target[7:1]<=vn||target[7:1]>=graph_size||target[7:1]>=7||(target[0]&&(target_op==3||target_op==4))):(target!=0));
    end
-   if(gfinals!=1)graph_acceptable=0;
  end
+ for(va=0;va<14;va=va+1)begin:duplicate_a
+   for(vb=0;vb<14;vb=vb+1)begin:duplicate_b
+     if(va<vb)assign duplicate_edges[va*14+vb]=edge_active[va]&&edge_active[vb]&&edge_destination[va]==edge_destination[vb];
+     else assign duplicate_edges[va*14+vb]=1'b0;
+   end
+ end endgenerate
+ wire validation_comb=graph_size>=1&&graph_size<=7&&!(|node_bad)&&!(|edge_bad)&&!(|duplicate_edges)&&
+   final_nodes!=0&&(final_nodes&(final_nodes-7'd1))==0;
+ reg validation_result;
+ reg [3:0] validation_size;
+ always @(posedge clk or negedge rst_n)begin
+   if(!rst_n)begin validation_result<=0;validation_size<=0;end
+   else begin
+     validation_size<=graph_size;
+     if(graph_write||graph_commit)validation_result<=0;
+     else validation_result<=validation_comb;
+   end
+ end
+ assign graph_acceptable=pristine&&validation_result&&validation_size==graph_size;
  integer init_node;
  always @(posedge clk or negedge rst_n)begin
    if(!rst_n)begin

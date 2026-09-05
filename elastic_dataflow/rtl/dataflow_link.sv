@@ -11,7 +11,7 @@ module dataflow_link #(parameter integer CLK_HZ=10_000_000,BAUD=115200,COMMAND_T
  reg debug_control_valid;reg [7:0] debug_flags,debug_node,debug_context;wire halted;
  reg [2:0] graph_index;
  reg [23:0] graph_descriptor;
- reg [3:0] graph_size;
+ reg [3:0] graph_size;reg [1:0] graph_wait;
  wire graph_writable,graph_acceptable;
  reg [79:0] in_token;
  reg [1:0] cancel_context;
@@ -60,7 +60,7 @@ module dataflow_link #(parameter integer CLK_HZ=10_000_000,BAUD=115200,COMMAND_T
  always @(posedge clk or negedge rst_n)begin
    if(!rst_n)begin
      reset_hold<=0;in_valid<=0;out_ready<=0;cancel_valid<=0;in_token<=0;cancel_context<=0;debug_addr<=0;ticks_left<=0;
-     debug_control_valid<=0;debug_flags<=0;debug_node<=255;debug_context<=255;graph_write<=0;graph_commit<=0;graph_index<=0;graph_descriptor<=0;graph_size<=0;
+     debug_control_valid<=0;debug_flags<=0;debug_node<=255;debug_context<=255;graph_write<=0;graph_commit<=0;graph_index<=0;graph_descriptor<=0;graph_size<=0;graph_wait<=0;
      command<=0;digits<=0;bad<=0;request<=0;idle_count<=0;query_wait<=0;
      tx_active<=0;tx_long<=0;tx_last<=0;tx_index<=0;tx_length<=0;short_data<=0;response<=0;response_kind<=0;
    end else begin
@@ -90,7 +90,7 @@ module dataflow_link #(parameter integer CLK_HZ=10_000_000,BAUD=115200,COMMAND_T
                  debug_flags<=request[31:24];debug_node<=request[23:16];debug_context<=request[15:8];debug_control_valid<=1;short_reply({"A",8'h0a,16'b0},2);
                end else short_reply({"!02",8'h0a},4);
                "W":if(request[39:32]<7&&graph_writable)begin graph_index<=request[34:32];graph_descriptor<=request[31:8];graph_write<=1;short_reply({"A",8'h0a,16'b0},2);end else short_reply({"!02",8'h0a},4);
-               "G":if(request[15:8]>=1&&request[15:8]<=7)begin graph_size<=request[11:8];command<=8'hfe;end else short_reply({"!02",8'h0a},4);
+               "G":if(request[15:8]>=1&&request[15:8]<=7)begin graph_size<=request[11:8];graph_wait<=3;command<=8'hfe;end else short_reply({"!02",8'h0a},4);
                "Q":begin debug_addr<=request[15:8];query_wait<=3;end
                // Cancellation readiness depends on the selected context, so
                // select it first and decide in a dedicated following cycle.
@@ -103,9 +103,12 @@ module dataflow_link #(parameter integer CLK_HZ=10_000_000,BAUD=115200,COMMAND_T
          else if(digits<22&&hex_valid)begin request<={request[83:0],nibble};digits<=digits+1'b1;end
          else bad<=1;
        end else if(command==8'hfe)begin
+         if(graph_wait!=0)graph_wait<=graph_wait-1'b1;
+         else begin
          command<=0;
          if(graph_acceptable)begin graph_commit<=1;short_reply({"A",8'h0a,16'b0},2);end
          else short_reply({"!02",8'h0a},4);
+         end
        end else if(command==8'hff)begin
          command<=0;
          if(cancel_ready)begin cancel_valid<=1;short_reply({"A",8'h0a,16'b0},2);end

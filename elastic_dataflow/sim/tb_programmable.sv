@@ -19,7 +19,7 @@ module tb_programmable;
  begin @(negedge clk);graph_index=n;graph_descriptor=d;graph_write=1;@(negedge clk);graph_write=0;end
  endtask
  task activate(input [3:0] count,input expected);
- begin @(negedge clk);graph_size=count;#1;if(graph_acceptable!==expected)$fatal(1,"activation guard count=%d got=%b",count,graph_acceptable);
+ begin @(negedge clk);graph_size=count;repeat(3)@(negedge clk);#1;if(graph_acceptable!==expected)$fatal(1,"activation guard count=%d got=%b",count,graph_acceptable);
  graph_commit=1;@(negedge clk);graph_commit=0;end
  endtask
  task send(input [5:0] node,input port,input [31:0] value);
