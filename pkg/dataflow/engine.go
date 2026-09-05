@@ -26,6 +26,16 @@ type Operation struct {
 }
 
 func (o Operation) Validate() error {
+	if o.Graph != nil && o.Kind != "load" {
+		return errors.New("graph is only valid on load")
+	}
+	if o.Debug != nil && o.Kind != "debug" {
+		return errors.New("debug control is only valid on debug")
+	}
+	if o.Config != nil && o.Kind != "reset" {
+		return errors.New("configuration is only valid on reset")
+	}
+
 	switch o.Kind {
 	case "debug":
 		if o.Debug == nil {

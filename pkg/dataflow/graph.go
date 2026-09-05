@@ -88,7 +88,7 @@ func (m *Transaction) LoadGraph(g Graph) error {
 	if err := g.Validate(); err != nil {
 		return err
 	}
-	if m.Metrics.Source != 0 || m.Metrics.Cycles != 0 || m.Epoch != ([Contexts]byte{}) || m.Closed != ([Contexts]bool{}) || !m.Quiescent() {
+	if m.started || m.Epoch != ([Contexts]byte{}) || m.Closed != ([Contexts]bool{}) || !m.Quiescent() {
 		return errors.New("graph load requires fresh reset before execution")
 	}
 	m.Graph = &g

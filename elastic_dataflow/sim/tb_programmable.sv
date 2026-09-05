@@ -43,6 +43,8 @@ module tb_programmable;
  enable=1;send(0,0,7);send(0,1,6);expect_result(84,1);
  reset();stage(0,24'h020202);stage(1,24'h180000);activate(2,0);
  reset();stage(0,24'h010000);stage(1,24'h180000);activate(2,0);
+ reset();stage(0,24'h410400);stage(1,24'h410400);stage(2,24'h180000);activate(3,0);
+ reset();stage(0,24'h410300);stage(1,24'h480000);activate(2,0);
  $display("PASS programmable graph: staged activation, dynamic op/finality, generic fanout, readback and guards");$finish;
  end
  initial begin #100000;$fatal(1,"timeout");end

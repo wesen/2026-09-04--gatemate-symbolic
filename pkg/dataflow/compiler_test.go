@@ -142,3 +142,16 @@ func TestSerialGraphLoadFrames(t *testing.T) {
 		t.Fatalf("frames: %q", wire.writes)
 	}
 }
+
+func TestCounterWrapCannotReopenGraphLoad(t *testing.T) {
+	p, _ := Compile("output 1")
+	m, _ := NewTransaction(DefaultConfig())
+	m.Metrics.Cycles = ^uint32(0)
+	_ = m.Tick(context.Background())
+	if m.Metrics.Cycles != 0 {
+		t.Fatal("expected wrap")
+	}
+	if m.LoadGraph(p.Graph) == nil {
+		t.Fatal("counter wrap reopened graph load")
+	}
+}

@@ -31,13 +31,13 @@ module dataflow_core #(
  function automatic [79:0] make_completion(input [7:0] ctx,ep,input [5:0] node,input [39:0] value);
    make_completion={ctx,ep,node,1'b0,descriptors[node][19],2'b0,node,8'b0,value};
  endfunction
- integer gn,gi,gfinals;
- reg [13:0] graph_writers;
+ integer gn,gi,gfinals,previous_node,previous_port;
+ reg [7:0] previous_destination;
  reg [7:0] gd;
  reg [2:0] target_op;
  always @* begin
    graph_acceptable=pristine&&graph_size>=1&&graph_size<=7;
-   graph_writers=0;gfinals=0;gd=0;target_op=0;
+   previous_destination=0;gfinals=0;gd=0;target_op=0;
    for(gn=0;gn<7;gn=gn+1)if(gn<graph_size)begin
      if(!staged_valid[gn] || staged[gn][23] || staged[gn][18] || staged[gn][22:20]>5 || staged[gn][17:16]>2)graph_acceptable=0;
      if(staged[gn][19])begin gfinals=gfinals+1;if(staged[gn][17:16]!=0)graph_acceptable=0;end
@@ -49,8 +49,14 @@ module dataflow_core #(
          else begin
            target_op=staged[gd[3:1]][22:20];
            if(gd[0]&&(target_op==3||target_op==4))graph_acceptable=0;
-           if(graph_writers[gd[3:0]])graph_acceptable=0;
-           graph_writers[gd[3:0]]=1;
+           // Compare fixed descriptor pairs in parallel. A sequential dynamic
+           // writer bitmap synthesized into a long shift/mux dependency chain.
+           for(previous_node=0;previous_node<7;previous_node=previous_node+1)
+             for(previous_port=0;previous_port<2;previous_port=previous_port+1)
+               if((previous_node<gn || (previous_node==gn&&previous_port<gi)) && previous_port<staged[previous_node][17:16])begin
+                 previous_destination=previous_port==0?staged[previous_node][15:8]:staged[previous_node][7:0];
+                 if(gd==previous_destination)graph_acceptable=0;
+               end
          end
        end else if(gd!=0)graph_acceptable=0;
      end

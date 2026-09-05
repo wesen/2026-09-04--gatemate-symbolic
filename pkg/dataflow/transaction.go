@@ -31,7 +31,8 @@ type routing struct {
 
 // Transaction is a bounded clocked reference, separate from immediate semantics.
 type Transaction struct {
-	Debug DebugSnapshot
+	started bool
+	Debug   DebugSnapshot
 	state
 	Config                   Config
 	Metrics                  Metrics
@@ -55,6 +56,7 @@ func (m *Transaction) Inject(t Token) bool {
 	if len(m.input) == m.Config.InputDepth {
 		return false
 	}
+	m.started = true
 	m.input = append(m.input, t)
 	m.Metrics.Source++
 	m.highwater()
@@ -94,6 +96,7 @@ func (m *Transaction) Cancel(c byte) bool {
 	if int(m.Epoch[c]) == (1<<m.Config.EpochBits)-1 && !m.Quiescent() {
 		return false
 	}
+	m.started = true
 	m.Epoch[c] = (m.Epoch[c] + 1) & byte((1<<m.Config.EpochBits)-1)
 	m.Closed[c] = false
 	m.invalidate(c)
@@ -217,6 +220,7 @@ func (m *Transaction) Tick(ctx context.Context) error {
 	if m.Debug.Halted {
 		return nil
 	}
+	m.started = true
 	m.Metrics.Cycles++
 	defer func() {
 		if m.Debug.Mask&2 != 0 && len(m.completed) == m.Config.CompletionDepth {
