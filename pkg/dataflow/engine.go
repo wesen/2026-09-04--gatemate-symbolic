@@ -16,16 +16,22 @@ type Engine interface {
 	Close() error
 }
 type Operation struct {
-	Kind    string  `json:"kind"`
-	Graph   *Graph  `json:"graph,omitempty"`
-	Token   *Token  `json:"token,omitempty"`
-	Context byte    `json:"context,omitempty"`
-	Ticks   uint32  `json:"ticks,omitempty"`
-	Config  *Config `json:"config,omitempty"`
+	Debug   *DebugControl `json:"debug,omitempty"`
+	Kind    string        `json:"kind"`
+	Graph   *Graph        `json:"graph,omitempty"`
+	Token   *Token        `json:"token,omitempty"`
+	Context byte          `json:"context,omitempty"`
+	Ticks   uint32        `json:"ticks,omitempty"`
+	Config  *Config       `json:"config,omitempty"`
 }
 
 func (o Operation) Validate() error {
 	switch o.Kind {
+	case "debug":
+		if o.Debug == nil {
+			return errors.New("debug requires control")
+		}
+		return o.Debug.Validate()
 	case "load":
 		if o.Graph == nil {
 			return errors.New("load requires graph")
@@ -78,6 +84,7 @@ type RouterSnapshot struct {
 	Delivered byte  `json:"delivered"`
 }
 type Snapshot struct {
+	Debug      DebugSnapshot     `json:"debug"`
 	Graph      Graph             `json:"graph"`
 	Source     string            `json:"source"`
 	Config     Config            `json:"config"`
@@ -106,6 +113,8 @@ func (m *Transaction) Execute(ctx context.Context, o Operation) (*Token, error) 
 		return nil, err
 	}
 	switch o.Kind {
+	case "debug":
+		m.debugControl(*o.Debug)
 	case "load":
 		return nil, m.LoadGraph(*o.Graph)
 	case "reset":
@@ -127,7 +136,7 @@ func (m *Transaction) Execute(ctx context.Context, o Operation) (*Token, error) 
 			return nil, ErrBlocked
 		}
 	case "tick":
-		for i := uint32(0); i < o.Ticks; i++ {
+		for i := uint32(0); i < o.Ticks && !m.Debug.Halted; i++ {
 			if err := m.Tick(ctx); err != nil {
 				return nil, err
 			}
@@ -151,7 +160,7 @@ func (m *Transaction) Snapshot(ctx context.Context) (Snapshot, error) {
 	if err := ctx.Err(); err != nil {
 		return Snapshot{}, err
 	}
-	s := Snapshot{Graph: m.graph(), Source: "model", Config: m.Config, Epochs: m.Epoch, Closed: m.Closed, Quiescent: m.Quiescent(),
+	s := Snapshot{Debug: m.Debug.Clone(), Graph: m.graph(), Source: "model", Config: m.Config, Epochs: m.Epoch, Closed: m.Closed, Quiescent: m.Quiescent(),
 		Mul: cloneTokens(m.mul), ALU: cloneTokens(m.alu), Input: append([]Token{}, m.input...), Completion: append([]Token{}, m.completed...), Output: append([]Token{}, m.output...),
 		Counters: map[string]uint32{"cycles": m.Metrics.Cycles, "source": m.Metrics.Source, "activations": m.Metrics.Activations, "mul": m.Metrics.Mul, "alu": m.Metrics.ALU,
 			"stale":      m.Metrics.StaleInput + m.Metrics.StaleIssue + m.Metrics.StaleCompletion + m.Metrics.StaleRouter + m.Metrics.StaleOutput,
@@ -179,6 +188,7 @@ func (m *Transaction) Close() error { return nil }
 
 // Clone detaches all mutable snapshot containers for history and API consumers.
 func (s Snapshot) Clone() Snapshot {
+	s.Debug = s.Debug.Clone()
 	s.Slots = append([]SlotSnapshot{}, s.Slots...)
 	s.Input = append([]Token{}, s.Input...)
 	s.Completion = append([]Token{}, s.Completion...)

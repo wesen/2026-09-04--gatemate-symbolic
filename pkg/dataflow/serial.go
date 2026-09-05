@@ -155,6 +155,15 @@ func (s *Serial) Execute(ctx context.Context, o Operation) (*Token, error) {
 	}
 	var command string
 	switch o.Kind {
+	case "debug":
+		flags := o.Debug.Mask
+		if o.Debug.Resume {
+			flags |= 128
+		}
+		if o.Debug.Clear {
+			flags |= 64
+		}
+		command = EncodeRequest('B', []byte{flags, o.Debug.Node, o.Debug.Context})
 	case "reset":
 		command = "R\n"
 	case "inject":
@@ -201,7 +210,7 @@ func (s *Serial) Snapshot(ctx context.Context) (Snapshot, error) {
 	pages := map[byte][10]byte{}
 	// Read a fixed bounded set. Hardware remains paused throughout and no other
 	// operation can interleave through this Serial instance.
-	ranges := [][2]byte{{0, 13}, {16, 25}, {32, 59}, {64, 91}, {96, 103}, {112, 119}, {128, 135}, {144, 155}}
+	ranges := [][2]byte{{0, 13}, {16, 25}, {32, 59}, {64, 91}, {96, 103}, {112, 119}, {128, 135}, {144, 157}, {160, 223}}
 	for _, r := range ranges {
 		for addr := r[0]; addr <= r[1]; addr++ {
 			line, err := s.exchange(ctx, EncodeRequest('Q', []byte{addr}))

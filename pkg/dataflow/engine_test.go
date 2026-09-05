@@ -26,7 +26,7 @@ func TestRecordFrames(t *testing.T) {
 }
 func TestSnapshotDecodeAndCompleteness(t *testing.T) {
 	pages := map[byte][10]byte{}
-	for _, r := range [][2]byte{{0, 13}, {16, 25}, {32, 59}, {64, 91}, {96, 103}, {112, 119}, {128, 135}, {144, 155}} {
+	for _, r := range [][2]byte{{0, 13}, {16, 25}, {32, 59}, {64, 91}, {96, 103}, {112, 119}, {128, 135}, {144, 157}} {
 		for a := r[0]; a <= r[1]; a++ {
 			pages[a] = [10]byte{}
 		}

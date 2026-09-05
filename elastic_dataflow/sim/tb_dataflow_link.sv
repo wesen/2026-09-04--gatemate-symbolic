@@ -5,7 +5,7 @@ module tb_dataflow_link;
  wire tx,idle;
  dataflow_link #(.CLK_HZ(800000),.BAUD(100000),.COMMAND_TIMEOUT(500)) dut(.*);
  reg [7:0] response[0:31];integer length;
- reg [79:0] record;
+ reg [79:0] record;integer stopped_cycle,trace_entries;reg found_issue;
  function automatic [7:0] hex_ascii(input [3:0] v);hex_ascii=v<10?"0"+v:"A"+v-10;endfunction
  function automatic [3:0] hex_value(input [7:0] v);hex_value=v<="9"?4'(v-"0"):4'(v-"A"+10);endfunction
  task send_byte(input [7:0] v);
@@ -74,6 +74,24 @@ module tb_dataflow_link;
    inject(0,0,7);inject(0,1,6);request("T",4,100,0);ack();
    request("P",0,0,0);if(record[39:0]!=84||record[63:58]!=1||!record[56])$fatal(1,"programmable UART result %h",record);
    request("W",4,32'h00020203,0);if(length!=4||response[2]!="2")$fatal(1,"late graph write accepted");
+   request("R",0,0,0);ack();
+   request("W",4,32'h00020203,0);ack();request("W",4,32'h01180000,0);ack();request("G",1,2,0);ack();
+   request("B",3,24'hc100ff,0);ack();inject(0,0,7);inject(0,1,6);
+   request("T",4,100,0);ack();request("Q",1,156,0);
+   if(record[39:32]!=1||record[31:24]!=1)$fatal(1,"issue did not halt %h",record);
+   trace_entries=record[79:72];found_issue=0;
+   for(integer n=0;n<trace_entries;n=n+1)begin
+     request("Q",1,161+n*2,0);
+     if(record[7:0]==2)begin request("Q",1,160+n*2,0);if(record[39:0]!=42)$fatal(1,"issue trace value %h",record);found_issue=1;end
+   end
+   if(!found_issue)$fatal(1,"issue trace missing");
+   request("Q",1,2,0);stopped_cycle=record[79:48];
+   request("T",4,100,0);ack();request("Q",1,2,0);if(record[79:48]!=stopped_cycle)$fatal(1,"halt advanced cycles");
+   request("B",3,24'h80ffff,0);ack();request("T",4,100,0);ack();request("P",0,0,0);if(record[39:0]!=84)$fatal(1,"resume result");
+   for(integer n=0;n<40;n=n+1)begin request("C",1,0,0);ack();end
+   request("Q",1,156,0);if(record[79:72]!=32||record[71:40]==0)$fatal(1,"trace overflow not counted %h",record);
+   request("R",0,0,0);ack();request("B",3,24'hc4ffff,0);ack();request("C",1,0,0);ack();inject(0,0,7);
+   request("T",4,100,0);ack();request("Q",1,156,0);if(record[39:32]!=1||record[31:24]!=4)$fatal(1,"stale breakpoint");
    $display("PASS UART pause, ticks, operands, cancellation, polling, reset, bounds, checksum, timeout");$finish;
  end
  initial begin #100000000;$fatal(1,"UART watchdog");end

@@ -31,6 +31,7 @@ type routing struct {
 
 // Transaction is a bounded clocked reference, separate from immediate semantics.
 type Transaction struct {
+	Debug DebugSnapshot
 	state
 	Config                   Config
 	Metrics                  Metrics
@@ -48,7 +49,7 @@ func NewTransaction(c Config) (*Transaction, error) {
 	if c.InputDepth < 1 || c.CompletionDepth < 1 || c.OutputDepth < 1 || c.MulLatency < 1 || c.MulLatency > 8 || c.EpochBits < 1 || c.EpochBits > 8 {
 		return nil, errors.New("invalid transaction configuration")
 	}
-	return &Transaction{Config: c, alu: make([]*Token, 1), mul: make([]*Token, c.MulLatency)}, nil
+	return &Transaction{Debug: DebugSnapshot{Node: 255, Context: 255, Events: []DebugEvent{}}, Config: c, alu: make([]*Token, 1), mul: make([]*Token, c.MulLatency)}, nil
 }
 func (m *Transaction) Inject(t Token) bool {
 	if len(m.input) == m.Config.InputDepth {
@@ -97,6 +98,7 @@ func (m *Transaction) Cancel(c byte) bool {
 	m.Closed[c] = false
 	m.invalidate(c)
 	m.pendingError[c] = nil
+	m.debugEvent(EventCancel, Token{Context: c, Epoch: m.Epoch[c]})
 	return true
 }
 func (m *Transaction) Poll() *Token {
@@ -105,8 +107,10 @@ func (m *Transaction) Poll() *Token {
 		m.output = m.output[1:]
 		if t.Epoch != m.Epoch[t.Context] {
 			m.Metrics.StaleOutput++
+			m.debugEvent(EventStale, t)
 			continue
 		}
+		m.debugEvent(EventOutput, t)
 		return &t
 	}
 	return nil
@@ -132,6 +136,7 @@ func (m *Transaction) commit(t Token) {
 	}
 	if t.Epoch != m.Epoch[t.Context] {
 		m.Metrics.StaleInput++
+		m.debugEvent(EventStale, t)
 		return
 	}
 	if m.Closed[t.Context] {
@@ -139,6 +144,8 @@ func (m *Transaction) commit(t Token) {
 	}
 	if code := m.accept(t); code != 0 {
 		m.fail(t, code)
+	} else {
+		m.debugEvent(EventOperand, t)
 	}
 }
 func (m *Transaction) route() bool {
@@ -149,6 +156,7 @@ func (m *Transaction) route() bool {
 	t := r.Token
 	if t.Epoch != m.Epoch[t.Context] {
 		m.Metrics.StaleRouter++
+		m.debugEvent(EventStale, t)
 		m.router = nil
 		return false
 	}
@@ -178,6 +186,7 @@ func (m *Transaction) route() bool {
 		}
 		dest := d.Destinations[i]
 		m.commit(Token{Context: t.Context, Epoch: t.Epoch, Node: dest.Node, Port: dest.Port, Producer: t.Producer, Value: t.Value})
+		m.debugEvent(EventRoute, Token{Context: t.Context, Epoch: t.Epoch, Node: dest.Node, Port: dest.Port, Producer: t.Producer, Value: t.Value})
 		r.Delivered |= 1 << i
 		if r.Delivered == (1<<d.Count)-1 {
 			m.router = nil
@@ -205,7 +214,15 @@ func (m *Transaction) Tick(ctx context.Context) error {
 	if err := ctx.Err(); err != nil {
 		return err
 	}
+	if m.Debug.Halted {
+		return nil
+	}
 	m.Metrics.Cycles++
+	defer func() {
+		if m.Debug.Mask&2 != 0 && len(m.completed) == m.Config.CompletionDepth {
+			m.halt(2)
+		}
+	}()
 	// Pending errors have bounded per-context storage and first priority at output.
 	for c, t := range m.pendingError {
 		if t != nil && len(m.output) < m.Config.OutputDepth {
@@ -245,10 +262,12 @@ func (m *Transaction) Tick(ctx context.Context) error {
 		if t.Epoch != m.Epoch[t.Context] {
 			p[len(p)-1] = nil
 			m.Metrics.StaleCompletion++
+			m.debugEvent(EventStale, *t)
 			continue
 		}
 		if !taken && len(m.completed) < m.Config.CompletionDepth {
 			m.completed = append(m.completed, *t)
+			m.debugEvent(EventCompletion, *t)
 			p[len(p)-1] = nil
 			taken = true
 			m.nextUnit = 1 - u
@@ -274,6 +293,7 @@ func (m *Transaction) Tick(ctx context.Context) error {
 		if i.Epoch != m.Epoch[i.Context] || m.Closed[i.Context] {
 			if i.Epoch != m.Epoch[i.Context] {
 				m.Metrics.StaleIssue++
+				m.debugEvent(EventStale, m.completion(i.Context, i.Epoch, i.Node, 0))
 			}
 			m.issue = nil
 		} else if i.Wait > 0 {
@@ -289,6 +309,7 @@ func (m *Transaction) Tick(ctx context.Context) error {
 				t := m.completion(i.Context, i.Epoch, i.Node, v)
 				p[0] = &t
 				m.Metrics.Activations++
+				m.debugEvent(EventIssue, t)
 				if d.Op == Mul {
 					m.Metrics.Mul++
 				} else {

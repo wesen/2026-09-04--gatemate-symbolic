@@ -9,7 +9,7 @@ module tb_dataflow;
  wire [79:0] out_token,trace_token;
  reg [1:0] cancel_context=0;
  reg [7:0] debug_addr=0;wire [79:0] debug_data;
- dataflow_core #(.INPUT_DEPTH(DEPTH),.COMPLETION_DEPTH(DEPTH),.OUTPUT_DEPTH(DEPTH),.MUL_LATENCY(LATENCY),.EPOCH_BITS(2)) dut(.graph_write(1'b0),.graph_commit(1'b0),.graph_index(3'b0),.graph_descriptor(24'b0),.graph_size(4'b0),.graph_writable(),.graph_acceptable(),.*);
+ dataflow_core #(.INPUT_DEPTH(DEPTH),.COMPLETION_DEPTH(DEPTH),.OUTPUT_DEPTH(DEPTH),.MUL_LATENCY(LATENCY),.EPOCH_BITS(2)) dut(.debug_control_valid(1'b0),.debug_flags(8'b0),.debug_node(8'hff),.debug_context(8'hff),.halted(),.graph_write(1'b0),.graph_commit(1'b0),.graph_index(3'b0),.graph_descriptor(24'b0),.graph_size(4'b0),.graph_writable(),.graph_acceptable(),.*);
  integer outputs=0,activations=0,ticks=0,seen[0:3][0:3][0:6];
  reg check_stability=0;reg [79:0] held;
  reg [31:0] random_state=32'h2547321;

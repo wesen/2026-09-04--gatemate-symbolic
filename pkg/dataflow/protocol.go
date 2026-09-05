@@ -90,6 +90,37 @@ func DecodeSnapshot(pages map[byte][10]byte) (Snapshot, error) {
 			return Snapshot{}, errors.Wrap(err, "device graph")
 		}
 	}
+	debugStatus, err := page(156)
+	if err != nil {
+		return Snapshot{}, err
+	}
+	if debugStatus[0] > TraceCapacity || debugStatus[5] > 1 || debugStatus[6] > 7 || debugStatus[7] > 7 {
+		return Snapshot{}, errors.New("invalid debug status")
+	}
+	s.Debug = DebugSnapshot{Halted: debugStatus[5] != 0, Reason: debugStatus[6], Mask: debugStatus[7], Node: debugStatus[8], Context: debugStatus[9], Dropped: binary.BigEndian.Uint32(debugStatus[1:5]), Events: []DebugEvent{}}
+	stop, err := page(157)
+	if err != nil {
+		return Snapshot{}, err
+	}
+	s.Debug.StopCycle = binary.BigEndian.Uint32(stop[:4])
+	for n := byte(0); n < debugStatus[0]; n++ {
+		raw, e := page(160 + n*2)
+		if e != nil {
+			return Snapshot{}, e
+		}
+		meta, e := page(161 + n*2)
+		if e != nil {
+			return Snapshot{}, e
+		}
+		token, e := DecodeToken(raw[:])
+		if e != nil {
+			return Snapshot{}, e
+		}
+		if meta[9] < 1 || meta[9] > 7 {
+			return Snapshot{}, errors.New("invalid trace kind")
+		}
+		s.Debug.Events = append(s.Debug.Events, DebugEvent{Cycle: binary.BigEndian.Uint32(meta[5:9]), Kind: meta[9], Token: token})
+	}
 	s.Config = Config{int(cap[4]), int(cap[5]), int(cap[6]), int(cap[3]), int(cap[7])}
 	status, err := page(1)
 	if err != nil {

@@ -7,6 +7,7 @@ module dataflow_core #(
  input wire in_valid,output wire in_ready,input wire [79:0] in_token,
  output wire out_valid,input wire out_ready,output wire [79:0] out_token,
  input wire cancel_valid,input wire [1:0] cancel_context,output wire cancel_ready,
+ input wire debug_control_valid,input wire [7:0] debug_flags,debug_node,debug_context,output reg halted,
  input wire graph_write,graph_commit,input wire [2:0] graph_index,input wire [23:0] graph_descriptor,input wire [3:0] graph_size,
  output wire graph_writable,output reg graph_acceptable,
  input wire [7:0] debug_addr,output reg [79:0] debug_data,
@@ -83,7 +84,7 @@ module dataflow_core #(
  reg [4:0] next_slot;
  reg prefer_router,prefer_mul;
 
- wire ce=enable&&!cancel_fire;
+ wire ce=enable&&!cancel_fire&&!halted;
  wire [79:0] input_head,completion_head,output_head;
  wire input_valid,completion_valid,output_valid;
  wire completion_ready,output_ready;
@@ -312,9 +313,66 @@ module dataflow_core #(
      end
    end
  end
+ reg [2:0] break_mask,stop_reason;
+ reg [7:0] break_node,break_context;
+ reg [31:0] stop_cycle,trace_dropped;
+ reg [5:0] trace_count;
+ reg [6:0] event_bits;
+ reg [79:0] event_token;
+ reg [7:0] event_kind;
+ reg [3:0] event_count,stale_count;
+ wire [31:0] event_cycle=metrics[0]+{31'b0,ce};
+ wire [79:0] trace_read_token;
+ wire [39:0] trace_read_meta;
+ wire trace_write=event_count!=0&&trace_count<32&&!debug_control_valid;
+ wire [4:0] trace_read_index=5'((debug_addr-160)>>1);
+ sync_sdp_ram #(.DEPTH(32),.WIDTH(80)) debug_tokens(.clk(clk),.wr_en(trace_write),.wr_addr(trace_count[4:0]),.wr_data(event_token),.rd_addr(trace_read_index),.rd_data(trace_read_token));
+ sync_sdp_ram #(.DEPTH(32),.WIDTH(40)) debug_metadata(.clk(clk),.wr_en(trace_write),.wr_addr(trace_count[4:0]),.wr_data({event_cycle,event_kind}),.rd_addr(trace_read_index),.rd_data(trace_read_meta));
+ always @*begin
+   stale_count={3'b0,output_stale}+{3'b0,(ce&&mul_stale)}+{3'b0,(ce&&alu_stale)}+
+       {3'b0,(ce&&stale_action)}+{3'b0,(ce&&issue_phase!=0&&!issue_fresh)};
+   event_bits={stale_count!=0,cancel_fire,(out_valid&&out_ready),router_mark,completion_push,dispatch,commit_operand};
+   event_count={3'b0,event_bits[0]}+{3'b0,event_bits[1]}+{3'b0,event_bits[2]}+{3'b0,event_bits[3]}+{3'b0,event_bits[4]}+{3'b0,event_bits[5]}+stale_count;
+   event_token=0;event_kind=0;
+   // Later clauses have priority. Every unrecorded candidate is counted.
+   if(event_bits[0])begin event_kind=1;event_token=action_token;end
+   if(event_bits[3])begin event_kind=4;event_token=action_token;end
+   if(event_bits[2])begin event_kind=3;event_token=completion_input;end
+   if(event_bits[1])begin event_kind=2;event_token={issue_token[79:40],dataflow_pkg::evaluate(opcode(issue_token[63:58]),issue_a,issue_b)};end
+   if(event_bits[6])begin
+     event_kind=7;
+     if(output_stale)event_token=output_head;
+     else if(ce&&mul_stale)event_token=mul_token;
+     else if(ce&&alu_stale)event_token=alu_token;
+     else if(ce&&issue_phase!=0&&!issue_fresh)event_token=issue_token;
+     else event_token=selected_router?router_token:action_token;
+   end
+   if(event_bits[4])begin event_kind=5;event_token=out_token;end
+   if(event_bits[5])begin event_kind=6;event_token={{6'b0,cancel_context},(epoch[cancel_context]+8'd1),64'b0};end
+ end
+ wire issue_break=dispatch&&break_mask[0]&&(break_node==255||break_node=={2'b0,issue_token[63:58]})&&
+   (break_context==255||break_context==issue_token[79:72]);
+ wire full_break=ce&&break_mask[1]&&completion_count==COMPLETION_DEPTH;
+ wire stale_break=break_mask[2]&&stale_count!=0;
+ always @(posedge clk or negedge rst_n)begin
+   if(!rst_n)begin halted<=0;break_mask<=0;break_node<=255;break_context<=255;stop_reason<=0;stop_cycle<=0;trace_count<=0;trace_dropped<=0;end
+   else if(debug_control_valid)begin
+     break_mask<=debug_flags[2:0];break_node<=debug_node;break_context<=debug_context;
+     if(debug_flags[7])begin halted<=0;stop_reason<=0;end
+     if(debug_flags[6])begin trace_count<=0;trace_dropped<=0;end
+   end else begin
+     if(event_count!=0)begin
+       if(trace_count<32)begin trace_count<=trace_count+1'b1;trace_dropped<=trace_dropped+{28'b0,event_count}-1'b1;end
+       else trace_dropped<=trace_dropped+{28'b0,event_count};
+     end
+     if(issue_break||full_break||stale_break)begin halted<=1;stop_reason<={stale_break,full_break,issue_break};stop_cycle<=event_cycle;end
+   end
+ end
  always @* begin
    debug_data=0;
    case(debug_addr)
+     156:debug_data={2'b0,trace_count,trace_dropped,7'b0,halted,5'b0,stop_reason,5'b0,break_mask,break_node,break_context};
+     157:debug_data={stop_cycle,48'b0};
      155:debug_data={4'b0,active_count,1'b0,staged_valid,7'b0,pristine,56'b0};
      0:debug_data={8'd2,8'd4,8'd7,8'(MUL_LATENCY),8'(INPUT_DEPTH),8'(COMPLETION_DEPTH),8'(OUTPUT_DEPTH),8'(EPOCH_BITS),16'b0};
      1:debug_data={epoch[3],epoch[2],epoch[1],epoch[0],closed,error_pending,input_count,ready_count,completion_count,output_count,quiescent,7'b0};
@@ -325,6 +383,7 @@ module dataflow_core #(
      24:debug_data={71'b0,alu_stages[0],mul_stages};
      25:debug_data=alu_debug;
      default:begin
+       if(debug_addr>=160&&debug_addr<=223)debug_data=debug_addr[0]?{40'b0,trace_read_meta}:trace_read_token;
        if(debug_addr>=148&&debug_addr<=154)debug_data={48'b0,5'b0,(3'(debug_addr-148)),descriptors[debug_addr-148]};
        if(debug_addr>=2&&debug_addr<=9)debug_data={metrics[(debug_addr-2)*2],metrics[(debug_addr-2)*2+1],16'b0};
        else if(debug_addr>=16&&debug_addr<24)debug_data=mul_debug;

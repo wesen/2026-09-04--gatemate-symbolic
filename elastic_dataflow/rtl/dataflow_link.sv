@@ -8,6 +8,7 @@ module dataflow_link #(parameter integer CLK_HZ=10_000_000,BAUD=115200,COMMAND_T
  uart_rx #(.CLK_HZ(CLK_HZ),.BAUD(BAUD)) receiver(.clk(clk),.rst_n(rst_n),.rx(rx),.valid(rx_valid),.framing_error(rx_error),.data(rx_data));
  reg reset_hold,in_valid,out_ready,cancel_valid;
  reg graph_write,graph_commit;
+ reg debug_control_valid;reg [7:0] debug_flags,debug_node,debug_context;wire halted;
  reg [2:0] graph_index;
  reg [23:0] graph_descriptor;
  reg [3:0] graph_size;
@@ -20,7 +21,7 @@ module dataflow_link #(parameter integer CLK_HZ=10_000_000,BAUD=115200,COMMAND_T
  wire engine_enable=ticks_left!=0;
  dataflow_core core(.clk(clk),.rst_n(rst_n&&!reset_hold),.enable(engine_enable),.in_valid(in_valid),.in_ready(in_ready),.in_token(in_token),
    .out_valid(out_valid),.out_ready(out_ready),.out_token(out_token),.cancel_valid(cancel_valid),.cancel_context(cancel_context),.cancel_ready(cancel_ready),
-   .graph_write(graph_write),.graph_commit(graph_commit),.graph_index(graph_index),.graph_descriptor(graph_descriptor),.graph_size(graph_size),.graph_writable(graph_writable),.graph_acceptable(graph_acceptable),.debug_addr(debug_addr),.debug_data(debug_data),.trace_valid(),.trace_token(),.quiescent(idle));
+   .debug_control_valid(debug_control_valid),.debug_flags(debug_flags),.debug_node(debug_node),.debug_context(debug_context),.halted(halted),.graph_write(graph_write),.graph_commit(graph_commit),.graph_index(graph_index),.graph_descriptor(graph_descriptor),.graph_size(graph_size),.graph_writable(graph_writable),.graph_acceptable(graph_acceptable),.debug_addr(debug_addr),.debug_data(debug_data),.trace_valid(),.trace_token(),.quiescent(idle));
  reg [7:0] command;reg [5:0] digits;reg bad;
  reg [87:0] request;
  reg [31:0] idle_count;
@@ -59,16 +60,16 @@ module dataflow_link #(parameter integer CLK_HZ=10_000_000,BAUD=115200,COMMAND_T
  always @(posedge clk or negedge rst_n)begin
    if(!rst_n)begin
      reset_hold<=0;in_valid<=0;out_ready<=0;cancel_valid<=0;in_token<=0;cancel_context<=0;debug_addr<=0;ticks_left<=0;
-     graph_write<=0;graph_commit<=0;graph_index<=0;graph_descriptor<=0;graph_size<=0;
+     debug_control_valid<=0;debug_flags<=0;debug_node<=255;debug_context<=255;graph_write<=0;graph_commit<=0;graph_index<=0;graph_descriptor<=0;graph_size<=0;
      command<=0;digits<=0;bad<=0;request<=0;idle_count<=0;query_wait<=0;
      tx_active<=0;tx_long<=0;tx_last<=0;tx_index<=0;tx_length<=0;short_data<=0;response<=0;response_kind<=0;
    end else begin
-     reset_hold<=0;in_valid<=0;out_ready<=0;cancel_valid<=0;graph_write<=0;graph_commit<=0;
+     reset_hold<=0;in_valid<=0;out_ready<=0;cancel_valid<=0;graph_write<=0;graph_commit<=0;debug_control_valid<=0;
      if(uart_start)begin if(tx_index==tx_length-1'b1)tx_last<=1;else tx_index<=tx_index+1'b1;end
      if(tx_active&&tx_last&&uart_ready)begin tx_active<=0;tx_last<=0;end
-     if(ticks_left!=0)begin ticks_left<=ticks_left-1'b1;if(ticks_left==1)short_reply({"A",8'h0a,16'b0},2);end
+     if(ticks_left!=0)begin ticks_left<=halted?0:ticks_left-1'b1;if(ticks_left==1||halted)short_reply({"A",8'h0a,16'b0},2);end
      if(query_wait!=0)begin query_wait<=query_wait-1'b1;if(query_wait==1)record_reply("S",debug_data);end
-     if(!tx_active&&ticks_left==0&&query_wait==0&&!in_valid&&!out_ready&&!cancel_valid&&!reset_hold&&!graph_write&&!graph_commit)begin
+     if(!tx_active&&ticks_left==0&&query_wait==0&&!in_valid&&!out_ready&&!cancel_valid&&!reset_hold&&!graph_write&&!graph_commit&&!debug_control_valid)begin
        if(rx_error)begin command<=0;digits<=0;bad<=0;request<=0;idle_count<=0;short_reply({"!01",8'h0a},4);end
        else if(rx_valid)begin
          idle_count<=0;
@@ -78,12 +79,15 @@ module dataflow_link #(parameter integer CLK_HZ=10_000_000,BAUD=115200,COMMAND_T
            else if(command=="P"&&digits==0)begin
              if(out_valid)begin record_reply("O",out_token);out_ready<=1;end
              else short_reply({"N",8'h0a,16'b0},2);
-           end else if((command=="I"&&digits==22)||((command=="T"||command=="W")&&digits==10)||((command=="Q"||command=="C"||command=="G")&&digits==4))begin
+           end else if((command=="B"&&digits==8)||(command=="I"&&digits==22)||((command=="T"||command=="W")&&digits==10)||((command=="Q"||command=="C"||command=="G")&&digits==4))begin
              if(request_xor!=0)short_reply({"!03",8'h0a},4);
              else case(command)
                "I":if(in_ready)begin in_token<=request[87:8];in_valid<=1;short_reply({"A",8'h0a,16'b0},2);end else short_reply({"!04",8'h0a},4);
                "T":if(request[39:8]<=1_000_000)begin
                  ticks_left<=request[39:8];if(request[39:8]==0)short_reply({"A",8'h0a,16'b0},2);
+               end else short_reply({"!02",8'h0a},4);
+               "B":if((request[31:24]&8'h38)==0&&(request[23:16]<7||request[23:16]==255)&&(request[15:8]<4||request[15:8]==255))begin
+                 debug_flags<=request[31:24];debug_node<=request[23:16];debug_context<=request[15:8];debug_control_valid<=1;short_reply({"A",8'h0a,16'b0},2);
                end else short_reply({"!02",8'h0a},4);
                "W":if(request[39:32]<7&&graph_writable)begin graph_index<=request[34:32];graph_descriptor<=request[31:8];graph_write<=1;short_reply({"A",8'h0a,16'b0},2);end else short_reply({"!02",8'h0a},4);
                "G":if(request[15:8]>=1&&request[15:8]<=7)begin graph_size<=request[11:8];command<=8'hfe;end else short_reply({"!02",8'h0a},4);

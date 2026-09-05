@@ -10,7 +10,7 @@ module tb_programmable;
  reg graph_write=0,graph_commit=0;
  reg [2:0] graph_index=0;reg [23:0] graph_descriptor=0;
  reg [3:0] graph_size=0;wire graph_writable,graph_acceptable;
- dataflow_core #(.INPUT_DEPTH(1),.COMPLETION_DEPTH(1),.OUTPUT_DEPTH(1)) dut(.*);
+ dataflow_core #(.INPUT_DEPTH(1),.COMPLETION_DEPTH(1),.OUTPUT_DEPTH(1)) dut(.debug_control_valid(1'b0),.debug_flags(8'b0),.debug_node(8'hff),.debug_context(8'hff),.halted(),.*);
  task reset;
  begin @(negedge clk);rst_n=0;enable=0;in_valid=0;out_ready=0;graph_write=0;graph_commit=0;
  repeat(3)@(negedge clk);rst_n=1;end
