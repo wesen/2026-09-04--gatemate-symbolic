@@ -1,7 +1,12 @@
 {
-  "printed_slips": 11,
-  "physical_qualification": "pending device connection",
+  "printed_slips": 12,
+  "physical_qualification": "passed",
   "images": {
+    "fpga-history.png": "6015d5370d8ed3dbebb7557ff611851f3e76b88f0a233c3cb775ea3ef634ad0b",
+    "fpga-result.png": "d7e9db311c4a415859a1435ad986742e9e575b4b4fbcf30538eb1acc1ee93ad2",
+    "fpga-claimed.png": "c3771294de5336b4ff66274b85ca0daa69d3c4a71d9995d1dfc28f85b1ecd6c8",
+    "fpga-cycle.png": "c3dac65539244cb68ae2987d5fc82cfd2fb2ccb5de689a8ee0685250a352eacc",
+    "fpga-mobile.png": "c935f7aaf1ed5d327f0e25abd2c2e2424d37e76d8f0c43b2d50776cc387b4470",
     "model-mobile.png": "09f374de5ed298e30973130628bb3d6e27d12423c6337f4a6a8e8c8a1d88e630",
     "model-cycle.png": "b29449247561066758fee0a8b26f0e1197e15e32b5d71650ba1c36eeac0bf982",
     "model-claimed.png": "629d8bae60959542d2566739662e0f6c44085268c1e5b79fe7af19b08cf52e80",

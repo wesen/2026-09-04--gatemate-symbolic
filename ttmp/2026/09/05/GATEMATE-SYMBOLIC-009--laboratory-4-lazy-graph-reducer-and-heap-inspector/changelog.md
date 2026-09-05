@@ -19,3 +19,8 @@ P5 programming blocked: DirtyJTAG device absent and no UART serial nodes. Physic
 
 P5 complete: programmed GateMate, passed 60 randomized physical graphs and directed bounds tests, captured physical browser screenshots, uploaded physically qualified handoff to reMarkable.
 
+
+## 2026-09-05
+
+Step 6 (commit 9d25319): reconnected-board qualification and physical browser workflow passed; published final illustrated handoff to reMarkable.
+
