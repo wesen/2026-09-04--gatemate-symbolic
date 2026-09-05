@@ -1,0 +1,14 @@
+{
+ "title":"Synthesis-oriented scheduler representation",
+ "summary":"Qualified the wildcard-import repair and reduced the scheduler's synthesis cost. The first synthesizable form expanded a run-time signed integer quotient/remainder into hundreds of thousands of intermediate cells. Rewrote selection using constant slot indices and a pair of bounded priority passes, preserving circular ordering and unit availability filtering.",
+ "did":"Replaced variable idx division/modulo with elaboration-time scan indices. Added explicit four-range decoding from selected slot to context and subtraction for node. Stopped the oversized synthesis run after its log reported 343860 cells during optimization. Retained that log and the one-time rewrite script. Re-ran all twelve directed simulation configurations successfully.",
+ "why":"The graph has exactly 28 slots. General signed division is unnecessary hardware for this fixed domain. Selecting among constant-index requests expresses the intended bounded logic directly.",
+ "worked":"The import repair reached synthesis optimization; the scheduler rewrite retained all previously tested functional behavior on its first simulation run.",
+ "failed":"The initial scheduler representation was impractically large: synthesis reported Computing hashes of 343860 cells of module dataflow_core. This is an implementation cost finding, not a functional simulation failure. The run was stopped before mapping completion and replaced by the bounded implementation.",
+ "learned":"A software-style variable index followed by division can obscure a small fixed hardware table. Elaboration-time division of loop constants is cheap; division of the rotated run-time index is not.",
+ "tricky":"Two descending priority passes preserve round-robin semantics: first choose the lowest eligible slot, then override it with the lowest eligible slot at or above next_slot. The first pass supplies wraparound when the second has no eligible entry.",
+ "review":"Inspect generated resource counts and critical paths, and confirm selection order when next_slot points at slot 27 and when one unit is blocked.",
+ "future":"Finish synthesis qualification, then implement framed UART control and physical execution.",
+ "validate":"elastic_dataflow/scripts/test.sh after loading the CAD environment; compare P3-rtl-fixed-scheduler.log with the prior matrix. Inspect core-synthesis.log from the fixed run.",
+ "details":"Simulation checkpoint commit: 9fffdc3. The new selection uses pending[scan] and closed[scan/7] with compile-time scan values, plus a five-bit next-slot comparison. selected_context decodes ranges 0..6, 7..13, 14..20, 21..27. selected_node subtracts seven times that two-bit context. No public token format changes."
+}

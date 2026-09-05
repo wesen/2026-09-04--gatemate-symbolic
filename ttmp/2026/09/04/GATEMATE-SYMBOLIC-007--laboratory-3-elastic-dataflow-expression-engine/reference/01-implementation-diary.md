@@ -204,3 +204,61 @@ Source /home/manuel/fpga/oss-cad-suite/environment, then elastic_dataflow/script
 Debug pages: 0 capabilities; 1 context/queue status; 2..9 counters; 10..11 issue; 12..13 router; 16..23 multiplier stages; 24 validity; 25 ALU; 32..59 operand pairs; 64..91 slot flags; 96..103 input queue; 112..119 completion queue; 128..135 output queue; 144..147 pending errors. Read operand pages only while paused and hold the address for at least two clocks before sampling. Activation traces describe unit admission; model and RTL microcycle counts are intentionally not equated.
 
 Synthesis checkpoint failure (first attempt): `rtl/df_unit.sv:8: ERROR: syntax error, unexpected TOK_IMPORT`. The installed Yosys Verilog frontend rejects the wildcard package import accepted by Icarus. Existing project RTL uses explicit package-qualified references. Applied that convention with the retained one-time script `elastic_dataflow/scripts/qualify-package.py`, then restarted synthesis. Original failure log is retained as `P3-synthesis-import-failure.log`.
+
+## Step 4: Synthesis-oriented scheduler representation
+
+Qualified the wildcard-import repair and reduced the scheduler's synthesis cost. The first synthesizable form expanded a run-time signed integer quotient/remainder into hundreds of thousands of intermediate cells. Rewrote selection using constant slot indices and a pair of bounded priority passes, preserving circular ordering and unit availability filtering.
+
+### Prompt Context
+
+**User prompt (verbatim, JSON encoded):**
+
+```json
+"(see Step 1)"
+```
+
+**Assistant interpretation:** Design, publish, implement, and validate the book's elastic dataflow laboratory with task commits, detailed diary, and physical work slips.
+
+**Inferred user intent:** Build a working concurrent symbolic machine and preserve enough explanation and evidence for an intern to understand and maintain it.
+
+### What I did
+
+Replaced variable idx division/modulo with elaboration-time scan indices. Added explicit four-range decoding from selected slot to context and subtraction for node. Stopped the oversized synthesis run after its log reported 343860 cells during optimization. Retained that log and the one-time rewrite script. Re-ran all twelve directed simulation configurations successfully.
+
+### Why
+
+The graph has exactly 28 slots. General signed division is unnecessary hardware for this fixed domain. Selecting among constant-index requests expresses the intended bounded logic directly.
+
+### What worked
+
+The import repair reached synthesis optimization; the scheduler rewrite retained all previously tested functional behavior on its first simulation run.
+
+### What didn't work
+
+The initial scheduler representation was impractically large: synthesis reported Computing hashes of 343860 cells of module dataflow_core. This is an implementation cost finding, not a functional simulation failure. The run was stopped before mapping completion and replaced by the bounded implementation.
+
+### What I learned
+
+A software-style variable index followed by division can obscure a small fixed hardware table. Elaboration-time division of loop constants is cheap; division of the rotated run-time index is not.
+
+### What was tricky to build
+
+Two descending priority passes preserve round-robin semantics: first choose the lowest eligible slot, then override it with the lowest eligible slot at or above next_slot. The first pass supplies wraparound when the second has no eligible entry.
+
+### What warrants a second pair of eyes
+
+Inspect generated resource counts and critical paths, and confirm selection order when next_slot points at slot 27 and when one unit is blocked.
+
+### What should be done in the future
+
+Finish synthesis qualification, then implement framed UART control and physical execution.
+
+### Code review instructions
+
+elastic_dataflow/scripts/test.sh after loading the CAD environment; compare P3-rtl-fixed-scheduler.log with the prior matrix. Inspect core-synthesis.log from the fixed run.
+
+### Technical details
+
+Simulation checkpoint commit: 9fffdc3. The new selection uses pending[scan] and closed[scan/7] with compile-time scan values, plus a five-bit next-slot comparison. selected_context decodes ranges 0..6, 7..13, 14..20, 21..27. selected_node subtracts seven times that two-bit context. No public token format changes.
+
+P3 synthesis qualification completed: the fixed scheduler run completed in 8.19 seconds with two `CC_BRAM_20K` operand memories, 3011 `CC_DFF`, 3864 `CC_L2T4`, and 1202 `CC_L2T5`. This is the standalone core with every debug/trace port retained, not a placed board design. The synthesis check reported zero structural problems. Assigned the procedural error-scan loop variable a default to remove irrelevant inferred-loop-variable latch warnings; the final simulation matrix and synthesis were re-run. Full evidence: `P3-rtl-final.log` and `P3-synthesis-final.log`. Physical place/route, UART, and board execution remain P4 work.

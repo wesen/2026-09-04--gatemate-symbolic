@@ -105,7 +105,7 @@ module dataflow_core #(
  end
  always @* begin
    input_pop=0;completion_pop=ce&&!router_valid&&completion_valid;
-   output_push=0;output_input=0;error_emit=0;error_context=0;found_error=0;
+   output_push=0;output_input=0;error_emit=0;error_context=0;found_error=0;e=0;
    router_clear=0;router_mark=0;selected_router=0;action_valid=0;action_token=0;dest=0;
    commit_operand=0;fault_event=0;fault_context=0;fault_token=0;
    close_event=0;close_context=0;stale_action=0;invalid_action=0;duplicate_event=0;
@@ -147,18 +147,23 @@ module dataflow_core #(
 
  reg select_valid;
  reg [4:0] selected_slot;
- integer scan,idx;
+ integer scan;
  reg [7:0] ready_count;
+ wire [1:0] selected_context=selected_slot>=21?2'd3:selected_slot>=14?2'd2:selected_slot>=7?2'd1:2'd0;
+ wire [5:0] selected_node={1'b0,selected_slot}-{4'b0,selected_context}*6'd7;
+ reg [27:0] eligible;
  always @* begin
-   select_valid=0;selected_slot=0;ready_count=0;
+   select_valid=0;selected_slot=0;ready_count=0;eligible=0;
    for(scan=0;scan<28;scan=scan+1)begin
      if(pending[scan])ready_count=ready_count+1'b1;
-     idx=next_slot+scan;if(idx>=28)idx=idx-28;
-     if(!select_valid&&pending[idx]&&!closed[idx/7]&&
-        ((dataflow_pkg::opcode(idx%7)==dataflow_pkg::MUL&&mul_ready)||(dataflow_pkg::opcode(idx%7)!=dataflow_pkg::MUL&&alu_ready)))begin
-       select_valid=1;selected_slot=idx;
-     end
+     eligible[scan]=pending[scan]&&!closed[scan/7]&&
+       ((dataflow_pkg::opcode(scan%7)==dataflow_pkg::MUL&&mul_ready)||
+        (dataflow_pkg::opcode(scan%7)!=dataflow_pkg::MUL&&alu_ready));
    end
+   // Low indices win each descending pass. The second pass restricts the
+   // choice to the unwrapped region, implementing a circular first-set scan.
+   for(scan=27;scan>=0;scan=scan-1)if(eligible[scan])begin select_valid=1;selected_slot=scan;end
+   for(scan=27;scan>=0;scan=scan-1)if(eligible[scan]&&scan>=next_slot)begin select_valid=1;selected_slot=scan;end
  end
  always @(posedge clk or negedge rst_n)begin
    if(!rst_n)begin
@@ -206,7 +211,7 @@ module dataflow_core #(
        if(issue_phase!=0&&!issue_fresh)issue_phase<=0;
        else case(issue_phase)
          0:if(select_valid)begin
-           issue_slot<=selected_slot;issue_token<=dataflow_pkg::completion(selected_slot/7,epoch[selected_slot/7],selected_slot%7,40'b0);
+           issue_slot<=selected_slot;issue_token<=dataflow_pkg::completion({6'b0,selected_context},epoch[selected_context],selected_node,40'b0);
            pending[selected_slot]<=0;next_slot<=selected_slot==27?0:selected_slot+1'b1;issue_phase<=1;
          end
          1:issue_phase<=2;
@@ -217,7 +222,7 @@ module dataflow_core #(
            if(issue_mul)metrics[3]<=metrics[3]+1'b1;else metrics[4]<=metrics[4]+1'b1;
          end
        endcase
-       // First dataflow_pkg::fault closes just this context; clearing pending wins over a
+       // First fault closes just this context; clearing pending wins over a
        // same-cycle ready reservation or selection for the failed context.
        if(fault_event)begin
          closed[fault_context]<=1;error_pending[fault_context]<=1;errors[fault_context]<=fault_token;
