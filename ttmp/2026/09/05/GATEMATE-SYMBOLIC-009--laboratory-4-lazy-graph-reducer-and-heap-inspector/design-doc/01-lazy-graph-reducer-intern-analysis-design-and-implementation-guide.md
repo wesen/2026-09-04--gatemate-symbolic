@@ -26,6 +26,8 @@ WhenToUse: ""
 
 # Lazy graph reducer: intern analysis, design and implementation guide
 
+The implemented model, RTL, host and inspector are now documented in the [API and qualification handoff](../reference/02-implemented-reducer-api-and-qualification-handoff.md). It contains the final wire/page map, model screenshots, timing results and reproduction commands. Physical qualification remains pending because the board was disconnected at programming time.
+
 ## 1. The computation and its observable contract
 
 This laboratory evaluates a graph from a selected root by following demand. An ADD demands its left child, saves enough state to resume, demands its right child, and combines the results. A THUNK introduces sharing: the first demand claims and evaluates its body, then replaces the thunk with the result. Every later demand reads that replacement. Evaluation changes the heap; the graph is not an immutable descriptor schedule like Lab 3.

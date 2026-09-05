@@ -1,0 +1,5 @@
+make: Entering directory '/home/manuel/code/wesen/2026-09-04--gatemate-symbolic/lazy_reducer'
+openFPGALoader -b olimex_gatemateevb build/top.bit
+JTAG init failed with: DirtyJtag: fails to open device
+make: *** [Makefile:12: load] Error 1
+make: Leaving directory '/home/manuel/code/wesen/2026-09-04--gatemate-symbolic/lazy_reducer'

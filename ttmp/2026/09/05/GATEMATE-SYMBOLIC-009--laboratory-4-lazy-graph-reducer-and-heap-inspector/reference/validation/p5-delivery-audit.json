@@ -1,0 +1,13 @@
+{
+  "printed_slips": 11,
+  "physical_qualification": "pending device connection",
+  "images": {
+    "model-mobile.png": "09f374de5ed298e30973130628bb3d6e27d12423c6337f4a6a8e8c8a1d88e630",
+    "model-cycle.png": "b29449247561066758fee0a8b26f0e1197e15e32b5d71650ba1c36eeac0bf982",
+    "model-claimed.png": "629d8bae60959542d2566739662e0f6c44085268c1e5b79fe7af19b08cf52e80",
+    "model-result.png": "57df515ed934f8c97229e97442c25947f3b2c4ced9ba87776a9da5a847ff3dc6",
+    "model-history.png": "68c6fcba1068caf136cf931b0e08433511144d8847efaff400e4c383803d71b3"
+  },
+  "design_uploaded": true,
+  "handoff_uploaded": true
+}

@@ -261,3 +261,76 @@ Model browser execution captured a live claim and UPDATE frame, result 168, repe
 
 - Source static paths /static/app.js and /static/app.css; API /api/lazy; model server tmux lazy009-model-final on18089.
 - P1 guide upload successful. P1-P3 and currentP4 start print receipts retained.
+
+## Step 5: Prepare physical qualification and preserve the disconnected-board boundary
+
+P5 began with a timing-passing packed image and prepared board tests. Programming failed before any physical test could run because the GateMate/DirtyJTAG device was absent. I checked USB enumeration and serial nodes, asked the user to reconnect the board, and continued the independent documentation and handoff work.
+
+The implemented API reference now contains exact node/frame encoding, UART framing and page offsets, ownership rules, model screenshots and reproduction commands. Its status explicitly says physical qualification is pending; the ticket remains open and the paper slip says P5 WAIT.
+
+### Prompt Context
+
+**User prompt (verbatim):** See Step 1.
+
+**Assistant interpretation:** Implement Lab 4 with design, model, RTL, host inspector, physical qualification, diary and printed phases.
+
+**Inferred user intent:** Build an inspectable lazy machine with evidence that sharing evaluates once and cycles terminate precisely.
+
+### What I did
+
+- Printed P4 DONE and P5 START, then stopped the prior dataflow server with lsof-who -p 8087 -k to release UART ownership.
+- Ran scripts/15-physical-qualification.sh; make load could not open DirtyJTAG, so physical tests were not executed.
+- Checked lsusb and /dev/ttyACM0,/dev/ttyACM1 from the host; asked asynchronously for board reconnection.
+- Archived final synthesis/routing reports, wrote lazy_reducer/README.md and the illustrated API handoff, and prepared the physical browser replay.
+- Printed P5 WAIT and started uploading the implemented guide bundle.
+
+### Why
+
+- Software/RTL validation and routed timing do not establish that this image runs correctly on the actual board.
+
+### What worked
+
+- Final build: 24.65 MHz PASS at10MHz, 6261 CPE_LT,1555 CPE_FF,8 RAM_HALF.
+- All required nonphysical implementation and documentation are available; model inspector remains on18089.
+- Finished build and test tmux jobs exited. Unrelated agentforum, pbui and pi sessions were preserved.
+
+### What didn't work
+
+- make -C lazy_reducer load: JTAG init failed with: DirtyJtag: fails to open device; make: *** [Makefile:12: load] Error 1.
+- Host lsusb listed no GateMate/DirtyJTAG device. lsof reported /dev/ttyACM0 and /dev/ttyACM1: No such file or directory. A zsh wildcard device listing also reported no matches found.
+- No physical result, physical screenshot or physical-test pass exists for this laboratory yet. The board image was not replaced by the failed attempt.
+
+### What I learned
+
+- The previous laboratory's long-lived server process did not imply the USB board was still connected the next day.
+
+### What was tricky to build
+
+- Preserving the distinction between a routed image, simulated execution and physical qualification in both the guide and final status.
+- The existing dataflow server has been stopped; after reconnecting, program the lazy image before starting lazy009 physical inspector.
+
+### What warrants a second pair of eyes
+
+- Use the prepared test suite rather than treating the timing log as board evidence.
+- Review the last-observation uncertainty contract in the API guide before debugging serial failures.
+
+### What should be done in the future
+
+- Reconnect/power GateMate JTAG and UART, rerun scripts/15-physical-qualification.sh, start lazy-ide on18090, then run scripts/16-browser-fpga.js.
+- Append actual physical outcomes/screenshots, print P5 DONE, check task99m9 and close the ticket only after success.
+
+### Code review instructions
+
+- scripts/14-final-checks.sh and p4-frontend-tests-fixed.log record software qualification.
+- scripts/19-audit.py validates document frontmatter/fences, image links and successful print/upload receipts.
+
+### Technical details
+
+- Model/reference commit b018ae3; RTL/serial dd29ede; inspector858edd2; diary checkpoint42cab97.
+- P5 task99m9 remains unchecked. Waiting is a physical connection dependency, not an outstanding software timing failure.
+
+### Delivery continuation
+
+- The illustrated bundle upload completed: `OK: uploaded GATEMATE 009 Implemented Lazy Reducer and Inspector.pdf -> /ai/2026/09/05/GATEMATE-SYMBOLIC-009`.
+- The delivery audit passed for both upload receipts, five model PNGs, Markdown/frontmatter/image references and eleven successful print receipts. Those receipts are the overall plan, P1–P4 starts/completions, P5 START and P5 WAIT. There is deliberately no P5 DONE receipt yet.
+- A final device-node check still found no `/dev/ttyACM0` or `/dev/ttyACM1`; retained evidence is in `p5-device-nodes.log` and `p5-usb-enumeration.log`. The pending reconnection question remains the required external input.

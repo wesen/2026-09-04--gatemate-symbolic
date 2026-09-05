@@ -9,3 +9,8 @@
 
 P1-P4 complete: model b018ae3, timing-qualified RTL dd29ede, Go/React inspector 858edd2. 400 model and 120 RTL graph comparisons; model browser screenshots and final frontend tests passed.
 
+
+## 2026-09-05
+
+P5 programming blocked: DirtyJTAG device absent and no UART serial nodes. Physical tests not run. API handoff, model screenshots and timing evidence prepared; awaiting board reconnect.
+

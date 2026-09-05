@@ -1,0 +1,8 @@
+Bus 001 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub
+Bus 002 Device 001: ID 1d6b:0003 Linux Foundation 3.0 root hub
+Bus 003 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub
+Bus 003 Device 003: ID 0bda:5634 Realtek Semiconductor Corp. Laptop Camera
+Bus 003 Device 005: ID 8087:0032 Intel Corp. AX210 Bluetooth
+Bus 003 Device 092: ID 27c6:609c Shenzhen Goodix Technology Co.,Ltd. Goodix Fingerprint USB Device
+Bus 003 Device 098: ID 18d1:4ee7 Google Inc. Nexus/Pixel Device (charging + debug)
+Bus 004 Device 001: ID 1d6b:0003 Linux Foundation 3.0 root hub

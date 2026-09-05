@@ -24,12 +24,18 @@ WhenToUse: ""
 
 ## Overview
 
-<!-- Provide a brief overview of the ticket, its goals, and current status -->
+Implement Laboratory 4 as an inspectable single-evaluator lazy graph machine: a 1024x40 heap, 512x80 continuation stack, checked signed arithmetic, memoized values/errors, UART control and a Go/React heap inspector.
+
+P1–P4 are complete. Go model/reference, RTL/protocol and browser checks passed; final routed timing is 24.65 MHz at the required 10 MHz. P5 physical qualification is waiting for the disconnected GateMate board. The initial JTAG programming attempt could not open the device; no physical pass is claimed.
 
 ## Key Links
 
-- **Related Files**: See frontmatter RelatedFiles field
-- **External Sources**: See frontmatter ExternalSources field
+- [Intern analysis, design and implementation guide](design-doc/01-lazy-graph-reducer-intern-analysis-design-and-implementation-guide.md)
+- [Implemented API and illustrated qualification handoff](reference/02-implemented-reducer-api-and-qualification-handoff.md)
+- [Detailed diary](reference/01-implementation-diary.md)
+- [Archived lab chapter](sources/laboratory-4.md)
+- Model inspector: http://127.0.0.1:18089/
+- reMarkable: `/ai/2026/09/05/GATEMATE-SYMBOLIC-009`
 
 ## Status
 
