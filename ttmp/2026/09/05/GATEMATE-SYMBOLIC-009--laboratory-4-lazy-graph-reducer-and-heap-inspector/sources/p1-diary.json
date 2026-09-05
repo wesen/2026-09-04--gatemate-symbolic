@@ -1,0 +1,36 @@
+{
+  "title": "Define the lazy evaluator contract",
+  "prose": "I reread Laboratory 4 and created the new ticket with five delivery phases. The design fixes the single-evaluator baseline, memoized errors, bounded continuations and physical heap ownership before implementation.",
+  "did": [
+    "Archived the lab chapter and wrote the intern design guide.",
+    "Printed the overall plan and P1 START slips.",
+    "Selected a 1024x40 heap, 512x80 continuation store and full int32 checked arithmetic."
+  ],
+  "why": [
+    "Claim/update correctness and explicit error unwinding determine whether shared computations are safe."
+  ],
+  "worked": [
+    "Ticket and task IDs created; both print receipts report success."
+  ],
+  "failed": [
+    "Two initial orientation reads named nonexistent top/embed files; no source changes resulted. Existing files will be inspected by rg discovery."
+  ],
+  "learned": [
+    "The book requires cycle errors to replace claims and full continuation capacity reservation before claiming."
+  ],
+  "tricky": [
+    "A model may use a different clock schedule, but heap mutations and accepted arithmetic must remain comparable."
+  ],
+  "review": [
+    "Check the representation and reserve-before-claim contract before reading controller RTL."
+  ],
+  "future": [
+    "Implement and qualify all five phases."
+  ],
+  "validate": [
+    "Read sources/laboratory-4.md and design-doc/01-lazy-graph-reducer-intern-analysis-design-and-implementation-guide.md."
+  ],
+  "details": [
+    "Tasks: P1 3jwz, P2 0b40, P3 dpap, P4 qnvq, P5 99m9."
+  ]
+}
