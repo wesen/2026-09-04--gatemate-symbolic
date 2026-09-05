@@ -26,12 +26,19 @@ func TestRecordFrames(t *testing.T) {
 }
 func TestSnapshotDecodeAndCompleteness(t *testing.T) {
 	pages := map[byte][10]byte{}
-	for _, r := range [][2]byte{{0, 13}, {16, 25}, {32, 59}, {64, 91}, {96, 103}, {112, 119}, {128, 135}, {144, 147}} {
+	for _, r := range [][2]byte{{0, 13}, {16, 25}, {32, 59}, {64, 91}, {96, 103}, {112, 119}, {128, 135}, {144, 155}} {
 		for a := r[0]; a <= r[1]; a++ {
 			pages[a] = [10]byte{}
 		}
 	}
-	pages[0] = [10]byte{1, 4, 7, 4, 8, 8, 8, 8, 0, 0}
+	pages[0] = [10]byte{2, 4, 7, 4, 8, 8, 8, 8, 0, 0}
+	pages[155] = [10]byte{7}
+	for n := byte(0); n < Nodes; n++ {
+		v := ResetGraph().Bytes(n)
+		var page [10]byte
+		copy(page[6:], v[:])
+		pages[148+n] = page
+	}
 	pages[1] = [10]byte{3, 2, 1, 0, 0x22, 1, 1, 0, 0, 0}
 	tok := Source(2, 2, 3, 1, Int(-2))
 	wire, _ := tok.Bytes()

@@ -56,8 +56,39 @@ func DecodeSnapshot(pages map[byte][10]byte) (Snapshot, error) {
 	if err != nil {
 		return Snapshot{}, err
 	}
-	if cap[0] != 1 || cap[1] != Contexts || cap[2] != Nodes || cap[3] < 1 || cap[3] > 8 || cap[4] < 1 || cap[4] > 8 || cap[5] < 1 || cap[5] > 8 || cap[6] < 1 || cap[6] > 8 || cap[7] < 1 || cap[7] > 8 {
+	if cap[0] != 2 || cap[1] != Contexts || cap[2] != Nodes || cap[3] < 1 || cap[3] > 8 || cap[4] < 1 || cap[4] > 8 || cap[5] < 1 || cap[5] > 8 || cap[6] < 1 || cap[6] > 8 || cap[7] < 1 || cap[7] > 8 {
 		return Snapshot{}, errors.New("unsupported device capabilities")
+	}
+	graphStatus, err := page(155)
+	if err != nil {
+		return Snapshot{}, err
+	}
+	if graphStatus[0] < 1 || graphStatus[0] > Nodes {
+		return Snapshot{}, errors.New("invalid active graph count")
+	}
+	s.Graph.Count = graphStatus[0]
+	for n := byte(0); n < Nodes; n++ {
+		raw, e := page(148 + n)
+		if e != nil {
+			return Snapshot{}, e
+		}
+		if raw[6] != n || raw[7]&0x84 != 0 || raw[7]>>4 > 5 || raw[7]&3 > 2 || raw[8] > 13 || raw[9] > 13 {
+			return Snapshot{}, errors.New("invalid descriptor page")
+		}
+		if n >= s.Graph.Count {
+			if raw[7] != 0 || raw[8] != 0 || raw[9] != 0 {
+				return Snapshot{}, errors.New("nonzero inactive descriptor")
+			}
+			continue
+		}
+		op := Opcode(raw[7] >> 4)
+		s.Graph.Descriptors[n] = Descriptor{Op: op, Required: required(op), Count: raw[7] & 3, Final: raw[7]&8 != 0, Destinations: [2]Destination{{raw[8] >> 1, raw[8] & 1}, {raw[9] >> 1, raw[9] & 1}}}
+	}
+	// The reset program is initialized directly and has a non-topological COPY.
+	if s.Graph != ResetGraph() {
+		if err := s.Graph.Validate(); err != nil {
+			return Snapshot{}, errors.Wrap(err, "device graph")
+		}
 	}
 	s.Config = Config{int(cap[4]), int(cap[5]), int(cap[6]), int(cap[3]), int(cap[7])}
 	status, err := page(1)

@@ -7,7 +7,7 @@ module tb_dataflow_stress;
  reg [79:0] in_token=0;wire [79:0] out_token,trace_token,debug_data;
  dataflow_core #(.INPUT_DEPTH(DEPTH),.COMPLETION_DEPTH(DEPTH),.OUTPUT_DEPTH(DEPTH),.MUL_LATENCY(LATENCY)) dut(
  .clk(clk),.rst_n(rst_n),.enable(enable),.in_valid(in_valid),.in_ready(in_ready),.in_token(in_token),.out_ready(out_ready),.out_valid(out_valid),.out_token(out_token),
- .cancel_valid(1'b0),.cancel_context(2'b0),.cancel_ready(cancel_ready),.debug_addr(8'b0),.debug_data(debug_data),.trace_valid(trace_valid),.trace_token(trace_token),.quiescent(quiescent));
+ .cancel_valid(1'b0),.cancel_context(2'b0),.cancel_ready(cancel_ready),.graph_write(1'b0),.graph_commit(1'b0),.graph_index(3'b0),.graph_descriptor(24'b0),.graph_size(4'b0),.graph_writable(),.graph_acceptable(),.debug_addr(8'b0),.debug_data(debug_data),.trace_valid(trace_valid),.trace_token(trace_token),.quiescent(quiescent));
  reg [31:0] random_state=32'h86564731;
  function automatic [31:0] next_random(input [31:0] x);next_random={x[30:0],x[31]^x[21]^x[1]^x[0]};endfunction
  reg [79:0] tokens[0:23],tmp;

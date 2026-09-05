@@ -7,9 +7,74 @@ module dataflow_core #(
  input wire in_valid,output wire in_ready,input wire [79:0] in_token,
  output wire out_valid,input wire out_ready,output wire [79:0] out_token,
  input wire cancel_valid,input wire [1:0] cancel_context,output wire cancel_ready,
+ input wire graph_write,graph_commit,input wire [2:0] graph_index,input wire [23:0] graph_descriptor,input wire [3:0] graph_size,
+ output wire graph_writable,output reg graph_acceptable,
  input wire [7:0] debug_addr,output reg [79:0] debug_data,
  output reg trace_valid,output reg [79:0] trace_token,output wire quiescent
 );
+ wire cancel_fire=cancel_valid&&cancel_ready;
+ reg [23:0] descriptors[0:6], staged[0:6];
+ reg [6:0] staged_valid;
+ reg [3:0] active_count;
+ reg pristine;
+ assign graph_writable=pristine;
+ function automatic [2:0] opcode(input [5:0] node);
+   opcode=node<active_count?descriptors[node][22:20]:3'd7;
+ endfunction
+ function automatic [1:0] required_ports(input [5:0] node);
+   required_ports=(opcode(node)==3 || opcode(node)==4)?2'b01:2'b11;
+ endfunction
+ function automatic [6:0] destination(input [5:0] node,input second);
+   destination=second?descriptors[node][6:0]:descriptors[node][14:8];
+ endfunction
+ function automatic [79:0] make_completion(input [7:0] ctx,ep,input [5:0] node,input [39:0] value);
+   make_completion={ctx,ep,node,1'b0,descriptors[node][19],2'b0,node,8'b0,value};
+ endfunction
+ integer gn,gi,gfinals;
+ reg [13:0] graph_writers;
+ reg [7:0] gd;
+ reg [2:0] target_op;
+ always @* begin
+   graph_acceptable=pristine&&graph_size>=1&&graph_size<=7;
+   graph_writers=0;gfinals=0;gd=0;target_op=0;
+   for(gn=0;gn<7;gn=gn+1)if(gn<graph_size)begin
+     if(!staged_valid[gn] || staged[gn][23] || staged[gn][18] || staged[gn][22:20]>5 || staged[gn][17:16]>2)graph_acceptable=0;
+     if(staged[gn][19])begin gfinals=gfinals+1;if(staged[gn][17:16]!=0)graph_acceptable=0;end
+     else if(staged[gn][17:16]==0)graph_acceptable=0;
+     for(gi=0;gi<2;gi=gi+1)begin
+       gd=gi==0?staged[gn][15:8]:staged[gn][7:0];
+       if(gi<staged[gn][17:16])begin
+         if(gd[7:1]<=gn || gd[7:1]>=graph_size || gd[7:1]>=7)graph_acceptable=0;
+         else begin
+           target_op=staged[gd[3:1]][22:20];
+           if(gd[0]&&(target_op==3||target_op==4))graph_acceptable=0;
+           if(graph_writers[gd[3:0]])graph_acceptable=0;
+           graph_writers[gd[3:0]]=1;
+         end
+       end else if(gd!=0)graph_acceptable=0;
+     end
+   end
+   if(gfinals!=1)graph_acceptable=0;
+ end
+ integer init_node;
+ always @(posedge clk or negedge rst_n)begin
+   if(!rst_n)begin
+     pristine<=1;active_count<=7;staged_valid<=0;
+     for(init_node=0;init_node<7;init_node=init_node+1)begin
+       staged[init_node]<=0;
+       descriptors[init_node]<={1'b0,dataflow_pkg::opcode(init_node),init_node==5,1'b0,(init_node==5?2'd0:init_node==6?2'd2:2'd1),
+          (init_node==5?8'b0:{1'b0,dataflow_pkg::destination(init_node,1'b0)}),
+          (init_node==6?{1'b0,dataflow_pkg::destination(init_node,1'b1)}:8'b0)};
+     end
+   end else begin
+     if(enable || (in_valid&&in_ready) || cancel_fire)pristine<=0;
+     if(graph_write&&graph_writable&&graph_index<7)begin staged[graph_index]<=graph_descriptor;staged_valid[graph_index]<=1;end
+     if(graph_commit&&graph_acceptable)begin
+       active_count<=graph_size;staged_valid<=0;
+       for(init_node=0;init_node<7;init_node=init_node+1)descriptors[init_node]<=init_node<graph_size?staged[init_node]:24'b0;
+     end
+   end
+ end
  reg [7:0] epoch[0:3];
  reg [3:0] closed,error_pending;
  reg [79:0] errors[0:3];
@@ -17,7 +82,7 @@ module dataflow_core #(
  reg [31:0] metrics[0:15];
  reg [4:0] next_slot;
  reg prefer_router,prefer_mul;
- wire cancel_fire=cancel_valid&&cancel_ready;
+
  wire ce=enable&&!cancel_fire;
  wire [79:0] input_head,completion_head,output_head;
  wire input_valid,completion_valid,output_valid;
@@ -55,7 +120,7 @@ module dataflow_core #(
  reg [4:0] previous_read_slot;
  always @(posedge clk)previous_read_slot<=read_slot;
  wire issue_fresh=issue_token[71:64]==epoch[issue_token[73:72]]&&!closed[issue_token[73:72]];
- wire issue_mul=dataflow_pkg::opcode(issue_token[63:58])==dataflow_pkg::MUL;
+ wire issue_mul=opcode(issue_token[63:58])==dataflow_pkg::MUL;
  wire mul_ready,alu_ready,mul_valid,alu_valid;
  reg mul_take,alu_take;
  wire mul_admit=ce&&issue_phase==3&&issue_fresh&&issue_mul;
@@ -63,10 +128,10 @@ module dataflow_core #(
  wire [79:0] mul_token,alu_token,mul_debug,alu_debug;
  wire [7:0] mul_stages,alu_stages;
  df_unit #(.LATENCY(MUL_LATENCY)) multiplier(.clk(clk),.rst_n(rst_n),.ce(ce),.in_valid(mul_admit),.in_ready(mul_ready),
-   .in_token(issue_token),.a(issue_a),.b(issue_b),.op(dataflow_pkg::opcode(issue_token[63:58])),.out_valid(mul_valid),.out_ready(mul_take),.out_token(mul_token),
+   .in_token(issue_token),.a(issue_a),.b(issue_b),.op(opcode(issue_token[63:58])),.out_valid(mul_valid),.out_ready(mul_take),.out_token(mul_token),
    .debug_valid(mul_stages),.debug_stage(debug_addr[2:0]),.debug_token(mul_debug));
  df_unit #(.LATENCY(1)) alu(.clk(clk),.rst_n(rst_n),.ce(ce),.in_valid(alu_admit),.in_ready(alu_ready),
-   .in_token(issue_token),.a(issue_a),.b(issue_b),.op(dataflow_pkg::opcode(issue_token[63:58])),.out_valid(alu_valid),.out_ready(alu_take),.out_token(alu_token),
+   .in_token(issue_token),.a(issue_a),.b(issue_b),.op(opcode(issue_token[63:58])),.out_valid(alu_valid),.out_ready(alu_take),.out_token(alu_token),
    .debug_valid(alu_stages),.debug_stage(3'b0),.debug_token(alu_debug));
  wire mul_stale=mul_valid&&(mul_token[71:64]!=epoch[mul_token[73:72]]||closed[mul_token[73:72]]);
  wire alu_stale=alu_valid&&(alu_token[71:64]!=epoch[alu_token[73:72]]||closed[alu_token[73:72]]);
@@ -125,15 +190,15 @@ module dataflow_core #(
        end else if(router_token[56])begin
          if(output_ready&&!output_push)begin output_push=1;output_input=router_token;router_clear=1;close_event=1;close_context=router_token[73:72];end
        end else begin
-         dest=dataflow_pkg::destination(router_token[63:58],delivered[0]);
+         dest=destination(router_token[63:58],delivered[0]);
          action_valid=1;action_token={router_token[79:64],dest,1'b0,router_token[55:0]};router_mark=1;
        end
      end else if(input_valid)begin action_valid=1;action_token=input_head;input_pop=1;end
      if(action_valid)begin
        if(action_token[79:72]>=4)invalid_action=1;
        else if(action_token[71:64]!=epoch[action_token[73:72]]||closed[action_token[73:72]])stale_action=1;
-       else if(action_token[63:58]>=7||action_token[56]||action_token[47:40]!=0||
-           (action_token[57]&&(action_token[63:58]==4||action_token[63:58]==6)))begin
+       else if(action_token[63:58]>=active_count||action_token[56]||action_token[47:40]!=0||
+           (action_token[57]&&required_ports(action_token[63:58])==1))begin
          fault_event=1;fault_context=action_token[73:72];fault_token=dataflow_pkg::fault(action_token[79:72],action_token[71:64],action_token[63:58],1);
        end else begin
          write_slot=action_token[73:72]*7+action_token[63:58];write_port=action_token[57];write_value=action_token[39:0];
@@ -172,8 +237,8 @@ module dataflow_core #(
    select_valid=0;selected_slot=0;eligible=0;
    for(scan=0;scan<28;scan=scan+1)begin
      eligible[scan]=pending[scan]&&!closed[scan/7]&&
-       ((dataflow_pkg::opcode(scan%7)==dataflow_pkg::MUL&&mul_ready)||
-        (dataflow_pkg::opcode(scan%7)!=dataflow_pkg::MUL&&alu_ready));
+       ((opcode(scan%7)==dataflow_pkg::MUL&&mul_ready)||
+        (opcode(scan%7)!=dataflow_pkg::MUL&&alu_ready));
    end
    // Low indices win each descending pass. The second pass restricts the
    // choice to the unwrapped region, implementing a circular first-set scan.
@@ -213,26 +278,26 @@ module dataflow_core #(
        if(completion_pop)begin router_valid<=1;router_token<=completion_head;delivered<=0;end
        if(router_clear)router_valid<=0;
        if(router_mark)begin
-         if(router_token[63:58]!=6||delivered[0])begin delivered<=2'b11;router_valid<=0;end
+         if(descriptors[router_token[63:58]][17:16]==1||delivered[0])begin delivered<=2'b11;router_valid<=0;end
          else delivered<=2'b01;
        end
        if(error_emit)error_pending[error_context]<=0;
        if(commit_operand)begin
          if(write_port)valid_b[write_slot]<=1;else valid_a[write_slot]<=1;
-         if(!issued[write_slot]&&((write_port&&valid_a[write_slot])||(!write_port&&(valid_b[write_slot]||dataflow_pkg::required_ports(action_token[63:58])==1))))begin
+         if(!issued[write_slot]&&((write_port&&valid_a[write_slot])||(!write_port&&(valid_b[write_slot]||required_ports(action_token[63:58])==1))))begin
            issued[write_slot]<=1;pending[write_slot]<=1;
          end
        end
        if(issue_phase!=0&&!issue_fresh)issue_phase<=0;
        else case(issue_phase)
          0:if(select_valid)begin
-           issue_slot<=selected_slot;issue_token<=dataflow_pkg::completion({6'b0,selected_context},epoch[selected_context],selected_node,40'b0);
+           issue_slot<=selected_slot;issue_token<=make_completion({6'b0,selected_context},epoch[selected_context],selected_node,40'b0);
            pending[selected_slot]<=0;next_slot<=selected_slot==27?0:selected_slot+1'b1;issue_phase<=1;
          end
          1:issue_phase<=2;
          2:if(previous_read_slot==issue_slot&&!debug_operand)begin issue_a<=ram_a;issue_b<=ram_b;issue_phase<=3;end
          3:if(dispatch)begin
-           issue_phase<=0;trace_valid<=1;trace_token<={issue_token[79:40],dataflow_pkg::evaluate(dataflow_pkg::opcode(issue_token[63:58]),issue_a,issue_b)};
+           issue_phase<=0;trace_valid<=1;trace_token<={issue_token[79:40],dataflow_pkg::evaluate(opcode(issue_token[63:58]),issue_a,issue_b)};
            metrics[2]<=metrics[2]+1'b1;
            if(issue_mul)metrics[3]<=metrics[3]+1'b1;else metrics[4]<=metrics[4]+1'b1;
          end
@@ -250,7 +315,8 @@ module dataflow_core #(
  always @* begin
    debug_data=0;
    case(debug_addr)
-     0:debug_data={8'd1,8'd4,8'd7,8'(MUL_LATENCY),8'(INPUT_DEPTH),8'(COMPLETION_DEPTH),8'(OUTPUT_DEPTH),8'(EPOCH_BITS),16'b0};
+     155:debug_data={4'b0,active_count,1'b0,staged_valid,7'b0,pristine,56'b0};
+     0:debug_data={8'd2,8'd4,8'd7,8'(MUL_LATENCY),8'(INPUT_DEPTH),8'(COMPLETION_DEPTH),8'(OUTPUT_DEPTH),8'(EPOCH_BITS),16'b0};
      1:debug_data={epoch[3],epoch[2],epoch[1],epoch[0],closed,error_pending,input_count,ready_count,completion_count,output_count,quiescent,7'b0};
      10:debug_data={issue_token[79:48],6'b0,issue_phase,39'b0,(issue_phase!=0)};
      11:debug_data={issue_a,issue_b};
@@ -259,6 +325,7 @@ module dataflow_core #(
      24:debug_data={71'b0,alu_stages[0],mul_stages};
      25:debug_data=alu_debug;
      default:begin
+       if(debug_addr>=148&&debug_addr<=154)debug_data={48'b0,5'b0,(3'(debug_addr-148)),descriptors[debug_addr-148]};
        if(debug_addr>=2&&debug_addr<=9)debug_data={metrics[(debug_addr-2)*2],metrics[(debug_addr-2)*2+1],16'b0};
        else if(debug_addr>=16&&debug_addr<24)debug_data=mul_debug;
        else if(debug_addr>=32&&debug_addr<60)debug_data={ram_a,ram_b};

@@ -127,3 +127,18 @@ func TestGraphValidationAndOwnership(t *testing.T) {
 		t.Fatal("reset graph missing")
 	}
 }
+
+func TestSerialGraphLoadFrames(t *testing.T) {
+	p, err := Compile("input a: int16; let p=a*a; output p+p")
+	if err != nil {
+		t.Fatal(err)
+	}
+	wire := &scriptedPort{responses: []string{"A\n", "A\n", "A\n"}}
+	serial := &Serial{port: wire, synchronized: true}
+	if _, err := serial.Execute(context.Background(), Operation{Kind: "load", Graph: &p.Graph}); err != nil {
+		t.Fatal(err)
+	}
+	if len(wire.writes) != 3 || wire.writes[0] != "W0002020303\n" || wire.writes[1] != "W0118000019\n" || wire.writes[2] != "G0202\n" {
+		t.Fatalf("frames: %q", wire.writes)
+	}
+}

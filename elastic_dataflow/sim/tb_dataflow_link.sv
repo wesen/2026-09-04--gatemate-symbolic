@@ -53,7 +53,7 @@ module tb_dataflow_link;
    if(length!=4||response[2]!="1")$fatal(1,"partial timeout");
    request("Q",1,0,1);if(length!=4||response[2]!="3")$fatal(1,"bad checksum accepted");
    request("R",0,0,0);ack();request("Q",1,0,0);
-   if(record!==80'h01040704080808080000)$fatal(1,"capabilities %h",record);
+   if(record!==80'h02040704080808080000)$fatal(1,"capabilities %h",record);
    inject(0,0,7);inject(0,1,6);inject(1,0,3);inject(1,1,5);inject(3,0,2);inject(3,1,9);
    request("Q",1,1,0);if(record[39:32]!=6)$fatal(1,"input did not remain paused %h",record);
    request("T",4,200,0);ack();request("Q",1,2,0);if(record[79:48]!=200)$fatal(1,"enabled cycle count %h",record);
@@ -66,6 +66,14 @@ module tb_dataflow_link;
    request("R",0,0,0);ack();
    for(integer n=0;n<8;n=n+1)inject(0,0,n);
    request("I",10,0,0);if(length!=4||response[2]!="4")$fatal(1,"full input not rejected");
+   request("R",0,0,0);ack();
+   request("W",4,32'h00020203,0);ack();
+   request("G",1,2,0);if(length!=4||response[2]!="2")$fatal(1,"partial graph accepted");
+   request("W",4,32'h01180000,0);ack();request("G",1,2,0);ack();
+   request("Q",1,148,0);if(record[31:0]!=32'h00020203)$fatal(1,"descriptor readback");
+   inject(0,0,7);inject(0,1,6);request("T",4,100,0);ack();
+   request("P",0,0,0);if(record[39:0]!=84||record[63:58]!=1||!record[56])$fatal(1,"programmable UART result %h",record);
+   request("W",4,32'h00020203,0);if(length!=4||response[2]!="2")$fatal(1,"late graph write accepted");
    $display("PASS UART pause, ticks, operands, cancellation, polling, reset, bounds, checksum, timeout");$finish;
  end
  initial begin #100000000;$fatal(1,"UART watchdog");end
