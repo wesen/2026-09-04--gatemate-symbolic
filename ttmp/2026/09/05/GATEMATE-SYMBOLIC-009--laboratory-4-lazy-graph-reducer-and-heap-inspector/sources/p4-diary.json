@@ -1,0 +1,49 @@
+{
+  "title": "Build and validate the Go and React heap inspector",
+  "prose": "The inspector now presents actual heap words and references, a top-first continuation stack, retained mutation events, counters, held results and detached history. Graph JSON uses readable tags and fields; the host validates complete images before reset/loading and readback.\n\nModel browser execution captured a live claim and UPDATE frame, result 168, repeated forcing without another multiply, and a memoized cyclic error. The final 390-pixel viewport has no document overflow and the console reports no warnings or errors.",
+  "commit": "858edd2 — Go controls and React heap continuation inspector; earlier model b018ae3 and RTL dd29ede",
+  "did": [
+    "Added Glazed lazy-lab and lazy-ide commands with logging and loopback server ownership.",
+    "Added HTTP session guards, last-observation preservation on failed capture, snapshot cloning and bounded history.",
+    "Added React source editor, graph and heap views, continuation and mutation tables, results, import/export and history.",
+    "Saved five model screenshots and complete observed frames; ran repository race/build/vet/lint/vulnerability and frontend checks."
+  ],
+  "why": [
+    "The user needs to inspect ownership transitions and memoization, not only a final arithmetic value."
+  ],
+  "worked": [
+    "Seven repository checks passed initially; all seventeen frontend tests passed after fixing an asynchronous existing history assertion.",
+    "Model stopped with claim at cycle 3; result168, claims1, updates1, muls1; cyclic thunk replaced by error3.",
+    "Full browser workflow passed twice, with final screenshots showing corrected editor height and no favicon error."
+  ],
+  "failed": [
+    "TypeScript TS17006 rejected -2**31 in types.ts; parenthesized -(2**31), then typecheck passed.",
+    "Initial CLI test asserted Cobra SetOut output, but Glazed writes through its processor. Replaced with repository processor-capture pattern; all five examples, cancellation and sink-error tests passed.",
+    "First browser URL :8090 belonged to an unrelated Gold Coin Shop service. Lazy server exited on bind conflict. Left unrelated process intact and chose confirmed-free :18089 model and :18090 physical.",
+    "Initial browser console had one favicon.ico 404; added an explicit 204 endpoint and confirmed clean console.",
+    "Bootstrap textarea.form-control specificity defeated the editor minimum height; qualified textarea.lazy-source and rebuilt.",
+    "Full frontend suite exposed existing dataflow/App.test.tsx history timing: Unable to find ... Apply breakpoint. Replaced immediate assertion with waitFor; all17 tests passed."
+  ],
+  "learned": [
+    "An HTTP failure after reset can leave the new device state uncertain while the last successful frame must remain displayable; session regression now covers that boundary."
+  ],
+  "tricky": [
+    "Historical frames remain detached while model heap mutates. UI draft and selected root are controls, while heap words and continuations derive from the observed frame.",
+    "All mutating controls use expected frame IDs; source parse errors do not reset the engine."
+  ],
+  "review": [
+    "Review Session.Control error path and cloned state, frontend word encoding, and bounded graph/heap display.",
+    "The UI graph shows the first32 addresses, while the paginated heap table covers the whole image."
+  ],
+  "future": [
+    "Program timing-passing image and run physical suite and browser capture."
+  ],
+  "validate": [
+    "p4-check-summary.log preserves initial check outcomes; p4-frontend-tests-fixed.log records corrected full-suite pass.",
+    "scripts/11-browser-model.js replays source load, claim, repeat, history, cycle and invalid image checks."
+  ],
+  "details": [
+    "Source static paths /static/app.js and /static/app.css; API /api/lazy; model server tmux lazy009-model-final on18089.",
+    "P1 guide upload successful. P1-P3 and currentP4 start print receipts retained."
+  ]
+}

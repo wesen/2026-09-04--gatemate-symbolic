@@ -1,0 +1,5 @@
+PASS 120 RTL graphs against recursive reference and transaction heap/mutation/counter results
+PASS lazy core sharing, repeated force, cycles, signed arithmetic, faults, bounds and held output
+tb/lazy_core_tb.sv:25: $finish called at 312640000 (1ps)
+PASS lazy UART framing, reset, load, readback, stack, trace, sharing, cycle and polling
+tb/lazy_link_tb.sv:69: $finish called at 680015000 (1ps)

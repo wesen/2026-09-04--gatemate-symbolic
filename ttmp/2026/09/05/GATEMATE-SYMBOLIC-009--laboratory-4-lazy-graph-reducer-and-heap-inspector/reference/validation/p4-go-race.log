@@ -1,0 +1,11 @@
+ok  	github.com/wesen/2026-09-04--gatemate-symbolic/cmd/dataflow-ide	1.034s
+ok  	github.com/wesen/2026-09-04--gatemate-symbolic/cmd/dataflow-lab	1.044s
+?   	github.com/wesen/2026-09-04--gatemate-symbolic/cmd/lazy-ide	[no test files]
+ok  	github.com/wesen/2026-09-04--gatemate-symbolic/cmd/lazy-lab	1.058s
+ok  	github.com/wesen/2026-09-04--gatemate-symbolic/cmd/search-microscope	1.032s
+ok  	github.com/wesen/2026-09-04--gatemate-symbolic/internal/dataflowide	1.063s
+ok  	github.com/wesen/2026-09-04--gatemate-symbolic/internal/lazyide	1.015s
+ok  	github.com/wesen/2026-09-04--gatemate-symbolic/internal/microscope	1.091s
+ok  	github.com/wesen/2026-09-04--gatemate-symbolic/pkg/dataflow	1.089s
+ok  	github.com/wesen/2026-09-04--gatemate-symbolic/pkg/lazy	1.045s
+ok  	github.com/wesen/2026-09-04--gatemate-symbolic/pkg/microscope	1.391s

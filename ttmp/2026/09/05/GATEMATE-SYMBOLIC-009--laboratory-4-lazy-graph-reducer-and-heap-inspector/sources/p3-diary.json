@@ -1,0 +1,42 @@
+{
+  "title": "Implement synchronous reducer RTL and qualify protocol simulation",
+  "prose": "The physical controller now owns heap and continuation writes, follows synchronous read phases, and performs full signed int32 multiplication through a sequential unit. The first board build passed final timing while Go protocol work and expanded differential tests continued.",
+  "did": [
+    "Implemented lazy_core, independent lazy UART link, board top and build scripts.",
+    "Reused existing RAM and UART primitives; added model-derived RTL graph vectors and real UART serial-line tests.",
+    "Added Go serial encoding, checked response decoding, capability identification, heap load/readback and complete snapshots."
+  ],
+  "why": [
+    "The heap owner must retain claims and continuation transitions through paused clocks and debug reads."
+  ],
+  "worked": [
+    "Directed core and UART tests passed, including sharing, memoized cyclic errors, signed overflow, held output, timeout/checksum rejection and continuation/trace reads.",
+    "120 generated RTL graphs matched recursive/model final heap, result, mutation sequence and arithmetic counters.",
+    "Go serial and model race tests passed. Final PNR reports 24.65 MHz PASS at 10 MHz; 6261/40960 CPE_LT and 8/64 RAM_HALF."
+  ],
+  "failed": [
+    "No RTL or timing test failure. One orientation read used a nonexistent tb path; rg located the existing simulation source."
+  ],
+  "learned": [
+    "The 80-bit frames and 160-bit mutation records infer bounded RAM without a wide combinational heap scan."
+  ],
+  "tricky": [
+    "Q temporarily selects synchronous RAM read addresses; response latency and idle serial time restore computation addresses before the next tick.",
+    "The sequential multiplier handles INT_MIN magnitudes in unsigned form, then validates signed 64-bit product range."
+  ],
+  "review": [
+    "Review lazy_core heap-write mux, UPDATE validation, and error return stack behavior.",
+    "Review protocol reset after uncertain outcomes and capability magic LAZY."
+  ],
+  "future": [
+    "Implement Go/React inspector and then physical qualification."
+  ],
+  "validate": [
+    "source /home/manuel/fpga/oss-cad-suite/environment; bash lazy_reducer/scripts/test.sh",
+    "GOCACHE=/tmp/gatemate009-go-cache go test -race ./pkg/lazy -count=1"
+  ],
+  "details": [
+    "Wire: W(addr16,word40), F(root16), T(ticks32), Q(page16), R and P; payload XOR framing.",
+    "Pages 0 capabilities, 1 state, 2 result, 3 trace metadata, 16..27 counters, 0x1000 heap, 0x2000 stack, 0x3000 paired mutation records."
+  ]
+}

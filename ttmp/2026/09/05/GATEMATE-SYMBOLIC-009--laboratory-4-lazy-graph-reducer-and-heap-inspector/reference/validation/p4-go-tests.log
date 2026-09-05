@@ -1,0 +1,64 @@
+ok  	github.com/wesen/2026-09-04--gatemate-symbolic/pkg/lazy	1.103s
+ok  	github.com/wesen/2026-09-04--gatemate-symbolic/internal/lazyide	1.018s
+{"level":"info","engine":"model","example":"shared","time":"2026-09-05T17:29:33-04:00","message":"resetting engine and checking example"}
+[
+{
+  "example": "shared",
+  "outputs": [
+    168
+  ],
+  "snapshot": {
+    "source": "model",
+    "state": "output",
+    "address": 3,
+    "result": 168,
+    "valid": true,
+    "heap": [
+      21,
+      2,
+      137438953473,
+      42,
+      68719673347,
+      68719673347,
+      68719738885
+    ],
+    "stack": [],
+    "counters": {
+      "cycles": 20000,
+      "reads": 10,
+      "writes": 2,
+      "claims": 1,
+      "updates": 1,
+      "muls": 1,
+      "adds": 3,
+      "indirections": 0,
+      "blackholes": 0,
+      "maxStack": 4,
+      "stalls": 19980,
+      "faults": 0
+    },
+    "trace": [
+      {
+        "cycle": 3,
+        "address": 3,
+        "old": 206158561280,
+        "new": 343597383680
+      },
+      {
+        "cycle": 9,
+        "address": 3,
+        "old": 343597383680,
+        "new": 42
+      }
+    ],
+    "dropped": 0
+  },
+  "source": "model"
+}
+]
+--- FAIL: TestCommandFlagsAndModelOutput (0.00s)
+    main_test.go:27: 
+FAIL
+FAIL	github.com/wesen/2026-09-04--gatemate-symbolic/cmd/lazy-lab	0.052s
+?   	github.com/wesen/2026-09-04--gatemate-symbolic/cmd/lazy-ide	[no test files]
+FAIL

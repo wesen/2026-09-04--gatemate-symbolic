@@ -1,0 +1,307 @@
+make: Entering directory '/home/manuel/code/wesen/2026-09-04--gatemate-symbolic/lazy_reducer'
+mkdir -p build
+yosys -ql build/yosys.log scripts/synth.ys
+Warning: Replacing memory \counters with list of registers. See rtl/lazy_core.sv:61
+nextpnr-himbaechel -l build/nextpnr.log --device CCGM1A1 --json build/top.json -o ccf=../symbolic_eval/constraints/olimex_gatematea1_evb.ccf -o out=build/top.txt --sdc ../symbolic_eval/constraints/top.sdc --router router2 --seed 2
+Info: Using uarch 'gatemate' for device 'CCGM1A1'
+Info: Using timing mode 'WORST'.
+Info: Using performance mode 'SPEED'.
+Info: constraining clock net 'clk_10m' to 10.00 MHz
+
+Info: Parsing CCF file..
+Info: Assign cell region based on attributes..
+Info: Packing constants..
+Info: Running cleanups..
+Info: Packing IOs..
+Info:     Constraining '$iopadmap$lazy_top.user_led' to pad 'IO_SB_B6'.
+Info:     Constraining '$iopadmap$lazy_top.uart_tx_pin' to pad 'IO_SA_B6'.
+Info:     Constraining '$iopadmap$lazy_top.uart_rx_pin' to pad 'IO_SA_A6'.
+Info:     Constraining '$iopadmap$lazy_top.fpga_but' to pad 'IO_SB_B7'.
+Info:     Constraining '$iopadmap$lazy_top.clk_10m' to pad 'IO_SB_A8'.
+Info: Insert clocking cells..
+Info: Packing PLLs..
+Info: Sort BUFGs..
+Info: Packing BUFGs..
+Info: Packing IO SELs..
+Info: Packing misc..
+Info: Packing RAMs..
+Info: Packing SERDES..
+Info: Packing multipliers...
+Info: Packing ADDFs..
+Info: Packing CPEs..
+Info: Removing unused constants..
+Info:     Removed unused VCC cell.
+Info:     Removed unused GND cell.
+Info: Fix cell assigned regions..
+Info: Checksum: 0x217a186a
+
+Info: Device utilisation:
+Info: 	            USR_RSTN:       1/      1   100%
+Info: 	            CPE_COMP:       0/  20480     0%
+Info: 	         CPE_CPLINES:      60/  20480     0%
+Info: 	               IOSEL:       5/    162     3%
+Info: 	                GPIO:       5/    162     3%
+Info: 	               CLKIN:       1/      1   100%
+Info: 	              GLBOUT:       1/      1   100%
+Info: 	                 PLL:       0/      4     0%
+Info: 	            CFG_CTRL:       0/      1     0%
+Info: 	              SERDES:       0/      1     0%
+Info: 	              CPE_LT:    6261/  40960    15%
+Info: 	              CPE_FF:    1555/  40960     3%
+Info: 	           CPE_RAMIO:     735/  40960     1%
+Info: 	            RAM_HALF:       8/     64    12%
+
+Info: Placed 0 cells based on constraints.
+Info: Creating initial analytic placement for 3670 cells, random placement wirelen = 606293.
+Info:     at initial placer iter 0, wirelen = 10281
+Info:     at initial placer iter 1, wirelen = 9502
+Info:     at initial placer iter 2, wirelen = 9043
+Info:     at initial placer iter 3, wirelen = 9045
+Info: Running main analytical placer, max placement attempts per cell = 9579064.
+Info:     at iteration #1, type ALL: wirelen solved = 9251, spread = 131288, legal = 160047; time = 0.30s
+Info:     at iteration #2, type ALL: wirelen solved = 12002, spread = 109240, legal = 143585; time = 0.40s
+Info:     at iteration #3, type ALL: wirelen solved = 15935, spread = 110226, legal = 141025; time = 0.35s
+Info:     at iteration #4, type ALL: wirelen solved = 19416, spread = 103229, legal = 134393; time = 0.30s
+Info:     at iteration #5, type ALL: wirelen solved = 23238, spread = 101579, legal = 127373; time = 0.27s
+Info:     at iteration #6, type ALL: wirelen solved = 26626, spread = 98773, legal = 123706; time = 0.31s
+Info:     at iteration #7, type ALL: wirelen solved = 30395, spread = 94477, legal = 118914; time = 0.27s
+Info:     at iteration #8, type ALL: wirelen solved = 32009, spread = 92624, legal = 112699; time = 0.27s
+Info:     at iteration #9, type ALL: wirelen solved = 36479, spread = 86424, legal = 107329; time = 0.26s
+Info:     at iteration #10, type ALL: wirelen solved = 39814, spread = 81123, legal = 100456; time = 0.16s
+Info:     at iteration #11, type ALL: wirelen solved = 43195, spread = 78727, legal = 97980; time = 0.16s
+Info:     at iteration #12, type ALL: wirelen solved = 44063, spread = 77287, legal = 102639; time = 0.23s
+Info:     at iteration #13, type ALL: wirelen solved = 47788, spread = 75830, legal = 95681; time = 0.12s
+Info:     at iteration #14, type ALL: wirelen solved = 47027, spread = 74396, legal = 97716; time = 0.23s
+Info:     at iteration #15, type ALL: wirelen solved = 50104, spread = 72921, legal = 93241; time = 0.21s
+Info:     at iteration #16, type ALL: wirelen solved = 47880, spread = 72203, legal = 91151; time = 0.17s
+Info:     at iteration #17, type ALL: wirelen solved = 48208, spread = 71120, legal = 94049; time = 0.31s
+Info:     at iteration #18, type ALL: wirelen solved = 51944, spread = 73803, legal = 96007; time = 0.27s
+Info:     at iteration #19, type ALL: wirelen solved = 54065, spread = 75834, legal = 94729; time = 0.18s
+Info:     at iteration #20, type ALL: wirelen solved = 53825, spread = 74221, legal = 98404; time = 0.28s
+Info:     at iteration #21, type ALL: wirelen solved = 57008, spread = 76160, legal = 95725; time = 0.17s
+Info: HeAP Placer Time: 6.31s
+Info:   of which solving equations: 1.78s
+Info:   of which spreading cells: 0.45s
+Info:   of which strict legalisation: 3.09s
+
+Info: Running simulated annealing placer for refinement.
+Info:   at iteration #1: temp = 0.000000, timing cost = 768, wirelen = 96352
+Info:   at iteration #5: temp = 0.000000, timing cost = 364, wirelen = 80735
+Info:   at iteration #10: temp = 0.000000, timing cost = 382, wirelen = 77306
+Info:   at iteration #15: temp = 0.000000, timing cost = 359, wirelen = 75410
+Info:   at iteration #20: temp = 0.000000, timing cost = 337, wirelen = 74722
+Info:   at iteration #25: temp = 0.000000, timing cost = 340, wirelen = 74590
+Info:   at iteration #26: temp = 0.000000, timing cost = 336, wirelen = 74579 
+Info: SA placement time 27.21s
+
+Info: Max frequency for clock 'link.clk': 37.54 MHz (PASS at 10.00 MHz)
+
+Info: Max delay <async> -> posedge link.clk: 1.93 ns
+
+Info: Slack histogram:
+Info:  legend: * represents 10 endpoint(s)
+Info:          + represents [1,10) endpoint(s)
+Info: [ 73360,  74653) |*+
+Info: [ 74653,  75946) |+
+Info: [ 75946,  77239) |*****+
+Info: [ 77239,  78532) |******+
+Info: [ 78532,  79825) |*******+
+Info: [ 79825,  81118) |*************+
+Info: [ 81118,  82411) |******************+
+Info: [ 82411,  83704) |***********+
+Info: [ 83704,  84997) |*****************+
+Info: [ 84997,  86290) |***************************+
+Info: [ 86290,  87583) |*********************+
+Info: [ 87583,  88876) |*******************************+
+Info: [ 88876,  90169) |*************+
+Info: [ 90169,  91462) |*********+
+Info: [ 91462,  92755) |****************************************************+
+Info: [ 92755,  94048) |*****************+
+Info: [ 94048,  95341) |**********************+
+Info: [ 95341,  96634) |****************************+
+Info: [ 96634,  97927) |******************************+
+Info: [ 97927,  99220) |************************************************************ 
+Info: Checksum: 0x505c8fde
+Info: Repacking RAMs..
+Info: Repacking CPEs..
+Info: Remove unused clocking cells..
+Info: Routing multipliers...
+Info: Routing clock nets...
+Info:     routing net 'link.clk' to 1559 users
+Info: Clock router time 5.95s.
+Info: Running router2...
+Info: Setting up routing resources...
+Info: Running main router loop...
+Info:     iter=1 wires=231794 overused=20515 overuse=22494 resources=9026 overused=881 overuse=1175 archfail=NA
+Info:     iter=2 wires=244189 overused=10072 overuse=10236 resources=9861 overused=353 overuse=381 archfail=NA
+Info:     iter=3 wires=248287 overused=6569 overuse=6636 resources=10685 overused=246 overuse=277 archfail=NA
+Info:     iter=4 wires=250967 overused=4592 overuse=4616 resources=10855 overused=173 overuse=197 archfail=NA
+Info:     iter=5 wires=254546 overused=3476 overuse=3492 resources=10923 overused=118 overuse=137 archfail=NA
+Info:     iter=6 wires=256182 overused=2642 overuse=2651 resources=10887 overused=94 overuse=108 archfail=NA
+Info:     iter=7 wires=257422 overused=1826 overuse=1827 resources=11105 overused=71 overuse=83 archfail=NA
+Info:     iter=8 wires=258219 overused=1570 overuse=1575 resources=11350 overused=58 overuse=67 archfail=NA
+Info:     iter=9 wires=258777 overused=1226 overuse=1226 resources=11275 overused=44 overuse=49 archfail=NA
+Info:     iter=10 wires=259640 overused=894 overuse=895 resources=11322 overused=38 overuse=45 archfail=NA
+Info:     iter=11 wires=260753 overused=756 overuse=756 resources=11286 overused=31 overuse=33 archfail=NA
+Info:     iter=12 wires=261141 overused=639 overuse=640 resources=11493 overused=31 overuse=33 archfail=NA
+Info:     iter=13 wires=261454 overused=392 overuse=392 resources=11302 overused=20 overuse=24 archfail=NA
+Info:     iter=14 wires=262012 overused=291 overuse=291 resources=11327 overused=15 overuse=18 archfail=NA
+Info:     iter=15 wires=262096 overused=243 overuse=243 resources=11272 overused=13 overuse=16 archfail=NA
+Info:     iter=16 wires=262611 overused=188 overuse=188 resources=11388 overused=10 overuse=12 archfail=NA
+Info:     iter=17 wires=262911 overused=150 overuse=150 resources=11419 overused=10 overuse=13 archfail=NA
+Info:     iter=18 wires=262964 overused=114 overuse=114 resources=11419 overused=4 overuse=6 archfail=NA
+Info:     iter=19 wires=263194 overused=96 overuse=96 resources=11451 overused=4 overuse=6 archfail=NA
+Info:     iter=20 wires=263250 overused=82 overuse=82 resources=11407 overused=1 overuse=3 archfail=NA
+Info:     iter=21 wires=263352 overused=63 overuse=63 resources=11422 overused=3 overuse=5 archfail=NA
+Info:     iter=22 wires=263474 overused=57 overuse=57 resources=11404 overused=1 overuse=3 archfail=NA
+Info:     iter=23 wires=263483 overused=42 overuse=42 resources=11438 overused=3 overuse=5 archfail=NA
+Info:     iter=24 wires=263585 overused=53 overuse=53 resources=11445 overused=3 overuse=5 archfail=NA
+Info:     iter=25 wires=263655 overused=61 overuse=61 resources=11490 overused=9 overuse=14 archfail=NA
+Info:     iter=26 wires=263725 overused=61 overuse=61 resources=11427 overused=1 overuse=2 archfail=NA
+Info:     iter=27 wires=263754 overused=46 overuse=46 resources=11426 overused=1 overuse=1 archfail=NA
+Info:     iter=28 wires=263743 overused=43 overuse=43 resources=11445 overused=2 overuse=2 archfail=NA
+Info:     iter=29 wires=263778 overused=35 overuse=35 resources=11438 overused=1 overuse=1 archfail=NA
+Info:     iter=30 wires=263755 overused=31 overuse=31 resources=11438 overused=3 overuse=4 archfail=NA
+Info:     iter=31 wires=263845 overused=25 overuse=25 resources=11432 overused=1 overuse=1 archfail=NA
+Info:     iter=32 wires=263744 overused=32 overuse=32 resources=11440 overused=2 overuse=2 archfail=NA
+Info:     iter=33 wires=263990 overused=34 overuse=34 resources=11449 overused=3 overuse=3 archfail=NA
+Info:     iter=34 wires=263838 overused=28 overuse=28 resources=11436 overused=2 overuse=2 archfail=NA
+Info:     iter=35 wires=264047 overused=32 overuse=32 resources=11426 overused=1 overuse=1 archfail=NA
+Info:     iter=36 wires=263888 overused=42 overuse=42 resources=11441 overused=2 overuse=2 archfail=NA
+Info:     iter=37 wires=264237 overused=32 overuse=32 resources=11401 overused=0 overuse=0 archfail=NA
+Info:     iter=38 wires=264189 overused=28 overuse=28 resources=11401 overused=0 overuse=0 archfail=NA
+Info:     iter=39 wires=264362 overused=18 overuse=18 resources=11389 overused=0 overuse=0 archfail=NA
+Info:     iter=40 wires=264260 overused=11 overuse=11 resources=11401 overused=0 overuse=0 archfail=NA
+Info:     iter=41 wires=264288 overused=9 overuse=9 resources=11389 overused=0 overuse=0 archfail=NA
+Info:     iter=42 wires=264417 overused=3 overuse=3 resources=11385 overused=0 overuse=0 archfail=NA
+Info:     iter=43 wires=264425 overused=7 overuse=7 resources=11385 overused=0 overuse=0 archfail=NA
+Info:     iter=44 wires=264407 overused=3 overuse=3 resources=11385 overused=0 overuse=0 archfail=NA
+Info:     iter=45 wires=264438 overused=3 overuse=3 resources=11394 overused=0 overuse=0 archfail=NA
+Info:     iter=46 wires=264444 overused=3 overuse=3 resources=11385 overused=0 overuse=0 archfail=NA
+Info:     iter=47 wires=264438 overused=4 overuse=4 resources=11385 overused=0 overuse=0 archfail=NA
+Info:     iter=48 wires=264501 overused=3 overuse=3 resources=11394 overused=0 overuse=0 archfail=NA
+Info:     iter=49 wires=264559 overused=4 overuse=4 resources=11412 overused=0 overuse=0 archfail=NA
+Info:     iter=50 wires=264498 overused=6 overuse=6 resources=11388 overused=0 overuse=0 archfail=NA
+Info:     iter=51 wires=264516 overused=3 overuse=3 resources=11388 overused=0 overuse=0 archfail=NA
+Info:     iter=52 wires=264531 overused=3 overuse=3 resources=11388 overused=0 overuse=0 archfail=NA
+Info:     iter=53 wires=264542 overused=3 overuse=3 resources=11388 overused=0 overuse=0 archfail=NA
+Info:     iter=54 wires=264584 overused=2 overuse=2 resources=11385 overused=0 overuse=0 archfail=NA
+Info:     iter=55 wires=264560 overused=1 overuse=1 resources=11388 overused=0 overuse=0 archfail=NA
+Info:     iter=56 wires=264580 overused=1 overuse=1 resources=11385 overused=0 overuse=0 archfail=NA
+Info:     iter=57 wires=264560 overused=1 overuse=1 resources=11388 overused=0 overuse=0 archfail=NA
+Info:     iter=58 wires=264580 overused=1 overuse=1 resources=11385 overused=0 overuse=0 archfail=NA
+Info:     iter=59 wires=264560 overused=1 overuse=1 resources=11388 overused=0 overuse=0 archfail=NA
+Info:     iter=60 wires=264594 overused=1 overuse=1 resources=11385 overused=0 overuse=0 archfail=NA
+Info:     iter=61 wires=264560 overused=1 overuse=1 resources=11388 overused=0 overuse=0 archfail=NA
+Info:     iter=62 wires=264567 overused=3 overuse=3 resources=11385 overused=0 overuse=0 archfail=NA
+Info:     iter=63 wires=264594 overused=1 overuse=1 resources=11385 overused=0 overuse=0 archfail=NA
+Info:     iter=64 wires=264574 overused=2 overuse=2 resources=11385 overused=0 overuse=0 archfail=NA
+Info:     iter=65 wires=264657 overused=1 overuse=1 resources=11385 overused=0 overuse=0 archfail=NA
+Info:     iter=66 wires=264666 overused=0 overuse=0 resources=11385 overused=0 overuse=0 archfail=0
+Info: Router2 time 54.21s
+Info: Running router1 to check that route is legal...
+
+Info: Routing..
+Info: Setting up routing queue.
+Info: Routing 0 arcs.
+Info:            |   (re-)routed arcs  |   delta    | remaining|       time spent     |
+Info:    IterCnt |  w/ripup   wo/ripup |  w/r  wo/r |      arcs| batch(sec) total(sec)|
+Info:          0 |        0          0 |    0     0 |         0|       0.55       0.55|
+Info: Routing complete.
+Info: Router1 time 0.55s
+Info: Checksum: 0x404e621b
+
+Info: Critical path report for clock 'link.clk' (posedge -> posedge):
+Info:       type curr  total name
+Info:   clk-skew  0.09  0.09 Net link.clk (23,32) -> (17,70)
+Info:                          Sink $auto$ff.cc:337:slice$20546.CLK_INT
+Info:                          Defined in:
+Info:                               rtl/lazy_link.sv:2.105-2.108
+Info:   clk-to-q  0.59  0.69 Source $auto$ff.cc:337:slice$7578.DOUT
+Info:    routing  1.89  2.58 Net link.core.debug_address[1] (23,32) -> (23,31)
+Info:                          Sink $abc$40245$auto$blifparse.cc:397:parse_blif$42721.D1_10
+Info:                          Defined in:
+Info:                               rtl/lazy_core.sv:7.44-7.57
+Info:      logic  0.47  3.05 Source $abc$40245$auto$blifparse.cc:397:parse_blif$42721.OUT
+Info:    routing  9.24  12.30 Net $abc$40245$new_n5823 (23,31) -> (27,31)
+Info:                          Sink $abc$40245$auto$blifparse.cc:397:parse_blif$43024.D0_01
+Info:      logic  0.56  12.85 Source $abc$40245$auto$blifparse.cc:397:parse_blif$43024.OUT
+Info:    routing  8.68  21.53 Net $abc$40245$new_n6126 (27,31) -> (30,29)
+Info:                          Sink $abc$40245$auto$blifparse.cc:397:parse_blif$43201.D1_00
+Info:      logic  0.64  22.17 Source $abc$40245$auto$blifparse.cc:397:parse_blif$43201.OUT
+Info:    routing  1.35  23.52 Net $abc$40245$new_n6303 (30,29) -> (28,29)
+Info:                          Sink $abc$40245$auto$blifparse.cc:397:parse_blif$43204.D1_00
+Info:      logic  0.64  24.16 Source $abc$40245$auto$blifparse.cc:397:parse_blif$43204.OUT
+Info:    routing  3.39  27.55 Net $abc$40245$new_n6306 (28,29) -> (28,63)
+Info:                          Sink $abc$40245$auto$blifparse.cc:397:parse_blif$43206.D0_00
+Info:      logic  0.55  28.10 Source $abc$40245$auto$blifparse.cc:397:parse_blif$43206.OUT
+Info:    routing  2.26  30.36 Net $abc$40245$new_n6308 (28,63) -> (23,70)
+Info:                          Sink $abc$40245$auto$blifparse.cc:397:parse_blif$43207.D1_10
+Info:      logic  0.47  30.83 Source $abc$40245$auto$blifparse.cc:397:parse_blif$43207.OUT
+Info:    routing  2.85  33.68 Net $abc$40245$new_n6309 (23,70) -> (21,70)
+Info:                          Sink $abc$40245$auto$blifparse.cc:397:parse_blif$43210.D0_00
+Info:      logic  0.61  34.29 Source $abc$40245$auto$blifparse.cc:397:parse_blif$43210.OUT
+Info:    routing  1.88  36.17 Net $abc$40245$new_n6312 (21,70) -> (19,70)
+Info:                          Sink $abc$40245$auto$blifparse.cc:397:parse_blif$43568.D1_01
+Info:      logic  0.60  36.77 Source $abc$40245$auto$blifparse.cc:397:parse_blif$43568.OUT
+Info:    routing  1.35  38.12 Net $abc$40245$new_n6670 (19,70) -> (18,70)
+Info:                          Sink $abc$40245$auto$blifparse.cc:397:parse_blif$43569.D0_01
+Info:      logic  0.47  38.59 Source $abc$40245$auto$blifparse.cc:397:parse_blif$43569.OUT
+Info:    routing  1.33  39.92 Net $abc$40245$new_n6671 (18,70) -> (17,70)
+Info:                          Sink $abc$40245$auto$blifparse.cc:397:parse_blif$43573.D0_00
+Info:      logic  0.55  40.46 Source $abc$40245$auto$blifparse.cc:397:parse_blif$43573.OUT
+Info:    routing  0.00  40.46 Net $abc$40245$flatten\link.$0\response[87:0][4] (17,70) -> (17,70)
+Info:                          Sink $auto$ff.cc:337:slice$20546.DIN
+Info:                          Defined in:
+Info:                               rtl/lazy_link.sv:48.2-85.5
+Info:      setup  0.10  40.56 Source $auto$ff.cc:337:slice$20546.DIN
+Info: 6.26 ns logic, 34.31 ns routing
+
+Info: Critical path report for cross-domain path '<async>' -> 'posedge link.clk':
+Info:       type curr  total name
+Info:     source  0.00  0.00 Source $iopadmap$lazy_top.uart_rx_pin.Y
+Info:    routing  0.00  0.00 Net $iopadmap$lazy_top.uart_rx_pin$conn$Y (0,51) -> (0,51)
+Info:                          Sink $iopadmap$lazy_top.uart_rx_pin$iosel.GPIO_IN
+Info:      logic  0.38  0.38 Source $iopadmap$lazy_top.uart_rx_pin$iosel.IN1
+Info:    routing  1.76  2.14 Net link.receiver.rx (0,51) -> (3,41)
+Info:                          Sink $auto$ff.cc:337:slice$20489$lt.D0_10
+Info:                          Defined in:
+Info:                               ../graph_microscope/rtl/uart_rx.sv:3.23-3.25
+Info:      logic  0.55  2.68 Source $auto$ff.cc:337:slice$20489$lt.OUT
+Info:    routing  0.00  2.68 Net $auto$ff.cc:337:slice$20489$di (3,41) -> (3,41)
+Info:                          Sink $auto$ff.cc:337:slice$20489.DIN
+Info:      setup  0.10  2.78 Source $auto$ff.cc:337:slice$20489.DIN
+Info: 1.03 ns logic, 1.76 ns routing
+
+Info: Max frequency for clock 'link.clk': 24.65 MHz (PASS at 10.00 MHz)
+
+Info: Max delay <async> -> posedge link.clk: 2.78 ns
+
+Info: Slack histogram:
+Info:  legend: * represents 13 endpoint(s)
+Info:          + represents [1,13) endpoint(s)
+Info: [ 59436,  61399) |+
+Info: [ 61399,  63362) |+
+Info: [ 63362,  65325) |+
+Info: [ 65325,  67288) |+
+Info: [ 67288,  69251) |***+
+Info: [ 69251,  71214) |******+
+Info: [ 71214,  73177) |********+
+Info: [ 73177,  75140) |************+
+Info: [ 75140,  77103) |************+
+Info: [ 77103,  79066) |************+
+Info: [ 79066,  81029) |************+
+Info: [ 81029,  82992) |**********+
+Info: [ 82992,  84955) |**************+
+Info: [ 84955,  86918) |*******+
+Info: [ 86918,  88881) |***********************+
+Info: [ 88881,  90844) |************************************************************ 
+Info: [ 90844,  92807) |**************************+
+Info: [ 92807,  94770) |*************************+
+Info: [ 94770,  96733) |***************************************+
+Info: [ 96733,  98696) |**********************+
+Info: Update configuration based on routing..
+
+Info: Program finished normally.
+gmpack build/top.txt build/top.bit
+make: Leaving directory '/home/manuel/code/wesen/2026-09-04--gatemate-symbolic/lazy_reducer'

@@ -9,13 +9,20 @@ Topics:
 DocType: design-doc
 Intent: long-term
 Owners: []
-RelatedFiles: []
+RelatedFiles:
+    - Path: repo://lazy_reducer/rtl/lazy_core.sv
+      Note: Synchronous reducer and sole heap write owner
+    - Path: repo://pkg/lazy/model.go
+      Note: Explicit continuation transitions
+    - Path: repo://pkg/lazy/serial.go
+      Note: Versioned physical protocol and snapshots
 ExternalSources: []
 Summary: ""
 LastUpdated: 2026-09-05T17:05:15.122026106-04:00
 WhatFor: ""
 WhenToUse: ""
 ---
+
 
 # Lazy graph reducer: intern analysis, design and implementation guide
 

@@ -1,0 +1,14 @@
+go generate ./internal/lazyide
+
+> graph-search-microscope@0.1.0 build:lazy /home/manuel/code/wesen/2026-09-04--gatemate-symbolic/web
+> tsc --noEmit && vite build --config vite.lazy.config.ts
+
+vite v7.3.6 building client environment for production...
+transforming...
+✓ 47 modules transformed.
+rendering chunks...
+computing gzip size...
+dist-lazy/lazy/index.html    0.33 kB │ gzip:  0.24 kB
+dist-lazy/app.css          232.69 kB │ gzip: 31.34 kB
+dist-lazy/app.js           285.54 kB │ gzip: 92.52 kB
+✓ built in 1.19s

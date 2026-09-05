@@ -1,0 +1,2 @@
+PASS lazy core sharing, repeated force, cycles, signed arithmetic, faults, bounds and held output
+tb/lazy_core_tb.sv:24: $finish called at 9900000 (1ps)

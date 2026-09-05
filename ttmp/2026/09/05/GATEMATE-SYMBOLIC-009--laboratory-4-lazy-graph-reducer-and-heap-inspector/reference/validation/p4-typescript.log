@@ -1,0 +1,6 @@
+
+> graph-search-microscope@0.1.0 check /home/manuel/code/wesen/2026-09-04--gatemate-symbolic/web
+> tsc --noEmit
+
+src/lazy/types.ts(13,760): error TS17006: An unary expression with the '-' operator is not allowed in the left-hand side of an exponentiation expression. Consider enclosing the expression in parentheses.
+ ELIFECYCLE  Command failed with exit code 2.

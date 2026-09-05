@@ -1,0 +1,746 @@
+
+> graph-search-microscope@0.1.0 test /home/manuel/code/wesen/2026-09-04--gatemate-symbolic/web
+> vitest run
+
+
+[1m[46m RUN [49m[22m [36mv4.0.18 [39m[90m/home/manuel/code/wesen/2026-09-04--gatemate-symbolic/web[39m
+
+ [32m✓[39m src/dataflow/types.test.ts [2m([22m[2m1 test[22m[2m)[22m[32m 5[2mms[22m[39m
+ [32m✓[39m src/lazy/types.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 9[2mms[22m[39m
+ [32m✓[39m src/graph.test.ts [2m([22m[2m7 tests[22m[2m)[22m[32m 18[2mms[22m[39m
+ [32m✓[39m src/App.test.tsx [2m([22m[2m3 tests[22m[2m)[22m[33m 1519[2mms[22m[39m
+   [33m[2m✓[22m[39m loads a preset, steps, selects trail records, and inspects history safely [33m 1027[2mms[22m[39m
+   [33m[2m✓[22m[39m shows graph validation and device errors rather than implying success [33m 445[2mms[22m[39m
+ [31m❯[39m src/dataflow/App.test.tsx [2m([22m[2m4 tests[22m[2m | [22m[31m1 failed[39m[2m)[22m[33m 2808[2mms[22m[39m
+   [33m[2m✓[22m[39m labels physical state and makes history strictly observational [33m 1195[2mms[22m[39m
+   [33m[2m✓[22m[39m blocks invalid source and displays device failures [33m 801[2mms[22m[39m
+   [32m✓[39m offers model configuration only for the software source[32m 104[2mms[22m[39m
+[31m   [31m×[31m requires a fresh compilation after edits and exposes trace loss[39m[33m 705[2mms[22m[39m
+
+[31m⎯⎯⎯⎯⎯⎯⎯[39m[1m[41m Failed Tests 1 [49m[22m[31m⎯⎯⎯⎯⎯⎯⎯[39m
+
+[41m[1m FAIL [22m[49m src/dataflow/App.test.tsx[2m > [22mrequires a fresh compilation after edits and exposes trace loss
+[31m[1mTestingLibraryElementError[22m[39m: Unable to find an accessible element with the role "button" and name "Apply breakpoint"
+
+Here are the accessible roles:
+
+  banner:
+
+  Name "":
+  [36m<header[39m
+    [33mclass[39m=[32m"df-header"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  heading:
+
+  Name "Programmable Dataflow":
+  [36m<h1 />[39m
+
+  Name "Typed program":
+  [36m<h2 />[39m
+
+  Name "Loaded program inputs · C0":
+  [36m<h3[39m
+    [33mclass[39m=[32m"h6"[39m
+  [36m/>[39m
+
+  Name "Scenario source":
+  [36m<h2 />[39m
+
+  --------------------------------------------------
+  paragraph:
+
+  Name "":
+  [36m<p />[39m
+
+  Name "":
+  [36m<p[39m
+    [33mclass[39m=[32m"small text-secondary"[39m
+  [36m/>[39m
+
+  Name "":
+  [36m<p[39m
+    [33mclass[39m=[32m"small text-secondary"[39m
+  [36m/>[39m
+
+  Name "":
+  [36m<p[39m
+    [33mclass[39m=[32m"small text-secondary mt-2"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  button:
+
+  Name "Step 1 cycle":
+  [36m<button[39m
+    [33mclass[39m=[32m"btn btn-dark"[39m
+    [33mdisabled[39m=[32m""[39m
+  [36m/>[39m
+
+  Name "Advance":
+  [36m<button[39m
+    [33mclass[39m=[32m"btn btn-outline-dark"[39m
+    [33mdisabled[39m=[32m""[39m
+  [36m/>[39m
+
+  Name "Poll result":
+  [36m<button[39m
+    [33mclass[39m=[32m"btn btn-outline-dark"[39m
+    [33mdisabled[39m=[32m""[39m
+  [36m/>[39m
+
+  Name "Cancel C0":
+  [36m<button[39m
+    [33mclass[39m=[32m"btn btn-outline-danger"[39m
+    [33mdisabled[39m=[32m""[39m
+  [36m/>[39m
+
+  Name "Reset engine":
+  [36m<button[39m
+    [33mclass[39m=[32m"btn btn-outline-secondary"[39m
+    [33mdisabled[39m=[32m""[39m
+  [36m/>[39m
+
+  Name "Return to live":
+  [36m<button[39m
+    [33mclass[39m=[32m"btn btn-sm btn-dark"[39m
+  [36m/>[39m
+
+  Name "Compile program":
+  [36m<button[39m
+    [33mclass[39m=[32m"btn btn-primary"[39m
+  [36m/>[39m
+
+  Name "Load program":
+  [36m<button[39m
+    [33mclass[39m=[32m"btn btn-dark"[39m
+    [33mdisabled[39m=[32m""[39m
+  [36m/>[39m
+
+  Name "Import .df":
+  [36m<button[39m
+    [33mclass[39m=[32m"btn btn-sm btn-outline-secondary"[39m
+  [36m/>[39m
+
+  Name "Export .df":
+  [36m<button[39m
+    [33mclass[39m=[32m"btn btn-sm btn-outline-secondary"[39m
+  [36m/>[39m
+
+  Name "Save program":
+  [36m<button[39m
+    [33mclass[39m=[32m"btn btn-sm btn-outline-dark"[39m
+    [33mdisabled[39m=[32m""[39m
+  [36m/>[39m
+
+  Name "Format":
+  [36m<button[39m
+    [33mclass[39m=[32m"btn btn-sm btn-outline-secondary"[39m
+  [36m/>[39m
+
+  Name "Import":
+  [36m<button[39m
+    [33mclass[39m=[32m"btn btn-sm btn-outline-secondary"[39m
+  [36m/>[39m
+
+  Name "Export":
+  [36m<button[39m
+    [33mclass[39m=[32m"btn btn-sm btn-outline-secondary"[39m
+  [36m/>[39m
+
+  Name "Run from start":
+  [36m<button[39m
+    [33mclass[39m=[32m"btn btn-primary"[39m
+    [33mdisabled[39m=[32m""[39m
+  [36m/>[39m
+
+  Name "Next action":
+  [36m<button[39m
+    [33mclass[39m=[32m"btn btn-outline-primary"[39m
+    [33mdisabled[39m=[32m""[39m
+  [36m/>[39m
+
+  Name "Pause":
+  [36m<button[39m
+    [33mclass[39m=[32m"btn btn-outline-danger"[39m
+    [33mdisabled[39m=[32m""[39m
+  [36m/>[39m
+
+  Name "Save":
+  [36m<button[39m
+    [33mclass[39m=[32m"btn btn-sm btn-dark"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  spinbutton:
+
+  Name "Cycles to advance":
+  [36m<input[39m
+    [33maria-label[39m=[32m"Cycles to advance"[39m
+    [33mclass[39m=[32m"form-control df-ticks"[39m
+    [33mmax[39m=[32m"1000000"[39m
+    [33mmin[39m=[32m"0"[39m
+    [33mtype[39m=[32m"number"[39m
+    [33mvalue[39m=[32m"16"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  strong:
+
+  Name "":
+  [36m<strong />[39m
+
+  Name "":
+  [36m<strong />[39m
+
+  --------------------------------------------------
+  main:
+
+  Name "":
+  [36m<main[39m
+    [33mclass[39m=[32m"df-workspace"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  complementary:
+
+  Name "":
+  [36m<aside[39m
+    [33mclass[39m=[32m"df-panel df-editor"[39m
+  [36m/>[39m
+
+  Name "":
+  [36m<aside[39m
+    [33mclass[39m=[32m"df-right"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  textbox:
+
+  Name "Typed program source":
+  [36m<textarea[39m
+    [33maria-label[39m=[32m"Typed program source"[39m
+    [33mclass[39m=[32m"df-source-editor df-program-source"[39m
+    [33mspellcheck[39m=[32m"false"[39m
+  [36m/>[39m
+
+  Name "Program ID":
+  [36m<input[39m
+    [33maria-label[39m=[32m"Program ID"[39m
+    [33mclass[39m=[32m"form-control form-control-sm"[39m
+    [33mvalue[39m=[32m"my-program"[39m
+  [36m/>[39m
+
+  Name "Scenario JSON source":
+  [36m<textarea[39m
+    [33maria-label[39m=[32m"Scenario JSON source"[39m
+    [33mclass[39m=[32m"df-source-editor"[39m
+    [33mspellcheck[39m=[32m"false"[39m
+  [36m/>[39m
+
+  Name "Project ID":
+  [36m<input[39m
+    [33maria-label[39m=[32m"Project ID"[39m
+    [33mclass[39m=[32m"form-control form-control-sm"[39m
+    [33mvalue[39m=[32m"my-expression"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  combobox:
+
+  Name "Open saved program":
+  [36m<select[39m
+    [33maria-label[39m=[32m"Open saved program"[39m
+    [33mclass[39m=[32m"form-select form-select-sm mt-2"[39m
+  [36m/>[39m
+
+  Name "EXAMPLE":
+  [36m<select[39m
+    [33mclass[39m=[32m"form-select form-select-sm mb-2"[39m
+    [33mid[39m=[32m"example"[39m
+  [36m/>[39m
+
+  Name "Open saved project":
+  [36m<select[39m
+    [33maria-label[39m=[32m"Open saved project"[39m
+    [33mclass[39m=[32m"form-select form-select-sm mt-2"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  option:
+
+  Name "Open saved program…":
+  [36m<option[39m
+    [33mvalue[39m=[32m""[39m
+  [36m/>[39m
+
+  Name "Interleaved expressions":
+  [36m<option[39m
+    [33mselected[39m=[32m""[39m
+    [33mvalue[39m=[32m"book"[39m
+  [36m/>[39m
+
+  Name "COPY fanout":
+  [36m<option[39m
+    [33mvalue[39m=[32m"copy"[39m
+  [36m/>[39m
+
+  Name "Isolated fault":
+  [36m<option[39m
+    [33mvalue[39m=[32m"fault"[39m
+  [36m/>[39m
+
+  Name "In-flight cancellation":
+  [36m<option[39m
+    [33mvalue[39m=[32m"cancel"[39m
+  [36m/>[39m
+
+  Name "Open saved project…":
+  [36m<option[39m
+    [33mvalue[39m=[32m""[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  separator:
+
+  Name "":
+  [36m<hr />[39m
+
+  --------------------------------------------------
+  group:
+
+  Name "":
+  [36m<details[39m
+    [33mclass[39m=[32m"mt-4"[39m
+    [33mopen[39m=[32m""[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  contentinfo:
+
+  Name "":
+  [36m<footer[39m
+    [33mclass[39m=[32m"df-footer"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"df-app"[39m
+    [36m>[39m
+      [36m<header[39m
+        [33mclass[39m=[32m"df-header"[39m
+      [36m>[39m
+        [36m<div>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"df-overline"[39m
+          [36m>[39m
+            [0mSYMBOLIC COMPUTING / LABORATORY 03[0m
+          [36m</div>[39m
+          [36m<h1>[39m
+            [0mProgrammable Dataflow[0m
+          [36m</h1>[39m
+          [36m<p>[39m
+            [0mTyped expressions · compiled graphs · physical execution[0m
+          [36m</p>[39m
+        [36m</div>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"df-session-badges"[39m
+        [36m>[39m
+          [36m<span[39m
+            [33mclass[39m=[32m"df-source "[39m
+          [36m>[39m
+            [0mCONNECTING[0m
+          [36m</span>[39m
+          [36m<span>[39m
+            [0mAwaiting engine snapshot[0m
+          [36m</span>[39m
+          [36m<span[39m
+            [33mclass[39m=[32m"df-connection"[39m
+          [36m>[39m
+            [0mPaused · work retained[0m
+          [36m</span>[39m
+        [36m</div>[39m
+      [36m</header>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"df-toolbar"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"btn-group"[39m
+        [36m>[39m
+          [36m<button[39m
+            [33mclass[39m=[32m"btn btn-dark"[39m
+            [33mdisabled[39m=[32m""[39m
+          [36m>[39m
+            [0mStep 1 cycle[0m
+          [36m</button>[39m
+          [36m<button[39m
+            [33mclass[39m=[32m"btn btn-outline-dark"[39m
+            [33mdisabled[39m=[32m""[39m
+          [36m>[39m
+            [0mAdvance[0m
+          [36m</button>[39m
+        [36m</div>[39m
+        [36m<input[39m
+          [33maria-label[39m=[32m"Cycles to advance"[39m
+          [33mclass[39m=[32m"form-control df-ticks"[39m
+          [33mmax[39m=[32m"1000000"[39m
+          [33mmin[39m=[32m"0"[39m
+          [33mtype[39m=[32m"number"[39m
+          [33mvalue[39m=[32m"16"[39m
+        [36m/>[39m
+        [36m<span[39m
+          [33mclass[39m=[32m"small text-secondary"[39m
+        [36m>[39m
+          [0mcycles[0m
+        [36m</span>[39m
+        [36m<button[39m
+          [33mclass[39m=[32m"btn btn-outline-dark"[39m
+          [33mdisabled[39m=[32m""[39m
+        [36m>[39m
+          [0mPoll result[0m
+        [36m</button>[39m
+        [36m<button[39m
+          [33mclass[39m=[32m"btn btn-outline-danger"[39m
+          [33mdisabled[39m=[32m""[39m
+        [36m>[39m
+          [0mCancel C[0m
+          [0m0[0m
+        [36m</button>[39m
+        [36m<button[39m
+          [33mclass[39m=[32m"btn btn-outline-secondary"[39m
+          [33mdisabled[39m=[32m""[39m
+        [36m>[39m
+          [0mReset engine[0m
+        [36m</button>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"df-cycle"[39m
+        [36m>[39m
+          [36m<strong>[39m
+            [0m0[0m
+          [36m</strong>[39m
+          [36m<span>[39m
+            [0mENABLED CYCLES[0m
+          [36m</span>[39m
+        [36m</div>[39m
+      [36m</div>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"df-history-banner"[39m
+      [36m>[39m
+        [36m<strong>[39m
+          [0mHISTORICAL SNAPSHOT [0m
+          [0m1[0m
+        [36m</strong>[39m
+        [36m<span>[39m
+          [0mLoading frame…[0m
+          [0m · controls are disabled[0m
+        [36m</span>[39m
+        [36m<button[39m
+          [33mclass[39m=[32m"btn btn-sm btn-dark"[39m
+        [36m>[39m
+          [0mReturn to live[0m
+        [36m</button>[39m
+      [36m</div>[39m
+      [36m<main[39m
+        [33mclass[39m=[32m"df-workspace"[39m
+      [36m>[39m
+        [36m<aside[39m
+          [33mclass[39m=[32m"df-panel df-editor"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"df-program-editor"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"df-panel-heading"[39m
+            [36m>[39m
+              [36m<h2>[39m
+                [0mTyped program[0m
+              [36m</h2>[39m
+              [36m<span>[39m
+                [0mdraft[0m
+              [36m</span>[39m
+            [36m</div>[39m
+            [36m<p[39m
+              [33mclass[39m=[32m"small text-secondary"[39m
+            [36m>[39m
+              [0mDeclare typed inputs, name intermediate values, and select one output. Compile checks the graph; Load resets the engine.[0m
+            [36m</p>[39m
+            [36m<textarea[39m
+              [33maria-label[39m=[32m"Typed program source"[39m
+              [33mclass[39m=[32m"df-source-editor df-program-source"[39m
+              [33mspellcheck[39m=[32m"false"[39m
+            [36m>[39m
+              [0minput a, b, c: int16
+
+let square = a * a
+let offset = b * c
+let selected = int(a &lt; b)
+
+output square + offset + selected
+ [0m
+            [36m</textarea>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"df-run-actions"[39m
+            [36m>[39m
+              [36m<button[39m
+                [33mclass[39m=[32m"btn btn-primary"[39m
+              [36m>[39m
+                [0mCompile program[0m
+              [36m</button>[39m
+              [36m<button[39m
+                [33mclass[39m=[32m"btn btn-dark"[39m
+                [33mdisabled[39m=[32m""[39m
+              [36m>[39m
+                [0mLoad program[0m
+              [36m</button>[39m
+            [36m</div>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"df-editor-actions mt-2"[39m
+            [36m>[39m
+              [36m<button[39m
+                [33mclass[39m=[32m"btn btn-sm btn-outline-secondary"[39m
+              [36m>[39m
+                [0mImport .df[0m
+              [36m</button>[39m
+              [36m<button[39m
+                [33mclass[39m=[32m"btn btn-sm btn-outline-secondary"[39m
+              [36m>[39m
+                [0mExport .df[0m
+              [36m</button>[39m
+              [36m<input[39m
+                [33maccept[39m=[32m".df,.txt"[39m
+                [33mclass[39m=[32m"d-none"[39m
+                [33mtype[39m=[32m"file"[39m
+              [36m/>[39m
+            [36m</div>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"df-project-save mt-2"[39m
+            [36m>[39m
+              [36m<input[39m
+                [33maria-label[39m=[32m"Program ID"[39m
+                [33mclass[39m=[32m"form-control form-control-sm"[39m
+                [33mvalue[39m=[32m"my-program"[39m
+              [36m/>[39m
+              [36m<button[39m
+                [33mclass[39m=[32m"btn btn-sm btn-outline-dark"[39m
+                [33mdisabled[39m=[32m""[39m
+              [36m>[39m
+                [0mSave program[0m
+              [36m</button>[39m
+            [36m</div>[39m
+            [36m<select[39m
+              [33maria-label[39m=[32m"Open saved program"[39m
+              [33mclass[39m=[32m"form-select form-select-sm mt-2"[39m
+            [36m>[39m
+              [36m<option[39m
+                [33mvalue[39m=[32m""[39m
+              [36m>[39m
+                [0mOpen saved program…[0m
+              [36m</option>[39m
+            [36m</select>[39m
+            [36m<hr />[39m
+            [36m<h3[39m
+              [33mclass[39m=[32m"h6"[39m
+            [36m>[39m
+              [0mLoaded program inputs · C[0m
+              [0m0[0m
+            [36m</h3>[39m
+            [36m<p[39m
+              [33mclass[39m=[32m"small text-secondary"[39m
+            [36m>[39m
+              [0mCompile and load to bind named values to graph ports.[0m
+            [36m</p>[39m
+          [36m</div>[39m
+          [36m<details[39m
+            [33mclass[39m=[32m"mt-4"[39m
+            [33mopen[39m=[32m""[39m
+          [36m>[39m
+            [36m<summary>[39m
+              [0mLow-level scenario experiments[0m
+            [36m</summary>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"df-panel-heading"[39m
+            [36m>[39m
+              [36m<h2>[39m
+                [0mScenario source[0m
+              [36m</h2>[39m
+              [36m<span>[39m
+                [0medited[0m
+              [36m</span>[39m
+            [36m</div>[39m
+            [36m<label[39m
+              [33mclass[39m=[32m"form-label small"[39m
+              [33mfor[39m=[32m"example"[39m
+            [36m>[39m
+              [0mEXAMPLE[0m
+            [36m</label>[39m
+            [36m<select[39m
+              [33mclass[39m=[32m"form-select form-select-sm mb-2"[39m
+              [33mid[39m=[32m"example"[39m
+            [36m>[39m
+              [36m<option[39m
+                [33mselected[39m=[32m""[39m
+                [33mvalue[39m=[32m"book"[39m
+              [36m>[39m
+                [0mInterleaved expressions[0m
+              [36m</option>[39m
+              [36m<option[39m
+                [33mvalue[39m=[32m"copy"[39m
+              [36m>[39m
+                [0mCOPY fanout[0m
+              [36m</option>[39m
+              [36m<option[39m
+                [33mvalue[39m=[32m"fault"[39m
+              [36m>[39m
+                [0mIsolated fault[0m
+              [36m</option>[39m
+              [36m<option[39m
+                [33mvalue[39m=[32m"cancel"[39m
+              [36m>[39m
+                [0mIn-flight cancellation[0m
+              [36m</option>[39m
+            [36m</select>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"df-editor-actions"[39m
+            [36m>[39m
+              [36m<button[39m
+                [33mclass[39m=[32m"btn btn-sm btn-outline-secondary"[39m
+              [36m>[39m
+                [0mFormat[0m
+              [36m</button>[39m
+              [36m<button[39m
+                [33mclass[39m=[32m"btn btn-sm btn-outline-secondary"[39m
+              [36m>[39m
+                [0mImport[0m
+              [36m</button>[39m
+              [36m<button[39m
+                [33mclass[39m=[32m"btn btn-sm btn-outline-secondary"[39m
+              [36m>[39m
+                [0mExport[0m
+              [36m</button>[39m
+              [36m<input[39m
+                [33maccept[39m=[32m".json,application/json"[39m
+                [33mclass[39m=[32m"d-none"[39m
+                [33mtype[39m=[32m"file"[39m
+              [36m/>[39m
+            [36m</div>[39m
+            [36m<textarea[39m
+              [33maria-label[39m=[32m"Scenario JSON source"[39m
+              [33mclass[39m=[32m"df-source-editor"[39m
+              [33mspellcheck[39m=[32m"false"[39m
+            [36m>[39m
+              [0m{"version":1,"name":"Test","actions":[{"kind":"reset"},{"kind":"tick","ticks":6}]}[0m
+            [36m</textarea>[39m
+            [36m<div[39m
+              [33maria-live[39m=[32m"polite"[39m
+              [33mclass[39m=[32m"df-validation valid"[39m
+            [36m>[39m
+              [0m2 actions · valid scenario[0m
+            [36m</div>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"df-run-actions"[39m
+            [36m>[39m
+              [36m<button[39m
+                [33mclass[39m=[32m"btn btn-primary"[39m
+                [33mdisabled[39m=[32m""[39m
+              [36m>[39m
+                [0mRun from start[0m
+              [36m</button>[39m
+              [36m<button[39m
+                [33mclass[39m=[32m"btn btn-outline-primary"[39m
+                [33mdisabled[39m=[32m""[39m
+              [36m>[39m
+                [0mNext action[0m
+              [36m</button>[39m
+              [36m<button[39m
+                [33mclass[39m=[32m"btn btn-outline-danger"[39m
+                [33mdisabled[39m=[32m""[39m
+              [36m>[39m
+                [0mPause[0m
+              [36m</button>[39m
+            [36m</div>[39m
+            [36m<p[39m
+              [33mclass[39m=[32m"small text-secondary mt-2"[39m
+            [36m>[39m
+              [0mAction [0m
+              [0m0[0m
+              [0m / [0m
+              [0m2[0m
+              [0m · Run begins with the source reset. Next action continues this source.[0m
+            [36m</p>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"df-project-save"[39m
+            [36m>[39m
+              [36m<input[39m
+                [33maria-label[39m=[32m"Project ID"[39m
+                [33mclass[39m=[32m"form-control form-control-sm"[39m
+                [33mvalue[39m=[32m"my-expression"[39m
+              [36m/>[39m
+              [36m<button[39m
+                [33mclass[39m=[32m"btn btn-sm btn-dark"[39m
+              [36m>[39m
+                [0mSave[0m
+              [36m</button>[39m
+            [36m</div>[39m
+            [36m<select[39m
+              [33maria-label[39m=[32m"Open saved project"[39m
+              [33mclass[39m=[32m"form-select form-select-sm mt-2"[39m
+            [36m>[39m
+              [36m<option[39m
+                [33mvalue[39m=[32m""[39m
+              [36m>[39m
+                [0mOpen saved project…[0m
+              [36m</option>[39m
+            [36m</select>[39m
+          [36m</details>[39m
+        [36m</aside>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"df-center"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"df-panel p-4"[39m
+          [36m>[39m
+            [0mSelect Return to live to continue.[0m
+          [36m</div>[39m
+        [36m</div>[39m
+        [36m<aside[39m
+          [33mclass[39m=[32m"df-right"[39m
+        [36m/>[39m
+      [36m</main>[39m
+      [36m<footer[39m
+        [33mclass[39m=[32m"df-footer"[39m
+      [36m>[39m
+        [0mProgrammable graph / 4 contexts / typed 40-bit values / 80-bit tokens [0m
+        [36m<span>[39m
+          [0mGATEMATE-SYMBOLIC-008 · snapshot generation [0m
+          [0m0[0m
+        [36m</span>[39m
+      [36m</footer>[39m
+    [36m</div>[39m
+  [36m</div>[39m
+[36m</body>[39m
+[90m [2m❯[22m Object.getElementError node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/config.js:[2m37:19[22m[39m
+[90m [2m❯[22m node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/query-helpers.js:[2m76:38[22m[39m
+[90m [2m❯[22m node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/query-helpers.js:[2m52:17[22m[39m
+[90m [2m❯[22m node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/query-helpers.js:[2m95:19[22m[39m
+[36m [2m❯[22m src/dataflow/App.test.tsx:[2m52:16[22m[39m
+    [90m 50| [39m expect(screen.getByRole('button',{name:'Resume execution'})).toBeEnab…
+    [90m 51| [39m await user.selectOptions(screen.getByLabelText('Snapshot history'),'1…
+    [90m 52| [39m expect(screen.getByRole('button',{name:'Apply breakpoint'})).toBeDisa…
+    [90m   | [39m               [31m^[39m
+    [90m 53| [39m})[33m;[39m
+    [90m 54| [39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯[22m[39m
+
+
+[2m Test Files [22m [1m[31m1 failed[39m[22m[2m | [22m[1m[32m4 passed[39m[22m[90m (5)[39m
+[2m      Tests [22m [1m[31m1 failed[39m[22m[2m | [22m[1m[32m16 passed[39m[22m[90m (17)[39m
+[2m   Start at [22m 17:36:15
+[2m   Duration [22m 4.39s[2m (transform 476ms, setup 1.28s, import 852ms, tests 4.36s, environment 4.09s)[22m
+
+ ELIFECYCLE  Test failed. See above for more details.

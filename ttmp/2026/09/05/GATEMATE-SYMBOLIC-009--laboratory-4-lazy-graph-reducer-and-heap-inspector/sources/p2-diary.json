@@ -1,0 +1,36 @@
+{
+  "title": "Implement and verify explicit continuations and memoized heap updates",
+  "prose": "The Go model now executes bounded demand transitions with an explicit stack and retained heap. An independent recursive evaluator validates generated graphs without using the model's continuation transitions.",
+  "did": [
+    "Added pkg/lazy representation, operations, snapshots, mutation trace and model.",
+    "Added 400 generated graph comparisons plus directed sharing, cycles, overflow, fail-fast, held output, snapshot ownership and trace-loss tests."
+  ],
+  "why": [
+    "Final heap comparison detects broken memoization even when arithmetic results happen to match."
+  ],
+  "worked": [
+    "go test -race ./pkg/lazy -count=1 passed in 1.054s.",
+    "Shared graph returns 168 with one multiplication; repeated force reuses memoized body; cycle and stack faults unwind claims."
+  ],
+  "failed": [
+    "No model test failures."
+  ],
+  "learned": [
+    "Right-child recursion must retain the same continuation capacity obligation as APPLY; the independent reference includes that bound."
+  ],
+  "tricky": [
+    "Reserve-before-claim must leave an unclaimed child untouched while still unwinding any caller's prior claim."
+  ],
+  "review": [
+    "Read Model.step, Reference and TestReserveBeforeClaimAndUnwind together."
+  ],
+  "future": [
+    "Implement synchronous RTL and compare result, mutation and arithmetic evidence."
+  ],
+  "validate": [
+    "GOCACHE=/tmp/gatemate009-go-cache go test -race ./pkg/lazy -count=1"
+  ],
+  "details": [
+    "P1 upload receipt: OK: uploaded GATEMATE 009 Lazy Reducer Intern Guide.pdf -> /ai/2026/09/05/GATEMATE-SYMBOLIC-009."
+  ]
+}
