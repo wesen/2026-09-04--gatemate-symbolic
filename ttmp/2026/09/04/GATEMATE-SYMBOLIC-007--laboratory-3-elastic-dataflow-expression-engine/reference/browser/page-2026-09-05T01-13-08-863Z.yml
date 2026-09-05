@@ -1,0 +1,359 @@
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - generic [ref=e5]:
+      - generic [ref=e6]: SYMBOLIC COMPUTING / LABORATORY 03
+      - heading "Elastic Dataflow" [level=1] [ref=e7]
+      - paragraph [ref=e8]: Scenario editor · execution debugger · FPGA instrument
+    - generic [ref=e9]:
+      - generic [ref=e10]: TRANSACTION MODEL
+      - generic [ref=e11]: Software reference · explicit cycles
+      - generic [ref=e12]: Paused · drained
+  - generic [ref=e13]:
+    - generic [ref=e14]:
+      - button "Step 1 cycle" [ref=e42] [cursor=pointer]
+      - button "Advance" [ref=e43] [cursor=pointer]
+    - spinbutton "Cycles to advance" [ref=e15]: "16"
+    - generic [ref=e16]: cycles
+    - button "Poll result" [ref=e44] [cursor=pointer]
+    - button "Cancel C0" [ref=e45] [cursor=pointer]
+    - button "Reset engine" [ref=e46] [cursor=pointer]
+    - generic [ref=e17]:
+      - strong [ref=e18]: "100"
+      - generic [ref=e19]: ENABLED CYCLES
+  - main [ref=e20]:
+    - complementary [ref=e21]:
+      - generic [ref=e22]:
+        - heading "Scenario source" [level=2] [ref=e23]
+        - generic [ref=e24]: edited
+      - generic [ref=e25]: EXAMPLE
+      - combobox "EXAMPLE" [ref=e26]:
+        - option "Interleaved expressions" [selected]
+        - option "In-flight cancellation"
+        - option "COPY fanout"
+        - option "Isolated fault"
+      - generic [ref=e27]:
+        - button "Format" [ref=e47] [cursor=pointer]
+        - button "Import" [ref=e28] [cursor=pointer]
+        - button "Export" [ref=e29] [cursor=pointer]
+      - textbox "Scenario JSON source" [ref=e30]: "{ \"version\": 1, \"name\": \"Interleaved expressions\", \"description\": \"Two contexts evaluate a*b + c*d + int(e\\u003cf). Results are 58 and 12.\", \"actions\": [ { \"kind\": \"reset\" }, { \"kind\": \"inputs\", \"values\": [ 7, 6, 3, 5, 2, 9 ] }, { \"kind\": \"inputs\", \"context\": 1, \"values\": [ 10, -2, 4, 8, 7, 1 ] }, { \"kind\": \"tick\", \"ticks\": 96 }, { \"kind\": \"poll\" }, { \"kind\": \"poll\" }, { \"kind\": \"expect\", \"value\": 58 }, { \"kind\": \"expect\", \"context\": 1, \"value\": 12 } ] }"
+      - generic [ref=e31]: 8 actions · valid scenario
+      - generic [ref=e32]:
+        - button "Run from start" [ref=e48] [cursor=pointer]
+        - button "Next action" [ref=e49] [cursor=pointer]
+        - button "Pause" [disabled]
+      - paragraph [ref=e33]: Action 8 / 8 · Run begins with the source reset. Next action continues this source.
+      - generic [ref=e34]:
+        - textbox "Project ID" [ref=e35]: my-expression
+        - button "Save" [ref=e50] [cursor=pointer]
+      - combobox "Open saved project" [ref=e36]:
+        - option "Open saved project…" [selected]
+      - group [ref=e51]:
+        - generic "Model configuration" [ref=e52] [cursor=pointer]
+        - option "1"
+        - option "2"
+        - option "8" [selected]
+        - option "1"
+        - option "2"
+        - option "8" [selected]
+        - option "1"
+        - option "2"
+        - option "8" [selected]
+        - option "1"
+        - option "2"
+        - option "4" [selected]
+        - option "8"
+        - option "2"
+        - option "8" [selected]
+    - generic [ref=e37]:
+      - generic [ref=e53]:
+        - generic [ref=e54]:
+          - heading "Expression graph" [level=2] [ref=e55]
+          - generic [ref=e56]: a × b + c × d + int(e < f)
+        - generic [ref=e57]:
+          - button "C0 epoch 0 closed" [ref=e279] [cursor=pointer]:
+            - strong [ref=e59]: C0
+            - generic [ref=e60]: epoch 0
+            - generic [ref=e61]: closed
+          - button "C1 epoch 0 closed" [ref=e280] [cursor=pointer]:
+            - strong [ref=e63]: C1
+            - generic [ref=e64]: epoch 0
+            - generic [ref=e65]: closed
+          - button "C2 epoch 0 open" [ref=e66] [cursor=pointer]:
+            - strong [ref=e67]: C2
+            - generic [ref=e68]: epoch 0
+            - generic [ref=e69]: open
+          - button "C3 epoch 0 open" [ref=e70] [cursor=pointer]:
+            - strong [ref=e71]: C3
+            - generic [ref=e72]: epoch 0
+            - generic [ref=e73]: open
+        - img "Fixed expression graph for context 0" [ref=e74]:
+          - generic [ref=e75]: A
+          - generic [ref=e78]: A
+          - generic [ref=e81]: A
+          - generic [ref=e84]: B
+          - generic [ref=e87]: A
+          - generic [ref=e90]: A
+          - generic [ref=e93]: B
+          - button "Node 0 MUL issued" [ref=e281] [cursor=pointer]:
+            - generic: N0 · ISSUED
+            - generic: MUL
+            - generic: A 7 B 6
+          - button "Node 1 MUL issued" [ref=e282] [cursor=pointer]:
+            - generic: N1 · ISSUED
+            - generic: MUL
+            - generic: A 3 B 5
+          - button "Node 2 ADD issued" [ref=e283] [cursor=pointer]:
+            - generic: N2 · ISSUED
+            - generic: ADD
+            - generic: A 42 B 15
+          - button "Node 3 LT issued" [ref=e284] [cursor=pointer]:
+            - generic: N3 · ISSUED
+            - generic: LT
+            - generic: A 2 B 9
+          - button "Node 4 BOOL → INT issued" [ref=e285] [cursor=pointer]:
+            - generic: N4 · ISSUED
+            - generic: BOOL → INT
+            - generic: A true
+          - button "Node 5 ADD / FINAL issued" [ref=e286] [cursor=pointer]:
+            - generic: N5 · ISSUED
+            - generic: ADD / FINAL
+            - generic: A 57 B 1
+          - button "Node 6 COPY empty" [ref=e108] [cursor=pointer]:
+            - generic: N6 · EMPTY
+            - generic: COPY
+            - generic: A —
+          - generic [ref=e110]: Fixed descriptors · shared arithmetic units · explicit destinations
+        - generic [ref=e111]:
+          - generic [ref=e112]: ready
+          - generic [ref=e113]: executing
+          - generic [ref=e114]: issued once
+          - generic [ref=e115]: waiting for operand
+      - generic [ref=e116]:
+        - generic [ref=e117]:
+          - heading "Execution & transport" [level=2] [ref=e118]
+          - generic [ref=e119]: valid records only
+        - generic [ref=e120]:
+          - generic [ref=e121]:
+            - text: MUL
+            - generic [ref=e122]: 4 stages
+          - generic [ref=e123]:
+            - generic [ref=e124]:
+              - generic [ref=e125]: STAGE 0
+              - generic [ref=e126]: empty
+            - generic [ref=e128]:
+              - generic [ref=e129]: STAGE 1
+              - generic [ref=e130]: empty
+            - generic [ref=e132]:
+              - generic [ref=e133]: STAGE 2
+              - generic [ref=e134]: empty
+            - generic [ref=e136]:
+              - generic [ref=e137]: STAGE 3
+              - generic [ref=e138]: empty
+        - generic [ref=e140]:
+          - generic [ref=e141]:
+            - text: ALU
+            - generic [ref=e142]: 1 stage
+          - generic [ref=e143]: empty
+        - generic [ref=e145]:
+          - generic [ref=e146]:
+            - heading "input 0/8" [level=3] [ref=e147]:
+              - text: input
+              - generic [ref=e148]: 0/8
+            - generic [ref=e149]: queue empty
+          - generic [ref=e151]:
+            - heading "completion 0/8" [level=3] [ref=e152]:
+              - text: completion
+              - generic [ref=e153]: 0/8
+            - generic [ref=e154]: queue empty
+          - generic [ref=e156]:
+            - heading "output 0/8" [level=3] [ref=e157]:
+              - text: output
+              - generic [ref=e158]: 0/8
+            - generic [ref=e159]: queue empty
+      - generic [ref=e161]:
+        - generic [ref=e162]:
+          - heading "Snapshot history" [level=2] [ref=e163]
+          - generic [ref=e164]: 8 / 128 boundaries retained
+        - combobox "Snapshot history" [ref=e165]:
+          - option "Live state" [selected]
+          - 'option "#2 · cycle 0 · action 1: reset"'
+          - 'option "#3 · cycle 0 · action 2: inputs (includes credit ticks if needed)"'
+          - 'option "#4 · cycle 4 · action 3: inputs (includes credit ticks if needed)"'
+          - 'option "#5 · cycle 100 · action 4: tick"'
+          - 'option "#6 · cycle 100 · action 5: poll"'
+          - 'option "#7 · cycle 100 · action 6: poll"'
+          - 'option "#8 · cycle 100 · action 7: expect"'
+          - 'option "#9 · cycle 100 · action 8: expect"'
+        - generic [ref=e166]:
+          - 'button "0 #2" [ref=e287] [cursor=pointer]':
+            - strong [ref=e288]: "0"
+            - generic [ref=e289]: "#2"
+          - 'button "0 #3" [ref=e290] [cursor=pointer]':
+            - strong [ref=e291]: "0"
+            - generic [ref=e292]: "#3"
+          - 'button "4 #4" [ref=e293] [cursor=pointer]':
+            - strong [ref=e294]: "4"
+            - generic [ref=e295]: "#4"
+          - 'button "100 #5" [ref=e296] [cursor=pointer]':
+            - strong [ref=e297]: "100"
+            - generic [ref=e298]: "#5"
+          - 'button "100 #6" [ref=e299] [cursor=pointer]':
+            - strong [ref=e300]: "100"
+            - generic [ref=e301]: "#6"
+          - 'button "100 #7" [ref=e302] [cursor=pointer]':
+            - strong [ref=e303]: "100"
+            - generic [ref=e304]: "#7"
+          - 'button "100 #8" [ref=e305] [cursor=pointer]':
+            - strong [ref=e306]: "100"
+            - generic [ref=e307]: "#8"
+          - 'button "100 #9" [ref=e308] [cursor=pointer]':
+            - strong [ref=e309]: "100"
+            - generic [ref=e310]: "#9"
+        - paragraph [ref=e170]: Each frame is a complete operation-boundary snapshot. Batched ticks do not imply a frame for every internal cycle.
+    - complementary [ref=e39]:
+      - generic [ref=e171]:
+        - generic [ref=e172]:
+          - heading "Node inspector" [level=2] [ref=e173]
+          - generic [ref=e174]: N0
+        - heading "MUL" [level=3] [ref=e175]
+        - paragraph [ref=e176]: Context 0 · epoch 0
+        - generic [ref=e177]:
+          - term [ref=e178]: required ports
+          - definition [ref=e179]: A + B
+          - term [ref=e180]: valid mask
+          - definition [ref=e181]: "11"
+          - term [ref=e182]: issued
+          - definition [ref=e183]: "true"
+          - term [ref=e184]: pending
+          - definition [ref=e185]: "false"
+        - generic [ref=e186]:
+          - generic [ref=e187]: OPERAND A
+          - strong [ref=e188]: "7"
+          - generic [ref=e189]: INT · 0x0000000007
+        - generic [ref=e190]:
+          - generic [ref=e191]: OPERAND B
+          - strong [ref=e192]: "6"
+          - generic [ref=e193]: INT · 0x0000000006
+        - heading "Issue record" [level=3] [ref=e194]
+        - paragraph [ref=e195]: No activation waiting to dispatch.
+        - heading "Completion router" [level=3] [ref=e196]
+        - paragraph [ref=e197]: No completion being routed.
+      - generic [ref=e198]:
+        - generic [ref=e199]:
+          - heading "Inject operand" [level=2] [ref=e200]
+          - generic [ref=e201]: C0 / E0
+        - generic [ref=e202]:
+          - generic [ref=e203]:
+            - text: Node
+            - combobox "Node" [ref=e204]:
+              - option "0" [selected]
+              - option "1"
+              - option "2"
+              - option "3"
+              - option "4"
+              - option "5"
+              - option "6"
+          - generic [ref=e205]:
+            - text: Port
+            - combobox "Port" [ref=e206]:
+              - option "A" [selected]
+              - option "B"
+          - generic [ref=e207]:
+            - text: Type
+            - combobox "Type" [ref=e208]:
+              - option "INT" [selected]
+              - option "BOOL"
+          - generic [ref=e209]:
+            - text: Payload
+            - textbox "Payload" [ref=e210]: "7"
+        - button "Inject into input queue" [ref=e211] [cursor=pointer]
+  - generic [ref=e212]:
+    - generic [ref=e213]:
+      - generic [ref=e214]:
+        - heading "Session results" [level=2] [ref=e215]
+        - generic [ref=e216]: consumed through Poll
+      - table [ref=e217]:
+        - rowgroup [ref=e218]:
+          - row [ref=e219]:
+            - columnheader "Context" [ref=e220]
+            - columnheader "Epoch" [ref=e221]
+            - columnheader "Value" [ref=e222]
+            - columnheader "Type" [ref=e223]
+        - rowgroup [ref=e311]:
+          - row [ref=e312]:
+            - cell "C0" [ref=e313]
+            - cell "0" [ref=e314]
+            - cell "58" [ref=e315]
+            - cell "final INT" [ref=e316]
+          - row [ref=e317]:
+            - cell "C1" [ref=e318]
+            - cell "0" [ref=e319]
+            - cell "12" [ref=e320]
+            - cell "final INT" [ref=e321]
+    - generic [ref=e225]:
+      - generic [ref=e226]:
+        - heading "Engine counters" [level=2] [ref=e227]
+        - generic [ref=e228]: model
+      - generic [ref=e229]:
+        - generic [ref=e230]:
+          - strong [ref=e231]: "12"
+          - generic [ref=e232]: activations
+        - generic [ref=e233]:
+          - strong [ref=e234]: "8"
+          - generic [ref=e235]: alu
+        - generic [ref=e236]:
+          - strong [ref=e237]: "1"
+          - generic [ref=e238]: completionHigh
+        - generic [ref=e239]:
+          - strong [ref=e240]: "100"
+          - generic [ref=e241]: cycles
+        - generic [ref=e242]:
+          - strong [ref=e243]: "0"
+          - generic [ref=e244]: duplicates
+        - generic [ref=e245]:
+          - strong [ref=e246]: "8"
+          - generic [ref=e247]: inputHigh
+        - generic [ref=e248]:
+          - strong [ref=e249]: "0"
+          - generic [ref=e250]: invalid
+        - generic [ref=e251]:
+          - strong [ref=e252]: "4"
+          - generic [ref=e253]: mul
+        - generic [ref=e254]:
+          - strong [ref=e255]: "2"
+          - generic [ref=e256]: outputHigh
+        - generic [ref=e257]:
+          - strong [ref=e258]: "3"
+          - generic [ref=e259]: readyHigh
+        - generic [ref=e260]:
+          - strong [ref=e261]: "0"
+          - generic [ref=e262]: routerBlocked
+        - generic [ref=e263]:
+          - strong [ref=e264]: "12"
+          - generic [ref=e265]: source
+        - generic [ref=e266]:
+          - strong [ref=e267]: "0"
+          - generic [ref=e268]: stale
+        - generic [ref=e269]:
+          - strong [ref=e270]: "0"
+          - generic [ref=e271]: unitBlocked
+        - generic [ref=e272]:
+          - strong [ref=e273]: "15"
+          - generic [ref=e274]: unitBusy
+    - generic [ref=e275]:
+      - generic [ref=e276]:
+        - heading "Execution console" [level=2] [ref=e277]
+        - generic [ref=e278]: session events
+      - generic [ref=e322]:
+        - generic [ref=e323]:
+          - strong [ref=e324]: scenario complete
+          - generic [ref=e325]: Interleaved expressions
+        - generic [ref=e326]:
+          - strong [ref=e327]: "action 8: expect"
+          - generic [ref=e328]: context 1 value 12 passed
+        - generic [ref=e329]:
+          - strong [ref=e330]: "action 7: expect"
+          - generic [ref=e331]: context 0 value 58 passed
+  - contentinfo [ref=e40]:
+    - text: Fixed graph / 4 contexts / typed 40-bit values / 80-bit tokens
+    - generic [ref=e41]: GATEMATE-SYMBOLIC-007 · snapshot generation 2

@@ -1,0 +1,52 @@
+{
+  "version": 1,
+  "name": "Interleaved expressions",
+  "description": "Two contexts evaluate a*b + c*d + int(e\u003cf). Results are 58 and 12.",
+  "actions": [
+    {
+      "kind": "reset"
+    },
+    {
+      "kind": "inputs",
+      "values": [
+        7,
+        6,
+        3,
+        5,
+        2,
+        9
+      ]
+    },
+    {
+      "kind": "inputs",
+      "context": 1,
+      "values": [
+        10,
+        -2,
+        4,
+        8,
+        7,
+        1
+      ]
+    },
+    {
+      "kind": "tick",
+      "ticks": 96
+    },
+    {
+      "kind": "poll"
+    },
+    {
+      "kind": "poll"
+    },
+    {
+      "kind": "expect",
+      "value": 58
+    },
+    {
+      "kind": "expect",
+      "context": 1,
+      "value": 12
+    }
+  ]
+}

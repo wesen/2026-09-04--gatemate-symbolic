@@ -1,0 +1,51 @@
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - generic [ref=e5]:
+      - generic [ref=e6]: SYMBOLIC COMPUTING / LABORATORY 03
+      - heading "Elastic Dataflow" [level=1] [ref=e7]
+      - paragraph [ref=e8]: Scenario editor · execution debugger · FPGA instrument
+    - generic [ref=e9]:
+      - generic [ref=e10]: TRANSACTION MODEL
+      - generic [ref=e11]: Software reference · explicit cycles
+      - generic [ref=e12]: Paused · work retained
+  - generic [ref=e13]:
+    - generic [ref=e14]:
+      - button "Step 1 cycle" [disabled]
+      - button "Advance" [disabled]
+    - spinbutton "Cycles to advance" [ref=e15]: "16"
+    - generic [ref=e16]: cycles
+    - button "Poll result" [disabled]
+    - button "Cancel C0" [disabled]
+    - button "Reset engine" [disabled]
+    - generic [ref=e17]:
+      - strong [ref=e18]: "0"
+      - generic [ref=e19]: ENABLED CYCLES
+  - main [ref=e20]:
+    - complementary [ref=e21]:
+      - generic [ref=e22]:
+        - heading "Scenario source" [level=2] [ref=e23]
+        - generic [ref=e24]: saved
+      - generic [ref=e25]: EXAMPLE
+      - combobox "EXAMPLE" [ref=e26]:
+        - option "Interleaved expressions" [selected]
+      - generic [ref=e27]:
+        - button "Format" [disabled]
+        - button "Import" [ref=e28] [cursor=pointer]
+        - button "Export" [ref=e29] [cursor=pointer]
+      - textbox "Scenario JSON source" [ref=e30]
+      - generic [ref=e31]: Validating…
+      - generic [ref=e32]:
+        - button "Run from start" [disabled]
+        - button "Next action" [disabled]
+        - button "Pause" [disabled]
+      - paragraph [ref=e33]: Action 0 / 0 · Run begins with the source reset. Next action continues this source.
+      - generic [ref=e34]:
+        - textbox "Project ID" [ref=e35]: my-expression
+        - button "Save" [disabled]
+      - combobox "Open saved project" [ref=e36]:
+        - option "Open saved project…" [selected]
+    - generic [ref=e37]: Connecting to the dataflow engine…
+    - complementary [ref=e39]
+  - contentinfo [ref=e40]:
+    - text: Fixed graph / 4 contexts / typed 40-bit values / 80-bit tokens
+    - generic [ref=e41]: GATEMATE-SYMBOLIC-007 · snapshot generation 0

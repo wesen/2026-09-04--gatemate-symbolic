@@ -446,3 +446,71 @@ go test -race ./internal/dataflowide ./pkg/dataflow ./cmd/dataflow-ide; pnpm --d
 ### Technical details
 
 P4/P5 completion receipts and P6 start receipt are confirmed printed. Screenshots: 01 initial book UI before port-label polish; 02 corrected model book results; 03 historical view with controls disabled; 04 model multiply in flight; 05 mobile viewport. The source of every current image is the transaction model, not hardware. The new server is on 127.0.0.1:8087. The original graph frontend remains its separate entry and API.
+
+## Step 8: Physical IDE verification, illustrated handoff, and delivery
+
+Completed browser integration against the physical FPGA and captured five hardware screenshots in addition to the five model images. The full repository validation passed, the intern handoff now documents the implemented contract and its limits, and the final illustrated bundle uploaded successfully to reMarkable. The browser remains open on the physical IDE with the book results 58 and 12.
+
+### Prompt Context
+
+**User prompt (verbatim, JSON encoded):**
+
+```json
+"(see Step 1)"
+```
+
+**Assistant interpretation:** Design, publish, implement, and validate the book's elastic dataflow laboratory with task commits, detailed diary, and physical work slips.
+
+**Inferred user intent:** Build a working concurrent symbolic machine and preserve enough explanation and evidence for an intern to understand and maintain it.
+
+### What I did
+
+Ran browser script 18 against serial mode: checked real source identity, 12 book activations, JSON export/import, held-output cancellation refusal, multiply stage occupancy, actual RAM operands 7/6, epoch-one result 12, two stale discards, and historical control disabling. Added handoff/atlas with file links, diagrams, pseudocode, measurements, reproduction commands, and screenshots. Updated both design documents to point to the implemented API and handoff. Ran docmgr doctor and the complete final-check script.
+
+### Why
+
+The user wanted the lab implemented, the IDE designed and built, the work documented for an intern, and screenshots preserved for the diary and a later report. Physical snapshots and browser evidence close the gap between a software demonstration and the connected instrument.
+
+### What worked
+
+All browser FPGA assertions passed. Final checks passed: frontend generation, go test -race ./..., ordinary and embedded go build ./..., go vet ./..., version-matched Glazed lint, govulncheck, fourteen frontend tests, TypeScript, and whitespace. Docmgr doctor reports all checks passed. Upload receipt: OK: uploaded GATEMATE 007 Implemented Dataflow Lab and IDE.pdf -> /ai/2026/09/04/GATEMATE-SYMBOLIC-007.
+
+### What didn't work
+
+The physical browser deliberately elicited one HTTP 409 for the offered-output cancellation guard; this was expected and the epoch remained unchanged. Reloading the final page produced zero console errors or warnings. No integration repair was needed. Earlier transient connection errors in the raw browser log arose during the intentional server restart.
+
+### What I learned
+
+The same sixth-cycle inspection shows model stage one versus physical stage zero, confirming why the UI must not substitute model microstate for hardware. Both show the same context/epoch/node/value, and the actual physical operand memory agrees with the source values.
+
+### What was tricky to build
+
+The upload bundle resolves each image relative to its source Markdown; confirmed this in remarquee/pkg/mdpdf/bundle.go before including the illustrated handoff. Source histories and complete frame histories are separate concepts: historical frames are observations, not executable rollback points. Final screenshots retain explicit model/FPGA source badges.
+
+### What warrants a second pair of eyes
+
+Start with the handoff's read order, then inspect cancellation and snapshot ownership boundaries. For article reuse, prefer screenshot 06 for the physical overview, 08 for in-flight execution, 09 for cancellation results, and 10 for historical inspection. Image 01 is intentionally preserved as the earlier UI checkpoint.
+
+### What should be done in the future
+
+No required implementation work remains. A later research article can reuse the ten captioned screenshots. Dynamic graph compilation and reverse execution are separate future projects, not hidden capabilities of this IDE.
+
+### Code review instructions
+
+scripts/17-final-checks.sh; scripts/18-browser-fpga-checks.js; reference/validation/P7-check-summary.log; P7-browser-fpga.json; P7-upload.log; P7-docmgr-doctor.log. Physical server: go run -tags embed ./cmd/dataflow-ide --engine serial --device /dev/ttyACM0 --listen 127.0.0.1:8087, owned by tmux session dataflow-ide-fpga.
+
+### Technical details
+
+IDE implementation commit e48eb7c. Final bundle contains the engine intern guide, separate IDE guide, implemented API/register reference, and illustrated handoff. The original two design uploads remain on reMarkable under their original names; the final bundle uses a new name and does not overwrite annotations. Final completion slip and push receipt are appended after the final documentation commit.
+
+#### Screenshot evidence
+
+The physical FPGA at cycle six: context two, epoch zero, multiplier stage zero contains 42, with operand RAM A=7 and B=6. This is an actual UART-backed snapshot, not model reconstruction.
+
+![Physical FPGA multiply in flight](screenshots/08-fpga-in-flight.png)
+
+After cancellation, context two is at epoch one and produces final 12. The two stale discards account for the old multiply and explicitly stale source input.
+
+![Physical FPGA cancellation completed](screenshots/09-fpga-cancellation-complete.png)
+
+The complete ten-image inventory, source labels, and report-use captions are in [the screenshot atlas](03-implemented-laboratory-handoff-and-screenshot-atlas.md#screenshot-atlas-for-the-diary-and-later-report).

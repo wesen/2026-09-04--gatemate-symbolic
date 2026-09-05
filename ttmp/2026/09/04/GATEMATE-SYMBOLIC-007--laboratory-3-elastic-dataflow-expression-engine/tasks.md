@@ -6,5 +6,5 @@
 - [x] P4: Implement UART host control and demonstrate physical execution.
 - [x] P5: Qualify engine stress tests, measurements, and physical debug snapshots.
 - [x] P6: Implement Go React IDE, scenario projects, inspectors, and history.
-- [ ] P7: Validate physical IDE integration and complete documentation/handoff.
-- [ ] P6/P7: Capture dataflow IDE screenshots with source/scenario captions for the diary and later report. <!-- t:iwcs -->
+- [x] P7: Validate physical IDE integration and complete documentation/handoff.
+- [x] P6/P7: Capture dataflow IDE screenshots with source/scenario captions for the diary and later report. <!-- t:iwcs -->

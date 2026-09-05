@@ -308,3 +308,7 @@ Read the archived `sources/laboratory-3.md` first for the book's experiment and 
 ## Scope update: full Go React IDE requested during P2
 
 The separate design document `02-dataflow-ide-go-react-architecture-and-intern-implementation-guide.md` specifies the newly requested IDE. P3/P4 now include a paused, paged debug interface and a complete host snapshot API. P5 qualifies the engine and snapshot path; P6 implements the Go service and React workspace; P7 validates the physical IDE and completes handoff. The original printed plan is preserved and a revised plan is printed. With seven phase pairs and two plan receipts, the expanded ticket has sixteen expected slips.
+
+## Implemented outcome and authoritative follow-through
+
+The engine, UART host, and separate Go/React IDE are implemented and have passed model, RTL, physical-board, and browser qualification. The physical build meets the 10 MHz board clock. See the [implemented API/register reference](../reference/02-dataflow-api-and-debug-register-reference.md) for the command-based Go interface and exact debug pages, and the [handoff and screenshot atlas](../reference/03-implemented-laboratory-handoff-and-screenshot-atlas.md) for the final file map, execution examples, measurements, reproduction commands, and limitations. The design sketches above preserve the reasoning that preceded implementation; the two references describe the final contract.

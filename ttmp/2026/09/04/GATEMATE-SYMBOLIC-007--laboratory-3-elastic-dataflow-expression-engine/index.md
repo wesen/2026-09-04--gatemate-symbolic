@@ -1,7 +1,7 @@
 ---
 Title: Laboratory 3 elastic dataflow expression engine
 Ticket: GATEMATE-SYMBOLIC-007
-Status: active
+Status: complete
 Topics:
     - fpga
     - gatemate
@@ -13,10 +13,11 @@ Owners: []
 RelatedFiles: []
 ExternalSources: []
 Summary: ""
-LastUpdated: 2026-09-04T19:54:24.441624942-04:00
+LastUpdated: 2026-09-04T21:32:18.847588463-04:00
 WhatFor: ""
 WhenToUse: ""
 ---
+
 
 # Laboratory 3 elastic dataflow expression engine
 
@@ -28,6 +29,8 @@ Implement the book's third laboratory: a concurrent elastic expression engine wi
 
 - [Intern analysis, design, and implementation guide](design-doc/01-elastic-dataflow-engine-intern-analysis-design-and-implementation-guide.md)
 - [Go/React IDE design](design-doc/02-dataflow-ide-go-react-architecture-and-intern-implementation-guide.md)
+- [Implemented API and debug pages](reference/02-dataflow-api-and-debug-register-reference.md)
+- [Handoff and screenshot atlas](reference/03-implemented-laboratory-handoff-and-screenshot-atlas.md)
 - [Detailed diary](reference/01-implementation-diary.md)
 - [Tasks](tasks.md)
 - [Changelog](changelog.md)

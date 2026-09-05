@@ -1,0 +1,36 @@
+async (page) => {
+ const root='/home/manuel/code/wesen/2026-09-04--gatemate-symbolic/ttmp/2026/09/04/GATEMATE-SYMBOLIC-007--laboratory-3-elastic-dataflow-expression-engine';
+ const state=()=>page.evaluate(async()=>await(await fetch('/api/dataflow/state')).json());
+ const step=async(n)=>{await page.getByRole('button',{name:'Next action',exact:true}).click();await page.waitForFunction(async n=>(await(await fetch('/api/dataflow/state')).json()).step===n,n);await page.waitForFunction(n=>document.querySelector('.df-editor')?.textContent.includes(`Action ${n} /`),n)};
+ await page.setViewportSize({width:1600,height:1100});await page.goto('http://127.0.0.1:8087/');await page.getByText('PHYSICAL FPGA',{exact:true}).waitFor();await page.getByText('8 actions · valid scenario').waitFor();
+ if(await page.getByText('Model configuration',{exact:true}).count())throw Error('Physical device exposed mutable model configuration');
+ await page.getByRole('button',{name:'Run from start',exact:true}).click();
+ await page.waitForFunction(()=>[...document.querySelectorAll('.df-result-value')].map(e=>e.textContent).join(',')==='58,12');
+ const book=await state();if(book.current.snapshot.source!=='serial'||book.current.snapshot.counters.activations!==12)throw Error('Physical book provenance or activation count');
+ await page.screenshot({path:root+'/reference/screenshots/06-fpga-book-complete.png',fullPage:true});
+ const downloadPromise=page.waitForEvent('download');await page.getByRole('button',{name:'Export',exact:true}).click();const download=await downloadPromise;await download.saveAs(root+'/sources/exported-scenario.json');
+ await page.getByRole('textbox',{name:'Scenario JSON source'}).fill('invalid');await page.locator('input[type=file]').setInputFiles(root+'/sources/exported-scenario.json');await page.getByText('8 actions · valid scenario').waitFor();
+ for(let n=1;n<=4;n++)await step(n);
+ const held=await state();if(held.current.snapshot.output.length!==2)throw Error('Expected two held hardware results');
+ await page.getByRole('button',{name:'Cancel C0',exact:true}).click();await page.getByRole('alert').filter({hasText:'cancellation blocked'}).waitFor();
+ if((await state()).current.snapshot.epochs[0]!==0)throw Error('Blocked cancel changed epoch');
+ await page.screenshot({path:root+'/reference/screenshots/07-fpga-held-output-guard.png',fullPage:true});
+ await page.getByRole('combobox',{name:'EXAMPLE'}).selectOption('cancel');await page.getByText('10 actions · valid scenario').waitFor();
+ for(let n=1;n<=4;n++)await step(n);
+ await page.locator('.df-context').nth(2).click();await page.waitForFunction(()=>document.querySelector('.df-inspector')?.textContent.includes('Context 2'));
+ const flight=await state();const stages=flight.current.snapshot.mul;if(!stages.some(t=>t&&t.context===2&&t.epoch===0&&t.value===42))throw Error('Physical multiply was not visible in flight');
+ const operands=flight.current.snapshot.slots.find(s=>s.context===2&&s.node===0);if(operands.valid!==3||operands.values[0]!==7||operands.values[1]!==6)throw Error('Hardware operand pages mismatch');
+ await page.screenshot({path:root+'/reference/screenshots/08-fpga-in-flight.png',fullPage:true});
+ for(let n=5;n<=10;n++)await step(n);
+ const canceled=await state();if(canceled.results.length!==1||canceled.results[0].value!==12||canceled.results[0].epoch!==1||canceled.current.snapshot.counters.stale!==2)throw Error('Physical cancellation mismatch');
+ await page.screenshot({path:root+'/reference/screenshots/09-fpga-cancellation-complete.png',fullPage:true});
+ const recorded=canceled.history.find(f=>f.cycle===6);
+ await page.getByRole('combobox',{name:'Snapshot history'}).selectOption(String(recorded.id));await page.getByText('HISTORICAL SNAPSHOT '+recorded.id).waitFor();
+ if(!await page.getByRole('button',{name:'Step 1 cycle',exact:true}).isDisabled())throw Error('Historical hardware controls enabled');
+ await page.waitForFunction(()=>document.querySelector('.df-cycle strong')?.textContent==='6');
+ await page.screenshot({path:root+'/reference/screenshots/10-fpga-history.png',fullPage:true});
+ await page.getByRole('button',{name:'Return to live'}).click();
+ await page.getByRole('combobox',{name:'EXAMPLE'}).selectOption('book');await page.getByText('8 actions · valid scenario').waitFor();
+ await page.locator('.df-context').nth(0).click();await page.getByRole('button',{name:'Run from start',exact:true}).click();await page.waitForFunction(()=>[...document.querySelectorAll('.df-result-value')].map(e=>e.textContent).join(',')==='58,12');
+ return {source:'serial',book:book.results,heldOutputCancelRefused:true,exportImport:true,physicalInFlight:stages,operandRAM:operands,cancellation:canceled.results,staleDiscards:canceled.current.snapshot.counters.stale,historyObservational:true};
+}

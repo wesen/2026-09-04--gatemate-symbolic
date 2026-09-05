@@ -1,0 +1,14 @@
+{
+  "script": "scripts/18-browser-fpga-checks.js",
+  "source": "serial",
+  "bookResults": [58, 12],
+  "bookActivations": 12,
+  "heldOutputCancelRefused": true,
+  "exportImportRoundTrip": true,
+  "inFlight": {"context": 2, "epoch": 0, "node": 0, "stage": 0, "value": 42},
+  "operandRAM": {"context": 2, "node": 0, "values": [7, 6], "valid": 3, "issued": true, "pending": false},
+  "cancellationResult": {"context": 2, "epoch": 1, "value": 12},
+  "staleDiscards": 2,
+  "historicalControlsDisabled": true,
+  "expectedHTTP409Responses": 1
+}

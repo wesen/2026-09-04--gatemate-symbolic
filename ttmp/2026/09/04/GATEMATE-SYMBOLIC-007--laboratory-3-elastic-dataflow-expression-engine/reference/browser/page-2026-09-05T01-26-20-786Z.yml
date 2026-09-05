@@ -1,0 +1,51 @@
+- generic [ref=f3e3]:
+  - banner [ref=f3e4]:
+    - generic [ref=f3e5]:
+      - generic [ref=f3e6]: SYMBOLIC COMPUTING / LABORATORY 03
+      - heading "Elastic Dataflow" [level=1] [ref=f3e7]
+      - paragraph [ref=f3e8]: Scenario editor · execution debugger · FPGA instrument
+    - generic [ref=f3e9]:
+      - generic [ref=f3e10]: CONNECTING
+      - generic [ref=f3e11]: Awaiting engine snapshot
+      - generic [ref=f3e12]: Paused · work retained
+  - generic [ref=f3e13]:
+    - generic [ref=f3e14]:
+      - button "Step 1 cycle" [disabled]
+      - button "Advance" [disabled]
+    - spinbutton "Cycles to advance" [ref=f3e15]: "16"
+    - generic [ref=f3e16]: cycles
+    - button "Poll result" [disabled]
+    - button "Cancel C0" [disabled]
+    - button "Reset engine" [disabled]
+    - generic [ref=f3e17]:
+      - strong [ref=f3e18]: "0"
+      - generic [ref=f3e19]: ENABLED CYCLES
+  - main [ref=f3e20]:
+    - complementary [ref=f3e21]:
+      - generic [ref=f3e22]:
+        - heading "Scenario source" [level=2] [ref=f3e23]
+        - generic [ref=f3e24]: saved
+      - generic [ref=f3e25]: EXAMPLE
+      - combobox "EXAMPLE" [ref=f3e26]:
+        - option "Interleaved expressions" [selected]
+      - generic [ref=f3e27]:
+        - button "Format" [disabled]
+        - button "Import" [ref=f3e28] [cursor=pointer]
+        - button "Export" [ref=f3e29] [cursor=pointer]
+      - textbox "Scenario JSON source" [ref=f3e30]
+      - generic [ref=f3e31]: Validating…
+      - generic [ref=f3e32]:
+        - button "Run from start" [disabled]
+        - button "Next action" [disabled]
+        - button "Pause" [disabled]
+      - paragraph [ref=f3e33]: Action 0 / 0 · Run begins with the source reset. Next action continues this source.
+      - generic [ref=f3e34]:
+        - textbox "Project ID" [ref=f3e35]: my-expression
+        - button "Save" [disabled]
+      - combobox "Open saved project" [ref=f3e36]:
+        - option "Open saved project…" [selected]
+    - generic [ref=f3e37]: Connecting to the dataflow engine…
+    - complementary [ref=f3e39]
+  - contentinfo [ref=f3e40]:
+    - text: Fixed graph / 4 contexts / typed 40-bit values / 80-bit tokens
+    - generic [ref=f3e41]: GATEMATE-SYMBOLIC-007 · snapshot generation 0
