@@ -17,6 +17,7 @@ type Engine interface {
 }
 type Operation struct {
 	Kind    string  `json:"kind"`
+	Graph   *Graph  `json:"graph,omitempty"`
 	Token   *Token  `json:"token,omitempty"`
 	Context byte    `json:"context,omitempty"`
 	Ticks   uint32  `json:"ticks,omitempty"`
@@ -25,6 +26,11 @@ type Operation struct {
 
 func (o Operation) Validate() error {
 	switch o.Kind {
+	case "load":
+		if o.Graph == nil {
+			return errors.New("load requires graph")
+		}
+		return o.Graph.Validate()
 	case "reset":
 		if o.Config != nil {
 			_, err := NewTransaction(*o.Config)
@@ -72,6 +78,7 @@ type RouterSnapshot struct {
 	Delivered byte  `json:"delivered"`
 }
 type Snapshot struct {
+	Graph      Graph             `json:"graph"`
 	Source     string            `json:"source"`
 	Config     Config            `json:"config"`
 	Epochs     [Contexts]byte    `json:"epochs"`
@@ -99,6 +106,8 @@ func (m *Transaction) Execute(ctx context.Context, o Operation) (*Token, error) 
 		return nil, err
 	}
 	switch o.Kind {
+	case "load":
+		return nil, m.LoadGraph(*o.Graph)
 	case "reset":
 		c := m.Config
 		if o.Config != nil {
@@ -142,7 +151,7 @@ func (m *Transaction) Snapshot(ctx context.Context) (Snapshot, error) {
 	if err := ctx.Err(); err != nil {
 		return Snapshot{}, err
 	}
-	s := Snapshot{Source: "model", Config: m.Config, Epochs: m.Epoch, Closed: m.Closed, Quiescent: m.Quiescent(),
+	s := Snapshot{Graph: m.graph(), Source: "model", Config: m.Config, Epochs: m.Epoch, Closed: m.Closed, Quiescent: m.Quiescent(),
 		Mul: cloneTokens(m.mul), ALU: cloneTokens(m.alu), Input: append([]Token{}, m.input...), Completion: append([]Token{}, m.completed...), Output: append([]Token{}, m.output...),
 		Counters: map[string]uint32{"cycles": m.Metrics.Cycles, "source": m.Metrics.Source, "activations": m.Metrics.Activations, "mul": m.Metrics.Mul, "alu": m.Metrics.ALU,
 			"stale":      m.Metrics.StaleInput + m.Metrics.StaleIssue + m.Metrics.StaleCompletion + m.Metrics.StaleRouter + m.Metrics.StaleOutput,
@@ -159,7 +168,7 @@ func (m *Transaction) Snapshot(ctx context.Context) (Snapshot, error) {
 		}
 	}
 	if m.issue != nil {
-		s.Issue = &IssueSnapshot{Token: completion(m.issue.Context, m.issue.Epoch, m.issue.Node, 0), Phase: m.issue.Wait + 1, Values: m.issue.Values}
+		s.Issue = &IssueSnapshot{Token: m.completion(m.issue.Context, m.issue.Epoch, m.issue.Node, 0), Phase: m.issue.Wait + 1, Values: m.issue.Values}
 	}
 	if m.router != nil {
 		s.Router = &RouterSnapshot{m.router.Token, m.router.Delivered}

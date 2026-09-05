@@ -44,7 +44,7 @@ func (m *Semantic) Deliver(input Token) []Token {
 			continue
 		}
 		s.Pending = false
-		d := Descriptors[t.Node]
+		d := m.descriptor(byte(t.Node))
 		v := Evaluate(d.Op, s.Values[0], s.Values[1])
 		if v.Tag() == 13 {
 			m.Closed[t.Context] = true
@@ -53,7 +53,7 @@ func (m *Semantic) Deliver(input Token) []Token {
 		}
 		if d.Final {
 			m.Closed[t.Context] = true
-			output = append(output, completion(t.Context, t.Epoch, t.Node, v))
+			output = append(output, m.completion(t.Context, t.Epoch, t.Node, v))
 			continue
 		}
 		for i := byte(0); i < d.Count; i++ {

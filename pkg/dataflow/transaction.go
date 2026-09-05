@@ -161,7 +161,7 @@ func (m *Transaction) route() bool {
 		m.router = nil
 		return false
 	}
-	d := Descriptors[t.Producer]
+	d := m.descriptor(byte(t.Producer))
 	if d.Final {
 		if len(m.output) == m.Config.OutputDepth {
 			m.Metrics.RouterBlocked++
@@ -279,14 +279,14 @@ func (m *Transaction) Tick(ctx context.Context) error {
 		} else if i.Wait > 0 {
 			i.Wait--
 		} else {
-			d := Descriptors[i.Node]
+			d := m.descriptor(byte(i.Node))
 			p := m.alu
 			if d.Op == Mul {
 				p = m.mul
 			}
 			if p[0] == nil {
 				v := Evaluate(d.Op, i.Values[0], i.Values[1])
-				t := completion(i.Context, i.Epoch, i.Node, v)
+				t := m.completion(i.Context, i.Epoch, i.Node, v)
 				p[0] = &t
 				m.Metrics.Activations++
 				if d.Op == Mul {
@@ -311,7 +311,7 @@ func (m *Transaction) Tick(ctx context.Context) error {
 				continue
 			}
 			p := m.alu
-			if Descriptors[n].Op == Mul {
+			if m.descriptor(byte(n)).Op == Mul {
 				p = m.mul
 			}
 			if p[0] != nil {

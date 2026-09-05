@@ -149,6 +149,7 @@ type slot struct {
 	Issued, Pending bool
 }
 type state struct {
+	Graph  *Graph
 	Epoch  [Contexts]byte
 	Closed [Contexts]bool
 	Slots  [Contexts][Nodes]slot
@@ -156,7 +157,7 @@ type state struct {
 
 func (s *state) invalidate(c byte) { s.Slots[c] = [Nodes]slot{} }
 func (s *state) accept(t Token) byte {
-	if t.Node >= Nodes || t.Port > 1 || Descriptors[t.Node].Required&(1<<t.Port) == 0 || t.Final || t.Subtype != 0 {
+	if t.Node >= s.graph().Count || t.Port > 1 || s.descriptor(t.Node).Required&(1<<t.Port) == 0 || t.Final || t.Subtype != 0 {
 		return BadDestination
 	}
 	v := &s.Slots[t.Context][t.Node]
@@ -165,7 +166,7 @@ func (s *state) accept(t Token) byte {
 	}
 	v.Values[t.Port] = t.Value
 	v.Valid |= 1 << t.Port
-	if v.Valid&Descriptors[t.Node].Required == Descriptors[t.Node].Required && !v.Issued {
+	if v.Valid&s.descriptor(t.Node).Required == s.descriptor(t.Node).Required && !v.Issued {
 		v.Issued = true
 		v.Pending = true
 	}
