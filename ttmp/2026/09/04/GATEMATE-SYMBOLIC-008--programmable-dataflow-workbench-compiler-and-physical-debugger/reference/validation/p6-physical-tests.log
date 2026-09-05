@@ -1,0 +1,8 @@
+=== RUN   TestPhysicalQualification
+    physical_test.go:123: PASS 32 randomized four-context physical expressions, held-output cancellation guard, and 256-step drained epoch wrap
+--- PASS: TestPhysicalQualification (22.09s)
+=== RUN   TestPhysicalWorkbench
+    workbench_physical_test.go:155: PASS 96 compiled physical expressions across three graphs, descriptor readback, issue stop cycle 6, held halt, resume, trace overflow and clear
+--- PASS: TestPhysicalWorkbench (5.55s)
+PASS
+ok  	github.com/wesen/2026-09-04--gatemate-symbolic/pkg/dataflow	27.637s

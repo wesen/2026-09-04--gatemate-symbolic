@@ -1,0 +1,1817 @@
+{
+  "halted": {
+    "program": {
+      "source": "input a, b, c: int16\n\nlet square = a * a\nlet offset = b * c\nlet selected = int(a < b)\n\noutput square + offset + selected\n",
+      "graph": {
+        "count": 6,
+        "descriptors": [
+          {
+            "Op": 0,
+            "Required": 3,
+            "Destinations": [
+              {
+                "Node": 2,
+                "Port": 0
+              },
+              {
+                "Node": 0,
+                "Port": 0
+              }
+            ],
+            "Count": 1,
+            "Final": false
+          },
+          {
+            "Op": 0,
+            "Required": 3,
+            "Destinations": [
+              {
+                "Node": 2,
+                "Port": 1
+              },
+              {
+                "Node": 0,
+                "Port": 0
+              }
+            ],
+            "Count": 1,
+            "Final": false
+          },
+          {
+            "Op": 1,
+            "Required": 3,
+            "Destinations": [
+              {
+                "Node": 5,
+                "Port": 0
+              },
+              {
+                "Node": 0,
+                "Port": 0
+              }
+            ],
+            "Count": 1,
+            "Final": false
+          },
+          {
+            "Op": 2,
+            "Required": 3,
+            "Destinations": [
+              {
+                "Node": 4,
+                "Port": 0
+              },
+              {
+                "Node": 0,
+                "Port": 0
+              }
+            ],
+            "Count": 1,
+            "Final": false
+          },
+          {
+            "Op": 3,
+            "Required": 1,
+            "Destinations": [
+              {
+                "Node": 5,
+                "Port": 1
+              },
+              {
+                "Node": 0,
+                "Port": 0
+              }
+            ],
+            "Count": 1,
+            "Final": false
+          },
+          {
+            "Op": 1,
+            "Required": 3,
+            "Destinations": [
+              {
+                "Node": 0,
+                "Port": 0
+              },
+              {
+                "Node": 0,
+                "Port": 0
+              }
+            ],
+            "Count": 0,
+            "Final": true
+          },
+          {
+            "Op": 0,
+            "Required": 0,
+            "Destinations": [
+              {
+                "Node": 0,
+                "Port": 0
+              },
+              {
+                "Node": 0,
+                "Port": 0
+              }
+            ],
+            "Count": 0,
+            "Final": false
+          }
+        ]
+      },
+      "inputs": [
+        {
+          "name": "a",
+          "type": "int16",
+          "destinations": [
+            {
+              "Node": 0,
+              "Port": 0
+            },
+            {
+              "Node": 0,
+              "Port": 1
+            },
+            {
+              "Node": 3,
+              "Port": 0
+            }
+          ]
+        },
+        {
+          "name": "b",
+          "type": "int16",
+          "destinations": [
+            {
+              "Node": 1,
+              "Port": 0
+            },
+            {
+              "Node": 3,
+              "Port": 1
+            }
+          ]
+        },
+        {
+          "name": "c",
+          "type": "int16",
+          "destinations": [
+            {
+              "Node": 1,
+              "Port": 1
+            }
+          ]
+        }
+      ],
+      "constants": [],
+      "nodes": [
+        {
+          "node": 0,
+          "name": "square",
+          "line": 3,
+          "type": "int32"
+        },
+        {
+          "node": 1,
+          "name": "offset",
+          "line": 4,
+          "type": "int32"
+        },
+        {
+          "node": 2,
+          "name": "+",
+          "line": 7,
+          "type": "int32"
+        },
+        {
+          "node": 3,
+          "name": "<",
+          "line": 5,
+          "type": "bool"
+        },
+        {
+          "node": 4,
+          "name": "selected",
+          "line": 5,
+          "type": "int32"
+        },
+        {
+          "node": 5,
+          "name": "+",
+          "line": 7,
+          "type": "int32"
+        }
+      ]
+    },
+    "id": 6,
+    "generation": 2,
+    "label": "tick",
+    "cycle": 6,
+    "at": "2026-09-05T03:30:59.668594889Z",
+    "snapshot": {
+      "debug": {
+        "halted": true,
+        "reason": 1,
+        "stopCycle": 6,
+        "mask": 1,
+        "node": 0,
+        "context": 255,
+        "dropped": 1,
+        "events": [
+          {
+            "cycle": 1,
+            "kind": 1,
+            "token": {
+              "context": 0,
+              "epoch": 0,
+              "node": 0,
+              "port": 0,
+              "final": false,
+              "producer": 255,
+              "subtype": 0,
+              "value": 3
+            }
+          },
+          {
+            "cycle": 2,
+            "kind": 1,
+            "token": {
+              "context": 0,
+              "epoch": 0,
+              "node": 0,
+              "port": 1,
+              "final": false,
+              "producer": 255,
+              "subtype": 0,
+              "value": 3
+            }
+          },
+          {
+            "cycle": 3,
+            "kind": 1,
+            "token": {
+              "context": 0,
+              "epoch": 0,
+              "node": 3,
+              "port": 0,
+              "final": false,
+              "producer": 255,
+              "subtype": 0,
+              "value": 3
+            }
+          },
+          {
+            "cycle": 4,
+            "kind": 1,
+            "token": {
+              "context": 0,
+              "epoch": 0,
+              "node": 1,
+              "port": 0,
+              "final": false,
+              "producer": 255,
+              "subtype": 0,
+              "value": 4
+            }
+          },
+          {
+            "cycle": 5,
+            "kind": 1,
+            "token": {
+              "context": 0,
+              "epoch": 0,
+              "node": 3,
+              "port": 1,
+              "final": false,
+              "producer": 255,
+              "subtype": 0,
+              "value": 4
+            }
+          },
+          {
+            "cycle": 6,
+            "kind": 2,
+            "token": {
+              "context": 0,
+              "epoch": 0,
+              "node": 0,
+              "port": 0,
+              "final": false,
+              "producer": 0,
+              "subtype": 0,
+              "value": 9
+            }
+          }
+        ]
+      },
+      "graph": {
+        "count": 6,
+        "descriptors": [
+          {
+            "Op": 0,
+            "Required": 3,
+            "Destinations": [
+              {
+                "Node": 2,
+                "Port": 0
+              },
+              {
+                "Node": 0,
+                "Port": 0
+              }
+            ],
+            "Count": 1,
+            "Final": false
+          },
+          {
+            "Op": 0,
+            "Required": 3,
+            "Destinations": [
+              {
+                "Node": 2,
+                "Port": 1
+              },
+              {
+                "Node": 0,
+                "Port": 0
+              }
+            ],
+            "Count": 1,
+            "Final": false
+          },
+          {
+            "Op": 1,
+            "Required": 3,
+            "Destinations": [
+              {
+                "Node": 5,
+                "Port": 0
+              },
+              {
+                "Node": 0,
+                "Port": 0
+              }
+            ],
+            "Count": 1,
+            "Final": false
+          },
+          {
+            "Op": 2,
+            "Required": 3,
+            "Destinations": [
+              {
+                "Node": 4,
+                "Port": 0
+              },
+              {
+                "Node": 0,
+                "Port": 0
+              }
+            ],
+            "Count": 1,
+            "Final": false
+          },
+          {
+            "Op": 3,
+            "Required": 1,
+            "Destinations": [
+              {
+                "Node": 5,
+                "Port": 1
+              },
+              {
+                "Node": 0,
+                "Port": 0
+              }
+            ],
+            "Count": 1,
+            "Final": false
+          },
+          {
+            "Op": 1,
+            "Required": 3,
+            "Destinations": [
+              {
+                "Node": 0,
+                "Port": 0
+              },
+              {
+                "Node": 0,
+                "Port": 0
+              }
+            ],
+            "Count": 0,
+            "Final": true
+          },
+          {
+            "Op": 0,
+            "Required": 0,
+            "Destinations": [
+              {
+                "Node": 0,
+                "Port": 0
+              },
+              {
+                "Node": 0,
+                "Port": 0
+              }
+            ],
+            "Count": 0,
+            "Final": false
+          }
+        ]
+      },
+      "source": "serial",
+      "config": {
+        "InputDepth": 8,
+        "CompletionDepth": 8,
+        "OutputDepth": 8,
+        "MulLatency": 4,
+        "EpochBits": 8
+      },
+      "epochs": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "closed": [
+        false,
+        false,
+        false,
+        false
+      ],
+      "slots": [
+        {
+          "context": 0,
+          "node": 0,
+          "values": [
+            3,
+            3
+          ],
+          "valid": 3,
+          "issued": true,
+          "pending": false
+        },
+        {
+          "context": 0,
+          "node": 1,
+          "values": [
+            4,
+            5
+          ],
+          "valid": 3,
+          "issued": true,
+          "pending": true
+        },
+        {
+          "context": 0,
+          "node": 2,
+          "values": [
+            0,
+            0
+          ],
+          "valid": 0,
+          "issued": false,
+          "pending": false
+        },
+        {
+          "context": 0,
+          "node": 3,
+          "values": [
+            3,
+            4
+          ],
+          "valid": 3,
+          "issued": true,
+          "pending": true
+        },
+        {
+          "context": 0,
+          "node": 4,
+          "values": [
+            0,
+            0
+          ],
+          "valid": 0,
+          "issued": false,
+          "pending": false
+        },
+        {
+          "context": 0,
+          "node": 5,
+          "values": [
+            0,
+            0
+          ],
+          "valid": 0,
+          "issued": false,
+          "pending": false
+        },
+        {
+          "context": 0,
+          "node": 6,
+          "values": [
+            0,
+            0
+          ],
+          "valid": 0,
+          "issued": false,
+          "pending": false
+        },
+        {
+          "context": 1,
+          "node": 0,
+          "values": [
+            0,
+            0
+          ],
+          "valid": 0,
+          "issued": false,
+          "pending": false
+        },
+        {
+          "context": 1,
+          "node": 1,
+          "values": [
+            0,
+            0
+          ],
+          "valid": 0,
+          "issued": false,
+          "pending": false
+        },
+        {
+          "context": 1,
+          "node": 2,
+          "values": [
+            0,
+            0
+          ],
+          "valid": 0,
+          "issued": false,
+          "pending": false
+        },
+        {
+          "context": 1,
+          "node": 3,
+          "values": [
+            0,
+            0
+          ],
+          "valid": 0,
+          "issued": false,
+          "pending": false
+        },
+        {
+          "context": 1,
+          "node": 4,
+          "values": [
+            0,
+            0
+          ],
+          "valid": 0,
+          "issued": false,
+          "pending": false
+        },
+        {
+          "context": 1,
+          "node": 5,
+          "values": [
+            0,
+            0
+          ],
+          "valid": 0,
+          "issued": false,
+          "pending": false
+        },
+        {
+          "context": 1,
+          "node": 6,
+          "values": [
+            0,
+            0
+          ],
+          "valid": 0,
+          "issued": false,
+          "pending": false
+        },
+        {
+          "context": 2,
+          "node": 0,
+          "values": [
+            0,
+            0
+          ],
+          "valid": 0,
+          "issued": false,
+          "pending": false
+        },
+        {
+          "context": 2,
+          "node": 1,
+          "values": [
+            0,
+            0
+          ],
+          "valid": 0,
+          "issued": false,
+          "pending": false
+        },
+        {
+          "context": 2,
+          "node": 2,
+          "values": [
+            0,
+            0
+          ],
+          "valid": 0,
+          "issued": false,
+          "pending": false
+        },
+        {
+          "context": 2,
+          "node": 3,
+          "values": [
+            0,
+            0
+          ],
+          "valid": 0,
+          "issued": false,
+          "pending": false
+        },
+        {
+          "context": 2,
+          "node": 4,
+          "values": [
+            0,
+            0
+          ],
+          "valid": 0,
+          "issued": false,
+          "pending": false
+        },
+        {
+          "context": 2,
+          "node": 5,
+          "values": [
+            0,
+            0
+          ],
+          "valid": 0,
+          "issued": false,
+          "pending": false
+        },
+        {
+          "context": 2,
+          "node": 6,
+          "values": [
+            0,
+            0
+          ],
+          "valid": 0,
+          "issued": false,
+          "pending": false
+        },
+        {
+          "context": 3,
+          "node": 0,
+          "values": [
+            0,
+            0
+          ],
+          "valid": 0,
+          "issued": false,
+          "pending": false
+        },
+        {
+          "context": 3,
+          "node": 1,
+          "values": [
+            0,
+            0
+          ],
+          "valid": 0,
+          "issued": false,
+          "pending": false
+        },
+        {
+          "context": 3,
+          "node": 2,
+          "values": [
+            0,
+            0
+          ],
+          "valid": 0,
+          "issued": false,
+          "pending": false
+        },
+        {
+          "context": 3,
+          "node": 3,
+          "values": [
+            0,
+            0
+          ],
+          "valid": 0,
+          "issued": false,
+          "pending": false
+        },
+        {
+          "context": 3,
+          "node": 4,
+          "values": [
+            0,
+            0
+          ],
+          "valid": 0,
+          "issued": false,
+          "pending": false
+        },
+        {
+          "context": 3,
+          "node": 5,
+          "values": [
+            0,
+            0
+          ],
+          "valid": 0,
+          "issued": false,
+          "pending": false
+        },
+        {
+          "context": 3,
+          "node": 6,
+          "values": [
+            0,
+            0
+          ],
+          "valid": 0,
+          "issued": false,
+          "pending": false
+        }
+      ],
+      "issue": null,
+      "router": null,
+      "mul": [
+        {
+          "context": 0,
+          "epoch": 0,
+          "node": 0,
+          "port": 0,
+          "final": false,
+          "producer": 0,
+          "subtype": 0,
+          "value": 9
+        },
+        null,
+        null,
+        null
+      ],
+      "alu": [
+        null
+      ],
+      "input": [],
+      "completion": [],
+      "output": [],
+      "errors": [
+        null,
+        null,
+        null,
+        null
+      ],
+      "counters": {
+        "activations": 1,
+        "alu": 0,
+        "completionHigh": 0,
+        "cycles": 6,
+        "duplicates": 0,
+        "inputHigh": 6,
+        "invalid": 0,
+        "mul": 1,
+        "outputHigh": 0,
+        "outputs": 0,
+        "readyHigh": 2,
+        "routerBlocked": 0,
+        "source": 6,
+        "stale": 0,
+        "unitBlocked": 0,
+        "unitBusy": 0
+      },
+      "quiescent": false
+    }
+  },
+  "completed": {
+    "program": {
+      "source": "input a, b, c: int16\n\nlet square = a * a\nlet offset = b * c\nlet selected = int(a < b)\n\noutput square + offset + selected\n",
+      "graph": {
+        "count": 6,
+        "descriptors": [
+          {
+            "Op": 0,
+            "Required": 3,
+            "Destinations": [
+              {
+                "Node": 2,
+                "Port": 0
+              },
+              {
+                "Node": 0,
+                "Port": 0
+              }
+            ],
+            "Count": 1,
+            "Final": false
+          },
+          {
+            "Op": 0,
+            "Required": 3,
+            "Destinations": [
+              {
+                "Node": 2,
+                "Port": 1
+              },
+              {
+                "Node": 0,
+                "Port": 0
+              }
+            ],
+            "Count": 1,
+            "Final": false
+          },
+          {
+            "Op": 1,
+            "Required": 3,
+            "Destinations": [
+              {
+                "Node": 5,
+                "Port": 0
+              },
+              {
+                "Node": 0,
+                "Port": 0
+              }
+            ],
+            "Count": 1,
+            "Final": false
+          },
+          {
+            "Op": 2,
+            "Required": 3,
+            "Destinations": [
+              {
+                "Node": 4,
+                "Port": 0
+              },
+              {
+                "Node": 0,
+                "Port": 0
+              }
+            ],
+            "Count": 1,
+            "Final": false
+          },
+          {
+            "Op": 3,
+            "Required": 1,
+            "Destinations": [
+              {
+                "Node": 5,
+                "Port": 1
+              },
+              {
+                "Node": 0,
+                "Port": 0
+              }
+            ],
+            "Count": 1,
+            "Final": false
+          },
+          {
+            "Op": 1,
+            "Required": 3,
+            "Destinations": [
+              {
+                "Node": 0,
+                "Port": 0
+              },
+              {
+                "Node": 0,
+                "Port": 0
+              }
+            ],
+            "Count": 0,
+            "Final": true
+          },
+          {
+            "Op": 0,
+            "Required": 0,
+            "Destinations": [
+              {
+                "Node": 0,
+                "Port": 0
+              },
+              {
+                "Node": 0,
+                "Port": 0
+              }
+            ],
+            "Count": 0,
+            "Final": false
+          }
+        ]
+      },
+      "inputs": [
+        {
+          "name": "a",
+          "type": "int16",
+          "destinations": [
+            {
+              "Node": 0,
+              "Port": 0
+            },
+            {
+              "Node": 0,
+              "Port": 1
+            },
+            {
+              "Node": 3,
+              "Port": 0
+            }
+          ]
+        },
+        {
+          "name": "b",
+          "type": "int16",
+          "destinations": [
+            {
+              "Node": 1,
+              "Port": 0
+            },
+            {
+              "Node": 3,
+              "Port": 1
+            }
+          ]
+        },
+        {
+          "name": "c",
+          "type": "int16",
+          "destinations": [
+            {
+              "Node": 1,
+              "Port": 1
+            }
+          ]
+        }
+      ],
+      "constants": [],
+      "nodes": [
+        {
+          "node": 0,
+          "name": "square",
+          "line": 3,
+          "type": "int32"
+        },
+        {
+          "node": 1,
+          "name": "offset",
+          "line": 4,
+          "type": "int32"
+        },
+        {
+          "node": 2,
+          "name": "+",
+          "line": 7,
+          "type": "int32"
+        },
+        {
+          "node": 3,
+          "name": "<",
+          "line": 5,
+          "type": "bool"
+        },
+        {
+          "node": 4,
+          "name": "selected",
+          "line": 5,
+          "type": "int32"
+        },
+        {
+          "node": 5,
+          "name": "+",
+          "line": 7,
+          "type": "int32"
+        }
+      ]
+    },
+    "id": 10,
+    "generation": 2,
+    "label": "poll",
+    "cycle": 106,
+    "at": "2026-09-05T03:31:09.666568121Z",
+    "snapshot": {
+      "debug": {
+        "halted": false,
+        "reason": 0,
+        "stopCycle": 6,
+        "mask": 1,
+        "node": 0,
+        "context": 255,
+        "dropped": 8,
+        "events": [
+          {
+            "cycle": 1,
+            "kind": 1,
+            "token": {
+              "context": 0,
+              "epoch": 0,
+              "node": 0,
+              "port": 0,
+              "final": false,
+              "producer": 255,
+              "subtype": 0,
+              "value": 3
+            }
+          },
+          {
+            "cycle": 2,
+            "kind": 1,
+            "token": {
+              "context": 0,
+              "epoch": 0,
+              "node": 0,
+              "port": 1,
+              "final": false,
+              "producer": 255,
+              "subtype": 0,
+              "value": 3
+            }
+          },
+          {
+            "cycle": 3,
+            "kind": 1,
+            "token": {
+              "context": 0,
+              "epoch": 0,
+              "node": 3,
+              "port": 0,
+              "final": false,
+              "producer": 255,
+              "subtype": 0,
+              "value": 3
+            }
+          },
+          {
+            "cycle": 4,
+            "kind": 1,
+            "token": {
+              "context": 0,
+              "epoch": 0,
+              "node": 1,
+              "port": 0,
+              "final": false,
+              "producer": 255,
+              "subtype": 0,
+              "value": 4
+            }
+          },
+          {
+            "cycle": 5,
+            "kind": 1,
+            "token": {
+              "context": 0,
+              "epoch": 0,
+              "node": 3,
+              "port": 1,
+              "final": false,
+              "producer": 255,
+              "subtype": 0,
+              "value": 4
+            }
+          },
+          {
+            "cycle": 6,
+            "kind": 2,
+            "token": {
+              "context": 0,
+              "epoch": 0,
+              "node": 0,
+              "port": 0,
+              "final": false,
+              "producer": 0,
+              "subtype": 0,
+              "value": 9
+            }
+          },
+          {
+            "cycle": 10,
+            "kind": 2,
+            "token": {
+              "context": 0,
+              "epoch": 0,
+              "node": 1,
+              "port": 0,
+              "final": false,
+              "producer": 1,
+              "subtype": 0,
+              "value": 20
+            }
+          },
+          {
+            "cycle": 12,
+            "kind": 4,
+            "token": {
+              "context": 0,
+              "epoch": 0,
+              "node": 2,
+              "port": 0,
+              "final": false,
+              "producer": 0,
+              "subtype": 0,
+              "value": 9
+            }
+          },
+          {
+            "cycle": 14,
+            "kind": 2,
+            "token": {
+              "context": 0,
+              "epoch": 0,
+              "node": 3,
+              "port": 0,
+              "final": false,
+              "producer": 3,
+              "subtype": 0,
+              "value": 68719476737
+            }
+          },
+          {
+            "cycle": 15,
+            "kind": 3,
+            "token": {
+              "context": 0,
+              "epoch": 0,
+              "node": 3,
+              "port": 0,
+              "final": false,
+              "producer": 3,
+              "subtype": 0,
+              "value": 68719476737
+            }
+          },
+          {
+            "cycle": 16,
+            "kind": 4,
+            "token": {
+              "context": 0,
+              "epoch": 0,
+              "node": 2,
+              "port": 1,
+              "final": false,
+              "producer": 1,
+              "subtype": 0,
+              "value": 20
+            }
+          },
+          {
+            "cycle": 18,
+            "kind": 4,
+            "token": {
+              "context": 0,
+              "epoch": 0,
+              "node": 4,
+              "port": 0,
+              "final": false,
+              "producer": 3,
+              "subtype": 0,
+              "value": 68719476737
+            }
+          },
+          {
+            "cycle": 20,
+            "kind": 2,
+            "token": {
+              "context": 0,
+              "epoch": 0,
+              "node": 2,
+              "port": 0,
+              "final": false,
+              "producer": 2,
+              "subtype": 0,
+              "value": 29
+            }
+          },
+          {
+            "cycle": 21,
+            "kind": 3,
+            "token": {
+              "context": 0,
+              "epoch": 0,
+              "node": 2,
+              "port": 0,
+              "final": false,
+              "producer": 2,
+              "subtype": 0,
+              "value": 29
+            }
+          },
+          {
+            "cycle": 23,
+            "kind": 4,
+            "token": {
+              "context": 0,
+              "epoch": 0,
+              "node": 5,
+              "port": 0,
+              "final": false,
+              "producer": 2,
+              "subtype": 0,
+              "value": 29
+            }
+          },
+          {
+            "cycle": 24,
+            "kind": 2,
+            "token": {
+              "context": 0,
+              "epoch": 0,
+              "node": 4,
+              "port": 0,
+              "final": false,
+              "producer": 4,
+              "subtype": 0,
+              "value": 1
+            }
+          },
+          {
+            "cycle": 25,
+            "kind": 3,
+            "token": {
+              "context": 0,
+              "epoch": 0,
+              "node": 4,
+              "port": 0,
+              "final": false,
+              "producer": 4,
+              "subtype": 0,
+              "value": 1
+            }
+          },
+          {
+            "cycle": 27,
+            "kind": 4,
+            "token": {
+              "context": 0,
+              "epoch": 0,
+              "node": 5,
+              "port": 1,
+              "final": false,
+              "producer": 4,
+              "subtype": 0,
+              "value": 1
+            }
+          },
+          {
+            "cycle": 31,
+            "kind": 2,
+            "token": {
+              "context": 0,
+              "epoch": 0,
+              "node": 5,
+              "port": 0,
+              "final": true,
+              "producer": 5,
+              "subtype": 0,
+              "value": 30
+            }
+          },
+          {
+            "cycle": 32,
+            "kind": 3,
+            "token": {
+              "context": 0,
+              "epoch": 0,
+              "node": 5,
+              "port": 0,
+              "final": true,
+              "producer": 5,
+              "subtype": 0,
+              "value": 30
+            }
+          },
+          {
+            "cycle": 106,
+            "kind": 5,
+            "token": {
+              "context": 0,
+              "epoch": 0,
+              "node": 5,
+              "port": 0,
+              "final": true,
+              "producer": 5,
+              "subtype": 0,
+              "value": 30
+            }
+          }
+        ]
+      },
+      "graph": {
+        "count": 6,
+        "descriptors": [
+          {
+            "Op": 0,
+            "Required": 3,
+            "Destinations": [
+              {
+                "Node": 2,
+                "Port": 0
+              },
+              {
+                "Node": 0,
+                "Port": 0
+              }
+            ],
+            "Count": 1,
+            "Final": false
+          },
+          {
+            "Op": 0,
+            "Required": 3,
+            "Destinations": [
+              {
+                "Node": 2,
+                "Port": 1
+              },
+              {
+                "Node": 0,
+                "Port": 0
+              }
+            ],
+            "Count": 1,
+            "Final": false
+          },
+          {
+            "Op": 1,
+            "Required": 3,
+            "Destinations": [
+              {
+                "Node": 5,
+                "Port": 0
+              },
+              {
+                "Node": 0,
+                "Port": 0
+              }
+            ],
+            "Count": 1,
+            "Final": false
+          },
+          {
+            "Op": 2,
+            "Required": 3,
+            "Destinations": [
+              {
+                "Node": 4,
+                "Port": 0
+              },
+              {
+                "Node": 0,
+                "Port": 0
+              }
+            ],
+            "Count": 1,
+            "Final": false
+          },
+          {
+            "Op": 3,
+            "Required": 1,
+            "Destinations": [
+              {
+                "Node": 5,
+                "Port": 1
+              },
+              {
+                "Node": 0,
+                "Port": 0
+              }
+            ],
+            "Count": 1,
+            "Final": false
+          },
+          {
+            "Op": 1,
+            "Required": 3,
+            "Destinations": [
+              {
+                "Node": 0,
+                "Port": 0
+              },
+              {
+                "Node": 0,
+                "Port": 0
+              }
+            ],
+            "Count": 0,
+            "Final": true
+          },
+          {
+            "Op": 0,
+            "Required": 0,
+            "Destinations": [
+              {
+                "Node": 0,
+                "Port": 0
+              },
+              {
+                "Node": 0,
+                "Port": 0
+              }
+            ],
+            "Count": 0,
+            "Final": false
+          }
+        ]
+      },
+      "source": "serial",
+      "config": {
+        "InputDepth": 8,
+        "CompletionDepth": 8,
+        "OutputDepth": 8,
+        "MulLatency": 4,
+        "EpochBits": 8
+      },
+      "epochs": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "closed": [
+        true,
+        false,
+        false,
+        false
+      ],
+      "slots": [
+        {
+          "context": 0,
+          "node": 0,
+          "values": [
+            3,
+            3
+          ],
+          "valid": 3,
+          "issued": true,
+          "pending": false
+        },
+        {
+          "context": 0,
+          "node": 1,
+          "values": [
+            4,
+            5
+          ],
+          "valid": 3,
+          "issued": true,
+          "pending": false
+        },
+        {
+          "context": 0,
+          "node": 2,
+          "values": [
+            9,
+            20
+          ],
+          "valid": 3,
+          "issued": true,
+          "pending": false
+        },
+        {
+          "context": 0,
+          "node": 3,
+          "values": [
+            3,
+            4
+          ],
+          "valid": 3,
+          "issued": true,
+          "pending": false
+        },
+        {
+          "context": 0,
+          "node": 4,
+          "values": [
+            68719476737,
+            0
+          ],
+          "valid": 1,
+          "issued": true,
+          "pending": false
+        },
+        {
+          "context": 0,
+          "node": 5,
+          "values": [
+            29,
+            1
+          ],
+          "valid": 3,
+          "issued": true,
+          "pending": false
+        },
+        {
+          "context": 0,
+          "node": 6,
+          "values": [
+            0,
+            0
+          ],
+          "valid": 0,
+          "issued": false,
+          "pending": false
+        },
+        {
+          "context": 1,
+          "node": 0,
+          "values": [
+            0,
+            0
+          ],
+          "valid": 0,
+          "issued": false,
+          "pending": false
+        },
+        {
+          "context": 1,
+          "node": 1,
+          "values": [
+            0,
+            0
+          ],
+          "valid": 0,
+          "issued": false,
+          "pending": false
+        },
+        {
+          "context": 1,
+          "node": 2,
+          "values": [
+            0,
+            0
+          ],
+          "valid": 0,
+          "issued": false,
+          "pending": false
+        },
+        {
+          "context": 1,
+          "node": 3,
+          "values": [
+            0,
+            0
+          ],
+          "valid": 0,
+          "issued": false,
+          "pending": false
+        },
+        {
+          "context": 1,
+          "node": 4,
+          "values": [
+            0,
+            0
+          ],
+          "valid": 0,
+          "issued": false,
+          "pending": false
+        },
+        {
+          "context": 1,
+          "node": 5,
+          "values": [
+            0,
+            0
+          ],
+          "valid": 0,
+          "issued": false,
+          "pending": false
+        },
+        {
+          "context": 1,
+          "node": 6,
+          "values": [
+            0,
+            0
+          ],
+          "valid": 0,
+          "issued": false,
+          "pending": false
+        },
+        {
+          "context": 2,
+          "node": 0,
+          "values": [
+            0,
+            0
+          ],
+          "valid": 0,
+          "issued": false,
+          "pending": false
+        },
+        {
+          "context": 2,
+          "node": 1,
+          "values": [
+            0,
+            0
+          ],
+          "valid": 0,
+          "issued": false,
+          "pending": false
+        },
+        {
+          "context": 2,
+          "node": 2,
+          "values": [
+            0,
+            0
+          ],
+          "valid": 0,
+          "issued": false,
+          "pending": false
+        },
+        {
+          "context": 2,
+          "node": 3,
+          "values": [
+            0,
+            0
+          ],
+          "valid": 0,
+          "issued": false,
+          "pending": false
+        },
+        {
+          "context": 2,
+          "node": 4,
+          "values": [
+            0,
+            0
+          ],
+          "valid": 0,
+          "issued": false,
+          "pending": false
+        },
+        {
+          "context": 2,
+          "node": 5,
+          "values": [
+            0,
+            0
+          ],
+          "valid": 0,
+          "issued": false,
+          "pending": false
+        },
+        {
+          "context": 2,
+          "node": 6,
+          "values": [
+            0,
+            0
+          ],
+          "valid": 0,
+          "issued": false,
+          "pending": false
+        },
+        {
+          "context": 3,
+          "node": 0,
+          "values": [
+            0,
+            0
+          ],
+          "valid": 0,
+          "issued": false,
+          "pending": false
+        },
+        {
+          "context": 3,
+          "node": 1,
+          "values": [
+            0,
+            0
+          ],
+          "valid": 0,
+          "issued": false,
+          "pending": false
+        },
+        {
+          "context": 3,
+          "node": 2,
+          "values": [
+            0,
+            0
+          ],
+          "valid": 0,
+          "issued": false,
+          "pending": false
+        },
+        {
+          "context": 3,
+          "node": 3,
+          "values": [
+            0,
+            0
+          ],
+          "valid": 0,
+          "issued": false,
+          "pending": false
+        },
+        {
+          "context": 3,
+          "node": 4,
+          "values": [
+            0,
+            0
+          ],
+          "valid": 0,
+          "issued": false,
+          "pending": false
+        },
+        {
+          "context": 3,
+          "node": 5,
+          "values": [
+            0,
+            0
+          ],
+          "valid": 0,
+          "issued": false,
+          "pending": false
+        },
+        {
+          "context": 3,
+          "node": 6,
+          "values": [
+            0,
+            0
+          ],
+          "valid": 0,
+          "issued": false,
+          "pending": false
+        }
+      ],
+      "issue": null,
+      "router": null,
+      "mul": [
+        null,
+        null,
+        null,
+        null
+      ],
+      "alu": [
+        null
+      ],
+      "input": [],
+      "completion": [],
+      "output": [],
+      "errors": [
+        null,
+        null,
+        null,
+        null
+      ],
+      "counters": {
+        "activations": 6,
+        "alu": 4,
+        "completionHigh": 1,
+        "cycles": 106,
+        "duplicates": 0,
+        "inputHigh": 6,
+        "invalid": 0,
+        "mul": 2,
+        "outputHigh": 1,
+        "outputs": 1,
+        "readyHigh": 2,
+        "routerBlocked": 0,
+        "source": 6,
+        "stale": 0,
+        "unitBlocked": 0,
+        "unitBusy": 12
+      },
+      "quiescent": true
+    }
+  },
+  "result": {
+    "context": 0,
+    "epoch": 0,
+    "node": 5,
+    "port": 0,
+    "final": true,
+    "producer": 5,
+    "subtype": 0,
+    "value": 30
+  }
+}

@@ -1,0 +1,8 @@
+make: Entering directory '/home/manuel/code/wesen/2026-09-04--gatemate-symbolic/elastic_dataflow'
+openFPGALoader -b olimex_gatemateevb build/top.bit
+Jtag frequency : requested 6000000 Hz -> real 6000000 Hz
+Load SRAM via JTAG: [=====================================             ] 72.64%
+Load SRAM via JTAG: [==================================================] 100.00%
+
+Done
+make: Leaving directory '/home/manuel/code/wesen/2026-09-04--gatemate-symbolic/elastic_dataflow'

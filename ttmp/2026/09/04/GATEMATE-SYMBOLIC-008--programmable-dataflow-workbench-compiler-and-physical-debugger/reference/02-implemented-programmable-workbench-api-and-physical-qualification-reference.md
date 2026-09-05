@@ -192,3 +192,45 @@ The resumed program returned 30. The event table reports any loss after its fini
 ![Model historical inspection](screenshots/03-model-history.png)
 
 The earlier stopped frame retains its associated program while mutation controls are disabled.
+
+### Physical qualification and timing closure
+
+The final routed design meets the unchanged 10 MHz constraint with a reported maximum frequency of **12.01 MHz**. This is the post-routing result; the earlier 18.99 MHz placement estimate is not the qualification value. Utilization is 18,449/40,960 CPE logic tables (45%), 4,153/40,960 flip-flops (10%), and 5/64 RAM halves (7%). The complete synthesis and routing reports are retained as `validation/p6-synthesis-final.log.gz` and `validation/p6-timing-final.log.gz`.
+
+The initial graph validator failed timing at 9.31 MHz. Rewriting its comparisons improved the first repair to 9.88 MHz, which still failed. The successful second repair expresses independent predicates as arrays and reductions, then registers the validation result together with its graph-size identity. Descriptor writes invalidate that result. The UART commit command waits three system clocks after selecting a size before examining validity. This removes a long combinational path while preserving the requirement that only the currently staged, complete graph can activate. No clock reduction or timing exception was used.
+
+The newly packed bitstream was loaded through JTAG using `make -C elastic_dataflow load`. Both physical Go tests passed in 27.637 seconds:
+
+- `TestPhysicalQualification`: 32 randomized trials with four contexts each, totaling 128 baseline expressions; held-output cancellation rejection and output stability; 256 drained cancellations returning the eight-bit epoch to zero.
+- `TestPhysicalWorkbench`: 96 compiled expressions across three graphs and all four contexts, including shared multiplication and compiler-inserted COPY fanout; descriptor readback equality; issue breakpoint at cycle 6; unchanged cycle count under additional ticks while halted; correct resumed output; trace overflow accounting and clearing.
+
+These tests check 224 randomized expression results plus directed debugger and cancellation cases. They do not establish correctness for every graph or physical placement. Directed RTL tests cover malformed descriptors, load sequencing, full-completion and stale-drop breakpoints; the randomized RTL regression covers twelve queue-depth/latency configurations. The selected board configuration remains depth eight with multiplier latency four.
+
+### Physical browser execution
+
+![FPGA stopped after issuing square](screenshots/05-fpga-breakpoint.png)
+
+The browser compiled the six-node example, loaded it, verified the active descriptor readback, and supplied `a=3, b=4, c=5`. An issue breakpoint on node zero stopped the physical engine at enabled cycle 6. The multiplier's first stage holds 9, and the recorded issue event identifies node zero as its producer. One simultaneous event was dropped by the one-record-per-clock trace recorder; the interface explicitly reports that loss.
+
+![FPGA result and recorded execution trace](screenshots/06-fpga-result-trace.png)
+
+An additional request for 100 ticks while halted left the counter at 6. After explicit resume, another 100-tick request advanced the counter to 106. Poll returned the final value **30**, produced by node five. The final trace contains 21 records and reports eight dropped events. The counter includes idle enabled clocks after computation finishes, so cycle 106 is the observation boundary, not the result's completion latency.
+
+![Historical physical breakpoint frame](screenshots/07-fpga-history.png)
+
+Selecting the earlier breakpoint frame restores its program, graph, counters, and trace for inspection. Mutation controls are disabled while viewing history. This is retained observation history; selecting an old frame does not roll back the FPGA.
+
+The complete browser evidence is in `validation/p6-browser-fpga.json`, and the replayable procedure is `scripts/21-browser-fpga.js`. Browser console review reported no warnings or errors. Seven screenshots are retained, including the model workflow and mobile layout.
+
+### Reproducing the physical check
+
+`scripts/20-physical-qualification.sh` programs the board and runs both physical suites. It refuses to program a timing-failed build or a bitstream older than its routing report. Stop the server owning the serial port before running it, then restart the IDE after tests release the port:
+
+```sh
+lsof-who -p 8087 -k
+bash ttmp/2026/09/04/GATEMATE-SYMBOLIC-008--programmable-dataflow-workbench-compiler-and-physical-debugger/scripts/20-physical-qualification.sh
+tmux new-session -d -s workbench-fpga \
+  'go run -tags embed ./cmd/dataflow-ide --engine serial --device /dev/ttyACM0 --listen 127.0.0.1:8087 --projects elastic_dataflow/projects'
+```
+
+The physical application is available at `http://127.0.0.1:8087/` while that process and board remain running. SRAM programming is volatile; a power cycle requires programming again.

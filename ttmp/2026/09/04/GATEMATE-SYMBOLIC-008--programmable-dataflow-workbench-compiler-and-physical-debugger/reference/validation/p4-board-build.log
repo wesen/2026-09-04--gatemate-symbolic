@@ -1,0 +1,517 @@
+mkdir -p build
+yosys -ql build/yosys.log scripts/synth.ys
+Warning: Replacing memory \metrics with list of registers. See rtl/dataflow_core.sv:264
+Warning: Replacing memory \errors with list of registers. See rtl/dataflow_core.sv:263
+Warning: Replacing memory \epoch with list of registers. See rtl/dataflow_core.sv:263
+Warning: Replacing memory \descriptors with list of registers. See rtl/dataflow_core.sv:78
+Warning: Replacing memory \staged with list of registers. See rtl/dataflow_core.sv:77
+Warning: Replacing memory \token with list of registers. See rtl/df_unit.sv:28
+Warning: Replacing memory \token with list of registers. See rtl/df_unit.sv:26
+Warning: Replacing memory \memory with list of registers. See rtl/df_fifo.sv:22
+nextpnr-himbaechel -l build/nextpnr.log --device CCGM1A1 --json build/top.json -o ccf=../symbolic_eval/constraints/olimex_gatematea1_evb.ccf -o out=build/top.txt --sdc ../symbolic_eval/constraints/top.sdc --router router2 --seed 2
+Info: Using uarch 'gatemate' for device 'CCGM1A1'
+Info: Using timing mode 'WORST'.
+Info: Using performance mode 'SPEED'.
+Info: constraining clock net 'clk_10m' to 10.00 MHz
+
+Info: Parsing CCF file..
+Info: Assign cell region based on attributes..
+Info: Packing constants..
+Info: Running cleanups..
+Info: Packing IOs..
+Info:     Constraining '$iopadmap$dataflow_top.user_led' to pad 'IO_SB_B6'.
+Info:     Constraining '$iopadmap$dataflow_top.uart_tx_pin' to pad 'IO_SA_B6'.
+Info:     Constraining '$iopadmap$dataflow_top.uart_rx_pin' to pad 'IO_SA_A6'.
+Info:     Constraining '$iopadmap$dataflow_top.fpga_but' to pad 'IO_SB_B7'.
+Info:     Constraining '$iopadmap$dataflow_top.clk_10m' to pad 'IO_SB_A8'.
+Info: Insert clocking cells..
+Info: Packing PLLs..
+Info: Sort BUFGs..
+Info: Packing BUFGs..
+Info: Packing IO SELs..
+Info: Packing misc..
+Info: Packing RAMs..
+Info: Packing SERDES..
+Info: Packing multipliers...
+Info:     Configuring '$flatten\link.\core.$mul$rtl/dataflow_core.sv:247$936' as a 6-bit * 6-bit = 5-bit multiplier.
+Info:         Created 28 CPEs.
+Info:     Configuring '$auto$share.cc:667:make_supercell$17449' as a 6-bit * 6-bit = 5-bit multiplier.
+Info:         Created 28 CPEs.
+Info:     Configuring '$flatten\link.\core.\multiplier.$mul$rtl/dataflow_pkg.sv:32$3588' as a 18-bit * 18-bit = 32-bit multiplier.
+Info:         Created 136 CPEs.
+Info:     Configuring '$flatten\link.\core.$mul$rtl/dataflow_core.sv:322$2361' as a 6-bit * 6-bit = 5-bit multiplier.
+Info:         Created 28 CPEs.
+Info: Packing ADDFs..
+Info: Packing CPEs..
+Info: Removing unused constants..
+Info:     Removed unused VCC cell.
+Info:     Removed unused GND cell.
+Info: Fix cell assigned regions..
+Info: Checksum: 0x25723d23
+
+Info: Device utilisation:
+Info: 	            USR_RSTN:       1/      1   100%
+Info: 	            CPE_COMP:      90/  20480     0%
+Info: 	         CPE_CPLINES:     312/  20480     1%
+Info: 	               IOSEL:       5/    162     3%
+Info: 	                GPIO:       5/    162     3%
+Info: 	               CLKIN:       1/      1   100%
+Info: 	              GLBOUT:       1/      1   100%
+Info: 	                 PLL:       0/      4     0%
+Info: 	            CFG_CTRL:       0/      1     0%
+Info: 	              SERDES:       0/      1     0%
+Info: 	              CPE_LT:   18449/  40960    45%
+Info: 	              CPE_FF:    4153/  40960    10%
+Info: 	           CPE_RAMIO:     535/  40960     1%
+Info: 	            RAM_HALF:       5/     64     7%
+
+Info: Placed 0 cells based on constraints.
+Info: Creating initial analytic placement for 12660 cells, random placement wirelen = 1845658.
+Info:     at initial placer iter 0, wirelen = 13669
+Info:     at initial placer iter 1, wirelen = 13513
+Info:     at initial placer iter 2, wirelen = 12809
+Info:     at initial placer iter 3, wirelen = 12528
+Info: Running main analytical placer, max placement attempts per cell = 71407225.
+Info:     at iteration #1, type ALL: wirelen solved = 13102, spread = 490918, legal = 782011; time = 6.88s
+Info:     at iteration #2, type ALL: wirelen solved = 31510, spread = 312733, legal = 512499; time = 3.89s
+Info:     at iteration #3, type ALL: wirelen solved = 64702, spread = 270755, legal = 419084; time = 3.16s
+Info:     at iteration #4, type ALL: wirelen solved = 82329, spread = 245662, legal = 427362; time = 3.70s
+Info:     at iteration #5, type ALL: wirelen solved = 94221, spread = 225967, legal = 364668; time = 3.03s
+Info:     at iteration #6, type ALL: wirelen solved = 105874, spread = 210925, legal = 314409; time = 2.15s
+Info:     at iteration #7, type ALL: wirelen solved = 115245, spread = 201660, legal = 279566; time = 1.71s
+Info:     at iteration #8, type ALL: wirelen solved = 122967, spread = 196325, legal = 275826; time = 1.84s
+Info:     at iteration #9, type ALL: wirelen solved = 127422, spread = 194696, legal = 257883; time = 1.24s
+Info:     at iteration #10, type ALL: wirelen solved = 134058, spread = 192229, legal = 243006; time = 0.87s
+Info:     at iteration #11, type ALL: wirelen solved = 139538, spread = 192360, legal = 239841; time = 1.05s
+Info:     at iteration #12, type ALL: wirelen solved = 142761, spread = 190291, legal = 239452; time = 1.03s
+Info:     at iteration #13, type ALL: wirelen solved = 147348, spread = 191648, legal = 227486; time = 0.87s
+Info:     at iteration #14, type ALL: wirelen solved = 150702, spread = 188151, legal = 237507; time = 0.97s
+Info:     at iteration #15, type ALL: wirelen solved = 153813, spread = 190692, legal = 232827; time = 0.89s
+Info:     at iteration #16, type ALL: wirelen solved = 157086, spread = 192590, legal = 231158; time = 0.69s
+Info:     at iteration #17, type ALL: wirelen solved = 158669, spread = 192073, legal = 230717; time = 0.70s
+Info:     at iteration #18, type ALL: wirelen solved = 160911, spread = 194799, legal = 233039; time = 0.61s
+Info: HeAP Placer Time: 38.41s
+Info:   of which solving equations: 7.44s
+Info:   of which spreading cells: 1.89s
+Info:   of which strict legalisation: 26.76s
+
+Info: Running simulated annealing placer for refinement.
+Info:   at iteration #1: temp = 0.000000, timing cost = 2775, wirelen = 228474
+Info:   at iteration #5: temp = 0.000000, timing cost = 1293, wirelen = 190965
+Info:   at iteration #10: temp = 0.000000, timing cost = 1132, wirelen = 186549
+Info:   at iteration #15: temp = 0.000000, timing cost = 1082, wirelen = 182334
+Info:   at iteration #20: temp = 0.000000, timing cost = 1059, wirelen = 181400
+Info:   at iteration #25: temp = 0.000000, timing cost = 1058, wirelen = 181053
+Info:   at iteration #26: temp = 0.000000, timing cost = 1056, wirelen = 181020 
+Info: SA placement time 57.69s
+
+Info: Max frequency for clock 'link.clk': 18.99 MHz (PASS at 10.00 MHz)
+
+Info: Max delay <async> -> posedge link.clk: 4.03 ns
+
+Info: Slack histogram:
+Info:  legend: * represents 26 endpoint(s)
+Info:          + represents [1,26) endpoint(s)
+Info: [ 47334,  49928) |+
+Info: [ 49928,  52522) |+
+Info: [ 52522,  55116) |+
+Info: [ 55116,  57710) |+
+Info: [ 57710,  60304) |****+
+Info: [ 60304,  62898) |**********+
+Info: [ 62898,  65492) |******************+
+Info: [ 65492,  68086) |*******************+
+Info: [ 68086,  70680) |********************************+
+Info: [ 70680,  73274) |******+
+Info: [ 73274,  75868) |********+
+Info: [ 75868,  78462) |***********+
+Info: [ 78462,  81056) |************************+
+Info: [ 81056,  83650) |**************************+
+Info: [ 83650,  86244) |************+
+Info: [ 86244,  88838) |**************+
+Info: [ 88838,  91432) |**********************************+
+Info: [ 91432,  94026) |***********************+
+Info: [ 94026,  96620) |********************************+
+Info: [ 96620,  99214) |************************************************************ 
+Info: Checksum: 0xa3fbf8bc
+Info: Repacking RAMs..
+Info: Repacking CPEs..
+Info: Remove unused clocking cells..
+Info: Routing multipliers...
+Info: Routing clock nets...
+Info:     routing net 'link.clk' to 4156 users
+Info: Clock router time 6.19s.
+Info: Running router2...
+Info: Setting up routing resources...
+Info: Running main router loop...
+Info:     iter=1 wires=728759 overused=71653 overuse=78323 resources=27911 overused=2456 overuse=3086 archfail=NA
+Info:     iter=2 wires=784440 overused=39523 overuse=40448 resources=30350 overused=1101 overuse=1190 archfail=NA
+Info:     iter=3 wires=812331 overused=30526 overuse=31090 resources=32458 overused=795 overuse=864 archfail=NA
+Info:     iter=4 wires=832483 overused=24656 overuse=24985 resources=35125 overused=659 overuse=727 archfail=NA
+Info:     iter=5 wires=848470 overused=21580 overuse=21848 resources=36562 overused=568 overuse=641 archfail=NA
+Info:     iter=6 wires=863173 overused=18909 overuse=19112 resources=37882 overused=454 overuse=510 archfail=NA
+Info:     iter=7 wires=873147 overused=16214 overuse=16359 resources=39665 overused=480 overuse=534 archfail=NA
+Info:     iter=8 wires=880756 overused=14916 overuse=15032 resources=40614 overused=408 overuse=469 archfail=NA
+Info:     iter=9 wires=890004 overused=13455 overuse=13539 resources=41609 overused=361 overuse=418 archfail=NA
+Info:     iter=10 wires=896187 overused=12713 overuse=12805 resources=42443 overused=328 overuse=379 archfail=NA
+Info:     iter=11 wires=904526 overused=11956 overuse=12017 resources=43928 overused=312 overuse=366 archfail=NA
+Info:     iter=12 wires=909221 overused=11278 overuse=11335 resources=44680 overused=304 overuse=357 archfail=NA
+Info:     iter=13 wires=915225 overused=10438 overuse=10493 resources=45897 overused=293 overuse=355 archfail=NA
+Info:     iter=14 wires=920525 overused=9419 overuse=9457 resources=46626 overused=272 overuse=340 archfail=NA
+Info:     iter=15 wires=923888 overused=9075 overuse=9104 resources=46633 overused=239 overuse=286 archfail=NA
+Info:     iter=16 wires=930958 overused=8538 overuse=8570 resources=47712 overused=212 overuse=253 archfail=NA
+Info:     iter=17 wires=934702 overused=8314 overuse=8345 resources=48528 overused=228 overuse=282 archfail=NA
+Info:     iter=18 wires=939246 overused=7955 overuse=7975 resources=49137 overused=215 overuse=279 archfail=NA
+Info:     iter=19 wires=944494 overused=7792 overuse=7821 resources=49531 overused=198 overuse=253 archfail=NA
+Info:     iter=20 wires=946596 overused=7566 overuse=7592 resources=49926 overused=196 overuse=240 archfail=NA
+Info:     iter=21 wires=951946 overused=6891 overuse=6910 resources=50868 overused=217 overuse=267 archfail=NA
+Info:     iter=22 wires=954714 overused=6596 overuse=6611 resources=51399 overused=179 overuse=213 archfail=NA
+Info:     iter=23 wires=958222 overused=6374 overuse=6387 resources=51747 overused=165 overuse=213 archfail=NA
+Info:     iter=24 wires=960484 overused=5994 overuse=6010 resources=51965 overused=172 overuse=213 archfail=NA
+Info:     iter=25 wires=963745 overused=5874 overuse=5888 resources=52388 overused=175 overuse=223 archfail=NA
+Info:     iter=26 wires=967686 overused=5856 overuse=5870 resources=53256 overused=192 overuse=242 archfail=NA
+Info:     iter=27 wires=970613 overused=5585 overuse=5594 resources=53306 overused=162 overuse=202 archfail=NA
+Info:     iter=28 wires=975732 overused=5373 overuse=5384 resources=53636 overused=160 overuse=207 archfail=NA
+Info:     iter=29 wires=975480 overused=4988 overuse=4993 resources=54117 overused=158 overuse=203 archfail=NA
+Info:     iter=30 wires=977957 overused=4733 overuse=4735 resources=54120 overused=123 overuse=165 archfail=NA
+Info:     iter=31 wires=979817 overused=4189 overuse=4195 resources=54261 overused=114 overuse=144 archfail=NA
+Info:     iter=32 wires=981825 overused=3912 overuse=3914 resources=54819 overused=131 overuse=168 archfail=NA
+Info:     iter=33 wires=983134 overused=3584 overuse=3590 resources=54824 overused=95 overuse=122 archfail=NA
+Info:     iter=34 wires=986277 overused=3239 overuse=3242 resources=55242 overused=103 overuse=138 archfail=NA
+Info:     iter=35 wires=988389 overused=3048 overuse=3050 resources=54999 overused=79 overuse=108 archfail=NA
+Info:     iter=36 wires=990858 overused=3258 overuse=3264 resources=55717 overused=93 overuse=123 archfail=NA
+Info:     iter=37 wires=994712 overused=3159 overuse=3161 resources=56109 overused=96 overuse=120 archfail=NA
+Info:     iter=38 wires=995796 overused=3141 overuse=3143 resources=55963 overused=94 overuse=116 archfail=NA
+Info:     iter=39 wires=996555 overused=2929 overuse=2936 resources=55968 overused=88 overuse=109 archfail=NA
+Info:     iter=40 wires=999419 overused=2801 overuse=2802 resources=56204 overused=81 overuse=95 archfail=NA
+Info:     iter=41 wires=1001861 overused=2724 overuse=2724 resources=56993 overused=116 overuse=143 archfail=NA
+Info:     iter=42 wires=1001977 overused=2612 overuse=2614 resources=56566 overused=77 overuse=101 archfail=NA
+Info:     iter=43 wires=1004214 overused=2329 overuse=2332 resources=56787 overused=77 overuse=108 archfail=NA
+Info:     iter=44 wires=1006740 overused=2212 overuse=2212 resources=56835 overused=77 overuse=103 archfail=NA
+Info:     iter=45 wires=1007933 overused=2070 overuse=2070 resources=56879 overused=66 overuse=87 archfail=NA
+Info:     iter=46 wires=1008589 overused=1954 overuse=1955 resources=57090 overused=66 overuse=89 archfail=NA
+Info:     iter=47 wires=1009943 overused=1909 overuse=1909 resources=57010 overused=66 overuse=88 archfail=NA
+Info:     iter=48 wires=1012621 overused=1757 overuse=1758 resources=57118 overused=59 overuse=73 archfail=NA
+Info:     iter=49 wires=1015168 overused=1701 overuse=1701 resources=57054 overused=57 overuse=80 archfail=NA
+Info:     iter=50 wires=1016301 overused=1743 overuse=1745 resources=57323 overused=56 overuse=70 archfail=NA
+Info:     iter=51 wires=1016611 overused=1537 overuse=1537 resources=57346 overused=59 overuse=80 archfail=NA
+Info:     iter=52 wires=1018364 overused=1542 overuse=1542 resources=57507 overused=52 overuse=70 archfail=NA
+Info:     iter=53 wires=1018898 overused=1481 overuse=1481 resources=57548 overused=49 overuse=61 archfail=NA
+Info:     iter=54 wires=1022104 overused=1427 overuse=1427 resources=57711 overused=53 overuse=73 archfail=NA
+Info:     iter=55 wires=1022602 overused=1355 overuse=1355 resources=57784 overused=54 overuse=74 archfail=NA
+Info:     iter=56 wires=1023108 overused=1363 overuse=1363 resources=57719 overused=47 overuse=57 archfail=NA
+Info:     iter=57 wires=1023664 overused=1141 overuse=1141 resources=57759 overused=51 overuse=70 archfail=NA
+Info:     iter=58 wires=1023332 overused=1021 overuse=1021 resources=57778 overused=36 overuse=48 archfail=NA
+Info:     iter=59 wires=1023589 overused=874 overuse=874 resources=57722 overused=34 overuse=39 archfail=NA
+Info:     iter=60 wires=1024272 overused=827 overuse=827 resources=57687 overused=30 overuse=36 archfail=NA
+Info:     iter=61 wires=1025786 overused=877 overuse=877 resources=57824 overused=31 overuse=41 archfail=NA
+Info:     iter=62 wires=1025634 overused=729 overuse=729 resources=57708 overused=20 overuse=28 archfail=NA
+Info:     iter=63 wires=1026504 overused=726 overuse=728 resources=57705 overused=24 overuse=30 archfail=NA
+Info:     iter=64 wires=1027621 overused=752 overuse=752 resources=57726 overused=27 overuse=35 archfail=NA
+Info:     iter=65 wires=1027546 overused=766 overuse=767 resources=57573 overused=13 overuse=14 archfail=NA
+Info:     iter=66 wires=1029040 overused=670 overuse=671 resources=57873 overused=19 overuse=25 archfail=NA
+Info:     iter=67 wires=1029754 overused=627 overuse=627 resources=57888 overused=19 overuse=23 archfail=NA
+Info:     iter=68 wires=1029943 overused=597 overuse=597 resources=57917 overused=20 overuse=25 archfail=NA
+Info:     iter=69 wires=1030915 overused=559 overuse=559 resources=57931 overused=16 overuse=18 archfail=NA
+Info:     iter=70 wires=1031288 overused=560 overuse=560 resources=57941 overused=10 overuse=11 archfail=NA
+Info:     iter=71 wires=1032470 overused=540 overuse=540 resources=58119 overused=10 overuse=12 archfail=NA
+Info:     iter=72 wires=1033386 overused=525 overuse=525 resources=58027 overused=11 overuse=13 archfail=NA
+Info:     iter=73 wires=1034639 overused=454 overuse=454 resources=58027 overused=13 overuse=17 archfail=NA
+Info:     iter=74 wires=1035915 overused=418 overuse=418 resources=58260 overused=12 overuse=15 archfail=NA
+Info:     iter=75 wires=1036080 overused=437 overuse=437 resources=58228 overused=11 overuse=14 archfail=NA
+Info:     iter=76 wires=1036843 overused=395 overuse=395 resources=58116 overused=9 overuse=10 archfail=NA
+Info:     iter=77 wires=1037455 overused=428 overuse=428 resources=58016 overused=7 overuse=8 archfail=NA
+Info:     iter=78 wires=1038237 overused=449 overuse=449 resources=58113 overused=14 overuse=16 archfail=NA
+Info:     iter=79 wires=1038158 overused=408 overuse=408 resources=58155 overused=16 overuse=19 archfail=NA
+Info:     iter=80 wires=1039320 overused=352 overuse=352 resources=58185 overused=11 overuse=15 archfail=NA
+Info:     iter=81 wires=1040253 overused=330 overuse=330 resources=58314 overused=14 overuse=17 archfail=NA
+Info:     iter=82 wires=1040795 overused=350 overuse=350 resources=58307 overused=9 overuse=10 archfail=NA
+Info:     iter=83 wires=1041326 overused=357 overuse=357 resources=58365 overused=11 overuse=14 archfail=NA
+Info:     iter=84 wires=1042161 overused=349 overuse=349 resources=58375 overused=8 overuse=9 archfail=NA
+Info:     iter=85 wires=1042535 overused=330 overuse=330 resources=58307 overused=6 overuse=9 archfail=NA
+Info:     iter=86 wires=1042466 overused=291 overuse=291 resources=58403 overused=7 overuse=8 archfail=NA
+Info:     iter=87 wires=1042845 overused=257 overuse=257 resources=58325 overused=5 overuse=7 archfail=NA
+Info:     iter=88 wires=1043423 overused=238 overuse=238 resources=58453 overused=11 overuse=12 archfail=NA
+Info:     iter=89 wires=1043689 overused=231 overuse=231 resources=58374 overused=7 overuse=8 archfail=NA
+Info:     iter=90 wires=1043978 overused=203 overuse=203 resources=58397 overused=6 overuse=6 archfail=NA
+Info:     iter=91 wires=1044606 overused=212 overuse=212 resources=58500 overused=5 overuse=6 archfail=NA
+Info:     iter=92 wires=1044862 overused=190 overuse=190 resources=58450 overused=7 overuse=8 archfail=NA
+Info:     iter=93 wires=1045785 overused=205 overuse=205 resources=58476 overused=6 overuse=7 archfail=NA
+Info:     iter=94 wires=1045992 overused=201 overuse=201 resources=58532 overused=7 overuse=8 archfail=NA
+Info:     iter=95 wires=1046272 overused=187 overuse=187 resources=58476 overused=8 overuse=10 archfail=NA
+Info:     iter=96 wires=1046554 overused=187 overuse=187 resources=58592 overused=10 overuse=18 archfail=NA
+Info:     iter=97 wires=1047035 overused=198 overuse=198 resources=58606 overused=9 overuse=10 archfail=NA
+Info:     iter=98 wires=1047265 overused=201 overuse=201 resources=58732 overused=6 overuse=7 archfail=NA
+Info:     iter=99 wires=1047847 overused=240 overuse=240 resources=58727 overused=8 overuse=10 archfail=NA
+Info:     iter=100 wires=1048171 overused=217 overuse=217 resources=58663 overused=12 overuse=14 archfail=NA
+Info:     iter=101 wires=1049106 overused=197 overuse=197 resources=58845 overused=13 overuse=15 archfail=NA
+Info:     iter=102 wires=1049127 overused=216 overuse=216 resources=58833 overused=6 overuse=8 archfail=NA
+Info:     iter=103 wires=1049599 overused=239 overuse=239 resources=58820 overused=9 overuse=9 archfail=NA
+Info:     iter=104 wires=1049417 overused=234 overuse=234 resources=58668 overused=6 overuse=7 archfail=NA
+Info:     iter=105 wires=1049374 overused=214 overuse=214 resources=58537 overused=12 overuse=16 archfail=NA
+Info:     iter=106 wires=1050161 overused=205 overuse=205 resources=58641 overused=13 overuse=16 archfail=NA
+Info:     iter=107 wires=1050592 overused=179 overuse=179 resources=58728 overused=9 overuse=12 archfail=NA
+Info:     iter=108 wires=1050697 overused=179 overuse=179 resources=58511 overused=10 overuse=15 archfail=NA
+Info:     iter=109 wires=1051398 overused=177 overuse=177 resources=58612 overused=11 overuse=15 archfail=NA
+Info:     iter=110 wires=1051129 overused=157 overuse=157 resources=58584 overused=5 overuse=7 archfail=NA
+Info:     iter=111 wires=1051376 overused=172 overuse=172 resources=58546 overused=4 overuse=5 archfail=NA
+Info:     iter=112 wires=1051655 overused=159 overuse=159 resources=58531 overused=3 overuse=4 archfail=NA
+Info:     iter=113 wires=1051750 overused=160 overuse=160 resources=58497 overused=3 overuse=4 archfail=NA
+Info:     iter=114 wires=1052200 overused=151 overuse=151 resources=58571 overused=8 overuse=10 archfail=NA
+Info:     iter=115 wires=1052622 overused=155 overuse=155 resources=58497 overused=5 overuse=6 archfail=NA
+Info:     iter=116 wires=1052608 overused=135 overuse=135 resources=58405 overused=3 overuse=5 archfail=NA
+Info:     iter=117 wires=1052800 overused=135 overuse=135 resources=58487 overused=3 overuse=4 archfail=NA
+Info:     iter=118 wires=1052960 overused=121 overuse=121 resources=58472 overused=4 overuse=5 archfail=NA
+Info:     iter=119 wires=1052971 overused=120 overuse=120 resources=58561 overused=3 overuse=4 archfail=NA
+Info:     iter=120 wires=1053217 overused=124 overuse=124 resources=58453 overused=6 overuse=7 archfail=NA
+Info:     iter=121 wires=1053391 overused=97 overuse=97 resources=58568 overused=3 overuse=3 archfail=NA
+Info:     iter=122 wires=1054013 overused=90 overuse=90 resources=58575 overused=5 overuse=7 archfail=NA
+Info:     iter=123 wires=1054224 overused=94 overuse=94 resources=58613 overused=3 overuse=3 archfail=NA
+Info:     iter=124 wires=1054427 overused=84 overuse=84 resources=58530 overused=4 overuse=6 archfail=NA
+Info:     iter=125 wires=1054342 overused=91 overuse=91 resources=58491 overused=4 overuse=5 archfail=NA
+Info:     iter=126 wires=1054892 overused=83 overuse=83 resources=58417 overused=4 overuse=5 archfail=NA
+Info:     iter=127 wires=1054725 overused=85 overuse=85 resources=58423 overused=4 overuse=5 archfail=NA
+Info:     iter=128 wires=1054825 overused=80 overuse=80 resources=58401 overused=2 overuse=2 archfail=NA
+Info:     iter=129 wires=1055107 overused=75 overuse=75 resources=58371 overused=4 overuse=5 archfail=NA
+Info:     iter=130 wires=1055341 overused=81 overuse=81 resources=58361 overused=1 overuse=1 archfail=NA
+Info:     iter=131 wires=1055110 overused=62 overuse=62 resources=58406 overused=5 overuse=5 archfail=NA
+Info:     iter=132 wires=1055890 overused=82 overuse=82 resources=58489 overused=2 overuse=2 archfail=NA
+Info:     iter=133 wires=1055342 overused=77 overuse=77 resources=58368 overused=2 overuse=2 archfail=NA
+Info:     iter=134 wires=1055762 overused=63 overuse=63 resources=58416 overused=1 overuse=1 archfail=NA
+Info:     iter=135 wires=1055744 overused=71 overuse=71 resources=58416 overused=2 overuse=2 archfail=NA
+Info:     iter=136 wires=1056068 overused=53 overuse=53 resources=58328 overused=0 overuse=0 archfail=NA
+Info:     iter=137 wires=1056184 overused=66 overuse=66 resources=58404 overused=0 overuse=0 archfail=NA
+Info:     iter=138 wires=1056123 overused=51 overuse=51 resources=58308 overused=2 overuse=2 archfail=NA
+Info:     iter=139 wires=1056193 overused=42 overuse=42 resources=58383 overused=0 overuse=0 archfail=NA
+Info:     iter=140 wires=1056116 overused=38 overuse=38 resources=58344 overused=2 overuse=3 archfail=NA
+Info:     iter=141 wires=1056527 overused=41 overuse=41 resources=58408 overused=0 overuse=0 archfail=NA
+Info:     iter=142 wires=1056331 overused=42 overuse=42 resources=58329 overused=0 overuse=0 archfail=NA
+Info:     iter=143 wires=1056749 overused=39 overuse=39 resources=58416 overused=1 overuse=2 archfail=NA
+Info:     iter=144 wires=1056711 overused=40 overuse=40 resources=58349 overused=0 overuse=0 archfail=NA
+Info:     iter=145 wires=1057341 overused=37 overuse=37 resources=58436 overused=4 overuse=8 archfail=NA
+Info:     iter=146 wires=1057325 overused=36 overuse=36 resources=58323 overused=2 overuse=4 archfail=NA
+Info:     iter=147 wires=1057410 overused=35 overuse=35 resources=58380 overused=0 overuse=0 archfail=NA
+Info:     iter=148 wires=1057103 overused=38 overuse=38 resources=58301 overused=0 overuse=0 archfail=NA
+Info:     iter=149 wires=1057262 overused=23 overuse=23 resources=58411 overused=1 overuse=1 archfail=NA
+Info:     iter=150 wires=1057192 overused=36 overuse=36 resources=58318 overused=0 overuse=0 archfail=NA
+Info:     iter=151 wires=1057587 overused=32 overuse=32 resources=58417 overused=0 overuse=0 archfail=NA
+Info:     iter=152 wires=1057165 overused=17 overuse=17 resources=58338 overused=0 overuse=0 archfail=NA
+Info:     iter=153 wires=1057267 overused=12 overuse=12 resources=58338 overused=0 overuse=0 archfail=NA
+Info:     iter=154 wires=1057120 overused=14 overuse=14 resources=58338 overused=0 overuse=0 archfail=NA
+Info:     iter=155 wires=1057339 overused=20 overuse=20 resources=58338 overused=0 overuse=0 archfail=NA
+Info:     iter=156 wires=1057377 overused=13 overuse=13 resources=58339 overused=0 overuse=0 archfail=NA
+Info:     iter=157 wires=1057459 overused=23 overuse=23 resources=58335 overused=0 overuse=0 archfail=NA
+Info:     iter=158 wires=1057387 overused=15 overuse=15 resources=58335 overused=0 overuse=0 archfail=NA
+Info:     iter=159 wires=1057430 overused=10 overuse=10 resources=58335 overused=0 overuse=0 archfail=NA
+Info:     iter=160 wires=1057390 overused=9 overuse=9 resources=58335 overused=0 overuse=0 archfail=NA
+Info:     iter=161 wires=1057530 overused=7 overuse=7 resources=58367 overused=0 overuse=0 archfail=NA
+Info:     iter=162 wires=1057674 overused=13 overuse=13 resources=58382 overused=1 overuse=3 archfail=NA
+Info:     iter=163 wires=1057644 overused=10 overuse=10 resources=58385 overused=0 overuse=0 archfail=NA
+Info:     iter=164 wires=1057788 overused=10 overuse=10 resources=58386 overused=0 overuse=0 archfail=NA
+Info:     iter=165 wires=1057812 overused=9 overuse=9 resources=58386 overused=0 overuse=0 archfail=NA
+Info:     iter=166 wires=1057836 overused=15 overuse=15 resources=58372 overused=0 overuse=0 archfail=NA
+Info:     iter=167 wires=1057765 overused=11 overuse=11 resources=58372 overused=0 overuse=0 archfail=NA
+Info:     iter=168 wires=1057894 overused=13 overuse=13 resources=58372 overused=0 overuse=0 archfail=NA
+Info:     iter=169 wires=1057752 overused=11 overuse=11 resources=58372 overused=0 overuse=0 archfail=NA
+Info:     iter=170 wires=1057746 overused=8 overuse=8 resources=58372 overused=0 overuse=0 archfail=NA
+Info:     iter=171 wires=1057874 overused=7 overuse=7 resources=58372 overused=0 overuse=0 archfail=NA
+Info:     iter=172 wires=1057818 overused=9 overuse=9 resources=58372 overused=0 overuse=0 archfail=NA
+Info:     iter=173 wires=1057924 overused=7 overuse=7 resources=58372 overused=0 overuse=0 archfail=NA
+Info:     iter=174 wires=1057903 overused=9 overuse=9 resources=58372 overused=0 overuse=0 archfail=NA
+Info:     iter=175 wires=1057848 overused=8 overuse=8 resources=58372 overused=0 overuse=0 archfail=NA
+Info:     iter=176 wires=1057908 overused=8 overuse=8 resources=58372 overused=0 overuse=0 archfail=NA
+Info:     iter=177 wires=1057892 overused=4 overuse=4 resources=58372 overused=0 overuse=0 archfail=NA
+Info:     iter=178 wires=1057895 overused=4 overuse=4 resources=58372 overused=0 overuse=0 archfail=NA
+Info:     iter=179 wires=1057902 overused=6 overuse=6 resources=58372 overused=0 overuse=0 archfail=NA
+Info:     iter=180 wires=1057885 overused=6 overuse=6 resources=58372 overused=0 overuse=0 archfail=NA
+Info:     iter=181 wires=1057933 overused=5 overuse=5 resources=58372 overused=0 overuse=0 archfail=NA
+Info:     iter=182 wires=1057931 overused=4 overuse=4 resources=58369 overused=0 overuse=0 archfail=NA
+Info:     iter=183 wires=1057927 overused=3 overuse=3 resources=58369 overused=0 overuse=0 archfail=NA
+Info:     iter=184 wires=1057926 overused=2 overuse=2 resources=58369 overused=0 overuse=0 archfail=NA
+Info:     iter=185 wires=1057927 overused=2 overuse=2 resources=58369 overused=0 overuse=0 archfail=NA
+Info:     iter=186 wires=1057949 overused=2 overuse=2 resources=58369 overused=0 overuse=0 archfail=NA
+Info:     iter=187 wires=1057943 overused=3 overuse=3 resources=58369 overused=0 overuse=0 archfail=NA
+Info:     iter=188 wires=1057961 overused=3 overuse=3 resources=58369 overused=0 overuse=0 archfail=NA
+Info:     iter=189 wires=1057986 overused=3 overuse=3 resources=58369 overused=0 overuse=0 archfail=NA
+Info:     iter=190 wires=1058006 overused=3 overuse=3 resources=58369 overused=0 overuse=0 archfail=NA
+Info:     iter=191 wires=1058008 overused=2 overuse=2 resources=58369 overused=0 overuse=0 archfail=NA
+Info:     iter=192 wires=1058009 overused=1 overuse=1 resources=58369 overused=0 overuse=0 archfail=NA
+Info:     iter=193 wires=1058009 overused=1 overuse=1 resources=58369 overused=0 overuse=0 archfail=NA
+Info:     iter=194 wires=1058009 overused=1 overuse=1 resources=58369 overused=0 overuse=0 archfail=NA
+Info:     iter=195 wires=1058025 overused=1 overuse=1 resources=58369 overused=0 overuse=0 archfail=NA
+Info:     iter=196 wires=1058039 overused=0 overuse=0 resources=58369 overused=0 overuse=0 archfail=0
+Info: Router2 time 1289.56s
+Info: Running router1 to check that route is legal...
+
+Info: Routing..
+Info: Setting up routing queue.
+Info: Routing 0 arcs.
+Info:            |   (re-)routed arcs  |   delta    | remaining|       time spent     |
+Info:    IterCnt |  w/ripup   wo/ripup |  w/r  wo/r |      arcs| batch(sec) total(sec)|
+Info:          0 |        0          0 |    0     0 |         0|       2.08       2.08|
+Info: Routing complete.
+Info: Router1 time 2.08s
+Info: Checksum: 0x97e8b0d7
+
+Info: Critical path report for clock 'link.clk' (posedge -> posedge):
+Info:       type curr  total name
+Info:   clk-skew  0.56  0.56 Net link.clk (24,115) -> (36,126)
+Info:                          Sink $auto$ff.cc:337:slice$24849.CLK_INT
+Info:                          Defined in:
+Info:                               rtl/dataflow_link.sv:5.13-5.16
+Info:   clk-to-q  0.59  1.15 Source $auto$ff.cc:337:slice$26375.DOUT
+Info:    routing  10.63  11.78 Net link.core.epoch[3][7] (24,115) -> (21,122)
+Info:                          Sink $abc$124092$auto$blifparse.cc:397:parse_blif$126459.D1_00
+Info:                          Defined in:
+Info:                               rtl/dataflow_core.sv:91.12-91.17
+Info:      logic  0.57  12.35 Source $abc$124092$auto$blifparse.cc:397:parse_blif$126459.OUT
+Info:    routing  4.74  17.09 Net $abc$124092$new_n10510 (21,122) -> (20,123)
+Info:                          Sink $abc$124092$auto$blifparse.cc:397:parse_blif$126477.D0_01
+Info:      logic  0.47  17.57 Source $abc$124092$auto$blifparse.cc:397:parse_blif$126477.OUT
+Info:    routing  1.94  19.50 Net $abc$124092$new_n10528 (20,123) -> (19,124)
+Info:                          Sink $abc$124092$auto$blifparse.cc:397:parse_blif$126478.D1_00
+Info:      logic  0.64  20.15 Source $abc$124092$auto$blifparse.cc:397:parse_blif$126478.OUT
+Info:    routing  2.51  22.66 Net $abc$124092$new_n10529 (19,124) -> (19,126)
+Info:                          Sink $abc$124092$auto$blifparse.cc:397:parse_blif$126479.D1_01
+Info:      logic  0.50  23.16 Source $abc$124092$auto$blifparse.cc:397:parse_blif$126479.OUT
+Info:    routing  4.01  27.17 Net $abc$124092$new_n10530 (19,126) -> (30,114)
+Info:                          Sink $abc$124092$auto$blifparse.cc:397:parse_blif$126481.D0_01
+Info:      logic  0.56  27.73 Source $abc$124092$auto$blifparse.cc:397:parse_blif$126481.OUT
+Info:    routing  2.99  30.72 Net $abc$124092$new_n10532 (30,114) -> (36,114)
+Info:                          Sink $abc$124092$auto$blifparse.cc:397:parse_blif$126535.D0_00
+Info:      logic  0.55  31.27 Source $abc$124092$auto$blifparse.cc:397:parse_blif$126535.OUT
+Info:    routing  1.16  32.43 Net $abc$124092$new_n10586 (36,114) -> (37,113)
+Info:                          Sink $abc$124092$auto$blifparse.cc:397:parse_blif$126536.D1_10
+Info:      logic  0.47  32.90 Source $abc$124092$auto$blifparse.cc:397:parse_blif$126536.OUT
+Info:    routing  1.32  34.22 Net $abc$124092$new_n10587 (37,113) -> (38,113)
+Info:                          Sink $abc$124092$auto$blifparse.cc:397:parse_blif$127884.D0_00
+Info:      logic  0.55  34.77 Source $abc$124092$auto$blifparse.cc:397:parse_blif$127884.OUT
+Info:    routing  1.62  36.39 Net $abc$124092$flatten\link.\core.$logic_not$rtl/dataflow_core.sv:285$2028_Y (38,113) -> (49,113)
+Info:                          Sink $abc$124092$auto$blifparse.cc:397:parse_blif$127888.D1_01
+Info:                          Defined in:
+Info:                               rtl/dataflow_core.sv:285.23-285.32
+Info:      logic  0.50  36.89 Source $abc$124092$auto$blifparse.cc:397:parse_blif$127888.OUT
+Info:    routing  1.84  38.72 Net $abc$124092$new_n11939 (49,113) -> (49,112)
+Info:                          Sink $auto$gatemate_foldinv.cc:169:fold_output_inverters$147411.D1_10
+Info:      logic  0.47  39.20 Source $auto$gatemate_foldinv.cc:169:fold_output_inverters$147411.OUT
+Info:    routing  2.04  41.24 Net link.core.mul_ready (49,112) -> (51,112)
+Info:                          Sink $abc$124092$auto$blifparse.cc:397:parse_blif$127930.D1_01
+Info:                          Defined in:
+Info:                               rtl/dataflow_core.sv:137.7-137.16
+Info:      logic  0.50  41.74 Source $abc$124092$auto$blifparse.cc:397:parse_blif$127930.OUT
+Info:    routing  2.86  44.60 Net $abc$124092$new_n11981 (51,112) -> (51,111)
+Info:                          Sink $abc$124092$auto$blifparse.cc:397:parse_blif$127931.D0_01
+Info:      logic  0.47  45.07 Source $abc$124092$auto$blifparse.cc:397:parse_blif$127931.OUT
+Info:    routing  1.84  46.91 Net $abc$124092$new_n11982 (51,111) -> (53,114)
+Info:                          Sink $abc$124092$auto$blifparse.cc:397:parse_blif$127946.D0_00
+Info:      logic  0.55  47.46 Source $abc$124092$auto$blifparse.cc:397:parse_blif$127946.OUT
+Info:    routing  1.45  48.91 Net $abc$124092$new_n11997 (53,114) -> (54,114)
+Info:                          Sink $abc$124092$auto$blifparse.cc:397:parse_blif$127953.D1_00
+Info:      logic  0.57  49.48 Source $abc$124092$auto$blifparse.cc:397:parse_blif$127953.OUT
+Info:    routing  0.41  49.89 Net $abc$124092$new_n12004 (54,114) -> (54,115)
+Info:                          Sink $abc$124092$auto$blifparse.cc:397:parse_blif$127962.D1_00
+Info:      logic  0.57  50.47 Source $abc$124092$auto$blifparse.cc:397:parse_blif$127962.OUT
+Info:    routing  0.41  50.88 Net $abc$124092$new_n12013 (54,115) -> (54,116)
+Info:                          Sink $abc$124092$auto$blifparse.cc:397:parse_blif$127969.D1_00
+Info:      logic  0.57  51.45 Source $abc$124092$auto$blifparse.cc:397:parse_blif$127969.OUT
+Info:    routing  0.41  51.87 Net $abc$124092$new_n12020 (54,116) -> (54,117)
+Info:                          Sink $abc$124092$auto$blifparse.cc:397:parse_blif$127978.D1_00
+Info:      logic  0.57  52.44 Source $abc$124092$auto$blifparse.cc:397:parse_blif$127978.OUT
+Info:    routing  0.41  52.85 Net $abc$124092$new_n12029 (54,117) -> (54,118)
+Info:                          Sink $abc$124092$auto$blifparse.cc:397:parse_blif$127985.D1_00
+Info:      logic  0.57  53.43 Source $abc$124092$auto$blifparse.cc:397:parse_blif$127985.OUT
+Info:    routing  1.61  55.03 Net $abc$124092$new_n12036 (54,118) -> (53,120)
+Info:                          Sink $abc$124092$auto$blifparse.cc:397:parse_blif$127994.D1_00
+Info:      logic  0.57  55.60 Source $abc$124092$auto$blifparse.cc:397:parse_blif$127994.OUT
+Info:    routing  0.66  56.27 Net $abc$124092$new_n12045 (53,120) -> (52,120)
+Info:                          Sink $abc$124092$auto$blifparse.cc:397:parse_blif$128001.D1_00
+Info:      logic  0.57  56.84 Source $abc$124092$auto$blifparse.cc:397:parse_blif$128001.OUT
+Info:    routing  0.41  57.25 Net $abc$124092$new_n12052 (52,120) -> (52,121)
+Info:                          Sink $abc$124092$auto$blifparse.cc:397:parse_blif$128018.D1_00
+Info:      logic  0.57  57.83 Source $abc$124092$auto$blifparse.cc:397:parse_blif$128018.OUT
+Info:    routing  2.00  59.83 Net $abc$124092$new_n12069 (52,121) -> (51,121)
+Info:                          Sink $abc$124092$auto$blifparse.cc:397:parse_blif$128029.D1_00
+Info:      logic  0.57  60.40 Source $abc$124092$auto$blifparse.cc:397:parse_blif$128029.OUT
+Info:    routing  0.41  60.82 Net $abc$124092$new_n12080 (51,121) -> (51,122)
+Info:                          Sink $abc$124092$auto$blifparse.cc:397:parse_blif$128046.D1_00
+Info:      logic  0.57  61.39 Source $abc$124092$auto$blifparse.cc:397:parse_blif$128046.OUT
+Info:    routing  2.43  63.82 Net $abc$124092$new_n12097 (51,122) -> (50,122)
+Info:                          Sink $abc$124092$auto$blifparse.cc:397:parse_blif$128057.D1_00
+Info:      logic  0.57  64.40 Source $abc$124092$auto$blifparse.cc:397:parse_blif$128057.OUT
+Info:    routing  1.33  65.72 Net $abc$124092$new_n12108 (50,122) -> (48,122)
+Info:                          Sink $abc$124092$auto$blifparse.cc:397:parse_blif$128071.D1_00
+Info:      logic  0.57  66.29 Source $abc$124092$auto$blifparse.cc:397:parse_blif$128071.OUT
+Info:    routing  0.41  66.71 Net $abc$124092$new_n12122 (48,122) -> (48,123)
+Info:                          Sink $abc$124092$auto$blifparse.cc:397:parse_blif$128081.D1_00
+Info:      logic  0.57  67.28 Source $abc$124092$auto$blifparse.cc:397:parse_blif$128081.OUT
+Info:    routing  1.59  68.87 Net $abc$124092$new_n12132 (48,123) -> (47,123)
+Info:                          Sink $abc$124092$auto$blifparse.cc:397:parse_blif$128091.D1_00
+Info:      logic  0.57  69.44 Source $abc$124092$auto$blifparse.cc:397:parse_blif$128091.OUT
+Info:    routing  0.41  69.86 Net $abc$124092$new_n12142 (47,123) -> (47,124)
+Info:                          Sink $abc$124092$auto$blifparse.cc:397:parse_blif$128100.D1_00
+Info:      logic  0.57  70.43 Source $abc$124092$auto$blifparse.cc:397:parse_blif$128100.OUT
+Info:    routing  1.33  71.76 Net $abc$124092$new_n12151 (47,124) -> (48,124)
+Info:                          Sink $abc$124092$auto$blifparse.cc:397:parse_blif$128111.D1_00
+Info:      logic  0.57  72.34 Source $abc$124092$auto$blifparse.cc:397:parse_blif$128111.OUT
+Info:    routing  3.43  75.76 Net $abc$124092$new_n12162 (48,124) -> (44,127)
+Info:                          Sink $abc$124092$auto$blifparse.cc:397:parse_blif$129452.D0_00
+Info:      logic  0.55  76.31 Source $abc$124092$auto$blifparse.cc:397:parse_blif$129452.OUT
+Info:    routing  2.46  78.77 Net $abc$124092$new_n13503 (44,127) -> (36,127)
+Info:                          Sink $abc$124092$auto$blifparse.cc:397:parse_blif$129459.D1_10
+Info:      logic  0.56  79.33 Source $abc$124092$auto$blifparse.cc:397:parse_blif$129459.OUT
+Info:    routing  3.31  82.64 Net $abc$124092$new_n13510 (36,127) -> (36,126)
+Info:                          Sink $abc$124092$auto$blifparse.cc:397:parse_blif$129472.D0_00
+Info:      logic  0.55  83.18 Source $abc$124092$auto$blifparse.cc:397:parse_blif$129472.OUT
+Info:    routing  0.00  83.18 Net $abc$124092$flatten\link.\core.$7$mem2reg_rd$\epoch$rtl/dataflow_core.sv:307$508_DATA[7:0]$2194[0] (36,126) -> (36,126)
+Info:                          Sink $auto$ff.cc:337:slice$24849.DIN
+Info:                          Defined in:
+Info:                               rtl/dataflow_core.sv:261.2-327.5
+Info:      setup  0.10  83.28 Source $auto$ff.cc:337:slice$24849.DIN
+Info: 18.33 ns logic, 64.95 ns routing
+
+Info: Critical path report for cross-domain path '<async>' -> 'posedge link.clk':
+Info:       type curr  total name
+Info:     source  0.00  0.00 Source $iopadmap$dataflow_top.uart_rx_pin.Y
+Info:    routing  0.00  0.00 Net $iopadmap$dataflow_top.uart_rx_pin$conn$Y (0,51) -> (0,51)
+Info:                          Sink $iopadmap$dataflow_top.uart_rx_pin$iosel.GPIO_IN
+Info:      logic  0.38  0.38 Source $iopadmap$dataflow_top.uart_rx_pin$iosel.IN1
+Info:    routing  3.64  4.02 Net link.receiver.rx (0,51) -> (3,43)
+Info:                          Sink $auto$ff.cc:337:slice$75399$lt.D0_10
+Info:                          Defined in:
+Info:                               ../graph_microscope/rtl/uart_rx.sv:3.23-3.25
+Info:      logic  0.61  4.63 Source $auto$ff.cc:337:slice$75399$lt.OUT
+Info:    routing  0.00  4.63 Net $auto$ff.cc:337:slice$75399$di (3,43) -> (3,43)
+Info:                          Sink $auto$ff.cc:337:slice$75399.DIN
+Info:      setup  0.10  4.73 Source $auto$ff.cc:337:slice$75399.DIN
+Info: 1.09 ns logic, 3.64 ns routing
+
+Info: Max frequency for clock 'link.clk': 12.01 MHz (PASS at 10.00 MHz)
+
+Info: Max delay <async> -> posedge link.clk: 4.73 ns
+
+Info: Slack histogram:
+Info:  legend: * represents 20 endpoint(s)
+Info:          + represents [1,20) endpoint(s)
+Info: [ 16717,  20816) |*+
+Info: [ 20816,  24915) |*******+
+Info: [ 24915,  29014) |*****+
+Info: [ 29014,  33113) |******+
+Info: [ 33113,  37212) |***+
+Info: [ 37212,  41311) |****+
+Info: [ 41311,  45410) |*********+
+Info: [ 45410,  49509) |**********************************+
+Info: [ 49509,  53608) |****************************************+
+Info: [ 53608,  57707) |********************+
+Info: [ 57707,  61806) |***********+
+Info: [ 61806,  65905) |*******+
+Info: [ 65905,  70004) |*******+
+Info: [ 70004,  74103) |***********************+
+Info: [ 74103,  78202) |******************+
+Info: [ 78202,  82301) |****************************************+
+Info: [ 82301,  86400) |*****************************************************+
+Info: [ 86400,  90499) |*********************************+
+Info: [ 90499,  94598) |***************************************************+
+Info: [ 94598,  98697) |************************************************************ 
+Info: Update configuration based on routing..
+
+Info: Program finished normally.
+gmpack build/top.txt build/top.bit

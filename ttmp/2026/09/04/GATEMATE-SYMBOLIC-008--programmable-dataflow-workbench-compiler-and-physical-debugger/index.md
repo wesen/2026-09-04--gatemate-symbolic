@@ -21,7 +21,7 @@ WhenToUse: ""
 
 ## Overview
 
-Build a programmable typed expression workbench on the existing elastic dataflow engine: validated graph loading, compiler and fanout lowering, hardware breakpoints, bounded trace, and a Go/React interface. P1–P5 are implemented and verified in software/RTL; P6 physical qualification is in progress.
+Build a programmable typed expression workbench on the existing elastic dataflow engine: validated graph loading, compiler and fanout lowering, hardware breakpoints, bounded trace, and a Go/React interface. All implementation phases and physical qualification passed. Final routed timing is 12.01 MHz against the 10 MHz constraint; 224 randomized physical expression results passed. The illustrated handoff includes seven model and FPGA screenshots.
 
 ## Key Links
 
@@ -29,6 +29,7 @@ Build a programmable typed expression workbench on the existing elastic dataflow
 - [Implemented API and qualification reference](reference/02-implemented-programmable-workbench-api-and-physical-qualification-reference.md)
 - [Detailed implementation diary](reference/01-implementation-diary.md)
 - reMarkable design delivery: `/ai/2026/09/04/GATEMATE-SYMBOLIC-008`
+- Physical workbench while the board/server are running: http://127.0.0.1:8087/
 
 ## Status
 

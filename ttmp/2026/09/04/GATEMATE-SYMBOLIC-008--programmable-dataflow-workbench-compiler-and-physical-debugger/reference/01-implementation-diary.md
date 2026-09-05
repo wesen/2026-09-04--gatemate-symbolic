@@ -511,3 +511,74 @@ The second and final permitted repair expresses independent node, edge and dupli
 - Registered validation and the explicit G wait are committed as `b03729e`; the final routed result remains pending.
 - Final model ownership review removed the obsolete exported mutable reset descriptor table and unused fixed-finality completion helper. `ResetGraph()` now constructs a fresh value directly. This cleanup is committed as `2c984d3`, with race-test results in `p6-final-model-review.log`.
 - The physical qualification script now refuses programming unless the packed bitstream is newer than the routing report, in addition to rejecting timing errors. This prevents an incomplete build from accidentally selecting the previous laboratory bitstream.
+
+## Step 8: Qualify the routed FPGA and capture the physical workbench
+
+The second timing repair passed at 12.01 MHz against the unchanged 10 MHz constraint. I programmed that newly packed image and exercised both the existing engine contract and the new compiler/debugger path on the board. This completed the physical validation that simulation and model screenshots could not provide.
+
+The browser then compiled and loaded the default program, checked descriptor readback, stopped on its first multiplication, proved that additional ticks leave a halted engine unchanged, and resumed to result 30. Three physical screenshots and the complete observed frames are retained alongside the model evidence.
+
+### Prompt Context
+
+**User prompt (verbatim):** See Step 1.
+
+**Assistant interpretation:** Build the programmable graph/compiler/debugger workbench with an intern guide, physical evidence, and phased delivery.
+
+**Inferred user intent:** Make the existing FPGA execution engine programmable and inspectable while preserving a reviewable account of its correctness.
+
+**Commit (code):** b03729e — registered graph validation; 2c984d3 — independent reset graph ownership; d1be832 — preceding diary checkpoint
+
+### What I did
+
+- Archived the final routing and synthesis logs; checked the packed bitstream was newer than the routing report.
+- Stopped the prior physical server with lsof-who -p 8087 -k and ran scripts/20-physical-qualification.sh in tmux.
+- Started dataflow008-fpga on port 8087 against /dev/ttyACM0; ran scripts/21-browser-fpga.js and visually inspected the stopped physical frame.
+- Added physical timing, resources, exact test counts, execution interpretation, screenshots, and reproduction commands to reference/02.
+
+### Why
+
+- Graph activation and trace RAM are hardware paths; final routed timing and actual UART results are necessary evidence.
+- Historical screenshots must contain associated observed state and must not imply FPGA rollback or a complete trace.
+
+### What worked
+
+- Final routing: Info: Max frequency for clock 'link.clk': 12.01 MHz (PASS at 10.00 MHz).
+- JTAG programming completed. TestPhysicalQualification passed in 22.09s; TestPhysicalWorkbench passed in 5.55s; package total 27.637s.
+- 128 randomized baseline expressions plus 96 compiled expressions passed; held-output protection, epoch rollover, descriptor readback, break/hold/resume, overflow and clear checks passed.
+- Physical browser stopped at cycle 6 on issue value 9, remained at cycle 6 on another 100-tick request, resumed and returned 30 at observation cycle 106.
+- The final physical frame had 21 trace records and eight dropped events. The UI disclosed that loss. Console: Total messages: 0 (Errors: 0, Warnings: 0).
+
+### What didn't work
+
+- No additional qualification failure. Earlier final timing failures remain documented: 9.31 MHz initially and 9.88 MHz after the first repair. The second repair succeeded; no third repair was attempted.
+
+### What I learned
+
+- The physical issue boundary is cycle 6 for this input order, compared with cycle 5 in the model; the implementation does not claim cycle-equivalent model scheduling.
+- One-record-per-clock physical tracing loses simultaneous events even when the 32-entry memory is not full.
+
+### What was tricky to build
+
+- Keeping programming and UART ownership sequential avoided an old server consuming new protocol responses. The source bitstream timestamp check also prevented accidental testing of the previous lab image.
+- Registering graph validity required carrying size identity and invalidating on writes so the extra clock boundary did not authorize a different staged image.
+
+### What warrants a second pair of eyes
+
+- Review graph validity cache ownership and UART G wait in the b03729e diff alongside programmable graph tests.
+- Review the physical trace priority/loss contract against p6-browser-fpga.json; the recorder intentionally does not capture all events.
+
+### What should be done in the future
+
+- N/A for qualification. Board SRAM contents are volatile and must be programmed again after power loss.
+
+### Code review instructions
+
+- Start with reference/02 and pkg/dataflow/workbench_physical_test.go.
+- Replay scripts/20-physical-qualification.sh with exclusive UART ownership, then scripts/21-browser-fpga.js with the physical server running.
+- Full software checks and RTL configurations are retained in p6-check-summary.log, p6-differential.log, p6-repair2-regression.log and p6-repair2-debug.log.
+
+### Technical details
+
+- Resources: 18449/40960 CPE_LT, 4153/40960 CPE_FF, 5/64 RAM_HALF.
+- Physical example: a=3, b=4, c=5; square=9; offset=20; selected=1; output=30.
+- Current physical UI: http://127.0.0.1:8087/. Final guide bundle and phase completion receipt are recorded in the delivery continuation below.
