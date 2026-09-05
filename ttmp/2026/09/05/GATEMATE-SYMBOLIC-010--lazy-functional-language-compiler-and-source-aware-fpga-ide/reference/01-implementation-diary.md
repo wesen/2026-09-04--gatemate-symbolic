@@ -360,3 +360,67 @@ The user repaired the printer service and asked to print the delayed slips and e
 - Existing physical reducer: qualified Lab 4. Published vault report: 23de3f4.
 - Design: 23-page guide uploaded to /ai/2026/09/05/GATEMATE-SYMBOLIC-010.
 - Successful replay count: eight; pending count: zero.
+
+## Step 5: Implement syntax nodes and a bounded lexer
+
+I began the parser implementation requested after the parsing discussion. The syntax package now defines source spans, diagnostics, token kinds, typed expression nodes and type syntax, and its lexer preserves exact byte positions while handling comments and invalid input.
+
+The phase plan and S1 START slips printed before coding. Focused tests passed on the first run, covering token classification, UTF-8 comment offsets, malformed bytes, diagnostic bounds, source and token limits, and cancellation.
+
+### Prompt Context
+
+**User prompt (verbatim):** perfect, implement. commit at appropriate intervals and keep a detailed diary as you work (using the diary format from the skill). Print out a brutalist work slip with the plan / different phases for the ticket. then before stsarting a phase, plrint a split about the phase, and print one when the phase is done.
+
+**Assistant interpretation:** Implement the lexer and handwritten parser described in the preceding exchange, with tested diagnostics, phase slips and commits.
+
+**Inferred user intent:** Turn the agreed parsing design into a usable, documented Go syntax package as the first part of I1.
+
+### What I did
+
+- Created pkg/lazylang/syntax/ast.go, lexer.go and lexer_test.go.
+- Added separate I1/S1, S2 and S3 tasks without completing the broader I1 type-checker/evaluator task.
+- Printed parser-plan and parser-s1-start, retaining the successful receipts.
+- Ran gofmt and GOCACHE=/tmp/gatemate009-go-cache go test ./pkg/lazylang/syntax -count=1.
+
+### Why
+
+- The parser must retain names and spans for later binding resolution and source-aware diagnostics.
+- An explicit Invalid token prevents lexing errors from silently joining otherwise valid expressions.
+
+### What worked
+
+- All lexer tests passed on their first run.
+- Spans are byte ranges even when preceding comments contain multibyte Unicode.
+- The minus token is separate from integers, leaving prefix-sign versus subtraction decisions to the parser.
+
+### What didn't work
+
+- No implementation or printing failures occurred in S1.
+
+### What I learned
+
+- Parentheses need an explicit GroupExpr node to preserve exact ranges and distinguish grouped comparisons from forbidden comparison chains.
+
+### What was tricky to build
+
+- Identifiers are ASCII, but comments may be Unicode; invalid UTF-8 must be reported without losing byte offsets or making zero progress.
+- The syntax API intentionally keeps expression types unresolved; parsing does not claim semantic correctness.
+
+### What warrants a second pair of eyes
+
+- Check MaxSourceBytes, MaxTokens and MaxDiagnostics against the service's eventual input limits.
+- Inspect invalid-token behavior and source slicing in lexer_test.go.
+
+### What should be done in the future
+
+- S2 adds recursive-descent constructs, Pratt parsing and definition recovery.
+
+### Code review instructions
+
+- Run go test ./pkg/lazylang/syntax -count=1.
+- Read ast.go and lexer.go before the upcoming parser.
+
+### Technical details
+
+- Bounds: one MiB source, 65536 non-EOF tokens, 64 diagnostics and planned 256 parser nesting frames.
+- No CLI, runtime or FPGA code changed in this phase.

@@ -1,0 +1,25 @@
+layout: reference/validation/parser-plan.yaml
+dry_run: false
+height: 476
+layout_member: parser-plan.yaml
+ok: true
+printed: true
+printer_response:
+    ok: true
+rendered_at: "2026-09-05T23:11:42Z"
+response:
+    height: 476
+    ok: true
+    printed: true
+    printerResponse:
+        ok: true
+    renderedAt: "2026-09-05T23:11:42Z"
+    width: 384
+source_kind: file
+status_code: 200
+url: https://almanach.crib.scapegoat.dev/api/render-and-print
+width: 384
+
+---
+
+printed: yes

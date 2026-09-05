@@ -12,3 +12,6 @@
 - [ ] I5: Implement Go service and React source-aware closure and stream inspector <!-- t:hzii -->
 - [ ] I6: Qualify physical functions, sharing and finite stream demand; capture report figures <!-- t:c32s -->
 - [x] Print eight retained report/design slips after the external renderer recovers; use scripts/11-replay-pending-slips.sh --print <!-- t:xwgf -->
+- [x] I1/S1: Implement syntax AST and lexer with exact byte spans <!-- t:ft33 -->
+- [ ] I1/S2: Implement recursive descent and Pratt parsing with diagnostics and recovery <!-- t:itaj -->
+- [ ] I1/S3: Validate worked examples, parser bounds and fuzz properties; document parser API <!-- t:c5bl -->
