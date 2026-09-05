@@ -413,3 +413,17 @@ func Compile(source string) (Program, error) {
 	}
 	return out, nil
 }
+
+func (p *Program) Clone() *Program {
+	if p == nil {
+		return nil
+	}
+	out := *p
+	out.Inputs = append([]InputBinding{}, p.Inputs...)
+	for n := range out.Inputs {
+		out.Inputs[n].Destinations = append([]Destination{}, p.Inputs[n].Destinations...)
+	}
+	out.Constants = append([]ConstantBinding{}, p.Constants...)
+	out.Nodes = append([]NodeInfo{}, p.Nodes...)
+	return &out
+}

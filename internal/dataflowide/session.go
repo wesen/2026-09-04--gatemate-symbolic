@@ -26,6 +26,7 @@ type FrameInfo struct {
 	At         string `json:"at"`
 }
 type Frame struct {
+	Program *df.Program `json:"program"`
 	FrameInfo
 	Snapshot df.Snapshot `json:"snapshot"`
 }
@@ -48,6 +49,7 @@ type State struct {
 	NeedsReset bool        `json:"needsReset"`
 }
 type Session struct {
+	program            *df.Program
 	mu                 sync.Mutex
 	engine             df.Engine
 	ctx                context.Context
@@ -83,6 +85,7 @@ func (s *Session) stateLocked() State {
 	if len(s.frames) > 0 {
 		state.Current = s.frames[len(s.frames)-1]
 		state.Current.Snapshot = state.Current.Snapshot.Clone()
+		state.Current.Program = state.Current.Program.Clone()
 	}
 	for _, f := range s.frames {
 		state.History = append(state.History, f.FrameInfo)
@@ -96,6 +99,7 @@ func (s *Session) Historical(id, generation uint64) (Frame, bool) {
 	for _, f := range s.frames {
 		if f.ID == id && f.Generation == generation {
 			f.Snapshot = f.Snapshot.Clone()
+			f.Program = f.Program.Clone()
 			return f, true
 		}
 	}
@@ -114,7 +118,7 @@ func (s *Session) captureLocked(ctx context.Context, label string) error {
 		return err
 	}
 	s.nextID++
-	s.frames = append(s.frames, Frame{FrameInfo{s.nextID, s.generation, label, snap.Counters["cycles"], time.Now().UTC().Format(time.RFC3339Nano)}, snap})
+	s.frames = append(s.frames, Frame{Program: s.program.Clone(), FrameInfo: FrameInfo{s.nextID, s.generation, label, snap.Counters["cycles"], time.Now().UTC().Format(time.RFC3339Nano)}, Snapshot: snap})
 	if len(s.frames) > HistoryLimit {
 		s.frames = s.frames[len(s.frames)-HistoryLimit:]
 	}
@@ -131,7 +135,11 @@ func (s *Session) executeLocked(ctx context.Context, o df.Operation, label strin
 		}
 		return nil, err
 	}
+	if o.Kind == "load" {
+		s.program = nil
+	}
 	if o.Kind == "reset" {
+		s.program = nil
 		s.generation++
 		s.frames = nil
 		s.results = []df.Token{}

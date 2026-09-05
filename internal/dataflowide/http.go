@@ -51,6 +51,7 @@ func operationStatus(err error) int {
 }
 func NewHandler(s *Session, p *Projects) http.Handler {
 	mux := http.NewServeMux()
+	programRoutes(mux, s, p)
 	mux.HandleFunc("GET /api/dataflow/state", func(w http.ResponseWriter, r *http.Request) { respond(w, 200, s.State()) })
 	mux.HandleFunc("GET /api/dataflow/examples", func(w http.ResponseWriter, r *http.Request) { respond(w, 200, Examples()) })
 	mux.HandleFunc("POST /api/dataflow/control", func(w http.ResponseWriter, r *http.Request) {

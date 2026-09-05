@@ -26,8 +26,9 @@ func NewProjects(path string) (*Projects, error) {
 	}
 	return &Projects{r}, nil
 }
-func (p *Projects) Close() error { return p.root.Close() }
-func (p *Projects) List() ([]string, error) {
+func (p *Projects) Close() error            { return p.root.Close() }
+func (p *Projects) List() ([]string, error) { return p.list(".json") }
+func (p *Projects) list(extension string) ([]string, error) {
 	f, err := p.root.Open(".")
 	if err != nil {
 		return nil, err
@@ -39,19 +40,20 @@ func (p *Projects) List() ([]string, error) {
 	}
 	ids := []string{}
 	for _, e := range entries {
-		id := strings.TrimSuffix(e.Name(), ".json")
-		if !e.IsDir() && strings.HasSuffix(e.Name(), ".json") && projectID.MatchString(id) {
+		id := strings.TrimSuffix(e.Name(), extension)
+		if !e.IsDir() && strings.HasSuffix(e.Name(), extension) && projectID.MatchString(id) {
 			ids = append(ids, id)
 		}
 	}
 	sort.Strings(ids)
 	return ids, nil
 }
-func (p *Projects) Read(id string) (string, error) {
+func (p *Projects) Read(id string) (string, error) { return p.read(id, ".json") }
+func (p *Projects) read(id, extension string) (string, error) {
 	if !projectID.MatchString(id) {
 		return "", errors.New("invalid project id")
 	}
-	f, err := p.root.Open(id + ".json")
+	f, err := p.root.Open(id + extension)
 	if err != nil {
 		return "", err
 	}
@@ -66,12 +68,15 @@ func (p *Projects) Read(id string) (string, error) {
 	return string(b), nil
 }
 func (p *Projects) Write(id, source string) error {
-	if !projectID.MatchString(id) {
-		return errors.New("project id must use lowercase letters, digits, and hyphens")
-	}
 	_, diagnostics := ParseScenario(source)
 	if len(diagnostics) != 0 {
 		return errors.New("validate and fix the scenario before saving")
+	}
+	return p.write(id, source, ".json")
+}
+func (p *Projects) write(id, source, extension string) error {
+	if !projectID.MatchString(id) {
+		return errors.New("project id must use lowercase letters, digits, and hyphens")
 	}
 	var nonce [12]byte
 	if _, err := rand.Read(nonce[:]); err != nil {
@@ -94,5 +99,5 @@ func (p *Projects) Write(id, source string) error {
 	if err = f.Close(); err != nil {
 		return err
 	}
-	return p.root.Rename(temporary, id+".json")
+	return p.root.Rename(temporary, id+extension)
 }
