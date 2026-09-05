@@ -1,0 +1,14 @@
+{
+  "article": "/home/manuel/code/wesen/go-go-golems/go-go-parc/Projects/2026/09/04/ARTICLE - GateMate Symbolic - Inside an Elastic Dataflow Engine.md",
+  "words": 6674,
+  "screenshots": {
+    "gatemate-dataflow-book.png": "f9a996857c34533eb75c6ae1944b7cda0bcd66d63636df7c8a2fecd7ebe5c78f",
+    "gatemate-dataflow-held-output.png": "07a908729f2eab127458577ba93b6a4ff5a6760e7cd9e6d84065888d3237de7d",
+    "gatemate-dataflow-in-flight.png": "3c1cb4f9a5e2159f40e17be1a80b3879789fda8473ddd439e844ade6441d45c7",
+    "gatemate-dataflow-cancellation.png": "cdba83837dd8bb7a752ea2dd3edbba6386a69e1e9f630d8bdeb4826b912ba69e",
+    "gatemate-dataflow-history.png": "ab2287f60e7e7ab739b899d27dcb66ffc8c19992042014bcc2466060cdbe5c4f"
+  },
+  "mermaid_diagrams": 2,
+  "checked_source_paths": 16,
+  "published": true
+}

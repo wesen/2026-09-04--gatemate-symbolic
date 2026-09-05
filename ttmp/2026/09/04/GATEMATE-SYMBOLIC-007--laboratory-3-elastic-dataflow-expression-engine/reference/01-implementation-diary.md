@@ -17,12 +17,19 @@ RelatedFiles:
       Note: Elastic arithmetic pipeline
     - Path: repo://elastic_dataflow/sim/tb_dataflow.sv
       Note: Directed RTL invariants and parameter matrix
+    - Path: repo://ttmp/2026/09/04/GATEMATE-SYMBOLIC-007--laboratory-3-elastic-dataflow-expression-engine/reference/04-inside-an-elastic-dataflow-engine.md
+      Note: Textbook article explaining the implemented engine
+    - Path: repo://ttmp/2026/09/04/GATEMATE-SYMBOLIC-007--laboratory-3-elastic-dataflow-expression-engine/reference/validation/P8-vault-report.json
+      Note: Successful publication and image hashes
+    - Path: repo://ttmp/2026/09/04/GATEMATE-SYMBOLIC-007--laboratory-3-elastic-dataflow-expression-engine/scripts/23-publish-vault-report.py
+      Note: Append-only publication and figure validation
 ExternalSources: []
 Summary: ""
 LastUpdated: 2026-09-04T19:54:24.640534987-04:00
 WhatFor: ""
 WhenToUse: ""
 ---
+
 
 
 # Implementation diary
@@ -518,3 +525,87 @@ The complete ten-image inventory, source labels, and report-use captions are in 
 Final delivery checkpoint: commit `045cca3` contains the completed handoff, physical screenshots, validation evidence, and successful upload receipt. P7 completion slip links to that commit and reports `printed: true`. The delivery audit confirms ten screenshots, sixteen successfully printed receipts (two plans and seven phase pairs), all tasks checked, complete ticket status, ten passing final-check groups, valid handoff/index file links, and successful reMarkable delivery. The physical IDE remains running on port 8087. Git push follows this documentation checkpoint.
 
 Push succeeded: `7566576..1aff68b main -> main` to `github.com:wesen/2026-09-04--gatemate-symbolic.git`; local HEAD and origin/main both resolved to `1aff68b70db926e1ee228e334ae686148cf0fcae`. Closed this task's eight completed build/test/upload tmux jobs and preserved `dataflow-ide-fpga` plus unrelated sessions. This final diary receipt is committed and pushed as a documentation-only follow-up.
+
+## Step 9: Textbook article and self-contained Obsidian figures
+
+Wrote a new 6,674-word technical article about the implemented dataflow engine and its physical IDE. The report develops operand readiness, typed envelopes, synchronous issue, finite storage, routing, cancellation, debug ownership, and application semantics from their underlying state transitions. It uses measured results as evidence and distinguishes physical observations from model timing.
+
+Copied five existing physical browser captures into the article's dated vault asset directory, with individual captions explaining the observable invariant. The source-ticket copy retains working links to the original screenshots. Publication is append-only and stages only the article and its five images; the unrelated AgentForum research draft in the vault remains untouched.
+
+### Prompt Context
+
+**User prompt (verbatim):**
+
+Exact text represented as a JSON string to preserve whitespace:
+
+```json
+"write a detailed project report for the obsidian vault as a deep dive technical analysis blog post using a textbook writing style (no analogies, see skill).      \n Commit and push the bsidian vault when done (go-go-parc vault)."
+```
+
+**Additional user prompt (verbatim):** "add screenshots to the report too"
+
+**Assistant interpretation:** Explain how the completed elastic dataflow system works in a detailed textbook-style vault article, include actual UI figures, and commit and push the vault.
+
+**Inferred user intent:** Preserve a durable technical account that can teach a reader the machine's semantics and connect those semantics to physical evidence.
+
+**Commit (vault):** `65d6464` — `docs: explain elastic dataflow execution with physical FPGA screenshots`
+
+### What I did
+
+- Read the vault-writing, textbook-authoring, Obsidian Markdown, and diary skills; matched existing project article structure.
+- Read descriptor/evaluator code, scenario validation, RTL issue and cancellation logic, the API reference, physical summary, and implementation handoff.
+- Wrote `reference/04-inside-an-elastic-dataflow-engine.md`, with sixteen technical sections, related notes, two Mermaid diagrams, pseudocode, JSON, API tables, and five screenshot captions.
+- Added `scripts/23-publish-vault-report.py` to validate metadata, repository references, related vault notes, PNG signatures, and exact SHA-256 identities during publication.
+- Published the new article and asset copies into `Projects/2026/09/04/` in go-go-parc; retained the successful publication receipt in `reference/validation/P8-vault-report.json`.
+- Committed the six intended vault files and completed the authorized push: `55df196..65d6464 main -> main`.
+
+### Why
+
+- A system report should teach the ownership and state transitions behind results, rather than repeat the implementation chronology.
+- Colocated images keep the article readable after the source checkout is moved or removed.
+- Immutable source-revision links distinguish the analyzed implementation from later changes.
+
+### What worked
+
+- Archived physical JSON and screenshots provided exact values without resetting or disturbing the running board.
+- Validation passed for 16 explicit repository paths, related-note existence, balanced Markdown fences, frontmatter, and all five source/copy image hashes.
+- The report explicitly separates enabled cycles from UART wall-clock time and model stage timing from physical stage timing.
+- Vault staging included exactly one article and five images; `git diff --cached --check` passed.
+
+### What didn't work
+
+- The first local publisher validation failed with `AssertionError: pkg/dataflow/types.go` because `REPO = TICKET.parents[3]` resolved to `ttmp` rather than the repository.
+- Corrected that one directory-depth error to `TICKET.parents[4]`; the next validation passed. No application or hardware repair was required.
+
+### What I learned
+
+- Pending is cleared when a slot enters issue, while issued persists until context invalidation; this distinction explains the occupied-unit screenshot.
+- Stale-output maintenance can progress while computation is paused, so describing pause as freezing every control-plane bit would overstate the contract.
+- The multiplier's added stages retain a computed product; they do not partition the combinational multiplication.
+
+### What was tricky to build
+
+- The ticket and vault copies require different relative image paths. The retained publisher maps each source image to a descriptive vault asset name and verifies byte identity.
+- The original implementation guides contain preliminary design material. The article uses implemented code and the final API/handoff references for current behavior.
+
+### What warrants a second pair of eyes
+
+- Review the distinction between single activation per epoch and a repeatedly firing streaming graph.
+- Review cancellation guards, pending activation retention, and the stated limits of randomized qualification; the article does not claim formal liveness proof.
+
+### What should be done in the future
+
+- Add a new dated follow-up if graph loading, arithmetic partitioning, or true reverse execution is implemented. Preserve this revision-specific article.
+
+### Code review instructions
+
+- Start with `reference/04-inside-an-elastic-dataflow-engine.md` and compare the execution table with `reference/validation/P4-physical-summary.json`.
+- Run `python3 ttmp/2026/09/04/GATEMATE-SYMBOLIC-007--laboratory-3-elastic-dataflow-expression-engine/scripts/23-publish-vault-report.py` for read-only validation. Do not rerun `--publish` against the existing article: it deliberately refuses overwrite.
+- Review vault commit `65d6464` for the self-contained final article and image copies. Existing implementation test results are cited as archived evidence, not reported as rerun for this documentation change.
+
+### Technical details
+
+- Vault article: `Projects/2026/09/04/ARTICLE - GateMate Symbolic - Inside an Elastic Dataflow Engine.md`.
+- Analyzed implementation: `9953407919247c1d01d50b70d141cd2c6ad170b7`.
+- Images: physical book completion, held-output guard, in-flight multiplication, cancellation completion, and history.
+- No downloaded resources or new screenshots were needed; the report reuses local primary evidence.
