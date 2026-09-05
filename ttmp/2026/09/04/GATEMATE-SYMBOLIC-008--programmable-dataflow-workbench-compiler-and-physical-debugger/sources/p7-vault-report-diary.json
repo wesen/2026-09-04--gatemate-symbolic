@@ -1,0 +1,45 @@
+{
+  "title": "Publish the technical workbench report to the Obsidian vault",
+  "prose": "I wrote a new textbook-style technical article explaining the implemented programmable workbench from typed expressions through physical execution and debugger observations. The 6,439-word report contains six copied screenshots, three Mermaid diagrams, pseudocode, API tables, revision-pinned source references, and a decoded table drawn from archived physical frames.\n\nThe report is append-only in Projects/2026/09/05 of the go-go-parc vault. Publishing succeeded, but the vault commit also included four concurrently staged PBUI Handheld articles; I disclosed that mistake rather than rewriting published history.",
+  "did": [
+    "Read obsidian-vault-writing and textbook-authoring skills; inspected the previous fixed-engine article and current implementation files.",
+    "Created various/programmable-dataflow-vault-report.md and scripts/25-publish-vault-report.py.",
+    "Validated source references, Markdown fences, YAML metadata, PNG identities, stop cycle, result, trace count, loss count, and final completion event.",
+    "Copied report and six figures to the vault and pushed commit 79130f230cbf25717e74a4798fb13884b4e02db9."
+  ],
+  "why": [
+    "The requested article explains how the completed machine works rather than narrating its implementation history.",
+    "Separate physical and model figures preserve provenance; the article distinguishes cycle-32 completion from cycle-106 output acceptance."
+  ],
+  "worked": [
+    "Publisher validation passed after correcting its repository-root calculation.",
+    "The vault note and all figure copies were byte-verified; git push advanced main from 733bb09 to 79130f2.",
+    "The unrelated untracked AgentForum research note remained untracked and unchanged."
+  ],
+  "failed": [
+    "Initial publisher check failed with AssertionError: pkg/dataflow/compiler.go because ticket.parents[3] selected ttmp. Corrected to ticket.parents[4]; validation passed.",
+    "A concurrent process staged four PBUI Handheld articles after the initial clean-index status inspection. I ran git commit after staging the intended report paths without a fresh reviewed index boundary; commit 79130f2 included those four articles. Push completed before I processed the command output. I disclosed the scope error to the user and did not rewrite pushed history."
+  ],
+  "learned": [
+    "A shared vault index can change between initial inspection and commit. Explicit git add paths do not isolate an ordinary git commit from concurrently staged work."
+  ],
+  "tricky": [
+    "The physical trace contains raw tagged Boolean values and intentional losses; the report decodes true and does not synthesize missing transitions.",
+    "Qualification chronology matters: randomized RTL evidence preceded the final registered-validator change, while directed RTL and physical checks followed it."
+  ],
+  "review": [
+    "Review the article against reference/validation/p6-browser-fpga.json and source revision 85969b4.",
+    "The vault commit contains the intended report plus concurrent PBUI articles; no contents were altered to correct commit scope."
+  ],
+  "future": [
+    "Use a path-limited commit or an isolated index for future commits to a concurrently edited vault."
+  ],
+  "validate": [
+    "Run scripts/25-publish-vault-report.py for read-only structural and evidence checks.",
+    "Inspect reference/validation/p7-vault-report-publish.json for destination, word count, source revision, and figure hashes."
+  ],
+  "details": [
+    "Vault article: Projects/2026/09/05/ARTICLE - GateMate Symbolic - Programmable Dataflow Workbench.md.",
+    "Vault commit: 79130f230cbf25717e74a4798fb13884b4e02db9; remote ssh://github.com/go-go-golems/go-go-parc."
+  ]
+}

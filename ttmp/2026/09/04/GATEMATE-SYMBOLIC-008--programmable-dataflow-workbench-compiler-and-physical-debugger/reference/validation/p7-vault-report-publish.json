@@ -1,0 +1,14 @@
+{
+  "published": true,
+  "words": 6439,
+  "figures": {
+    "gatemate-workbench-fpga-breakpoint.png": "c20c11f700dfadf572bf162da5b4c36cdd8b8d8b8643e7369f95986e60412959",
+    "gatemate-workbench-fpga-result-trace.png": "1246f1b257beb0419475a2fc46c9b7e8ba358a736f9a700c72dcaa2b37dd2c2c",
+    "gatemate-workbench-fpga-history.png": "fba6a2db442d3768f7b55cb8577aa354813111185311a91c73ef84cc3e858742",
+    "gatemate-workbench-model-breakpoint.png": "b139847e835c7bc7cb38b8a02361d29fa6e2acb15734722c4cea09ac9f7a61f4",
+    "gatemate-workbench-model-result.png": "d99c0aeee674bafc9b77abf837e3f8bcd4581813e57c4773da216993f4fc7189",
+    "gatemate-workbench-model-mobile.png": "193b31511f90fcd4543a53b2db608626e6fc4b95aa5652b3cae84853e46ab4f1"
+  },
+  "note": "/home/manuel/code/wesen/go-go-golems/go-go-parc/Projects/2026/09/05/ARTICLE - GateMate Symbolic - Programmable Dataflow Workbench.md",
+  "source_revision": "85969b499306dfcc3f0e947264b647ec61cc0554"
+}

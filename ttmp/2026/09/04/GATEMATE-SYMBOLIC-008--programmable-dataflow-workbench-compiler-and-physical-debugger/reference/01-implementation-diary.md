@@ -590,3 +590,73 @@ The browser then compiled and loaded the default program, checked descriptor rea
 - Printed the P6 DONE slip with the physical qualification commit QR. The ticket now retains thirteen successful print receipts: one overall plan, six phase starts, and six phase completions.
 - Checked task `54tm` and closed GATEMATE-SYMBOLIC-008 with all six tasks complete. The final delivery audit checks both upload receipts, thirteen print receipts, seven PNG files, document frontmatter, code fences, and embedded screenshot paths.
 - The physical server remains in tmux session `dataflow008-fpga` on port 8087, and the model server remains on 8088. Finished build, qualification and upload sessions have exited. Unrelated tmux sessions were preserved.
+
+## Step 9: Publish the technical workbench report to the Obsidian vault
+
+I wrote a new textbook-style technical article explaining the implemented programmable workbench from typed expressions through physical execution and debugger observations. The 6,439-word report contains six copied screenshots, three Mermaid diagrams, pseudocode, API tables, revision-pinned source references, and a decoded table drawn from archived physical frames.
+
+The report is append-only in Projects/2026/09/05 of the go-go-parc vault. Publishing succeeded, but the vault commit also included four concurrently staged PBUI Handheld articles; I disclosed that mistake rather than rewriting published history.
+
+### Prompt Context
+
+**User prompt (verbatim):**
+
+```text
+write a detailed project report for the obsidian vault as a deep dive technical analysis blog post using a textbook writing style (no analogies, see skill).      
+ Commit and push the bsidian vault when done (go-go-parc vault).
+```
+
+**Assistant interpretation:** Explain the completed programmable workbench in a new illustrated technical article and publish it to the vault repository.
+
+**Inferred user intent:** Preserve a durable explanation of the machine's principles and behavior for future study.
+
+### What I did
+
+- Read obsidian-vault-writing and textbook-authoring skills; inspected the previous fixed-engine article and current implementation files.
+- Created various/programmable-dataflow-vault-report.md and scripts/25-publish-vault-report.py.
+- Validated source references, Markdown fences, YAML metadata, PNG identities, stop cycle, result, trace count, loss count, and final completion event.
+- Copied report and six figures to the vault and pushed commit 79130f230cbf25717e74a4798fb13884b4e02db9.
+
+### Why
+
+- The requested article explains how the completed machine works rather than narrating its implementation history.
+- Separate physical and model figures preserve provenance; the article distinguishes cycle-32 completion from cycle-106 output acceptance.
+
+### What worked
+
+- Publisher validation passed after correcting its repository-root calculation.
+- The vault note and all figure copies were byte-verified; git push advanced main from 733bb09 to 79130f2.
+- The unrelated untracked AgentForum research note remained untracked and unchanged.
+
+### What didn't work
+
+- Initial publisher check failed with AssertionError: pkg/dataflow/compiler.go because ticket.parents[3] selected ttmp. Corrected to ticket.parents[4]; validation passed.
+- A concurrent process staged four PBUI Handheld articles after the initial clean-index status inspection. I ran git commit after staging the intended report paths without a fresh reviewed index boundary; commit 79130f2 included those four articles. Push completed before I processed the command output. I disclosed the scope error to the user and did not rewrite pushed history.
+
+### What I learned
+
+- A shared vault index can change between initial inspection and commit. Explicit git add paths do not isolate an ordinary git commit from concurrently staged work.
+
+### What was tricky to build
+
+- The physical trace contains raw tagged Boolean values and intentional losses; the report decodes true and does not synthesize missing transitions.
+- Qualification chronology matters: randomized RTL evidence preceded the final registered-validator change, while directed RTL and physical checks followed it.
+
+### What warrants a second pair of eyes
+
+- Review the article against reference/validation/p6-browser-fpga.json and source revision 85969b4.
+- The vault commit contains the intended report plus concurrent PBUI articles; no contents were altered to correct commit scope.
+
+### What should be done in the future
+
+- Use a path-limited commit or an isolated index for future commits to a concurrently edited vault.
+
+### Code review instructions
+
+- Run scripts/25-publish-vault-report.py for read-only structural and evidence checks.
+- Inspect reference/validation/p7-vault-report-publish.json for destination, word count, source revision, and figure hashes.
+
+### Technical details
+
+- Vault article: Projects/2026/09/05/ARTICLE - GateMate Symbolic - Programmable Dataflow Workbench.md.
+- Vault commit: 79130f230cbf25717e74a4798fb13884b4e02db9; remote ssh://github.com/go-go-golems/go-go-parc.
