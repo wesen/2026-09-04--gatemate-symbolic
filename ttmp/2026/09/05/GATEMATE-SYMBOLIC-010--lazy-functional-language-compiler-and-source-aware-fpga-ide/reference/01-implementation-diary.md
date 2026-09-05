@@ -1,0 +1,112 @@
+---
+Title: Implementation diary
+Ticket: GATEMATE-SYMBOLIC-010
+Status: active
+Topics:
+    - fpga
+    - gatemate
+    - symbolic-computers
+    - architecture
+DocType: reference
+Intent: long-term
+Owners: []
+RelatedFiles: []
+ExternalSources: []
+Summary: ""
+LastUpdated: 2026-09-05T18:34:32.906562561-04:00
+WhatFor: ""
+WhenToUse: ""
+---
+
+# Implementation diary
+
+## Goal
+
+Record the report delivery and design of a lazy functional language, with exact evidence, decisions, failures and future implementation gates.
+
+## Step 1: Publish the reducer report and establish the follow-up contract
+
+I first wrote a 4,661-word technical article explaining the physically qualified Lab 4 machine. The article follows representation, continuations, claim/update invariants, execution traces, arithmetic, synchronous memory, UART, observation history and verification. Five physical screenshots were copied into the dated vault assets directory, and only the new article and those assets were committed and pushed.
+
+I then created GATEMATE-SYMBOLIC-010 and gathered the existing runtime contract and primary lazy-language references. The new ticket separates completed design delivery tasks from future implementation tasks. Its central change is a heap-reference result model with closures, lexical environments and lazy constructor fields.
+
+### Prompt Context
+
+**User prompt (verbatim):**
+
+ok, first  write a detailed project report for the obsidian vault as a deep dive technical analysis blog post using a textbook writing style (no analogies, see skill).      
+ Commit and push the bsidian vault when done (go-go-parc vault).   
+
+Then create a new docmgr ticket and Create  a detailed analysis / design / implementation guide that is for a new intern, explaining all the parts of the system needed to understand what it is, with prose paragraphs and bullet point sand pseudocode and diagrams and api references and file references. It should be very clear and technical. Store in the ticket and the nupload to remarkable. For the cool follow up project. 
+
+Then commit at appropriate intervals and keep a detailed diary as you work (using the diary format from the skill). Print out a brutalist work slip with the plan / different phases for the ticket. then before stsarting a phase, plrint a split about the phase, and print one when the phase is done.
+
+**Assistant interpretation:** Publish the completed reducer report, then prepare and deliver the follow-up language design with a detailed implementation plan.
+
+**Inferred user intent:** Preserve a technical explanation of the working machine and make the next project concrete enough to implement task by task.
+
+**Commit (documentation):** go-go-parc 23de3f4 — docs(gatemate): explain the lazy graph reducer with physical execution figures
+
+### What I did
+
+- Read pkg/lazy/types.go, model.go, reference.go, serial.go, physical_test.go, lazy_core.sv, lazyide/session.go, http.go and frontend types.ts.
+- Created the report in ticket 009 reference/03 and published a self-contained vault article through ticket 009 scripts/22-publish-report.py.
+- Verified all five relative screenshot targets, balanced fences and SHA-256 asset identities; committed only six intended vault paths and pushed main.
+- Created ticket 010, design and diary documents, a source-evidence reference, and three design plus six future implementation tasks.
+- Used Defuddle for the Microsoft Research and arXiv pages; retained the STG PDF and pdftotext extraction in sources/.
+- Printed REPORT START successfully; attempted REPORT DONE, plan and D1 START, retaining exact errors and generated YAML.
+
+### Why
+
+- The user explicitly requested report publication before creating the follow-up ticket.
+- Direct source evidence separates the implemented arithmetic-only reducer from the proposed functional language.
+- The proposed language needs weak head normal form and allocation semantics before a useful compiler or IDE can be implemented.
+
+### What worked
+
+- Vault commit 23de3f4 pushed successfully to ssh://github.com/go-go-golems/go-go-parc.
+- The report contains a real seven-node execution, physical mutation cycles 9 and 61, cycle error at 23, all fault codes, three diagrams and five physical screenshots.
+- Primary source downloads and PDF text extraction succeeded.
+- The existing unrelated untracked AgentForum vault note was preserved.
+
+### What didn't work
+
+- Initial discovery reads used nonexistent pkg/lazy/examples.go and web/src/lazy/source.ts; rg located the definitions in types.go and types.ts. No software change was needed.
+- One functions.exec construction failed before execution with SyntaxError: Invalid or unexpected token because nested Markdown fence characters ended a JavaScript string; rewritten using ordinary quoted command text.
+- REPORT DONE returned: remote almanach returned 500: chrome render stage viewport failed ... fork/exec /headless-shell/headless-shell: resource temporarily unavailable. One retry returned the same failure; the first receipt is retained separately.
+- The ticket plan request timed out with Client.Timeout exceeded while awaiting headers. D1 START returned the same remote resource error. No remote service changes or debugging fixes were attempted.
+
+### What I learned
+
+- The existing runtime memoizes THUNK cells, not every arithmetic node; repeated root force can repeat additions while preserving the multiplication count.
+- The STG PDF title page is version 2.5 dated July 9, 1992; a date initially inferred from the URL directory was corrected against the title page before committing.
+- Current renderer availability prevents confirming physical phase slips; generated layouts must not be reported as printed.
+
+### What was tricky to build
+
+- The vault contains unrelated work, so the commit used git commit --only with the article and five exact asset paths.
+- Source expression identity and heap object identity must remain separate because recursion allocates multiple objects from one code location.
+- Constructor return requires preserving lazy field references; copying only an integer payload from the old update path cannot implement that contract.
+
+### What warrants a second pair of eyes
+
+- Check the article against revision 79f28e6 and the physical validation JSON; cycle totals include stalls.
+- Review linked environments versus flat free-variable vectors: simplicity costs lookup work and retained heap space.
+- Keep paper claims separate from project-specific capacity targets and proposed APIs.
+
+### What should be done in the future
+
+- D2 will specify the full language, compiler, object and frame layouts, transactional allocation, UART and source-aware IDE.
+- Print the retained slips when the external rendering service is available; no failed receipt establishes that paper was produced.
+
+### Code review instructions
+
+- Read the report in go-go-parc Projects/2026/09/05 and check _assets/gatemate-lazy-fpga-*.png.
+- Inspect sources/evidence.md and the downloaded title page and sections 3.1/4.2.
+- Review tasks.md: I1–I6 are future implementation work and remain unchecked.
+
+### Technical details
+
+- Report source revision: 79f28e6; published vault revision: 23de3f4.
+- The report's upload target was the Obsidian vault; the new design document will go to /ai/2026/09/05/GATEMATE-SYMBOLIC-010 on reMarkable.
+- Scripts remain under ticket scripts/, and downloaded resources remain under sources/. No runtime source changed in this phase.

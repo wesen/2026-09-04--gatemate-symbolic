@@ -433,3 +433,75 @@ The physical observations establish the expected claim/update sequence, reuse of
 - reMarkable confirmed: OK: uploaded GATEMATE 009 Physically Qualified Lazy Reducer.pdf -> /ai/2026/09/05/GATEMATE-SYMBOLIC-009.
 - P5 task 99m9 checked and ticket status changed to complete. Docmgr doctor reported all checks passed.
 - P5 DONE slip printed with commit 9d25319; receipt and generated YAML retained in reference/validation.
+
+## Step 7: Publish the textbook-style project report in go-go-parc
+
+I wrote a 4,661-word report about the implemented machine and published it with five physical FPGA screenshots. The report explains the reducer's semantics and observable behavior, with prose, pseudocode, three diagrams, representation and API tables, and source references pinned to 79f28e6.
+
+The vault publication was completed before creating follow-up ticket GATEMATE-SYMBOLIC-010. The new ticket's first diary step contains the full user prompt and the combined report/design context.
+
+### Prompt Context
+
+**User prompt (verbatim):** See Step 1 of GATEMATE-SYMBOLIC-010's implementation diary for the full report-then-design request.
+
+**Assistant interpretation:** Preserve a detailed technical explanation of the completed reducer in the Obsidian vault before designing its language extension.
+
+**Inferred user intent:** Make the working system understandable as a durable technical article and establish the foundation for the next project.
+
+**Commit (documentation):** go-go-parc 23de3f4 — docs(gatemate): explain the lazy graph reducer with physical execution figures.
+
+### What I did
+
+- Added reference/03-project-report-inside-the-physically-qualified-lazy-graph-reducer.md and sources/project-report.md.
+- Retained scripts/22-publish-report.py to validate and copy the article and five screenshots with an append-only destination check.
+- Created Projects/2026/09/05/ARTICLE - GateMate Symbolic - Inside a Lazy Graph Reducer.md and five prefixed _assets files in go-go-parc.
+- Committed only those six vault paths and pushed main.
+
+### Why
+
+- The report teaches execution principles and hardware behavior rather than repeating the implementation chronology.
+- Copying the assets makes the vault report independent of the source checkout.
+
+### What worked
+
+- All image targets existed, fences balanced, and image hashes matched the physical evidence.
+- Vault commit 23de3f4 pushed successfully; unrelated vault work was preserved.
+- REPORT START printed successfully.
+
+### What didn't work
+
+- REPORT DONE failed twice with remote almanach 500 and fork/exec /headless-shell/headless-shell: resource temporarily unavailable. Both receipts are retained; the failed completion slip was not reported as printed.
+- Two initial guessed source paths were absent; direct rg discovery located the existing definitions.
+- One script-construction tool call had a JavaScript string syntax error before execution and was rewritten.
+
+### What I learned
+
+- The distinction between explicit thunk memoization and repeated arithmetic-node execution is essential to interpreting the counters.
+- The physical output screenshot includes stall cycles and must not be used as a direct arithmetic latency measurement.
+
+### What was tricky to build
+
+- The vault had unrelated untracked work. Explicit path staging and git commit --only restricted the publication to the intended report and figures.
+- Ticket image links and vault asset links differ; the publication script rewrites only the five relative image targets.
+
+### What warrants a second pair of eyes
+
+- Check the article's memory and counter definitions against the pinned implementation and physical JSON evidence.
+- Confirm that the article describes future closures and allocation as proposed extensions.
+
+### What should be done in the future
+
+- Retry the retained REPORT DONE slip after the external renderer recovers.
+- Continue the new language design in GATEMATE-SYMBOLIC-010.
+
+### Code review instructions
+
+- Start with reference/03 and scripts/22-publish-report.py.
+- Review reference/validation/report-vault-publication.json for paths and SHA-256 identities.
+- Inspect vault commit 23de3f4; it contains one article and five figures.
+
+### Technical details
+
+- Article length: 4,661 whitespace-delimited words before vault frontmatter.
+- Source revision: 79f28e6. Runtime code was not changed for publication.
+- The physical screenshots show claim, result, cycle, historical selection and mobile layout.
