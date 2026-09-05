@@ -291,3 +291,10 @@ The guide uploaded successfully to reMarkable. Automatic approval review rejecte
 - New guide body: 9388 words. Final guide-only PDF: 23 pages. Rendered diagrams: three design plus four report.
 - Printing status: REPORT START succeeded; REPORT DONE and all seven design-ticket slips remain pending. The replay script defaults to listing, and --print sends the authorized layouts.
 - No runtime software or FPGA image changed during this report/design request.
+
+### Final delivery checkpoint
+
+- Source commit 971390b contains the rendered guide, PDF, diagram checks, upload receipt and pending-print recovery artifacts.
+- Earlier checkpoints are 474faaa for report publication and baseline research, and 2c46643 for the full design contract.
+- Vault publication is committed and pushed at 23de3f4. The source ticket remains active for I1–I6 and task xwgf, which records the eight delayed slips.
+- The final audit verifies the 23-page PDF, seven rendered diagrams, unchanged vault article/assets and successful guide-only reMarkable upload.
