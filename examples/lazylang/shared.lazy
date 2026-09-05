@@ -1,0 +1,5 @@
+// Four demands for x must eventually share one multiplication.
+def double : Int -> Int = fun (n : Int) -> n * 2;
+def main : Int =
+  let x : Int = double 21 in
+  (x + x) + (x + x);

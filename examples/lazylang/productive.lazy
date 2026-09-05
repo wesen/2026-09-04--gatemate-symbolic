@@ -1,0 +1,1 @@
+def main : ListInt = let rec xs : ListInt = Cons(1, xs) in xs;

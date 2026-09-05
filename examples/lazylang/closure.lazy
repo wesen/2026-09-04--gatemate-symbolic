@@ -1,0 +1,5 @@
+def add : Int -> Int -> Int =
+  fun (x : Int) -> fun (y : Int) -> x + y;
+def main : Int =
+  let inc : Int -> Int = add 1 in
+  inc 41;

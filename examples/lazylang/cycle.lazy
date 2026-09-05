@@ -1,0 +1,1 @@
+def main : Int = let rec x : Int = x in x;

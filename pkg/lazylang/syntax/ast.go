@@ -110,3 +110,18 @@ type GroupExpr struct {
 	Node
 	Inner Expr
 }
+
+var (
+	_ Expr = &IntExpr{}
+	_ Expr = &BoolExpr{}
+	_ Expr = &VarExpr{}
+	_ Expr = &LambdaExpr{}
+	_ Expr = &ApplyExpr{}
+	_ Expr = &LetExpr{}
+	_ Expr = &BinaryExpr{}
+	_ Expr = &IfExpr{}
+	_ Expr = &NilExpr{}
+	_ Expr = &ConsExpr{}
+	_ Expr = &CaseExpr{}
+	_ Expr = &GroupExpr{}
+)

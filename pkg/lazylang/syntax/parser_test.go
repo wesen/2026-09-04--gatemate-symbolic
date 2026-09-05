@@ -143,3 +143,29 @@ func TestParserBoundsAndCancellation(t *testing.T) {
 		t.Fatal(ds)
 	}
 }
+
+func TestMoreSyntaxBoundaries(t *testing.T) {
+	for _, source := range []string{
+		"def main : Int = if true then if false then 1 else 2 else 3;",
+		"def main : Int = f (let x : Int = 1 in x);",
+		"def main : Int = 1--2;",
+		"def main : (Int -> Int) -> Int = fun (f : Int -> Int) -> f 1;",
+	} {
+		checkProgramSpans(t, source, parsed(t, source))
+	}
+	for _, bad := range []string{
+		"def if : Int = 1;", "def main : Word = 1;", "def main : Int = Cons;", "def main : Int = f fun (x : Int) -> x;",
+		"def main : Int = case x of { Cons(h,t) -> h; Nil -> 0 };",
+	} {
+		_, ds := Parse(context.Background(), bad)
+		if len(ds) == 0 {
+			t.Fatalf("accepted %q", bad)
+		}
+	}
+	ctx, cancel := context.WithCancel(context.Background())
+	cancel()
+	_, ds := Lex(ctx, "")
+	if len(ds) != 1 || ds[0].Code != "CANCELED" {
+		t.Fatal(ds)
+	}
+}

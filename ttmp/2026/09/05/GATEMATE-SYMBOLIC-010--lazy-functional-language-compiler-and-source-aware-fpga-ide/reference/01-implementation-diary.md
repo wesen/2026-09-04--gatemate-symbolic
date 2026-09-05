@@ -21,12 +21,19 @@ RelatedFiles:
       Note: Layout check and diagnosed helper collision
     - Path: repo://ttmp/2026/09/05/GATEMATE-SYMBOLIC-010--lazy-functional-language-compiler-and-source-aware-fpga-ide/scripts/05-review-design.py
       Note: Review corrections
+    - Path: repo://ttmp/2026/09/05/GATEMATE-SYMBOLIC-010--lazy-functional-language-compiler-and-source-aware-fpga-ide/scripts/14-parser-diary.py
+      Note: Parser implementation and validation
+    - Path: repo://ttmp/2026/09/05/GATEMATE-SYMBOLIC-010--lazy-functional-language-compiler-and-source-aware-fpga-ide/scripts/16-validate-parser.sh
+      Note: Parser implementation and validation
+    - Path: repo://ttmp/2026/09/05/GATEMATE-SYMBOLIC-010--lazy-functional-language-compiler-and-source-aware-fpga-ide/scripts/17-parser-handoff.py
+      Note: Parser implementation and validation
 ExternalSources: []
 Summary: ""
 LastUpdated: 2026-09-05T18:34:32.906562561-04:00
 WhatFor: ""
 WhenToUse: ""
 ---
+
 
 
 # Implementation diary
@@ -496,3 +503,79 @@ Focused tests passed on their first run. Recovery scans from the failed definiti
 - Malformed definitions are omitted; diagnostics are stable-sorted by byte start.
 - Compound application arguments require parentheses; bare minus following a left operand is subtraction.
 - Only the parser portion of I1 is being completed; the type checker and evaluator remain open.
+
+## Step 7: Qualify the parser with examples, fuzzing and repository checks
+
+The parser now has six complete source examples, a documented public API and property checks covering token slices, diagnostics, nested syntax spans and deterministic output. I completed the syntax portion of I1 while keeping the larger binding/type/evaluator task explicitly open.
+
+All validation passed. The focused suite reports 94.5% statement coverage, the fuzz run completed 145,639 executions without failure, and repository tests, parser race tests, vet and build passed. The examples establish syntactic correctness only; their runtime results remain future semantic tests.
+
+### Prompt Context
+
+**User prompt (verbatim):** (see Step 5)
+
+**Assistant interpretation:** Implement the lexer and handwritten parser described in the preceding exchange, with tested diagnostics, phase slips and commits.
+
+**Inferred user intent:** Turn the agreed parsing design into a usable, documented Go syntax package as the first part of I1.
+
+**Commit (code):** 460ba86 — typed declarations, Pratt expressions and recovery
+
+### What I did
+
+- Added shared, closure, unused-argument, scalar-cycle, productive-list and eight-square examples under examples/lazylang/.
+- Added compile-time Expr implementation assertions and made Lex report cancellation even for empty input.
+- Added ExampleParse, repository-example tests and FuzzParse with deterministic parsing, bounded diagnostics and source-span/token-slice properties.
+- Added pkg/lazylang/syntax/README.md and a ticket parser API/validation handoff.
+- Ran focused coverage, a 15-second two-worker fuzz run, go test ./..., parser race tests, go vet ./... and go build ./... through retained scripts/16-validate-parser.sh.
+- Printed S2 DONE with commit 460ba86 and S3 START before the validation work.
+
+### Why
+
+- The implementation must parse the actual design examples, not only isolated expressions.
+- Adversarial input needs bounded progress and valid source positions even when it cannot produce a complete definition.
+- Documentation distinguishes syntax acceptance from name resolution, typing and evaluation.
+
+### What worked
+
+- Focused package suite passed with 94.5% statement coverage.
+- FuzzParse passed after 145639 executions; no failing input corpus was produced.
+- All repository Go tests, parser race checks, vet and build passed.
+- All six worked programs parse, and their AST/type spans remain inside their enclosing source ranges.
+
+### What didn't work
+
+- No software test or printer failures occurred in S3.
+- A temporary unprinted S2 completion layout used a placeholder commit; it was regenerated with the actual 460ba86 hash before printing or committing the layout.
+
+### What I learned
+
+- The parser's API can support editor recovery immediately, but any diagnostic must prevent downstream execution.
+- Byte-span properties provide useful fuzz invariants without duplicating the grammar implementation.
+
+### What was tricky to build
+
+- A canceled empty Lex call originally skipped the loop containing its context check. Review found the edge case; an entry check and regression test now cover it.
+- The public Expr implementation assertions enumerate every concrete node while retaining the existing embedded Node API.
+- Fuzzing checks all returned complete definitions, including definitions recovered after malformed input.
+
+### What warrants a second pair of eyes
+
+- Review the difference between token/source limits and recursive/AST-depth limits.
+- Review fixed case branch order, parenthesized compound arguments and grouped-comparison behavior in the README.
+- Confirm that larger I1 remains unchecked; no evaluator or type checker was added under a parser-only completion claim.
+
+### What should be done in the future
+
+- Continue I1 with lexical binding resolution, monomorphic type checking and the independent source evaluator.
+- Reuse the six source examples as semantic tests once those passes exist.
+
+### Code review instructions
+
+- Run bash scripts/16-validate-parser.sh repository and its fuzz mode from this ticket, or use the commands in pkg/lazylang/syntax/README.md.
+- Inspect parser-s3-tests.log, parser-fuzz.log, parser-repository-tests.log, parser-race.log, parser-vet.log and parser-build.log.
+
+### Technical details
+
+- Syntax implementation resides entirely under pkg/lazylang/syntax; the top-level module and dependencies are unchanged.
+- Source programs live under examples/lazylang. All task scripts and logs are retained in this ticket.
+- The physical board and existing browser services were not needed for parser qualification.

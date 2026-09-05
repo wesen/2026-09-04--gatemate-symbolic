@@ -1,0 +1,10 @@
+fuzz: elapsed: 0s, gathering baseline coverage: 0/6 completed
+fuzz: elapsed: 0s, gathering baseline coverage: 6/6 completed, now fuzzing with 2 workers
+fuzz: elapsed: 3s, execs: 76290 (25424/sec), new interesting: 95 (total: 101)
+fuzz: elapsed: 6s, execs: 114487 (12735/sec), new interesting: 124 (total: 130)
+fuzz: elapsed: 9s, execs: 145639 (10382/sec), new interesting: 126 (total: 132)
+fuzz: elapsed: 12s, execs: 145639 (0/sec), new interesting: 126 (total: 132)
+fuzz: elapsed: 15s, execs: 145639 (0/sec), new interesting: 126 (total: 132)
+fuzz: elapsed: 16s, execs: 145639 (0/sec), new interesting: 126 (total: 132)
+PASS
+ok  	github.com/wesen/2026-09-04--gatemate-symbolic/pkg/lazylang/syntax	16.019s

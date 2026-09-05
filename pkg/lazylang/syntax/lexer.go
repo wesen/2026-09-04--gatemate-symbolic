@@ -65,6 +65,9 @@ func digit(b byte) bool  { return b >= '0' && b <= '9' }
 // Lex returns tokens including EOF and bounded diagnostics. Invalid characters
 // produce Invalid tokens so the parser cannot silently join expressions across them.
 func Lex(ctx context.Context, source string) ([]Token, []Diagnostic) {
+	if err := ctx.Err(); err != nil {
+		return []Token{{Kind: EOF, Span: Span{0, 0}}}, []Diagnostic{{"CANCELED", err.Error(), Span{0, 0}}}
+	}
 	tokens := make([]Token, 0)
 	diagnostics := make([]Diagnostic, 0)
 	add := func(code, message string, span Span) {

@@ -1,0 +1,17 @@
+def square : Int -> Int = fun (x : Int) -> x * x;
+def naturalsFrom : Int -> ListInt =
+  fun (n : Int) -> Cons(n, naturalsFrom (n + 1));
+def map : (Int -> Int) -> ListInt -> ListInt =
+  fun (f : Int -> Int) -> fun (xs : ListInt) ->
+    case xs of {
+      Nil -> Nil;
+      Cons(h, t) -> Cons(f h, map f t)
+    };
+def take : Int -> ListInt -> ListInt =
+  fun (n : Int) -> fun (xs : ListInt) ->
+    if n <= 0 then Nil else
+      case xs of {
+        Nil -> Nil;
+        Cons(h, t) -> Cons(h, take (n - 1) t)
+      };
+def main : ListInt = take 8 (map square (naturalsFrom 1));
