@@ -1,20 +1,24 @@
 {
   "documents": {
     "index.md": {
-      "words": 353,
-      "sha256": "192b29cc8ddd28291c94e2570dc3480ae5cc3cd8b02d10482d24c7763fd722c5"
+      "words": 417,
+      "sha256": "a271ea3dea946d65f303e6f458b31e7d80d1464be80a68d389f0760fc34a5e0f"
     },
     "01-lazy-functional-language-intern-analysis-design-and-implementation-guide.md": {
       "words": 9484,
       "sha256": "86e29b95ae8f0cca0021ba4ed251bceba28a387c3713c6266616d36e5e056372"
     },
     "01-implementation-diary.md": {
-      "words": 3484,
-      "sha256": "5b1a7de3f2d6e4699b22b3861fb92163b53172d3e6ba1eb9683389979e593021"
+      "words": 5273,
+      "sha256": "e1bd601d278b2922402e7a20f56a54ff86d1fe10560ba48481991ab6628403d6"
     },
     "02-source-evidence-and-design-decisions.md": {
       "words": 614,
       "sha256": "2394e21ba04cf6e6b09b9d66e7569365a60bba1e7991cdc67087db2a90631cd8"
+    },
+    "03-implemented-parser-api-and-validation-handoff.md": {
+      "words": 963,
+      "sha256": "8679114a8666a3bacdd10fc1ca1d7d0c0b57e8465a93f8d73e4cedde8564c826"
     }
   },
   "figures": {

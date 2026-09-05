@@ -1,0 +1,29 @@
+{
+  "implemented": "lexer and recursive-descent/Pratt parser",
+  "printed_slips": 7,
+  "fuzz_executions": 145639,
+  "statement_coverage_percent": 94.5,
+  "checks": [
+    "focused tests",
+    "repository tests",
+    "parser race tests",
+    "go vet ./...",
+    "go build ./...",
+    "bounded fuzzing"
+  ],
+  "log_sha256": {
+    "parser-s1-tests": "dc799f0926d0eb8239313b039a258dfc852cbd9cc4e31328e3689dbe8079ef9e",
+    "parser-s2-tests": "7a4f46ccbab21207fcbbf8d1f98f8335672f305b6403273200cd476ef6835d84",
+    "parser-s3-tests": "89f6d6a6c810842aa2cbf2e919834092883c7e6433e5cc29e285d1a76650acfe",
+    "parser-repository-tests": "7d7f5f7f7e6e8fd1de52fe9d45d29aca9f14b3f93dc48526da48a2d153eb5fa5",
+    "parser-race": "bb7bf50bdcdbf44dc6d40d203a0cd3fecb20f275a32da805aefbd44b1094ced0",
+    "parser-vet": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "parser-build": "fabcc899a0f33a195c45ff78e7754cd42fb63e5e283d6d2c60d084a6fc09981e",
+    "parser-fuzz": "90c73d3c7123e7d03ce2bfbb7be64c785da9c4364f57d8a860dcfb4825188e95"
+  },
+  "remaining_I1": [
+    "binding resolution",
+    "monomorphic type checking",
+    "independent semantic evaluator"
+  ]
+}
