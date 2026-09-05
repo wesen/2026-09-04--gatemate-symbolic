@@ -1,0 +1,2 @@
+sources/*.md -whitespace
+reference/validation/*.log -whitespace
