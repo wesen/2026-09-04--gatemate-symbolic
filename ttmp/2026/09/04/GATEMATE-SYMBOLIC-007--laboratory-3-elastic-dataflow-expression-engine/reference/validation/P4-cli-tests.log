@@ -1,0 +1,7 @@
+# github.com/wesen/2026-09-04--gatemate-symbolic/cmd/dataflow-lab
+cmd/dataflow-lab/main.go:17:2: open /home/manuel/.cache/go-build/90/9010652bc4b87b703a4be1f8e485794547a15e7bb9a0c4ff1d0fb1d7b46b65d0-d: read-only file system
+FAIL	github.com/wesen/2026-09-04--gatemate-symbolic/cmd/dataflow-lab [setup failed]
+# ./pkg/dataflow
+open /home/manuel/.cache/go-build/90/9010652bc4b87b703a4be1f8e485794547a15e7bb9a0c4ff1d0fb1d7b46b65d0-d: read-only file system
+FAIL	./pkg/dataflow [setup failed]
+FAIL

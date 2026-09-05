@@ -262,3 +262,67 @@ elastic_dataflow/scripts/test.sh after loading the CAD environment; compare P3-r
 Simulation checkpoint commit: 9fffdc3. The new selection uses pending[scan] and closed[scan/7] with compile-time scan values, plus a five-bit next-slot comparison. selected_context decodes ranges 0..6, 7..13, 14..20, 21..27. selected_node subtracts seven times that two-bit context. No public token format changes.
 
 P3 synthesis qualification completed: the fixed scheduler run completed in 8.19 seconds with two `CC_BRAM_20K` operand memories, 3011 `CC_DFF`, 3864 `CC_L2T4`, and 1202 `CC_L2T5`. This is the standalone core with every debug/trace port retained, not a placed board design. The synthesis check reported zero structural problems. Assigned the procedural error-scan loop variable a default to remove irrelevant inferred-loop-variable latch warnings; the final simulation matrix and synthesis were re-run. Full evidence: `P3-rtl-final.log` and `P3-synthesis-final.log`. Physical place/route, UART, and board execution remain P4 work.
+
+P4 first UART simulation failure: `FATAL: sim/tb_dataflow_link.sv:58: input did not remain paused 00000000000600000000`. The status frame correctly placed input count six at bits 39:32; the new test mistakenly checked ready-count bits 31:24. Corrected that assertion (first repair) and reran the UART test. Original evidence is preserved in `P4-uart-first.log`.
+
+P4 initial place/route failure: `ERROR: Max frequency for clock 'link.clk': 7.80 MHz (FAIL at 10.00 MHz)`. The critical path crossed the serial 28-addend ready population count (core line 158) and the debug response checksum, taking 128.24 ns. The first timing repair replaces this count with a balanced pair/quad/octet/half sum tree. The required 10 MHz constraint is unchanged. Original placed timing report retained as `P4-timing-first.log`; both RTL test suites and physical route are rechecked after this change.
+
+P4 Go host and CLI validation: initial domain/protocol tests passed. A later sandbox run failed before compilation with `open /home/manuel/.cache/go-build/90/9010652bc4b87b703a4be1f8e485794547a15e7bb9a0c4ff1d0fb1d7b46b65d0-d: read-only file system`; reran with authorized cache access. The first CLI test then exposed two incorrect assumptions in the test: Glazed 1.4.2 writes structured output to `os.Stdout`, not Cobra's SetOut writer, and explicitly normalizes context.Canceled to successful shutdown (`pkg/cli/cobra.go:167,183`). Reworked the test to capture domain row emission, settings decoding, processor-error propagation, and absence of output under cancellation. The domain already honored context cancellation. Original test errors are retained in `P4-cli-contract-failure.log`.
+
+Large P3 synthesis logs were losslessly compressed to `.log.gz` by retained script `06-compress-evidence.py`; earlier diary references without `.gz` name the same evidence. Use `gzip -cd` to consult them.
+
+## Step 5: UART control and direct Go engine ownership
+
+Added a stop-and-wait UART control plane, a Go serial engine, complete snapshot decoding, and a Glazed example runner. The UART and host tests now pass; the physical bitstream is being routed after a debug population-count timing repair. Added a concrete API/register reference to connect the intern guide to the implemented contract.
+
+### Prompt Context
+
+**User prompt (verbatim, JSON encoded):**
+
+```json
+"(see Step 1)"
+```
+
+**Assistant interpretation:** Design, publish, implement, and validate the book's elastic dataflow laboratory with task commits, detailed diary, and physical work slips.
+
+**Inferred user intent:** Build a working concurrent symbolic machine and preserve enough explanation and evidence for an intern to understand and maintain it.
+
+### What I did
+
+Implemented reset/inject/tick/cancel/query/poll framing, checksums, timeout handling, bounded ticks, explicit FIFO-full and cancel-blocked responses. Added Engine.Execute, detached model snapshots, serial snapshots, uncertainty handling, and book/copy/fault/cancel examples. Added UART, protocol, snapshot, serial-rejection, CLI decoding, row emission, and processor-error tests.
+
+### Why
+
+A single validated operation type serves CLI execution and the future HTTP/scenario boundary. The serial owner must never infer whether a timed-out mutation ran, nor publish only part of a hardware snapshot.
+
+### What worked
+
+UART tests pass after correcting the test's input-count byte. Go model/protocol/CLI race tests pass after aligning tests with the inspected Glazed 1.4.2 contract. Both RTL suites pass after balancing the ready-count sum tree. Physical route remains in progress.
+
+### What didn't work
+
+Exact UART, cache-permission, Glazed-test, and initial 7.80 MHz timing failures are recorded immediately above with retained logs. No failed bitstream was programmed. Glazed emits to os.Stdout and normalizes context.Canceled; the original tests assumed Cobra SetOut and a propagated cancellation error.
+
+### What I learned
+
+Debug logic participates in timing closure. The ready-count chain feeding UART response checksum dominated a physical path even though computation itself was paused during inspection.
+
+### What was tricky to build
+
+Cancellation selection needs a following control cycle before reading cancel_ready. Synchronous debug operands need a stable address for multiple clocks. Snapshot publication must occur only after every page arrives, while a transport failure requires explicit reset.
+
+### What warrants a second pair of eyes
+
+Review frame lengths/checksum coverage, real versus modeled snapshot fields, request uncertainty semantics, and the enabled-cycle acknowledgement edge.
+
+### What should be done in the future
+
+Finish route and verify all four examples on the physical board; then stress/debug qualification and the React IDE.
+
+### Code review instructions
+
+Load CAD environment; run elastic_dataflow/scripts/test.sh and scripts/test-link.sh. Run go test -race ./pkg/dataflow ./cmd/dataflow-lab. Use go run ./cmd/dataflow-lab --engine model --example book --format json. Consult reference/02-dataflow-api-and-debug-register-reference.md.
+
+### Technical details
+
+P3 closing commit 67f661d is printed on the completion receipt; P4 start receipt is confirmed printed. The API guide records every binary envelope byte and debug page. Physical configuration remains immutable at runtime; no compatibility adapters were added. Large synthesis logs are retained as deterministic gzip files.

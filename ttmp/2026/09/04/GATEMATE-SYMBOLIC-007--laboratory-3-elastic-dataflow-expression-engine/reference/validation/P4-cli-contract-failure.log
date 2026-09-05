@@ -1,0 +1,40 @@
+ok  	github.com/wesen/2026-09-04--gatemate-symbolic/pkg/dataflow	1.122s
+[
+{
+  "example": "book",
+  "source": "model"
+}
+]
+[
+{
+  "example": "copy",
+  "source": "model"
+}
+]
+[
+{
+  "example": "fault",
+  "source": "model"
+}
+]
+[
+{
+  "example": "cancel",
+  "source": "model"
+}
+]
+--- FAIL: TestExamplesAndOutputFlags (0.01s)
+    --- FAIL: TestExamplesAndOutputFlags/book (0.00s)
+        main_test.go:32: unexpected output ""
+    --- FAIL: TestExamplesAndOutputFlags/copy (0.00s)
+        main_test.go:32: unexpected output ""
+    --- FAIL: TestExamplesAndOutputFlags/fault (0.00s)
+        main_test.go:32: unexpected output ""
+    --- FAIL: TestExamplesAndOutputFlags/cancel (0.00s)
+        main_test.go:32: unexpected output ""
+
+--- FAIL: TestCanceledExample (0.00s)
+    main_test.go:46: canceled example succeeded
+FAIL
+FAIL	github.com/wesen/2026-09-04--gatemate-symbolic/cmd/dataflow-lab	0.043s
+FAIL

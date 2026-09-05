@@ -148,14 +148,29 @@ module dataflow_core #(
  reg select_valid;
  reg [4:0] selected_slot;
  integer scan;
- reg [7:0] ready_count;
+ wire [1:0] ready_pairs[0:13];
+ wire [2:0] ready_quads[0:6];
+ wire [3:0] ready_octets[0:3];
+ wire [4:0] ready_halves[0:1];
+ for(genvar g=0;g<14;g=g+1)begin:count_pairs
+   assign ready_pairs[g]={1'b0,pending[g*2]}+{1'b0,pending[g*2+1]};
+ end
+ for(genvar g=0;g<7;g=g+1)begin:count_quads
+   assign ready_quads[g]={1'b0,ready_pairs[g*2]}+{1'b0,ready_pairs[g*2+1]};
+ end
+ for(genvar g=0;g<3;g=g+1)begin:count_octets
+   assign ready_octets[g]={1'b0,ready_quads[g*2]}+{1'b0,ready_quads[g*2+1]};
+ end
+ assign ready_octets[3]={1'b0,ready_quads[6]};
+ assign ready_halves[0]={1'b0,ready_octets[0]}+{1'b0,ready_octets[1]};
+ assign ready_halves[1]={1'b0,ready_octets[2]}+{1'b0,ready_octets[3]};
+ wire [7:0] ready_count={3'b0,ready_halves[0]}+{3'b0,ready_halves[1]};
  wire [1:0] selected_context=selected_slot>=21?2'd3:selected_slot>=14?2'd2:selected_slot>=7?2'd1:2'd0;
  wire [5:0] selected_node={1'b0,selected_slot}-{4'b0,selected_context}*6'd7;
  reg [27:0] eligible;
  always @* begin
-   select_valid=0;selected_slot=0;ready_count=0;eligible=0;
+   select_valid=0;selected_slot=0;eligible=0;
    for(scan=0;scan<28;scan=scan+1)begin
-     if(pending[scan])ready_count=ready_count+1'b1;
      eligible[scan]=pending[scan]&&!closed[scan/7]&&
        ((dataflow_pkg::opcode(scan%7)==dataflow_pkg::MUL&&mul_ready)||
         (dataflow_pkg::opcode(scan%7)!=dataflow_pkg::MUL&&alu_ready));

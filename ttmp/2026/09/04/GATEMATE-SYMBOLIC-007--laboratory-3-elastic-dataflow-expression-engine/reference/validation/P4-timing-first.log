@@ -1,0 +1,695 @@
+Info: Using uarch 'gatemate' for device 'CCGM1A1'
+Info: Using timing mode 'WORST'.
+Info: Using performance mode 'SPEED'.
+Info: constraining clock net 'clk_10m' to 10.00 MHz
+
+Info: Parsing CCF file..
+Info: Assign cell region based on attributes..
+Info: Packing constants..
+Info: Running cleanups..
+Info: Packing IOs..
+Info:     Constraining '$iopadmap$dataflow_top.user_led' to pad 'IO_SB_B6'.
+Info:     Constraining '$iopadmap$dataflow_top.uart_tx_pin' to pad 'IO_SA_B6'.
+Info:     Constraining '$iopadmap$dataflow_top.uart_rx_pin' to pad 'IO_SA_A6'.
+Info:     Constraining '$iopadmap$dataflow_top.fpga_but' to pad 'IO_SB_B7'.
+Info:     Constraining '$iopadmap$dataflow_top.clk_10m' to pad 'IO_SB_A8'.
+Info: Insert clocking cells..
+Info: Packing PLLs..
+Info: Sort BUFGs..
+Info: Packing BUFGs..
+Info: Packing IO SELs..
+Info: Packing misc..
+Info: Packing RAMs..
+Info: Packing SERDES..
+Info: Packing multipliers...
+Info:     Configuring '$flatten\link.\core.$mul$rtl/dataflow_core.sv:229$1799' as a 6-bit * 6-bit = 5-bit multiplier.
+Info:         Created 28 CPEs.
+Info:     Configuring '$flatten\link.\core.$mul$rtl/dataflow_core.sv:153$657' as a 6-bit * 6-bit = 5-bit multiplier.
+Info:         Created 28 CPEs.
+Info:     Configuring '$auto$share.cc:667:make_supercell$12887' as a 6-bit * 6-bit = 5-bit multiplier.
+Info:         Created 28 CPEs.
+Info:     Configuring '$flatten\link.\core.\multiplier.$mul$rtl/dataflow_pkg.sv:32$2067' as a 18-bit * 18-bit = 32-bit multiplier.
+Info:         Created 136 CPEs.
+Info: Packing ADDFs..
+Info: Packing CPEs..
+Info: Removing unused constants..
+Info:     Removed unused VCC cell.
+Info:     Removed unused GND cell.
+Info: Fix cell assigned regions..
+Info: Checksum: 0x213483df
+
+Info: Device utilisation:
+Info: 	            USR_RSTN:       1/      1   100%
+Info: 	            CPE_COMP:      90/  20480     0%
+Info: 	         CPE_CPLINES:     280/  20480     1%
+Info: 	               IOSEL:       5/    162     3%
+Info: 	                GPIO:       5/    162     3%
+Info: 	               CLKIN:       1/      1   100%
+Info: 	              GLBOUT:       1/      1   100%
+Info: 	                 PLL:       0/      4     0%
+Info: 	            CFG_CTRL:       0/      1     0%
+Info: 	              SERDES:       0/      1     0%
+Info: 	              CPE_LT:   14164/  40960    34%
+Info: 	              CPE_FF:    3415/  40960     8%
+Info: 	           CPE_RAMIO:     229/  40960     0%
+Info: 	            RAM_HALF:       2/     64     3%
+
+Info: Placed 0 cells based on constraints.
+Info: Creating initial analytic placement for 9569 cells, random placement wirelen = 1437343.
+Info:     at initial placer iter 0, wirelen = 12621
+Info:     at initial placer iter 1, wirelen = 12643
+Info:     at initial placer iter 2, wirelen = 11996
+Info:     at initial placer iter 3, wirelen = 11871
+Info: Running main analytical placer, max placement attempts per cell = 42577992.
+Info:     at iteration #1, type ALL: wirelen solved = 12276, spread = 355332, legal = 533613; time = 4.15s
+Info:     at iteration #2, type ALL: wirelen solved = 29456, spread = 213029, legal = 336780; time = 2.86s
+Info:     at iteration #3, type ALL: wirelen solved = 50201, spread = 215345, legal = 279433; time = 1.39s
+Info:     at iteration #4, type ALL: wirelen solved = 59508, spread = 198526, legal = 286226; time = 2.11s
+Info:     at iteration #5, type ALL: wirelen solved = 68323, spread = 178183, legal = 254775; time = 1.99s
+Info:     at iteration #6, type ALL: wirelen solved = 77604, spread = 169437, legal = 223162; time = 1.31s
+Info:     at iteration #7, type ALL: wirelen solved = 82893, spread = 173499, legal = 241309; time = 2.29s
+Info:     at iteration #8, type ALL: wirelen solved = 91984, spread = 171527, legal = 198588; time = 0.65s
+Info:     at iteration #9, type ALL: wirelen solved = 97703, spread = 164102, legal = 192872; time = 0.67s
+Info:     at iteration #10, type ALL: wirelen solved = 103953, spread = 161165, legal = 190834; time = 0.64s
+Info:     at iteration #11, type ALL: wirelen solved = 106741, spread = 160963, legal = 179049; time = 0.43s
+Info:     at iteration #12, type ALL: wirelen solved = 111243, spread = 157745, legal = 175313; time = 0.38s
+Info:     at iteration #13, type ALL: wirelen solved = 113922, spread = 153445, legal = 169942; time = 0.43s
+Info:     at iteration #14, type ALL: wirelen solved = 116463, spread = 152401, legal = 170473; time = 0.47s
+Info:     at iteration #15, type ALL: wirelen solved = 118770, spread = 152439, legal = 170803; time = 0.45s
+Info:     at iteration #16, type ALL: wirelen solved = 121343, spread = 158350, legal = 176024; time = 0.40s
+Info:     at iteration #17, type ALL: wirelen solved = 125751, spread = 153227, legal = 170004; time = 0.42s
+Info:     at iteration #18, type ALL: wirelen solved = 126004, spread = 152804, legal = 168118; time = 0.41s
+Info:     at iteration #19, type ALL: wirelen solved = 126641, spread = 152812, legal = 169705; time = 0.39s
+Info:     at iteration #20, type ALL: wirelen solved = 128825, spread = 154559, legal = 172422; time = 0.38s
+Info:     at iteration #21, type ALL: wirelen solved = 131336, spread = 160731, legal = 175340; time = 0.38s
+Info:     at iteration #22, type ALL: wirelen solved = 136504, spread = 160125, legal = 174342; time = 0.37s
+Info:     at iteration #23, type ALL: wirelen solved = 138496, spread = 162292, legal = 176705; time = 0.35s
+Info: HeAP Placer Time: 26.63s
+Info:   of which solving equations: 6.86s
+Info:   of which spreading cells: 1.60s
+Info:   of which strict legalisation: 15.77s
+
+Info: Running simulated annealing placer for refinement.
+Info:   at iteration #1: temp = 0.000000, timing cost = 2226, wirelen = 165111
+Info:   at iteration #5: temp = 0.000000, timing cost = 440, wirelen = 139096
+Info:   at iteration #10: temp = 0.000000, timing cost = 394, wirelen = 132609
+Info:   at iteration #15: temp = 0.000000, timing cost = 375, wirelen = 129604
+Info:   at iteration #20: temp = 0.000000, timing cost = 366, wirelen = 128440
+Info:   at iteration #25: temp = 0.000000, timing cost = 365, wirelen = 128165
+Info:   at iteration #30: temp = 0.000000, timing cost = 366, wirelen = 128117
+Info:   at iteration #30: temp = 0.000000, timing cost = 366, wirelen = 128117 
+Info: SA placement time 57.73s
+
+Info: Max frequency for clock 'link.clk': 18.05 MHz (PASS at 10.00 MHz)
+
+Info: Max delay <async> -> posedge link.clk: 4.43 ns
+
+Info: Slack histogram:
+Info:  legend: * represents 25 endpoint(s)
+Info:          + represents [1,25) endpoint(s)
+Info: [ 44613,  47343) |+
+Info: [ 47343,  50073) |+
+Info: [ 50073,  52803) |+
+Info: [ 52803,  55533) |*+
+Info: [ 55533,  58263) |***+
+Info: [ 58263,  60993) |*********+
+Info: [ 60993,  63723) |***********+
+Info: [ 63723,  66453) |*************+
+Info: [ 66453,  69183) |****************************************+
+Info: [ 69183,  71913) |***************+
+Info: [ 71913,  74643) |***+
+Info: [ 74643,  77373) |*****+
+Info: [ 77373,  80103) |********+
+Info: [ 80103,  82833) |*************+
+Info: [ 82833,  85563) |*************************************************+
+Info: [ 85563,  88293) |**********+
+Info: [ 88293,  91023) |*********+
+Info: [ 91023,  93753) |******************+
+Info: [ 93753,  96483) |******************+
+Info: [ 96483,  99213) |************************************************************ 
+Info: Checksum: 0x5d511ac7
+Info: Repacking RAMs..
+Info: Repacking CPEs..
+Info: Remove unused clocking cells..
+Info: Routing multipliers...
+Info: Routing clock nets...
+Info:     routing net 'link.clk' to 3417 users
+Info: Clock router time 7.07s.
+Info: Running router2...
+Info: Setting up routing resources...
+Info: Running main router loop...
+Info:     iter=1 wires=540065 overused=50634 overuse=55482 resources=23676 overused=2165 overuse=2775 archfail=NA
+Info:     iter=2 wires=578344 overused=25880 overuse=26339 resources=23366 overused=804 overuse=854 archfail=NA
+Info:     iter=3 wires=600343 overused=18435 overuse=18698 resources=24843 overused=593 overuse=640 archfail=NA
+Info:     iter=4 wires=614139 overused=13594 overuse=13730 resources=26012 overused=467 overuse=513 archfail=NA
+Info:     iter=5 wires=626100 overused=10757 overuse=10841 resources=26630 overused=393 overuse=422 archfail=NA
+Info:     iter=6 wires=634116 overused=8083 overuse=8133 resources=27287 overused=331 overuse=356 archfail=NA
+Info:     iter=7 wires=640185 overused=6667 overuse=6697 resources=27804 overused=281 overuse=304 archfail=NA
+Info:     iter=8 wires=643416 overused=5324 overuse=5352 resources=28201 overused=224 overuse=244 archfail=NA
+Info:     iter=9 wires=646179 overused=4090 overuse=4094 resources=28191 overused=208 overuse=230 archfail=NA
+Info:     iter=10 wires=649561 overused=3192 overuse=3198 resources=28423 overused=185 overuse=196 archfail=NA
+Info:     iter=11 wires=651662 overused=2615 overuse=2624 resources=28440 overused=135 overuse=145 archfail=NA
+Info:     iter=12 wires=654490 overused=2134 overuse=2136 resources=28721 overused=106 overuse=119 archfail=NA
+Info:     iter=13 wires=655877 overused=1740 overuse=1741 resources=28686 overused=89 overuse=99 archfail=NA
+Info:     iter=14 wires=657819 overused=1335 overuse=1335 resources=28681 overused=66 overuse=71 archfail=NA
+Info:     iter=15 wires=659255 overused=1060 overuse=1060 resources=28576 overused=57 overuse=60 archfail=NA
+Info:     iter=16 wires=660368 overused=861 overuse=861 resources=28550 overused=56 overuse=61 archfail=NA
+Info:     iter=17 wires=661399 overused=753 overuse=754 resources=28736 overused=54 overuse=59 archfail=NA
+Info:     iter=18 wires=662008 overused=659 overuse=659 resources=28694 overused=36 overuse=38 archfail=NA
+Info:     iter=19 wires=662818 overused=528 overuse=528 resources=28660 overused=35 overuse=38 archfail=NA
+Info:     iter=20 wires=663832 overused=423 overuse=423 resources=28809 overused=34 overuse=36 archfail=NA
+Info:     iter=21 wires=664719 overused=350 overuse=350 resources=28865 overused=24 overuse=27 archfail=NA
+Info:     iter=22 wires=665181 overused=317 overuse=317 resources=28932 overused=27 overuse=30 archfail=NA
+Info:     iter=23 wires=665627 overused=247 overuse=247 resources=28935 overused=20 overuse=22 archfail=NA
+Info:     iter=24 wires=666184 overused=206 overuse=206 resources=28917 overused=15 overuse=17 archfail=NA
+Info:     iter=25 wires=666234 overused=189 overuse=189 resources=28853 overused=12 overuse=12 archfail=NA
+Info:     iter=26 wires=666658 overused=172 overuse=172 resources=28892 overused=11 overuse=12 archfail=NA
+Info:     iter=27 wires=666843 overused=157 overuse=157 resources=28962 overused=16 overuse=16 archfail=NA
+Info:     iter=28 wires=667132 overused=140 overuse=140 resources=28956 overused=11 overuse=12 archfail=NA
+Info:     iter=29 wires=667217 overused=111 overuse=111 resources=28938 overused=9 overuse=9 archfail=NA
+Info:     iter=30 wires=667629 overused=103 overuse=103 resources=28951 overused=5 overuse=5 archfail=NA
+Info:     iter=31 wires=667773 overused=82 overuse=82 resources=28986 overused=6 overuse=7 archfail=NA
+Info:     iter=32 wires=667752 overused=73 overuse=73 resources=28960 overused=5 overuse=5 archfail=NA
+Info:     iter=33 wires=667963 overused=69 overuse=69 resources=28988 overused=6 overuse=8 archfail=NA
+Info:     iter=34 wires=667995 overused=56 overuse=56 resources=28983 overused=6 overuse=7 archfail=NA
+Info:     iter=35 wires=668266 overused=42 overuse=42 resources=29004 overused=7 overuse=8 archfail=NA
+Info:     iter=36 wires=668454 overused=56 overuse=56 resources=28997 overused=6 overuse=7 archfail=NA
+Info:     iter=37 wires=668495 overused=41 overuse=41 resources=28994 overused=5 overuse=6 archfail=NA
+Info:     iter=38 wires=668571 overused=32 overuse=32 resources=28961 overused=4 overuse=4 archfail=NA
+Info:     iter=39 wires=668855 overused=28 overuse=28 resources=28968 overused=3 overuse=3 archfail=NA
+Info:     iter=40 wires=668791 overused=23 overuse=23 resources=28962 overused=3 overuse=3 archfail=NA
+Info:     iter=41 wires=668861 overused=25 overuse=25 resources=28970 overused=5 overuse=5 archfail=NA
+Info:     iter=42 wires=668773 overused=23 overuse=23 resources=28963 overused=3 overuse=3 archfail=NA
+Info:     iter=43 wires=668947 overused=20 overuse=20 resources=28955 overused=3 overuse=3 archfail=NA
+Info:     iter=44 wires=668986 overused=23 overuse=23 resources=28982 overused=6 overuse=6 archfail=NA
+Info:     iter=45 wires=668935 overused=18 overuse=18 resources=28958 overused=3 overuse=3 archfail=NA
+Info:     iter=46 wires=668942 overused=8 overuse=8 resources=28961 overused=3 overuse=3 archfail=NA
+Info:     iter=47 wires=668964 overused=11 overuse=11 resources=28951 overused=3 overuse=3 archfail=NA
+Info:     iter=48 wires=669003 overused=11 overuse=11 resources=28962 overused=3 overuse=3 archfail=NA
+Info:     iter=49 wires=669100 overused=11 overuse=11 resources=28959 overused=3 overuse=3 archfail=NA
+Info:     iter=50 wires=669203 overused=9 overuse=9 resources=28959 overused=3 overuse=3 archfail=NA
+Info:     iter=51 wires=669096 overused=5 overuse=5 resources=28959 overused=3 overuse=3 archfail=NA
+Info:     iter=52 wires=669095 overused=7 overuse=7 resources=28959 overused=3 overuse=3 archfail=NA
+Info:     iter=53 wires=669094 overused=3 overuse=3 resources=28959 overused=3 overuse=3 archfail=NA
+Info:     iter=54 wires=669094 overused=3 overuse=3 resources=28959 overused=3 overuse=3 archfail=NA
+Info:     iter=55 wires=669107 overused=3 overuse=3 resources=28957 overused=2 overuse=2 archfail=NA
+Info:     iter=56 wires=669107 overused=3 overuse=3 resources=28957 overused=2 overuse=2 archfail=NA
+Info:     iter=57 wires=669148 overused=4 overuse=4 resources=28957 overused=2 overuse=2 archfail=NA
+Info:     iter=58 wires=669107 overused=3 overuse=3 resources=28957 overused=2 overuse=2 archfail=NA
+Info:     iter=59 wires=669153 overused=8 overuse=8 resources=28957 overused=2 overuse=2 archfail=NA
+Info:     iter=60 wires=669107 overused=3 overuse=3 resources=28957 overused=2 overuse=2 archfail=NA
+Info:     iter=61 wires=669134 overused=5 overuse=5 resources=28957 overused=2 overuse=2 archfail=NA
+Info:     iter=62 wires=669107 overused=3 overuse=3 resources=28957 overused=2 overuse=2 archfail=NA
+Info:     iter=63 wires=669107 overused=3 overuse=3 resources=28957 overused=2 overuse=2 archfail=NA
+Info:     iter=64 wires=669110 overused=3 overuse=3 resources=28957 overused=2 overuse=2 archfail=NA
+Info:     iter=65 wires=669107 overused=3 overuse=3 resources=28957 overused=2 overuse=2 archfail=NA
+Info:     iter=66 wires=669107 overused=3 overuse=3 resources=28957 overused=2 overuse=2 archfail=NA
+Info:     iter=67 wires=669128 overused=4 overuse=4 resources=28944 overused=2 overuse=2 archfail=NA
+Info:     iter=68 wires=669107 overused=3 overuse=3 resources=28957 overused=2 overuse=2 archfail=NA
+Info:     iter=69 wires=669125 overused=5 overuse=5 resources=28944 overused=2 overuse=2 archfail=NA
+Info:     iter=70 wires=669107 overused=3 overuse=3 resources=28957 overused=2 overuse=2 archfail=NA
+Info:     iter=71 wires=669107 overused=3 overuse=3 resources=28957 overused=2 overuse=2 archfail=NA
+Info:     iter=72 wires=669107 overused=3 overuse=3 resources=28957 overused=2 overuse=2 archfail=NA
+Info:     iter=73 wires=669107 overused=3 overuse=3 resources=28957 overused=2 overuse=2 archfail=NA
+Info:     iter=74 wires=669107 overused=3 overuse=3 resources=28957 overused=2 overuse=2 archfail=NA
+Info:     iter=75 wires=669107 overused=3 overuse=3 resources=28957 overused=2 overuse=2 archfail=NA
+Info:     iter=76 wires=669107 overused=3 overuse=3 resources=28957 overused=2 overuse=2 archfail=NA
+Info:     iter=77 wires=669107 overused=3 overuse=3 resources=28957 overused=2 overuse=2 archfail=NA
+Info:     iter=78 wires=669136 overused=3 overuse=3 resources=28957 overused=2 overuse=2 archfail=NA
+Info:     iter=79 wires=669117 overused=3 overuse=3 resources=28957 overused=2 overuse=2 archfail=NA
+Info:     iter=80 wires=669166 overused=8 overuse=8 resources=28960 overused=3 overuse=3 archfail=NA
+Info:     iter=81 wires=669116 overused=2 overuse=2 resources=28960 overused=3 overuse=3 archfail=NA
+Info:     iter=82 wires=669120 overused=0 overuse=0 resources=28960 overused=3 overuse=3 archfail=0
+Info:     iter=83 wires=669120 overused=0 overuse=0 resources=28960 overused=3 overuse=3 archfail=0
+Info:     iter=84 wires=669120 overused=0 overuse=0 resources=28960 overused=3 overuse=3 archfail=0
+Info:     iter=85 wires=669120 overused=0 overuse=0 resources=28960 overused=3 overuse=3 archfail=0
+Info:     iter=86 wires=669120 overused=0 overuse=0 resources=28960 overused=3 overuse=3 archfail=0
+Info:     iter=87 wires=669120 overused=0 overuse=0 resources=28960 overused=3 overuse=3 archfail=0
+Info:     iter=88 wires=669125 overused=3 overuse=3 resources=28948 overused=1 overuse=1 archfail=NA
+Info:     iter=89 wires=669134 overused=0 overuse=0 resources=28948 overused=1 overuse=1 archfail=0
+Info:     iter=90 wires=669134 overused=0 overuse=0 resources=28948 overused=1 overuse=1 archfail=0
+Info:     iter=91 wires=669134 overused=0 overuse=0 resources=28948 overused=1 overuse=1 archfail=0
+Info:     iter=92 wires=669134 overused=0 overuse=0 resources=28948 overused=1 overuse=1 archfail=0
+Info:     iter=93 wires=669134 overused=0 overuse=0 resources=28948 overused=1 overuse=1 archfail=0
+Info:     iter=94 wires=669134 overused=0 overuse=0 resources=28948 overused=1 overuse=1 archfail=0
+Info:     iter=95 wires=669134 overused=0 overuse=0 resources=28948 overused=1 overuse=1 archfail=0
+Info:     iter=96 wires=669134 overused=0 overuse=0 resources=28948 overused=1 overuse=1 archfail=0
+Info:     iter=97 wires=669134 overused=0 overuse=0 resources=28948 overused=1 overuse=1 archfail=0
+Info:     iter=98 wires=669134 overused=0 overuse=0 resources=28948 overused=1 overuse=1 archfail=0
+Info:     iter=99 wires=669134 overused=0 overuse=0 resources=28948 overused=1 overuse=1 archfail=0
+Info:     iter=100 wires=669134 overused=0 overuse=0 resources=28948 overused=1 overuse=1 archfail=0
+Info:     iter=101 wires=669134 overused=0 overuse=0 resources=28948 overused=1 overuse=1 archfail=0
+Info:     iter=102 wires=669134 overused=0 overuse=0 resources=28948 overused=1 overuse=1 archfail=0
+Info:     iter=103 wires=669134 overused=0 overuse=0 resources=28948 overused=1 overuse=1 archfail=0
+Info:     iter=104 wires=669134 overused=0 overuse=0 resources=28948 overused=1 overuse=1 archfail=0
+Info:     iter=105 wires=669134 overused=0 overuse=0 resources=28948 overused=1 overuse=1 archfail=0
+Info:     iter=106 wires=669134 overused=0 overuse=0 resources=28948 overused=1 overuse=1 archfail=0
+Info:     iter=107 wires=669134 overused=0 overuse=0 resources=28948 overused=1 overuse=1 archfail=0
+Info:     iter=108 wires=669134 overused=0 overuse=0 resources=28948 overused=1 overuse=1 archfail=0
+Info:     iter=109 wires=669134 overused=0 overuse=0 resources=28948 overused=1 overuse=1 archfail=0
+Info:     iter=110 wires=669134 overused=0 overuse=0 resources=28948 overused=1 overuse=1 archfail=0
+Info:     iter=111 wires=669134 overused=0 overuse=0 resources=28948 overused=1 overuse=1 archfail=0
+Info:     iter=112 wires=669134 overused=0 overuse=0 resources=28948 overused=1 overuse=1 archfail=0
+Info:     iter=113 wires=669134 overused=0 overuse=0 resources=28948 overused=1 overuse=1 archfail=0
+Info:     iter=114 wires=669134 overused=0 overuse=0 resources=28948 overused=1 overuse=1 archfail=0
+Info:     iter=115 wires=669134 overused=0 overuse=0 resources=28948 overused=1 overuse=1 archfail=0
+Info:     iter=116 wires=669134 overused=0 overuse=0 resources=28948 overused=1 overuse=1 archfail=0
+Info:     iter=117 wires=669134 overused=0 overuse=0 resources=28948 overused=1 overuse=1 archfail=0
+Info:     iter=118 wires=669134 overused=0 overuse=0 resources=28948 overused=1 overuse=1 archfail=0
+Info:     iter=119 wires=669131 overused=0 overuse=0 resources=28945 overused=1 overuse=1 archfail=0
+Info:     iter=120 wires=669134 overused=0 overuse=0 resources=28948 overused=1 overuse=1 archfail=0
+Info:     iter=121 wires=669134 overused=0 overuse=0 resources=28948 overused=1 overuse=1 archfail=0
+Info:     iter=122 wires=669131 overused=0 overuse=0 resources=28945 overused=1 overuse=1 archfail=0
+Info:     iter=123 wires=669134 overused=0 overuse=0 resources=28948 overused=1 overuse=1 archfail=0
+Info:     iter=124 wires=669131 overused=0 overuse=0 resources=28945 overused=1 overuse=1 archfail=0
+Info:     iter=125 wires=669131 overused=0 overuse=0 resources=28945 overused=1 overuse=1 archfail=0
+Info:     iter=126 wires=669131 overused=0 overuse=0 resources=28945 overused=1 overuse=1 archfail=0
+Info:     iter=127 wires=669131 overused=0 overuse=0 resources=28945 overused=1 overuse=1 archfail=0
+Info:     iter=128 wires=669134 overused=0 overuse=0 resources=28948 overused=1 overuse=1 archfail=0
+Info:     iter=129 wires=669134 overused=0 overuse=0 resources=28948 overused=1 overuse=1 archfail=0
+Info:     iter=130 wires=669131 overused=0 overuse=0 resources=28945 overused=1 overuse=1 archfail=0
+Info:     iter=131 wires=669134 overused=0 overuse=0 resources=28948 overused=1 overuse=1 archfail=0
+Info:     iter=132 wires=669131 overused=0 overuse=0 resources=28945 overused=1 overuse=1 archfail=0
+Info:     iter=133 wires=669134 overused=0 overuse=0 resources=28948 overused=1 overuse=1 archfail=0
+Info:     iter=134 wires=669134 overused=0 overuse=0 resources=28948 overused=1 overuse=1 archfail=0
+Info:     iter=135 wires=669131 overused=0 overuse=0 resources=28945 overused=1 overuse=1 archfail=0
+Info:     iter=136 wires=669134 overused=0 overuse=0 resources=28948 overused=1 overuse=1 archfail=0
+Info:     iter=137 wires=669131 overused=0 overuse=0 resources=28945 overused=1 overuse=1 archfail=0
+Info:     iter=138 wires=669134 overused=0 overuse=0 resources=28948 overused=1 overuse=1 archfail=0
+Info:     iter=139 wires=669131 overused=0 overuse=0 resources=28945 overused=1 overuse=1 archfail=0
+Info:     iter=140 wires=669147 overused=1 overuse=1 resources=28937 overused=0 overuse=0 archfail=NA
+Info:     iter=141 wires=669165 overused=0 overuse=0 resources=28937 overused=0 overuse=0 archfail=0
+Info: Router2 time 174.32s
+Info: Running router1 to check that route is legal...
+
+Info: Routing..
+Info: Setting up routing queue.
+Info: Routing 0 arcs.
+Info:            |   (re-)routed arcs  |   delta    | remaining|       time spent     |
+Info:    IterCnt |  w/ripup   wo/ripup |  w/r  wo/r |      arcs| batch(sec) total(sec)|
+Info:          0 |        0          0 |    0     0 |         0|       1.82       1.82|
+Info: Routing complete.
+Info: Router1 time 1.82s
+Info: Checksum: 0x5cac3c38
+
+Info: Critical path report for clock 'link.clk' (posedge -> posedge):
+Info:       type curr  total name
+Info:   clk-skew  0.09  0.09 Net link.clk (53,70) -> (50,61)
+Info:                          Sink $auto$ff.cc:337:slice$50189.CLK_INT
+Info:                          Defined in:
+Info:                               rtl/dataflow_link.sv:5.13-5.16
+Info:   clk-to-q  0.59  0.69 Source $auto$ff.cc:337:slice$19147.DOUT
+Info:    routing  2.10  2.79 Net link.core.pending[0] (53,70) -> (54,70)
+Info:                          Sink $abc$92996$auto$blifparse.cc:397:parse_blif$97887.D0_10
+Info:                          Defined in:
+Info:                               rtl/dataflow_core.sv:16.36-16.43
+Info:      logic  0.61  3.39 Source $abc$92996$auto$blifparse.cc:397:parse_blif$97887.OUT
+Info:    routing  1.70  5.09 Net $auto$opt_expr.cc:1942:replace_const_cells$15039.B[0] (54,70) -> (54,68)
+Info:                          Sink $auto$opt_expr.cc:1942:replace_const_cells$15039.slice[1].addf_i.D0_03
+Info:                          Defined in:
+Info:                               /home/manuel/fpga/oss-cad-suite/lib/../share/yosys/gatemate/arith_map.v:31.22-31.23
+Info:      logic  0.57  5.66 Source $auto$opt_expr.cc:1942:replace_const_cells$15039.slice[1].addf_i.OUT2
+Info:    routing  0.69  6.35 Net $auto$opt_expr.cc:1942:replace_const_cells$15039.Y[1] (54,68) -> (54,66)
+Info:                          Sink $abc$92996$auto$blifparse.cc:397:parse_blif$97138.D1_01
+Info:                          Defined in:
+Info:                               /home/manuel/fpga/oss-cad-suite/lib/../share/yosys/gatemate/arith_map.v:33.26-33.27
+Info:      logic  0.60  6.95 Source $abc$92996$auto$blifparse.cc:397:parse_blif$97138.OUT
+Info:    routing  2.34  9.28 Net $auto$opt_expr.cc:1942:replace_const_cells$15068.B[1] (54,66) -> (55,64)
+Info:                          Sink $auto$opt_expr.cc:1942:replace_const_cells$15068.slice[1].addf_i.D0_01
+Info:                          Defined in:
+Info:                               /home/manuel/fpga/oss-cad-suite/lib/../share/yosys/gatemate/arith_map.v:31.22-31.23
+Info:      logic  0.56  9.84 Source $auto$opt_expr.cc:1942:replace_const_cells$15068.slice[1].addf_i.OUT2
+Info:    routing  1.10  10.95 Net $auto$opt_expr.cc:1942:replace_const_cells$15068.Y[1] (55,64) -> (54,64)
+Info:                          Sink $abc$92996$auto$blifparse.cc:397:parse_blif$97139.D0_00
+Info:                          Defined in:
+Info:                               /home/manuel/fpga/oss-cad-suite/lib/../share/yosys/gatemate/arith_map.v:33.26-33.27
+Info:      logic  0.55  11.49 Source $abc$92996$auto$blifparse.cc:397:parse_blif$97139.OUT
+Info:    routing  1.71  13.20 Net $auto$opt_expr.cc:1942:replace_const_cells$15098.B[1] (54,64) -> (52,62)
+Info:                          Sink $auto$opt_expr.cc:1942:replace_const_cells$15098.slice[1].addf_i.D0_01
+Info:                          Defined in:
+Info:                               /home/manuel/fpga/oss-cad-suite/lib/../share/yosys/gatemate/arith_map.v:31.22-31.23
+Info:      logic  0.54  13.74 Source $auto$opt_expr.cc:1942:replace_const_cells$15098.slice[1].addf_i.OUT1
+Info:    routing  2.59  16.33 Net $auto$opt_expr.cc:1942:replace_const_cells$15098.Y[0] (52,62) -> (53,60)
+Info:                          Sink $abc$92996$auto$blifparse.cc:397:parse_blif$97895.D0_00
+Info:                          Defined in:
+Info:                               /home/manuel/fpga/oss-cad-suite/lib/../share/yosys/gatemate/arith_map.v:33.26-33.27
+Info:      logic  0.55  16.88 Source $abc$92996$auto$blifparse.cc:397:parse_blif$97895.OUT
+Info:    routing  1.70  18.58 Net $auto$opt_expr.cc:1942:replace_const_cells$15107.B[0] (53,60) -> (53,56)
+Info:                          Sink $auto$opt_expr.cc:1942:replace_const_cells$15107.slice[1].addf_i.D0_03
+Info:                          Defined in:
+Info:                               /home/manuel/fpga/oss-cad-suite/lib/../share/yosys/gatemate/arith_map.v:31.22-31.23
+Info:      logic  0.57  19.15 Source $auto$opt_expr.cc:1942:replace_const_cells$15107.slice[1].addf_i.OUT2
+Info:    routing  0.58  19.73 Net $auto$opt_expr.cc:1942:replace_const_cells$15107.Y[1] (53,56) -> (53,59)
+Info:                          Sink $abc$92996$auto$blifparse.cc:397:parse_blif$97141.D0_00
+Info:                          Defined in:
+Info:                               /home/manuel/fpga/oss-cad-suite/lib/../share/yosys/gatemate/arith_map.v:33.26-33.27
+Info:      logic  0.55  20.27 Source $abc$92996$auto$blifparse.cc:397:parse_blif$97141.OUT
+Info:    routing  1.72  21.99 Net $auto$opt_expr.cc:1942:replace_const_cells$15113.B[1] (53,59) -> (54,57)
+Info:                          Sink $auto$opt_expr.cc:1942:replace_const_cells$15113.slice[1].addf_i.D0_01
+Info:                          Defined in:
+Info:                               /home/manuel/fpga/oss-cad-suite/lib/../share/yosys/gatemate/arith_map.v:31.22-31.23
+Info:      logic  0.54  22.53 Source $auto$opt_expr.cc:1942:replace_const_cells$15113.slice[1].addf_i.OUT1
+Info:    routing  1.36  23.89 Net $auto$opt_expr.cc:1942:replace_const_cells$15113.Y[0] (54,57) -> (55,57)
+Info:                          Sink $abc$92996$auto$blifparse.cc:397:parse_blif$97906.D0_00
+Info:                          Defined in:
+Info:                               /home/manuel/fpga/oss-cad-suite/lib/../share/yosys/gatemate/arith_map.v:33.26-33.27
+Info:      logic  0.61  24.50 Source $abc$92996$auto$blifparse.cc:397:parse_blif$97906.OUT
+Info:    routing  3.06  27.56 Net $auto$alumacc.cc:548:replace_alu$14078.B[0] (55,57) -> (56,59)
+Info:                          Sink $auto$alumacc.cc:548:replace_alu$14078.slice[1].addf_i.D0_03
+Info:                          Defined in:
+Info:                               rtl/dataflow_core.sv:158.35-158.51
+Info:                               /home/manuel/fpga/oss-cad-suite/lib/../share/yosys/gatemate/arith_map.v:31.22-31.23
+Info:      logic  0.47  28.03 Source $auto$alumacc.cc:548:replace_alu$14078.slice[1].addf_i.OUT1
+Info:    routing  1.75  29.77 Net $auto$alumacc.cc:548:replace_alu$14078.Y[0] (56,59) -> (58,57)
+Info:                          Sink $abc$92996$auto$blifparse.cc:397:parse_blif$97913.D0_00
+Info:                          Defined in:
+Info:                               rtl/dataflow_core.sv:158.35-158.51
+Info:                               /home/manuel/fpga/oss-cad-suite/lib/../share/yosys/gatemate/arith_map.v:33.26-33.27
+Info:      logic  0.61  30.38 Source $abc$92996$auto$blifparse.cc:397:parse_blif$97913.OUT
+Info:    routing  1.70  32.08 Net $auto$alumacc.cc:548:replace_alu$14072.B[0] (58,57) -> (57,57)
+Info:                          Sink $auto$alumacc.cc:548:replace_alu$14072.slice[1].addf_i.D0_03
+Info:                          Defined in:
+Info:                               rtl/dataflow_core.sv:158.35-158.51
+Info:                               /home/manuel/fpga/oss-cad-suite/lib/../share/yosys/gatemate/arith_map.v:31.22-31.23
+Info:      logic  0.48  32.56 Source $auto$alumacc.cc:548:replace_alu$14072.slice[1].addf_i.COUTY1
+Info:    routing  0.00  32.56 Net $auto$alumacc.cc:548:replace_alu$14072.CO[1] (57,57) -> (57,58)
+Info:                          Sink $auto$alumacc.cc:548:replace_alu$14072.slice[3].addf_i.CINY1
+Info:                          Defined in:
+Info:                               rtl/dataflow_core.sv:158.35-158.51
+Info:                               /home/manuel/fpga/oss-cad-suite/lib/../share/yosys/gatemate/arith_map.v:37.23-37.25
+Info:      logic  0.42  32.98 Source $auto$alumacc.cc:548:replace_alu$14072.slice[3].addf_i.OUT2
+Info:    routing  1.68  34.66 Net $auto$alumacc.cc:548:replace_alu$14072.Y[3] (57,58) -> (58,58)
+Info:                          Sink $abc$92996$auto$blifparse.cc:397:parse_blif$97917.D0_00
+Info:                          Defined in:
+Info:                               rtl/dataflow_core.sv:158.35-158.51
+Info:                               /home/manuel/fpga/oss-cad-suite/lib/../share/yosys/gatemate/arith_map.v:33.26-33.27
+Info:      logic  0.55  35.21 Source $abc$92996$auto$blifparse.cc:397:parse_blif$97917.OUT
+Info:    routing  1.17  36.38 Net $auto$alumacc.cc:548:replace_alu$14069.B[3] (58,58) -> (56,55)
+Info:                          Sink $auto$alumacc.cc:548:replace_alu$14069.slice[3].addf_i.D0_01
+Info:                          Defined in:
+Info:                               rtl/dataflow_core.sv:158.35-158.51
+Info:                               /home/manuel/fpga/oss-cad-suite/lib/../share/yosys/gatemate/arith_map.v:31.22-31.23
+Info:      logic  0.54  36.92 Source $auto$alumacc.cc:548:replace_alu$14069.slice[3].addf_i.OUT1
+Info:    routing  1.73  38.65 Net $auto$alumacc.cc:548:replace_alu$14069.Y[2] (56,55) -> (58,54)
+Info:                          Sink $abc$92996$auto$blifparse.cc:397:parse_blif$97924.D0_00
+Info:                          Defined in:
+Info:                               rtl/dataflow_core.sv:158.35-158.51
+Info:                               /home/manuel/fpga/oss-cad-suite/lib/../share/yosys/gatemate/arith_map.v:33.26-33.27
+Info:      logic  0.61  39.26 Source $abc$92996$auto$blifparse.cc:397:parse_blif$97924.OUT
+Info:    routing  1.44  40.70 Net $auto$alumacc.cc:548:replace_alu$14060.B[2] (58,54) -> (58,49)
+Info:                          Sink $auto$alumacc.cc:548:replace_alu$14060.slice[3].addf_i.D0_03
+Info:                          Defined in:
+Info:                               rtl/dataflow_core.sv:158.35-158.51
+Info:                               /home/manuel/fpga/oss-cad-suite/lib/../share/yosys/gatemate/arith_map.v:31.22-31.23
+Info:      logic  0.57  41.27 Source $auto$alumacc.cc:548:replace_alu$14060.slice[3].addf_i.OUT2
+Info:    routing  1.54  42.81 Net $auto$alumacc.cc:548:replace_alu$14060.Y[3] (58,49) -> (57,49)
+Info:                          Sink $abc$92996$auto$blifparse.cc:397:parse_blif$97929.D0_00
+Info:                          Defined in:
+Info:                               rtl/dataflow_core.sv:158.35-158.51
+Info:                               /home/manuel/fpga/oss-cad-suite/lib/../share/yosys/gatemate/arith_map.v:33.26-33.27
+Info:      logic  0.61  43.42 Source $abc$92996$auto$blifparse.cc:397:parse_blif$97929.OUT
+Info:    routing  2.42  45.84 Net $auto$alumacc.cc:548:replace_alu$14057.B[3] (57,49) -> (56,48)
+Info:                          Sink $auto$alumacc.cc:548:replace_alu$14057.slice[3].addf_i.D0_01
+Info:                          Defined in:
+Info:                               rtl/dataflow_core.sv:158.35-158.51
+Info:                               /home/manuel/fpga/oss-cad-suite/lib/../share/yosys/gatemate/arith_map.v:31.22-31.23
+Info:      logic  0.56  46.40 Source $auto$alumacc.cc:548:replace_alu$14057.slice[3].addf_i.OUT2
+Info:    routing  1.34  47.74 Net $auto$alumacc.cc:548:replace_alu$14057.Y[3] (56,48) -> (57,47)
+Info:                          Sink $abc$92996$auto$blifparse.cc:397:parse_blif$97935.D0_00
+Info:                          Defined in:
+Info:                               rtl/dataflow_core.sv:158.35-158.51
+Info:                               /home/manuel/fpga/oss-cad-suite/lib/../share/yosys/gatemate/arith_map.v:33.26-33.27
+Info:      logic  0.55  48.29 Source $abc$92996$auto$blifparse.cc:397:parse_blif$97935.OUT
+Info:    routing  1.98  50.27 Net $auto$alumacc.cc:548:replace_alu$14051.B[3] (57,47) -> (56,42)
+Info:                          Sink $auto$alumacc.cc:548:replace_alu$14051.slice[3].addf_i.D0_01
+Info:                          Defined in:
+Info:                               rtl/dataflow_core.sv:158.35-158.51
+Info:                               /home/manuel/fpga/oss-cad-suite/lib/../share/yosys/gatemate/arith_map.v:31.22-31.23
+Info:      logic  0.55  50.82 Source $auto$alumacc.cc:548:replace_alu$14051.slice[3].addf_i.COUTY1
+Info:    routing  0.00  50.82 Net $auto$alumacc.cc:548:replace_alu$14051.CO[3] (56,42) -> (56,43)
+Info:                          Sink $auto$alumacc.cc:548:replace_alu$14051.slice[5].addf_i.CINY1
+Info:                          Defined in:
+Info:                               rtl/dataflow_core.sv:158.35-158.51
+Info:                               /home/manuel/fpga/oss-cad-suite/lib/../share/yosys/gatemate/arith_map.v:37.23-37.25
+Info:      logic  0.51  51.33 Source $auto$alumacc.cc:548:replace_alu$14051.slice[5].addf_i.OUT1
+Info:    routing  2.33  53.67 Net $auto$alumacc.cc:548:replace_alu$14051.Y[4] (56,43) -> (57,43)
+Info:                          Sink $abc$92996$auto$blifparse.cc:397:parse_blif$97940.D0_00
+Info:                          Defined in:
+Info:                               rtl/dataflow_core.sv:158.35-158.51
+Info:                               /home/manuel/fpga/oss-cad-suite/lib/../share/yosys/gatemate/arith_map.v:33.26-33.27
+Info:      logic  0.61  54.28 Source $abc$92996$auto$blifparse.cc:397:parse_blif$97940.OUT
+Info:    routing  1.52  55.79 Net $auto$alumacc.cc:548:replace_alu$14045.B[4] (57,43) -> (57,39)
+Info:                          Sink $auto$alumacc.cc:548:replace_alu$14045.slice[5].addf_i.D0_03
+Info:                          Defined in:
+Info:                               rtl/dataflow_core.sv:158.35-158.51
+Info:                               /home/manuel/fpga/oss-cad-suite/lib/../share/yosys/gatemate/arith_map.v:31.22-31.23
+Info:      logic  0.47  56.26 Source $auto$alumacc.cc:548:replace_alu$14045.slice[5].addf_i.OUT1
+Info:    routing  1.33  57.60 Net $auto$alumacc.cc:548:replace_alu$14045.Y[4] (57,39) -> (59,44)
+Info:                          Sink $abc$92996$auto$blifparse.cc:397:parse_blif$97946.D0_00
+Info:                          Defined in:
+Info:                               rtl/dataflow_core.sv:158.35-158.51
+Info:                               /home/manuel/fpga/oss-cad-suite/lib/../share/yosys/gatemate/arith_map.v:33.26-33.27
+Info:      logic  0.61  58.21 Source $abc$92996$auto$blifparse.cc:397:parse_blif$97946.OUT
+Info:    routing  1.62  59.83 Net $auto$alumacc.cc:548:replace_alu$14037.B[4] (59,44) -> (58,45)
+Info:                          Sink $auto$alumacc.cc:548:replace_alu$14037.slice[5].addf_i.D0_03
+Info:                          Defined in:
+Info:                               rtl/dataflow_core.sv:158.35-158.51
+Info:                               /home/manuel/fpga/oss-cad-suite/lib/../share/yosys/gatemate/arith_map.v:31.22-31.23
+Info:      logic  0.47  60.30 Source $auto$alumacc.cc:548:replace_alu$14037.slice[5].addf_i.OUT1
+Info:    routing  1.36  61.66 Net $auto$alumacc.cc:548:replace_alu$14037.Y[4] (58,45) -> (59,45)
+Info:                          Sink $abc$92996$auto$blifparse.cc:397:parse_blif$97952.D0_00
+Info:                          Defined in:
+Info:                               rtl/dataflow_core.sv:158.35-158.51
+Info:                               /home/manuel/fpga/oss-cad-suite/lib/../share/yosys/gatemate/arith_map.v:33.26-33.27
+Info:      logic  0.55  62.21 Source $abc$92996$auto$blifparse.cc:397:parse_blif$97952.OUT
+Info:    routing  1.93  64.14 Net $auto$alumacc.cc:548:replace_alu$14029.B[4] (59,45) -> (59,51)
+Info:                          Sink $auto$alumacc.cc:548:replace_alu$14029.slice[5].addf_i.D0_03
+Info:                          Defined in:
+Info:                               rtl/dataflow_core.sv:158.35-158.51
+Info:                               /home/manuel/fpga/oss-cad-suite/lib/../share/yosys/gatemate/arith_map.v:31.22-31.23
+Info:      logic  0.47  64.61 Source $auto$alumacc.cc:548:replace_alu$14029.slice[5].addf_i.OUT1
+Info:    routing  1.53  66.14 Net $auto$alumacc.cc:548:replace_alu$14029.Y[4] (59,51) -> (61,49)
+Info:                          Sink $abc$92996$auto$blifparse.cc:397:parse_blif$97958.D0_00
+Info:                          Defined in:
+Info:                               rtl/dataflow_core.sv:158.35-158.51
+Info:                               /home/manuel/fpga/oss-cad-suite/lib/../share/yosys/gatemate/arith_map.v:33.26-33.27
+Info:      logic  0.61  66.75 Source $abc$92996$auto$blifparse.cc:397:parse_blif$97958.OUT
+Info:    routing  1.34  68.09 Net $auto$alumacc.cc:548:replace_alu$14026.B[4] (61,49) -> (60,49)
+Info:                          Sink $auto$alumacc.cc:548:replace_alu$14026.slice[5].addf_i.D0_03
+Info:                          Defined in:
+Info:                               rtl/dataflow_core.sv:158.35-158.51
+Info:                               /home/manuel/fpga/oss-cad-suite/lib/../share/yosys/gatemate/arith_map.v:31.22-31.23
+Info:      logic  0.47  68.56 Source $auto$alumacc.cc:548:replace_alu$14026.slice[5].addf_i.OUT1
+Info:    routing  1.66  70.21 Net $auto$alumacc.cc:548:replace_alu$14026.Y[4] (60,49) -> (61,48)
+Info:                          Sink $abc$92996$auto$blifparse.cc:397:parse_blif$97964.D0_00
+Info:                          Defined in:
+Info:                               rtl/dataflow_core.sv:158.35-158.51
+Info:                               /home/manuel/fpga/oss-cad-suite/lib/../share/yosys/gatemate/arith_map.v:33.26-33.27
+Info:      logic  0.61  70.82 Source $abc$92996$auto$blifparse.cc:397:parse_blif$97964.OUT
+Info:    routing  2.71  73.53 Net $auto$alumacc.cc:548:replace_alu$14023.B[4] (61,48) -> (60,42)
+Info:                          Sink $auto$alumacc.cc:548:replace_alu$14023.slice[5].addf_i.D0_03
+Info:                          Defined in:
+Info:                               rtl/dataflow_core.sv:158.35-158.51
+Info:                               /home/manuel/fpga/oss-cad-suite/lib/../share/yosys/gatemate/arith_map.v:31.22-31.23
+Info:      logic  0.57  74.10 Source $auto$alumacc.cc:548:replace_alu$14023.slice[5].addf_i.OUT2
+Info:    routing  1.37  75.46 Net $auto$alumacc.cc:548:replace_alu$14023.Y[5] (60,42) -> (61,42)
+Info:                          Sink $abc$92996$auto$blifparse.cc:397:parse_blif$97969.D0_00
+Info:                          Defined in:
+Info:                               rtl/dataflow_core.sv:158.35-158.51
+Info:                               /home/manuel/fpga/oss-cad-suite/lib/../share/yosys/gatemate/arith_map.v:33.26-33.27
+Info:      logic  0.55  76.01 Source $abc$92996$auto$blifparse.cc:397:parse_blif$97969.OUT
+Info:    routing  1.50  77.51 Net $auto$alumacc.cc:548:replace_alu$14020.B[5] (61,42) -> (61,40)
+Info:                          Sink $auto$alumacc.cc:548:replace_alu$14020.slice[5].addf_i.D0_01
+Info:                          Defined in:
+Info:                               rtl/dataflow_core.sv:158.35-158.51
+Info:                               /home/manuel/fpga/oss-cad-suite/lib/../share/yosys/gatemate/arith_map.v:31.22-31.23
+Info:      logic  0.56  78.07 Source $auto$alumacc.cc:548:replace_alu$14020.slice[5].addf_i.OUT2
+Info:    routing  1.46  79.53 Net $auto$alumacc.cc:548:replace_alu$14020.Y[5] (61,40) -> (59,40)
+Info:                          Sink $abc$92996$auto$blifparse.cc:397:parse_blif$97975.D0_00
+Info:                          Defined in:
+Info:                               rtl/dataflow_core.sv:158.35-158.51
+Info:                               /home/manuel/fpga/oss-cad-suite/lib/../share/yosys/gatemate/arith_map.v:33.26-33.27
+Info:      logic  0.55  80.08 Source $abc$92996$auto$blifparse.cc:397:parse_blif$97975.OUT
+Info:    routing  1.34  81.42 Net $auto$alumacc.cc:548:replace_alu$14017.B[5] (59,40) -> (58,39)
+Info:                          Sink $auto$alumacc.cc:548:replace_alu$14017.slice[5].addf_i.D0_01
+Info:                          Defined in:
+Info:                               rtl/dataflow_core.sv:158.35-158.51
+Info:                               /home/manuel/fpga/oss-cad-suite/lib/../share/yosys/gatemate/arith_map.v:31.22-31.23
+Info:      logic  0.56  81.98 Source $auto$alumacc.cc:548:replace_alu$14017.slice[5].addf_i.OUT2
+Info:    routing  1.94  83.92 Net $auto$alumacc.cc:548:replace_alu$14017.Y[5] (58,39) -> (59,38)
+Info:                          Sink $abc$92996$auto$blifparse.cc:397:parse_blif$97981.D0_00
+Info:                          Defined in:
+Info:                               rtl/dataflow_core.sv:158.35-158.51
+Info:                               /home/manuel/fpga/oss-cad-suite/lib/../share/yosys/gatemate/arith_map.v:33.26-33.27
+Info:      logic  0.61  84.53 Source $abc$92996$auto$blifparse.cc:397:parse_blif$97981.OUT
+Info:    routing  1.60  86.13 Net $auto$alumacc.cc:548:replace_alu$14014.B[5] (59,38) -> (61,34)
+Info:                          Sink $auto$alumacc.cc:548:replace_alu$14014.slice[5].addf_i.D0_01
+Info:                          Defined in:
+Info:                               rtl/dataflow_core.sv:158.35-158.51
+Info:                               /home/manuel/fpga/oss-cad-suite/lib/../share/yosys/gatemate/arith_map.v:31.22-31.23
+Info:      logic  0.56  86.69 Source $auto$alumacc.cc:548:replace_alu$14014.slice[5].addf_i.OUT2
+Info:    routing  1.67  88.36 Net $auto$alumacc.cc:548:replace_alu$14014.Y[5] (61,34) -> (62,34)
+Info:                          Sink $abc$92996$auto$blifparse.cc:397:parse_blif$97987.D0_00
+Info:                          Defined in:
+Info:                               rtl/dataflow_core.sv:158.35-158.51
+Info:                               /home/manuel/fpga/oss-cad-suite/lib/../share/yosys/gatemate/arith_map.v:33.26-33.27
+Info:      logic  0.61  88.97 Source $abc$92996$auto$blifparse.cc:397:parse_blif$97987.OUT
+Info:    routing  1.22  90.19 Net $auto$alumacc.cc:548:replace_alu$14011.B[5] (62,34) -> (62,31)
+Info:                          Sink $auto$alumacc.cc:548:replace_alu$14011.slice[5].addf_i.D0_01
+Info:                          Defined in:
+Info:                               rtl/dataflow_core.sv:158.35-158.51
+Info:                               /home/manuel/fpga/oss-cad-suite/lib/../share/yosys/gatemate/arith_map.v:31.22-31.23
+Info:      logic  0.56  90.75 Source $auto$alumacc.cc:548:replace_alu$14011.slice[5].addf_i.OUT2
+Info:    routing  1.32  92.07 Net $auto$alumacc.cc:548:replace_alu$14011.Y[5] (62,31) -> (63,31)
+Info:                          Sink $abc$92996$auto$blifparse.cc:397:parse_blif$97993.D0_00
+Info:                          Defined in:
+Info:                               rtl/dataflow_core.sv:158.35-158.51
+Info:                               /home/manuel/fpga/oss-cad-suite/lib/../share/yosys/gatemate/arith_map.v:33.26-33.27
+Info:      logic  0.55  92.62 Source $abc$92996$auto$blifparse.cc:397:parse_blif$97993.OUT
+Info:    routing  1.73  94.35 Net $auto$alumacc.cc:548:replace_alu$14008.B[5] (63,31) -> (60,29)
+Info:                          Sink $auto$alumacc.cc:548:replace_alu$14008.slice[5].addf_i.D0_01
+Info:                          Defined in:
+Info:                               rtl/dataflow_core.sv:158.35-158.51
+Info:                               /home/manuel/fpga/oss-cad-suite/lib/../share/yosys/gatemate/arith_map.v:31.22-31.23
+Info:      logic  0.54  94.89 Source $auto$alumacc.cc:548:replace_alu$14008.slice[5].addf_i.OUT1
+Info:    routing  1.64  96.53 Net $auto$alumacc.cc:548:replace_alu$14008.Y[4] (60,29) -> (59,29)
+Info:                          Sink $abc$92996$auto$blifparse.cc:397:parse_blif$98000.D0_00
+Info:                          Defined in:
+Info:                               rtl/dataflow_core.sv:158.35-158.51
+Info:                               /home/manuel/fpga/oss-cad-suite/lib/../share/yosys/gatemate/arith_map.v:33.26-33.27
+Info:      logic  0.55  97.08 Source $abc$92996$auto$blifparse.cc:397:parse_blif$98000.OUT
+Info:    routing  1.46  98.54 Net $auto$alumacc.cc:548:replace_alu$14005.B[4] (59,29) -> (58,29)
+Info:                          Sink $auto$alumacc.cc:548:replace_alu$14005.slice[5].addf_i.D0_03
+Info:                          Defined in:
+Info:                               rtl/dataflow_core.sv:158.35-158.51
+Info:                               /home/manuel/fpga/oss-cad-suite/lib/../share/yosys/gatemate/arith_map.v:31.22-31.23
+Info:      logic  0.47  99.01 Source $auto$alumacc.cc:548:replace_alu$14005.slice[5].addf_i.OUT1
+Info:    routing  1.96  100.97 Net $auto$alumacc.cc:548:replace_alu$14005.Y[4] (58,29) -> (57,29)
+Info:                          Sink $abc$92996$auto$blifparse.cc:397:parse_blif$98006.D0_00
+Info:                          Defined in:
+Info:                               rtl/dataflow_core.sv:158.35-158.51
+Info:                               /home/manuel/fpga/oss-cad-suite/lib/../share/yosys/gatemate/arith_map.v:33.26-33.27
+Info:      logic  0.61  101.58 Source $abc$92996$auto$blifparse.cc:397:parse_blif$98006.OUT
+Info:    routing  2.14  103.72 Net $auto$alumacc.cc:548:replace_alu$14002.B[4] (57,29) -> (57,33)
+Info:                          Sink $auto$alumacc.cc:548:replace_alu$14002.slice[5].addf_i.D0_03
+Info:                          Defined in:
+Info:                               rtl/dataflow_core.sv:158.35-158.51
+Info:                               /home/manuel/fpga/oss-cad-suite/lib/../share/yosys/gatemate/arith_map.v:31.22-31.23
+Info:      logic  0.57  104.28 Source $auto$alumacc.cc:548:replace_alu$14002.slice[5].addf_i.OUT2
+Info:    routing  0.65  104.93 Net $auto$alumacc.cc:548:replace_alu$14002.Y[5] (57,33) -> (58,33)
+Info:                          Sink $abc$92996$auto$blifparse.cc:397:parse_blif$98011.D0_00
+Info:                          Defined in:
+Info:                               rtl/dataflow_core.sv:158.35-158.51
+Info:                               /home/manuel/fpga/oss-cad-suite/lib/../share/yosys/gatemate/arith_map.v:33.26-33.27
+Info:      logic  0.61  105.54 Source $abc$92996$auto$blifparse.cc:397:parse_blif$98011.OUT
+Info:    routing  2.37  107.92 Net $auto$alumacc.cc:548:replace_alu$13999.B[5] (58,33) -> (56,37)
+Info:                          Sink $auto$alumacc.cc:548:replace_alu$13999.slice[5].addf_i.D0_01
+Info:                          Defined in:
+Info:                               rtl/dataflow_core.sv:158.35-158.51
+Info:                               /home/manuel/fpga/oss-cad-suite/lib/../share/yosys/gatemate/arith_map.v:31.22-31.23
+Info:      logic  0.56  108.47 Source $auto$alumacc.cc:548:replace_alu$13999.slice[5].addf_i.OUT2
+Info:    routing  1.86  110.33 Net $auto$alumacc.cc:548:replace_alu$13999.Y[5] (56,37) -> (54,37)
+Info:                          Sink $abc$92996$auto$blifparse.cc:397:parse_blif$98017.D0_00
+Info:                          Defined in:
+Info:                               rtl/dataflow_core.sv:158.35-158.51
+Info:                               /home/manuel/fpga/oss-cad-suite/lib/../share/yosys/gatemate/arith_map.v:33.26-33.27
+Info:      logic  0.55  110.88 Source $abc$92996$auto$blifparse.cc:397:parse_blif$98017.OUT
+Info:    routing  1.31  112.19 Net $auto$alumacc.cc:548:replace_alu$13996.B[5] (54,37) -> (55,40)
+Info:                          Sink $auto$alumacc.cc:548:replace_alu$13996.slice[5].addf_i.D0_01
+Info:                          Defined in:
+Info:                               rtl/dataflow_core.sv:158.35-158.51
+Info:                               /home/manuel/fpga/oss-cad-suite/lib/../share/yosys/gatemate/arith_map.v:31.22-31.23
+Info:      logic  0.56  112.75 Source $auto$alumacc.cc:548:replace_alu$13996.slice[5].addf_i.OUT2
+Info:    routing  2.17  114.92 Net $auto$alumacc.cc:548:replace_alu$13996.Y[5] (55,40) -> (55,43)
+Info:                          Sink $abc$92996$auto$blifparse.cc:397:parse_blif$98024.D0_00
+Info:                          Defined in:
+Info:                               rtl/dataflow_core.sv:158.35-158.51
+Info:                               /home/manuel/fpga/oss-cad-suite/lib/../share/yosys/gatemate/arith_map.v:33.26-33.27
+Info:      logic  0.61  115.53 Source $abc$92996$auto$blifparse.cc:397:parse_blif$98024.OUT
+Info:    routing  1.34  116.87 Net $auto$alumacc.cc:548:replace_alu$13993.B[5] (55,43) -> (54,43)
+Info:                          Sink $auto$alumacc.cc:548:replace_alu$13993.slice[5].addf_i.D0_01
+Info:                          Defined in:
+Info:                               rtl/dataflow_core.sv:158.35-158.51
+Info:                               /home/manuel/fpga/oss-cad-suite/lib/../share/yosys/gatemate/arith_map.v:31.22-31.23
+Info:      logic  0.55  117.42 Source $auto$alumacc.cc:548:replace_alu$13993.slice[5].addf_i.COUTY1
+Info:    routing  0.00  117.42 Net $auto$alumacc.cc:548:replace_alu$13993.CO[5] (54,43) -> (54,44)
+Info:                          Sink $auto$alumacc.cc:548:replace_alu$13993.slice[7].addf_i.CINY1
+Info:                          Defined in:
+Info:                               rtl/dataflow_core.sv:158.35-158.51
+Info:                               /home/manuel/fpga/oss-cad-suite/lib/../share/yosys/gatemate/arith_map.v:37.23-37.25
+Info:      logic  0.42  117.84 Source $auto$alumacc.cc:548:replace_alu$13993.slice[7].addf_i.OUT2
+Info:    routing  0.67  118.51 Net $auto$alumacc.cc:548:replace_alu$13993.Y[7] (54,44) -> (54,45)
+Info:                          Sink $abc$92996$auto$blifparse.cc:397:parse_blif$94682.D0_10
+Info:                          Defined in:
+Info:                               rtl/dataflow_core.sv:158.35-158.51
+Info:                               /home/manuel/fpga/oss-cad-suite/lib/../share/yosys/gatemate/arith_map.v:33.26-33.27
+Info:      logic  0.61  119.12 Source $abc$92996$auto$blifparse.cc:397:parse_blif$94682.OUT
+Info:    routing  1.34  120.46 Net $abc$92996$new_n8616 (54,45) -> (54,45)
+Info:                          Sink $abc$92996$auto$blifparse.cc:397:parse_blif$95627.D0_00
+Info:      logic  0.55  121.01 Source $abc$92996$auto$blifparse.cc:397:parse_blif$95627.OUT
+Info:    routing  1.45  122.46 Net $abc$92996$new_n9561 (54,45) -> (52,54)
+Info:                          Sink $abc$92996$auto$blifparse.cc:397:parse_blif$95650.D1_01
+Info:      logic  0.60  123.06 Source $abc$92996$auto$blifparse.cc:397:parse_blif$95650.OUT
+Info:    routing  1.69  124.75 Net $abc$92996$new_n9584 (52,54) -> (50,60)
+Info:                          Sink $abc$92996$auto$blifparse.cc:397:parse_blif$95704.D0_00
+Info:      logic  0.55  125.30 Source $abc$92996$auto$blifparse.cc:397:parse_blif$95704.OUT
+Info:    routing  0.41  125.71 Net $abc$92996$new_n9638 (50,60) -> (50,61)
+Info:                          Sink $abc$92996$auto$blifparse.cc:397:parse_blif$95705.D1_00
+Info:      logic  0.64  126.35 Source $abc$92996$auto$blifparse.cc:397:parse_blif$95705.OUT
+Info:    routing  1.31  127.66 Net $abc$92996$new_n9639 (50,61) -> (50,61)
+Info:                          Sink $abc$92996$auto$blifparse.cc:397:parse_blif$95756.D0_01
+Info:      logic  0.47  128.14 Source $abc$92996$auto$blifparse.cc:397:parse_blif$95756.OUT
+Info:    routing  0.00  128.14 Net $abc$92996$flatten\link.$0\response[87:0][7] (50,61) -> (50,61)
+Info:                          Sink $auto$ff.cc:337:slice$50189.DIN
+Info:                          Defined in:
+Info:                               rtl/dataflow_link.sv:54.2-103.5
+Info:      setup  0.10  128.24 Source $auto$ff.cc:337:slice$50189.DIN
+Info: 34.46 ns logic, 93.77 ns routing
+
+Info: Critical path report for cross-domain path '<async>' -> 'posedge link.clk':
+Info:       type curr  total name
+Info:     source  0.00  0.00 Source $iopadmap$dataflow_top.uart_rx_pin.Y
+Info:    routing  0.00  0.00 Net $iopadmap$dataflow_top.uart_rx_pin$conn$Y (0,51) -> (0,51)
+Info:                          Sink $iopadmap$dataflow_top.uart_rx_pin$iosel.GPIO_IN
+Info:      logic  0.38  0.38 Source $iopadmap$dataflow_top.uart_rx_pin$iosel.IN1
+Info:    routing  4.03  4.41 Net link.receiver.rx (0,51) -> (5,14)
+Info:                          Sink $auto$ff.cc:337:slice$50123$lt.D0_10
+Info:                          Defined in:
+Info:                               ../graph_microscope/rtl/uart_rx.sv:3.23-3.25
+Info:      logic  0.55  4.96 Source $auto$ff.cc:337:slice$50123$lt.OUT
+Info:    routing  0.00  4.96 Net $auto$ff.cc:337:slice$50123$di (5,14) -> (5,14)
+Info:                          Sink $auto$ff.cc:337:slice$50123.DIN
+Info:      setup  0.10  5.06 Source $auto$ff.cc:337:slice$50123.DIN
+Info: 1.03 ns logic, 4.03 ns routing
+
+ERROR: Max frequency for clock 'link.clk': 7.80 MHz (FAIL at 10.00 MHz)
+
+Info: Max delay <async> -> posedge link.clk: 5.06 ns
+
+Info: Slack histogram:
+Info:  legend: * represents 30 endpoint(s)
+Info:          + represents [1,30) endpoint(s)
+Info: [-28238, -21891) |+
+Info: [-21891, -15544) |+
+Info: [-15544,  -9197) |+
+Info: [ -9197,  -2850) | 
+Info: [ -2850,   3497) |+
+Info: [  3497,   9844) |+
+Info: [  9844,  16191) |**+
+Info: [ 16191,  22538) |****+
+Info: [ 22538,  28885) |+
+Info: [ 28885,  35232) |****+
+Info: [ 35232,  41579) |************************+
+Info: [ 41579,  47926) |*******************************+
+Info: [ 47926,  54273) |**************+
+Info: [ 54273,  60620) |*****+
+Info: [ 60620,  66967) |**************+
+Info: [ 66967,  73314) |**************+
+Info: [ 73314,  79661) |********************+
+Info: [ 79661,  86008) |************+
+Info: [ 86008,  92355) |*************************************+
+Info: [ 92355,  98702) |************************************************************ 
+Info: Update configuration based on routing..
+0 warnings, 1 error
+
+Info: Program finished normally.
