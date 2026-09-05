@@ -9,7 +9,17 @@ type Graph struct {
 	Descriptors [Nodes]Descriptor `json:"descriptors"`
 }
 
-func ResetGraph() Graph { return Graph{Nodes, Descriptors} }
+func ResetGraph() Graph {
+	return Graph{Nodes, [Nodes]Descriptor{
+		{Mul, 3, [2]Destination{{2, 0}}, 1, false},
+		{Mul, 3, [2]Destination{{2, 1}}, 1, false},
+		{Add, 3, [2]Destination{{5, 0}}, 1, false},
+		{Less, 3, [2]Destination{{4, 0}}, 1, false},
+		{BoolToInt, 1, [2]Destination{{5, 1}}, 1, false},
+		{Add, 3, [2]Destination{}, 0, true},
+		{Copy, 1, [2]Destination{{0, 0}, {1, 0}}, 2, false},
+	}}
+}
 func required(op Opcode) byte {
 	if op == Copy || op == BoolToInt {
 		return 1

@@ -94,16 +94,6 @@ type Descriptor struct {
 	Final        bool
 }
 
-var Descriptors = [Nodes]Descriptor{
-	{Mul, 3, [2]Destination{{2, 0}}, 1, false},
-	{Mul, 3, [2]Destination{{2, 1}}, 1, false},
-	{Add, 3, [2]Destination{{5, 0}}, 1, false},
-	{Less, 3, [2]Destination{{4, 0}}, 1, false},
-	{BoolToInt, 1, [2]Destination{{5, 1}}, 1, false},
-	{Add, 3, [2]Destination{}, 0, true},
-	{Copy, 1, [2]Destination{{0, 0}, {1, 0}}, 2, false},
-}
-
 type Token struct {
 	Context  byte  `json:"context"`
 	Epoch    byte  `json:"epoch"`
@@ -171,9 +161,6 @@ func (s *state) accept(t Token) byte {
 		v.Pending = true
 	}
 	return 0
-}
-func completion(c, e, n byte, v Value) Token {
-	return Token{Context: c, Epoch: e, Node: n, Producer: n, Final: Descriptors[n].Final, Value: v}
 }
 func fault(c, e, n, code byte) Token {
 	return Token{Context: c, Epoch: e, Node: n, Producer: n, Final: true, Subtype: code, Value: ErrorValue(code)}
