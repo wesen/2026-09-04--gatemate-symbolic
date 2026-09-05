@@ -8,3 +8,5 @@
 __pycache__/
 .pytest_cache/
 *.pyc
+
+/elastic_dataflow/build/

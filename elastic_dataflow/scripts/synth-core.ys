@@ -1,0 +1,4 @@
+read_verilog -defer -sv rtl/dataflow_pkg.sv ../symbolic_eval/rtl/sync_sdp_ram.sv rtl/df_fifo.sv rtl/df_unit.sv rtl/dataflow_core.sv
+synth_gatemate -top dataflow_core -luttree -nomx8
+stat
+write_json build/core.json

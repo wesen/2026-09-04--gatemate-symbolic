@@ -1,0 +1,27 @@
+
+ /----------------------------------------------------------------------------\
+ |  yosys -- Yosys Open SYnthesis Suite                                       |
+ |  Copyright (C) 2012 - 2026  Claire Xenia Wolf <claire@yosyshq.com>         |
+ |  Distributed under an ISC-like license, type "license" to see terms        |
+ \----------------------------------------------------------------------------/
+ Yosys 0.68+130 (git sha1 dd83bbad2-dirty, Release, Clang /usr/bin/clang++ 21.1.8)
+
+-- Executing script file `scripts/synth-core.ys' --
+
+1. Executing Verilog-2005 frontend: rtl/dataflow_pkg.sv
+Parsing SystemVerilog input from `rtl/dataflow_pkg.sv' to AST representation.
+Successfully finished Verilog frontend.
+
+2. Executing Verilog-2005 frontend: ../symbolic_eval/rtl/sync_sdp_ram.sv
+Parsing SystemVerilog input from `../symbolic_eval/rtl/sync_sdp_ram.sv' to AST representation.
+Storing AST representation for module `$abstract\sync_sdp_ram'.
+Successfully finished Verilog frontend.
+
+3. Executing Verilog-2005 frontend: rtl/df_fifo.sv
+Parsing SystemVerilog input from `rtl/df_fifo.sv' to AST representation.
+Storing AST representation for module `$abstract\df_fifo'.
+Successfully finished Verilog frontend.
+
+4. Executing Verilog-2005 frontend: rtl/df_unit.sv
+Parsing SystemVerilog input from `rtl/df_unit.sv' to AST representation.
+rtl/df_unit.sv:8: ERROR: syntax error, unexpected TOK_IMPORT

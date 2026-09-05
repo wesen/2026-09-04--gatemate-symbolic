@@ -10,13 +10,20 @@ Topics:
 DocType: reference
 Intent: long-term
 Owners: []
-RelatedFiles: []
+RelatedFiles:
+    - Path: repo://elastic_dataflow/rtl/dataflow_core.sv
+      Note: Operand matching, scheduling, epochs, routing, and paused debug interface
+    - Path: repo://elastic_dataflow/rtl/df_unit.sv
+      Note: Elastic arithmetic pipeline
+    - Path: repo://elastic_dataflow/sim/tb_dataflow.sv
+      Note: Directed RTL invariants and parameter matrix
 ExternalSources: []
 Summary: ""
 LastUpdated: 2026-09-04T19:54:24.640534987-04:00
 WhatFor: ""
 WhenToUse: ""
 ---
+
 
 # Implementation diary
 
@@ -139,3 +146,61 @@ go test -race ./pkg/dataflow -count=1 -v; go vet ./pkg/dataflow; docmgr doctor. 
 The original eleven-slip plan is preserved. The expanded plan has seven phase pairs plus original/revised plan receipts, for sixteen total. P1 remains complete; P2 model tests complete; IDE implementation is deliberately scheduled after P5 engine qualification. The subsequent user prompt was: "or maybe you already are doing that".
 
 IDE delivery receipt: `OK: uploaded GATEMATE 007 Dataflow IDE Design.pdf -> /ai/2026/09/04/GATEMATE-SYMBOLIC-007`. Revised plan receipt reports `printed: true`.
+
+## Step 3: Elastic RTL and paused inspection simulation
+
+Implemented the fixed graph as a bounded RTL engine with operand RAM, activation reservations, separate arithmetic pipelines, completion routing, context cancellation, and debug pages. The first directed simulation matrix passed all twelve queue-depth/multiplier-latency configurations. Synthesis is the next qualification gate; simulation alone does not establish device fit or timing.
+
+### Prompt Context
+
+**User prompt (verbatim, JSON encoded):**
+
+```json
+"(see Step 1)"
+```
+
+**Assistant interpretation:** Design, publish, implement, and validate the book's elastic dataflow laboratory with task commits, detailed diary, and physical work slips.
+
+**Inferred user intent:** Build a working concurrent symbolic machine and preserve enough explanation and evidence for an intern to understand and maintain it.
+
+### What I did
+
+Added dataflow_pkg.sv, df_fifo.sv, df_unit.sv, and dataflow_core.sv. Added a self-checking RTL testbench and scripts/test.sh. Printed P2 completion and P3 start slips after model commit 77802e8. The IDE guide upload reported success.
+
+### Why
+
+The physical IDE needs access to actual stopped machine state, including synchronous operands and already captured issue operands. Cancellation must preserve an offered output while invalidating other old-epoch work.
+
+### What worked
+
+All initial RTL simulations passed: DEPTH 1/2/8 crossed with LATENCY 1/2/4/8. Checks include outputs 58 and 12, twelve unique activations, 100-cycle output hold, rejection of cancel for that held context, cancellation inside the multiplier, old-input and old-completion suppression, COPY fanout producing 78, isolated duplicate fault, paused RAM inspection, and reduced-width epoch wrap drain guard.
+
+### What didn't work
+
+The first tmux synthesis launch failed before synthesis: error connecting to /tmp/tmux-1000/default (Operation not permitted). Retried using authorized normal tmux access. No RTL repair was required for the simulation matrix.
+
+### What I learned
+
+A paused debug RAM read can change the memory response while issue is waiting. Tracking the previous read address prevents capturing a response belonging to a debug slot after resume; captured operands remain private issue registers.
+
+### What was tricky to build
+
+External input and router deliveries share one commit decision each cycle. Per-slot pending activation storage means the commit cannot deadlock waiting for a shared ready FIFO. The first context fault clears pending work after other same-edge scheduling assignments. Output staleness cleanup remains available while compute is paused.
+
+### What warrants a second pair of eyes
+
+Review cancellation priority, fault versus issue ordering, same-edge queue events, operand read ownership, and the combinational round-robin selection cost in synthesis.
+
+### What should be done in the future
+
+Check synthesis resources; add UART control and Go snapshots; broaden randomized differential tests during engine qualification.
+
+### Code review instructions
+
+Source /home/manuel/fpga/oss-cad-suite/environment, then elastic_dataflow/scripts/test.sh. Inspect reference/validation/P3-rtl-first.log. Synthesis runs through elastic_dataflow/scripts/check-synthesis.sh in tmux.
+
+### Technical details
+
+Debug pages: 0 capabilities; 1 context/queue status; 2..9 counters; 10..11 issue; 12..13 router; 16..23 multiplier stages; 24 validity; 25 ALU; 32..59 operand pairs; 64..91 slot flags; 96..103 input queue; 112..119 completion queue; 128..135 output queue; 144..147 pending errors. Read operand pages only while paused and hold the address for at least two clocks before sampling. Activation traces describe unit admission; model and RTL microcycle counts are intentionally not equated.
+
+Synthesis checkpoint failure (first attempt): `rtl/df_unit.sv:8: ERROR: syntax error, unexpected TOK_IMPORT`. The installed Yosys Verilog frontend rejects the wildcard package import accepted by Icarus. Existing project RTL uses explicit package-qualified references. Applied that convention with the retained one-time script `elastic_dataflow/scripts/qualify-package.py`, then restarted synthesis. Original failure log is retained as `P3-synthesis-import-failure.log`.
