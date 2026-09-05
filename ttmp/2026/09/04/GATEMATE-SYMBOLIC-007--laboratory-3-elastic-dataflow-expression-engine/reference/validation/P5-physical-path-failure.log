@@ -1,0 +1,6 @@
+=== RUN   TestPhysicalQualification
+    physical_test.go:29: open ttmp/2026/09/04/GATEMATE-SYMBOLIC-007--laboratory-3-elastic-dataflow-expression-engine/reference/validation/P5-physical-wire.log: no such file or directory
+--- FAIL: TestPhysicalQualification (0.00s)
+FAIL
+FAIL	github.com/wesen/2026-09-04--gatemate-symbolic/pkg/dataflow	0.004s
+FAIL

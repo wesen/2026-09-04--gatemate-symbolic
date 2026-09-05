@@ -1,0 +1,186 @@
+[
+  {
+    "example": "book",
+    "source": "serial",
+    "outputs": [
+      {
+        "context": 0,
+        "epoch": 0,
+        "node": 5,
+        "port": 0,
+        "final": true,
+        "producer": 5,
+        "subtype": 0,
+        "value": 58
+      },
+      {
+        "context": 1,
+        "epoch": 0,
+        "node": 5,
+        "port": 0,
+        "final": true,
+        "producer": 5,
+        "subtype": 0,
+        "value": 12
+      }
+    ],
+    "counters": {
+      "activations": 12,
+      "alu": 8,
+      "completionHigh": 1,
+      "cycles": 68,
+      "duplicates": 0,
+      "inputHigh": 8,
+      "invalid": 0,
+      "mul": 4,
+      "outputHigh": 2,
+      "outputs": 2,
+      "readyHigh": 4,
+      "routerBlocked": 0,
+      "source": 12,
+      "stale": 0,
+      "unitBlocked": 0,
+      "unitBusy": 24
+    },
+    "config": {
+      "InputDepth": 8,
+      "CompletionDepth": 8,
+      "OutputDepth": 8,
+      "MulLatency": 4,
+      "EpochBits": 8
+    }
+  },
+  {
+    "example": "copy",
+    "source": "serial",
+    "outputs": [
+      {
+        "context": 0,
+        "epoch": 0,
+        "node": 5,
+        "port": 0,
+        "final": true,
+        "producer": 5,
+        "subtype": 0,
+        "value": 78
+      }
+    ],
+    "counters": {
+      "activations": 7,
+      "alu": 5,
+      "completionHigh": 1,
+      "cycles": 48,
+      "duplicates": 0,
+      "inputHigh": 5,
+      "invalid": 0,
+      "mul": 2,
+      "outputHigh": 1,
+      "outputs": 1,
+      "readyHigh": 2,
+      "routerBlocked": 0,
+      "source": 5,
+      "stale": 0,
+      "unitBlocked": 0,
+      "unitBusy": 13
+    },
+    "config": {
+      "InputDepth": 8,
+      "CompletionDepth": 8,
+      "OutputDepth": 8,
+      "MulLatency": 4,
+      "EpochBits": 8
+    }
+  },
+  {
+    "example": "fault",
+    "source": "serial",
+    "outputs": [
+      {
+        "context": 0,
+        "epoch": 0,
+        "node": 0,
+        "port": 0,
+        "final": true,
+        "producer": 0,
+        "subtype": 2,
+        "value": 893353197570
+      },
+      {
+        "context": 1,
+        "epoch": 0,
+        "node": 5,
+        "port": 0,
+        "final": true,
+        "producer": 5,
+        "subtype": 0,
+        "value": 12
+      }
+    ],
+    "counters": {
+      "activations": 6,
+      "alu": 4,
+      "completionHigh": 1,
+      "cycles": 48,
+      "duplicates": 1,
+      "inputHigh": 8,
+      "invalid": 0,
+      "mul": 2,
+      "outputHigh": 1,
+      "outputs": 2,
+      "readyHigh": 2,
+      "routerBlocked": 0,
+      "source": 8,
+      "stale": 0,
+      "unitBlocked": 0,
+      "unitBusy": 12
+    },
+    "config": {
+      "InputDepth": 8,
+      "CompletionDepth": 8,
+      "OutputDepth": 8,
+      "MulLatency": 4,
+      "EpochBits": 8
+    }
+  },
+  {
+    "example": "cancel",
+    "source": "serial",
+    "outputs": [
+      {
+        "context": 2,
+        "epoch": 1,
+        "node": 5,
+        "port": 0,
+        "final": true,
+        "producer": 5,
+        "subtype": 0,
+        "value": 12
+      }
+    ],
+    "counters": {
+      "activations": 7,
+      "alu": 4,
+      "completionHigh": 1,
+      "cycles": 54,
+      "duplicates": 0,
+      "inputHigh": 7,
+      "invalid": 0,
+      "mul": 3,
+      "outputHigh": 1,
+      "outputs": 1,
+      "readyHigh": 2,
+      "routerBlocked": 0,
+      "source": 9,
+      "stale": 2,
+      "unitBlocked": 0,
+      "unitBusy": 16
+    },
+    "config": {
+      "InputDepth": 8,
+      "CompletionDepth": 8,
+      "OutputDepth": 8,
+      "MulLatency": 4,
+      "EpochBits": 8
+    }
+  }
+]

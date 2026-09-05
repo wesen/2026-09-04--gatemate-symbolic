@@ -1,0 +1,399 @@
+[
+{
+  "example": "book",
+  "outputs": [
+    {
+      "context": 0,
+      "epoch": 0,
+      "node": 5,
+      "port": 0,
+      "final": true,
+      "producer": 5,
+      "subtype": 0,
+      "value": 58
+    },
+    {
+      "context": 1,
+      "epoch": 0,
+      "node": 5,
+      "port": 0,
+      "final": true,
+      "producer": 5,
+      "subtype": 0,
+      "value": 12
+    }
+  ],
+  "snapshot": {
+    "source": "serial",
+    "config": {
+      "InputDepth": 8,
+      "CompletionDepth": 8,
+      "OutputDepth": 8,
+      "MulLatency": 4,
+      "EpochBits": 8
+    },
+    "epochs": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "closed": [
+      true,
+      true,
+      false,
+      false
+    ],
+    "slots": [
+      {
+        "context": 0,
+        "node": 0,
+        "values": [
+          7,
+          6
+        ],
+        "valid": 3,
+        "issued": true,
+        "pending": false
+      },
+      {
+        "context": 0,
+        "node": 1,
+        "values": [
+          3,
+          5
+        ],
+        "valid": 3,
+        "issued": true,
+        "pending": false
+      },
+      {
+        "context": 0,
+        "node": 2,
+        "values": [
+          42,
+          15
+        ],
+        "valid": 3,
+        "issued": true,
+        "pending": false
+      },
+      {
+        "context": 0,
+        "node": 3,
+        "values": [
+          2,
+          9
+        ],
+        "valid": 3,
+        "issued": true,
+        "pending": false
+      },
+      {
+        "context": 0,
+        "node": 4,
+        "values": [
+          68719476737,
+          0
+        ],
+        "valid": 1,
+        "issued": true,
+        "pending": false
+      },
+      {
+        "context": 0,
+        "node": 5,
+        "values": [
+          57,
+          1
+        ],
+        "valid": 3,
+        "issued": true,
+        "pending": false
+      },
+      {
+        "context": 0,
+        "node": 6,
+        "values": [
+          0,
+          0
+        ],
+        "valid": 0,
+        "issued": false,
+        "pending": false
+      },
+      {
+        "context": 1,
+        "node": 0,
+        "values": [
+          10,
+          4294967294
+        ],
+        "valid": 3,
+        "issued": true,
+        "pending": false
+      },
+      {
+        "context": 1,
+        "node": 1,
+        "values": [
+          4,
+          8
+        ],
+        "valid": 3,
+        "issued": true,
+        "pending": false
+      },
+      {
+        "context": 1,
+        "node": 2,
+        "values": [
+          4294967276,
+          32
+        ],
+        "valid": 3,
+        "issued": true,
+        "pending": false
+      },
+      {
+        "context": 1,
+        "node": 3,
+        "values": [
+          7,
+          1
+        ],
+        "valid": 3,
+        "issued": true,
+        "pending": false
+      },
+      {
+        "context": 1,
+        "node": 4,
+        "values": [
+          68719476736,
+          0
+        ],
+        "valid": 1,
+        "issued": true,
+        "pending": false
+      },
+      {
+        "context": 1,
+        "node": 5,
+        "values": [
+          12,
+          0
+        ],
+        "valid": 3,
+        "issued": true,
+        "pending": false
+      },
+      {
+        "context": 1,
+        "node": 6,
+        "values": [
+          0,
+          0
+        ],
+        "valid": 0,
+        "issued": false,
+        "pending": false
+      },
+      {
+        "context": 2,
+        "node": 0,
+        "values": [
+          0,
+          0
+        ],
+        "valid": 0,
+        "issued": false,
+        "pending": false
+      },
+      {
+        "context": 2,
+        "node": 1,
+        "values": [
+          0,
+          0
+        ],
+        "valid": 0,
+        "issued": false,
+        "pending": false
+      },
+      {
+        "context": 2,
+        "node": 2,
+        "values": [
+          0,
+          0
+        ],
+        "valid": 0,
+        "issued": false,
+        "pending": false
+      },
+      {
+        "context": 2,
+        "node": 3,
+        "values": [
+          0,
+          0
+        ],
+        "valid": 0,
+        "issued": false,
+        "pending": false
+      },
+      {
+        "context": 2,
+        "node": 4,
+        "values": [
+          0,
+          0
+        ],
+        "valid": 0,
+        "issued": false,
+        "pending": false
+      },
+      {
+        "context": 2,
+        "node": 5,
+        "values": [
+          0,
+          0
+        ],
+        "valid": 0,
+        "issued": false,
+        "pending": false
+      },
+      {
+        "context": 2,
+        "node": 6,
+        "values": [
+          0,
+          0
+        ],
+        "valid": 0,
+        "issued": false,
+        "pending": false
+      },
+      {
+        "context": 3,
+        "node": 0,
+        "values": [
+          0,
+          0
+        ],
+        "valid": 0,
+        "issued": false,
+        "pending": false
+      },
+      {
+        "context": 3,
+        "node": 1,
+        "values": [
+          0,
+          0
+        ],
+        "valid": 0,
+        "issued": false,
+        "pending": false
+      },
+      {
+        "context": 3,
+        "node": 2,
+        "values": [
+          0,
+          0
+        ],
+        "valid": 0,
+        "issued": false,
+        "pending": false
+      },
+      {
+        "context": 3,
+        "node": 3,
+        "values": [
+          0,
+          0
+        ],
+        "valid": 0,
+        "issued": false,
+        "pending": false
+      },
+      {
+        "context": 3,
+        "node": 4,
+        "values": [
+          0,
+          0
+        ],
+        "valid": 0,
+        "issued": false,
+        "pending": false
+      },
+      {
+        "context": 3,
+        "node": 5,
+        "values": [
+          0,
+          0
+        ],
+        "valid": 0,
+        "issued": false,
+        "pending": false
+      },
+      {
+        "context": 3,
+        "node": 6,
+        "values": [
+          0,
+          0
+        ],
+        "valid": 0,
+        "issued": false,
+        "pending": false
+      }
+    ],
+    "issue": null,
+    "router": null,
+    "mul": [
+      null,
+      null,
+      null,
+      null
+    ],
+    "alu": [
+      null
+    ],
+    "input": [],
+    "completion": [],
+    "output": [],
+    "errors": [
+      null,
+      null,
+      null,
+      null
+    ],
+    "counters": {
+      "activations": 12,
+      "alu": 8,
+      "completionHigh": 1,
+      "cycles": 68,
+      "duplicates": 0,
+      "inputHigh": 8,
+      "invalid": 0,
+      "mul": 4,
+      "outputHigh": 2,
+      "outputs": 2,
+      "readyHigh": 4,
+      "routerBlocked": 0,
+      "source": 12,
+      "stale": 0,
+      "unitBlocked": 0,
+      "unitBusy": 24
+    },
+    "quiescent": true
+  },
+  "source": "serial"
+}
+]

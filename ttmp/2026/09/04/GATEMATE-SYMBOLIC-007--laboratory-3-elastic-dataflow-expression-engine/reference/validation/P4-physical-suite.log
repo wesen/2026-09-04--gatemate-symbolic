@@ -1,0 +1,5 @@
+{"level":"info","engine":"serial","example":"book","time":"2026-09-04T20:53:35-04:00","message":"resetting engine and checking example"}
+{"level":"info","engine":"serial","example":"copy","time":"2026-09-04T20:53:35-04:00","message":"resetting engine and checking example"}
+{"level":"info","engine":"serial","example":"fault","time":"2026-09-04T20:53:36-04:00","message":"resetting engine and checking example"}
+{"level":"info","engine":"serial","example":"cancel","time":"2026-09-04T20:53:37-04:00","message":"resetting engine and checking example"}
+PASS all four physical examples
