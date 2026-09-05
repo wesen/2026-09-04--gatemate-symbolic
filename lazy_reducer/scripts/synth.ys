@@ -1,0 +1,4 @@
+read_verilog -defer -sv ../symbolic_eval/rtl/sync_sdp_ram.sv ../symbolic_eval/rtl/reset_sync.sv ../symbolic_eval/rtl/uart_tx.sv ../graph_microscope/rtl/uart_rx.sv rtl/lazy_core.sv rtl/lazy_link.sv rtl/lazy_top.sv
+synth_gatemate -top lazy_top -luttree -nomx8
+stat
+write_json build/top.json

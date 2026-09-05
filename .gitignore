@@ -14,3 +14,6 @@ __pycache__/
 /web/dist-dataflow/
 /internal/dataflowide/assets/
 /elastic_dataflow/projects/
+/lazy_reducer/build/
+/internal/lazyide/assets/
+/web/dist-lazy/
