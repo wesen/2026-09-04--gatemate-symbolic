@@ -1,0 +1,23 @@
+dry_run: false
+height: 372
+layout_member: d2-start.yaml
+ok: true
+printed: true
+printer_response:
+    ok: true
+rendered_at: "2026-09-05T23:05:41Z"
+response:
+    height: 372
+    ok: true
+    printed: true
+    printerResponse:
+        ok: true
+    renderedAt: "2026-09-05T23:05:41Z"
+    width: 384
+source_kind: file
+status_code: 200
+url: https://almanach.crib.scapegoat.dev/api/render-and-print
+width: 384
+
+---
+

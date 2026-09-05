@@ -1,0 +1,26 @@
+{
+  "report-done": [
+    "GATEMATE-SYMBOLIC-009--laboratory-4-lazy-graph-reducer-and-heap-inspector/reference/validation/report-done-20260905T230528Z-replay-print.log"
+  ],
+  "plan": [
+    "GATEMATE-SYMBOLIC-010--lazy-functional-language-compiler-and-source-aware-fpga-ide/reference/validation/plan-20260905T230531Z-replay-print.log"
+  ],
+  "d1-start": [
+    "GATEMATE-SYMBOLIC-010--lazy-functional-language-compiler-and-source-aware-fpga-ide/reference/validation/d1-start-20260905T230535Z-replay-print.log"
+  ],
+  "d1-done": [
+    "GATEMATE-SYMBOLIC-010--lazy-functional-language-compiler-and-source-aware-fpga-ide/reference/validation/d1-done-20260905T230537Z-replay-print.log"
+  ],
+  "d2-start": [
+    "GATEMATE-SYMBOLIC-010--lazy-functional-language-compiler-and-source-aware-fpga-ide/reference/validation/d2-start-20260905T230540Z-replay-print.log"
+  ],
+  "d2-done": [
+    "GATEMATE-SYMBOLIC-010--lazy-functional-language-compiler-and-source-aware-fpga-ide/reference/validation/d2-done-20260905T230543Z-replay-print.log"
+  ],
+  "d3-start": [
+    "GATEMATE-SYMBOLIC-010--lazy-functional-language-compiler-and-source-aware-fpga-ide/reference/validation/d3-start-20260905T230546Z-replay-print.log"
+  ],
+  "d3-done": [
+    "GATEMATE-SYMBOLIC-010--lazy-functional-language-compiler-and-source-aware-fpga-ide/reference/validation/d3-done-20260905T230549Z-replay-print.log"
+  ]
+}

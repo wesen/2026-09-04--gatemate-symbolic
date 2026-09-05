@@ -34,8 +34,8 @@ figure_page=next(i+1 for i,p in enumerate(pages) if 'Compiler pipeline from sour
 subprocess.run(['pdftoppm','-f',str(figure_page),'-l',str(figure_page),'-scale-to','1400','-png','-singlefile',str(pdf),str(root/'reference/validation/design-figure-page')],check=True)
 slips={}
 for name in ['plan','d1-start','d1-done','d2-start','d2-done','d3-start','d3-done']:
- log=root/f'reference/validation/{name}-print.log'
- slips[name]='printed' if log.exists() and 'printed: true' in log.read_text() else 'pending'
+ logs=(root/'reference/validation').glob(name+'*print.log')
+ slips[name]='printed' if any('printed: true' in p.read_text() for p in logs) else 'pending'
 upload=root/'reference/validation/remarkable-upload.log'
 out={'documents':report,'figures':figures,'pdfPages':len(pages),'inspectedFigurePage':figure_page,'vaultArticleAndAssetsMatch':True,'physicalSlips':slips,'remarkableUploaded':upload.exists() and 'OK: uploaded' in upload.read_text()}
 print(json.dumps(out,indent=2))

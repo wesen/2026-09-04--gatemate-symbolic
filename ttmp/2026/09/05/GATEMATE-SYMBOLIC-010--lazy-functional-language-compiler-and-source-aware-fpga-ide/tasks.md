@@ -11,4 +11,4 @@
 - [ ] I4: Implement synchronous FPGA machine, checked protocol and timing qualification <!-- t:g60a -->
 - [ ] I5: Implement Go service and React source-aware closure and stream inspector <!-- t:hzii -->
 - [ ] I6: Qualify physical functions, sharing and finite stream demand; capture report figures <!-- t:c32s -->
-- [ ] Print eight retained report/design slips after the external renderer recovers; use scripts/11-replay-pending-slips.sh --print <!-- t:xwgf -->
+- [x] Print eight retained report/design slips after the external renderer recovers; use scripts/11-replay-pending-slips.sh --print <!-- t:xwgf -->
