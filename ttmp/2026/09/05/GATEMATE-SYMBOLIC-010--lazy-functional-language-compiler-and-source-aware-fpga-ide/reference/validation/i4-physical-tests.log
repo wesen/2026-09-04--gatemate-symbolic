@@ -1,0 +1,22 @@
+=== RUN   TestPhysicalPrograms
+=== RUN   TestPhysicalPrograms/shared
+    physical_test.go:119: shared artifact=4f0fe6608a8d2de715f13d1201ee3ba687bc701d92cda1517bd884986a1ce742 heap=28 result={Tag:0 Flags:0 A:0 B:0 Payload:168} prefix=[] counters={Cycles:100000 CodeReads:15 HeapReads:39 Allocations:9 AllocatedThunks:2 AllocatedFunctions:1 AllocatedEnvironments:2 AllocatedCons:0 AllocatedIntegers:4 Claims:4 Updates:4 Adds:3 Subtracts:0 Multiplies:1 Equalities:0 ComparisonsLE:0 Indirections:3 EnvironmentSteps:7 MaxStack:6 MaxHeap:28 OutputStalls:99772 Faults:0 TraceDropped:0}
+=== RUN   TestPhysicalPrograms/closure
+    physical_test.go:119: closure artifact=8289a5c292d999c61f790b920c9883987106028fd87e2123a28d1360c6a1598f heap=28 result={Tag:0 Flags:0 A:0 B:0 Payload:42} prefix=[] counters={Cycles:100000 CodeReads:12 HeapReads:27 Allocations:9 AllocatedThunks:3 AllocatedFunctions:2 AllocatedEnvironments:3 AllocatedCons:0 AllocatedIntegers:1 Claims:5 Updates:5 Adds:1 Subtracts:0 Multiplies:0 Equalities:0 ComparisonsLE:0 Indirections:0 EnvironmentSteps:6 MaxStack:5 MaxHeap:28 OutputStalls:99850 Faults:0 TraceDropped:0}
+=== RUN   TestPhysicalPrograms/unused
+    physical_test.go:119: unused artifact=811cd758196ade90480ec9e835ea90e333c385b5ef2f598661b0dd7c89b04c81 heap=23 result={Tag:0 Flags:0 A:0 B:0 Payload:7} prefix=[] counters={Cycles:100000 CodeReads:4 HeapReads:11 Allocations:3 AllocatedThunks:1 AllocatedFunctions:1 AllocatedEnvironments:1 AllocatedCons:0 AllocatedIntegers:0 Claims:2 Updates:2 Adds:0 Subtracts:0 Multiplies:0 Equalities:0 ComparisonsLE:0 Indirections:0 EnvironmentSteps:3 MaxStack:3 MaxHeap:23 OutputStalls:99944 Faults:0 TraceDropped:0}
+=== RUN   TestPhysicalPrograms/cycle
+    physical_test.go:119: cycle artifact=d0637f5b220a6ad2261276a4be10b523872c6ca57ea23c09e26ec8899c65884d heap=17 result={Tag:13 Flags:0 A:0 B:0 Payload:3} prefix=[] counters={Cycles:100000 CodeReads:3 HeapReads:10 Allocations:2 AllocatedThunks:1 AllocatedFunctions:0 AllocatedEnvironments:1 AllocatedCons:0 AllocatedIntegers:0 Claims:2 Updates:2 Adds:0 Subtracts:0 Multiplies:0 Equalities:0 ComparisonsLE:0 Indirections:0 EnvironmentSteps:2 MaxStack:2 MaxHeap:17 OutputStalls:99954 Faults:1 TraceDropped:0}
+=== RUN   TestPhysicalPrograms/productive
+    physical_test.go:119: productive artifact=a8e10aedf37bda2ef3ea3ec0d4aed696fd6b0db8f05ff5ba333b3a9f156c5b9b heap=21 result={Tag:3 Flags:0 A:18 B:19 Payload:0} prefix=[1 1 1 1 1 1 1 1] counters={Cycles:1600000 CodeReads:5 HeapReads:58 Allocations:5 AllocatedThunks:3 AllocatedFunctions:0 AllocatedEnvironments:1 AllocatedCons:1 AllocatedIntegers:0 Claims:4 Updates:4 Adds:0 Subtracts:0 Multiplies:0 Equalities:0 ComparisonsLE:0 Indirections:14 EnvironmentSteps:2 MaxStack:2 MaxHeap:21 OutputStalls:1599794 Faults:0 TraceDropped:0}
+=== RUN   TestPhysicalPrograms/squares
+    physical_test.go:119: squares artifact=4616cdc158abb3008c5103b2918f836fd31298caf742738c944ab8c24f253841 heap=268 result={Tag:3 Flags:0 A:261 B:262 Payload:0} prefix=[1 4 9 16 25 36 49 64] counters={Cycles:1600000 CodeReads:302 HeapReads:909 Allocations:242 AllocatedThunks:96 AllocatedFunctions:20 AllocatedEnvironments:80 AllocatedCons:24 AllocatedIntegers:22 Claims:98 Updates:98 Adds:7 Subtracts:7 Multiplies:8 Equalities:0 ComparisonsLE:8 Indirections:50 EnvironmentSteps:337 MaxStack:8 MaxHeap:268 OutputStalls:1595255 Faults:0 TraceDropped:374}
+--- PASS: TestPhysicalPrograms (7.66s)
+    --- PASS: TestPhysicalPrograms/shared (0.84s)
+    --- PASS: TestPhysicalPrograms/closure (0.83s)
+    --- PASS: TestPhysicalPrograms/unused (0.66s)
+    --- PASS: TestPhysicalPrograms/cycle (0.52s)
+    --- PASS: TestPhysicalPrograms/productive (0.94s)
+    --- PASS: TestPhysicalPrograms/squares (3.85s)
+PASS
+ok  	github.com/wesen/2026-09-04--gatemate-symbolic/pkg/lazylang/serial	7.661s

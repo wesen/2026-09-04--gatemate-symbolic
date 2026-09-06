@@ -1,0 +1,18 @@
+Compile, observe or execute typed LFL1 source and emit JSON
+
+Usage:
+  lazy-language [flags]
+
+Flags:
+      --action string          - <choice> (compile,reference,run) (default "run")
+      --config-file string    Explicit config file path to load via middlewares - <string>
+      --device string          - <string> (default "/dev/ttyACM0")
+      --engine string          - <choice> (model,serial) (default "model")
+  -h, --help                  help for lazy-language
+      --log-level string       - <choice> (debug,info,warn,error) (default "info")
+      --prefix int             - <int> (default 8)
+      --print-parsed-fields   Print the parsed fields - <bool>
+      --print-schema          Print the command's schema - <bool>
+      --print-yaml            Print the command's YAML - <bool>
+      --source string         Source .lazy file - <string>
+      --ticks int              - <int> (default 100000)

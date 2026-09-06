@@ -8,9 +8,9 @@
 - [x] I1: Implement parser, monomorphic type checker and independent semantic evaluator <!-- t:xxed -->
 - [x] I2: Implement deterministic expression-code compiler and source artifacts <!-- t:6d0s -->
 - [x] I3: Implement allocated Go machine and differential semantic tests <!-- t:860w -->
-- [ ] I4: Implement synchronous FPGA machine, checked protocol and timing qualification <!-- t:g60a -->
-- [ ] I5: Implement Go service and React source-aware closure and stream inspector <!-- t:hzii -->
-- [ ] I6: Qualify physical functions, sharing and finite stream demand; capture report figures <!-- t:c32s -->
+- [x] I4: Implement synchronous FPGA machine, checked protocol and timing qualification <!-- t:g60a -->
+- [x] I5: Implement Go service and React source-aware closure and stream inspector <!-- t:hzii -->
+- [x] I6: Qualify physical functions, sharing and finite stream demand; capture report figures <!-- t:c32s -->
 - [x] Print eight retained report/design slips after the external renderer recovers; use scripts/11-replay-pending-slips.sh --print <!-- t:xwgf -->
 - [x] I1/S1: Implement syntax AST and lexer with exact byte spans <!-- t:ft33 -->
 - [x] I1/S2: Implement recursive descent and Pratt parsing with diagnostics and recovery <!-- t:itaj -->

@@ -1,0 +1,3 @@
+GOBIN=/tmp go install github.com/go-go-golems/glazed/cmd/tools/glazed-lint@v1.4.2
+go: github.com/go-go-golems/glazed/cmd/tools/glazed-lint@v1.4.2: github.com/go-go-golems/glazed/cmd/tools/glazed-lint@v1.4.2: Get "https://proxy.golang.org/github.com/go-go-golems/glazed/cmd/tools/glazed-lint/@v/v1.4.2.info": dial tcp: lookup proxy.golang.org on 127.0.0.53:53: dial udp 127.0.0.53:53: socket: operation not permitted
+make: *** [Makefile:16: glazed-lint-build] Error 1

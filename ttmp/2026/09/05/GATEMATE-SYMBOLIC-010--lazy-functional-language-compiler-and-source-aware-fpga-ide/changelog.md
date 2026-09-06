@@ -54,3 +54,23 @@ Step 9: Complete I2 deterministic compiler, packed records, provenance and artif
 
 Step 10: Complete I3 allocated machine and differential tests; shared fixture and six programs match, repository/race suites pass (85bb6a3).
 
+
+## 2026-09-05
+
+I4 qualified: 15-program RTL and checked UART simulations pass; routed at 21.26 MHz; six physical programs match heap/provenance/semantic counters/traces (e481650). I5 browser flow captures four model screenshots.
+
+
+## 2026-09-05
+
+Step 12: Complete Go/React source-aware IDE, CLI, resumable streams and detached history; 11 screenshots captured, physical browser flow and final validation pass (17c611a).
+
+
+## 2026-09-05
+
+Step 13: Complete physical/UI qualification and 3290-word intern handoff; eleven screenshots retained; eleven-page implemented guide uploaded to reMarkable; all validation passes.
+
+
+## 2026-09-05
+
+All D1-D3 and I1-I6 tasks complete. Language/compiler/Go machine/FPGA/UART/React IDE qualified; detailed diary, screenshots, guide and delivery receipts retained.
+

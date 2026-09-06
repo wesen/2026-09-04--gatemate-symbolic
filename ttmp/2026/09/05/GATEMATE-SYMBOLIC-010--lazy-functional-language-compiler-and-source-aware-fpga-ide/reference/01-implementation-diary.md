@@ -11,6 +11,14 @@ DocType: reference
 Intent: long-term
 Owners: []
 RelatedFiles:
+    - Path: repo://cmd/lazy-language/main.go
+      Note: Compile reference and execution CLI
+    - Path: repo://internal/lazylanguageide/session.go
+      Note: Artifact identity history and stream execution
+    - Path: repo://lazy_language/rtl/lfl_core.sv
+      Note: Synchronous hardware qualified at 21.26 MHz
+    - Path: repo://lazy_language/rtl/lfl_link.sv
+      Note: Checked LFL1 protocol
     - Path: repo://pkg/lazylang/check/check.go
       Note: Lexical binding and type checking, commit 657c706
     - Path: repo://pkg/lazylang/check/check_test.go
@@ -31,6 +39,8 @@ RelatedFiles:
       Note: Independent lazy evaluator, commit 657c706
     - Path: repo://pkg/lazylang/semantics/reference_test.go
       Note: Demand, sharing, closure and fault validation
+    - Path: repo://pkg/lazylang/serial/client.go
+      Note: Readback-verified device loading and inspection
     - Path: repo://ttmp/2026/09/05/GATEMATE-SYMBOLIC-009--laboratory-4-lazy-graph-reducer-and-heap-inspector/scripts/22-publish-report.py
       Note: Vault publication
     - Path: repo://ttmp/2026/09/05/GATEMATE-SYMBOLIC-010--lazy-functional-language-compiler-and-source-aware-fpga-ide/scripts/02-collect-sources.sh
@@ -47,12 +57,15 @@ RelatedFiles:
       Note: Parser implementation and validation
     - Path: repo://ttmp/2026/09/05/GATEMATE-SYMBOLIC-010--lazy-functional-language-compiler-and-source-aware-fpga-ide/scripts/17-parser-handoff.py
       Note: Parser implementation and validation
+    - Path: repo://web/src/lazylanguage/App.tsx
+      Note: Source heap environment and stream UI
 ExternalSources: []
 Summary: ""
 LastUpdated: 2026-09-05T18:34:32.906562561-04:00
 WhatFor: ""
 WhenToUse: ""
 ---
+
 
 
 
@@ -845,7 +858,7 @@ The independent source evaluator and the allocated machine agree on all six exam
 - Stable output is represented by state OUTPUT and valid=true. Poll consumes that result and returns the machine to IDLE.
 - Machine state and snapshots own copies of artifact records; mutations to returned heap strings or trace arrays do not change execution.
 
-## Step 11: Implement and qualify synchronous FPGA execution (in progress)
+## Step 11: Implement and qualify synchronous FPGA execution
 
 I4 began after successful I3 completion and I4 start slips. I am implementing a separate LFL1 hardware core with synchronous code, heap, stack, provenance and trace memories. The core is currently unvalidated; simulation, UART integration, synthesis, routing and board checks remain outstanding.
 
@@ -935,3 +948,196 @@ I4 began after successful I3 completion and I4 start slips. I am implementing a 
 - Added an explicitly opted-in physical test (`-lfl-device`) that loads six examples, compares all committed heap/provenance records, semantic counters and mutation traces against the model, and can retain UART evidence with `-lfl-capture`.
 - Synthesis completed and inferred all five logical memories into block RAM. Placement reports 34 RAM halves, 3,804 flip-flops and 14,359 CPE logic resources. RAM fits the planning allowance of 40 halves; logic exceeds the initial 10,000-resource estimate but occupies 35% of the device. This is a measured deviation from the design estimate, not a timing result. Routing is still running.
 - Hardware's synchronous return/saved-operand reads currently produce different cycle/heap-read totals from the Go model. Physical comparisons explicitly exclude those totals and output stalls while requiring semantic counts and trace mutations to agree.
+
+## Step 12: Build and exercise the source-aware IDE
+
+The I5 start slip printed while I4 routing continued. I added a Go session/API, a Glazed server command and a React/Redux/RTK Query frontend. The UI exposes source compilation, immutable artifact loading, explicit machine controls, heap and captured environments, code, continuations, mutation history and incremental list observation. Screenshots are now part of the retained browser validation workflow.
+
+### Prompt Context
+
+**User prompt (verbatim):** (see Step 8; screenshot reminder recorded in Step 11)
+
+**Assistant interpretation:** Build the full source-aware IDE and preserve screenshots of meaningful execution states for the diary and later report.
+
+**Inferred user intent:** Inspect the implemented language interactively and retain reproducible visual evidence.
+
+### What I did
+
+- Added `internal/lazylanguageide`, `cmd/lazy-language-ide`, embedded source examples, `web/src/lazylanguage`, the separate Vite entry and retained frontend build script.
+- Added run/frame identity checks, immutable artifact caching, detached 128-frame history, reset-required handling, and stream demand/resume state.
+- Added Go tests for compile isolation, stale controls, detached history, history bounds, stream pause/resume, unforced tails and HTTP input/origin checks.
+- Added frontend tests for UTF-8 source spans, stale compilation responses and wide-frame field decoding.
+- Built the frontend and started the model IDE in tmux on port 18091.
+- Added retained browser script `scripts/19-browser-ide.js` to capture loaded source, sharing updates, closure ENV and eight-square stream screenshots.
+
+### Why
+
+- Editor revisions must not be confused with loaded artifacts, and historical frames must never control the current run.
+- Stream observation needs persistent pending-demand state so resuming a paused request cannot duplicate the operation.
+
+### What worked
+
+- Go session tests and the initial frontend build pass.
+- Three frontend tests pass. The generated frontend assets are served by the new Go command.
+- I4 routing completed during this work: final routed maximum frequency is 21.26 MHz, passing the 10 MHz constraint. Physical checks remain outstanding.
+
+### What didn't work
+
+- The first browser script timed out on an exact-text status locator: `TimeoutError: locator.waitFor: Timeout 30000ms exceeded` while waiting for `getByText('✓ Checked and compiled', { exact: true })`. I will inspect the current page before changing either the harness or application.
+
+### What I learned
+
+- Go and TypeScript unit checks do not establish that the complete browser interaction script synchronizes correctly with asynchronous compilation and state refresh.
+
+### What was tricky to build
+
+- Stream-next and stream-resume must preserve whether the current force request was already sent. Tests verify that requesting one head does not force a cyclic tail.
+- Displayed source belongs to the selected frame's artifact; the editable source may already contain a different revision.
+
+### What warrants a second pair of eyes
+
+- Browser validation and screenshots are in progress; no I5 completion claim yet.
+- The serial backend requires explicit load and readback, and hardware snapshots take longer than model snapshots.
+
+### What should be done in the future
+
+- Complete browser flow validation, inspect screenshots and add the physical board view once hardware qualification passes.
+
+### Code review instructions
+
+- Start with `Session.Control`, `advanceStream`, the frame cloning code and the RTK Query/editor revision reducers.
+- Run Go session tests, frontend tests and the retained browser script.
+
+### Technical details
+
+- API prefix `/api/language`; frontend assets `/static/app.js` and `/static/app.css`.
+- The model server runs in tmux session `lfl010-model` on `127.0.0.1:18091`.
+
+### I5 browser attempt 1 diagnosis
+
+- The page had successfully compiled, loaded and executed the shared example, and the first two screenshots were captured. It then compiled the closure example successfully.
+- The status element also contains the intentional “Editor differs from loaded source” message, so its complete text is longer than the harness's exact-text locator. The application was not stuck.
+- Browser harness fix attempt 1 uses a substring status locator, waits for initial source population, and handles an explicitly paused stream demand through the Resume button rather than assuming every element finishes within one budget.
+
+### I4 routed and physical qualification result
+
+- Final routed maximum frequency: **21.26 MHz**, PASS against the 10.00 MHz constraint. Actual resources: 14,359 CPE logic, 3,804 flip-flops, 34 RAM halves. The build finished normally and `gmpack` produced the SRAM bitstream.
+- Released the old Lab 4 `lazy-ide` UART owner with `lsof-who -p 18090 -k`, then programmed the new volatile SRAM image using `openFPGALoader -b olimex_gatemateevb lazy_language/build/top.bit`. Programming completed successfully.
+- Retained `scripts/21-physical-qualification.sh` ran `TestPhysicalPrograms` against `/dev/ttyACM0` with a complete UART capture. All six subtests passed on the first physical run in 7.66 seconds.
+- Shared: INT 168, one multiplication, four claims/updates (named global double adds a claim compared with the inline fixture), heap 28. Closure: INT 42, heap 28. Unused: INT 7, two claims/updates, heap 23. Scalar cycle: fault 3 with two balanced claims/updates, heap 17.
+- Productive list: eight ones, heap 21. Squares: `[1, 4, 9, 16, 25, 36, 49, 64]`, heap 268, 242 runtime allocations, 98 claims/updates, eight multiplications and maximum stack depth eight.
+- Every committed heap and provenance word matched the Go model. Semantic counters and trace mutations matched; trace timestamps and hardware-specific read/cycle totals are explicitly excluded from equality. The full trace prefix contains 64 events and the squares run drops 374 later events without stopping execution.
+- Implementation checkpoint: `e481650`; RTL core checkpoint: `a78ea08`. Logs are `i4-build.log`, `i4-program-board.log`, `i4-physical-tests.log` and `i4-physical-uart.log`.
+
+### I5 browser and screenshot result
+
+- Browser harness fix attempt 1 succeeded. The complete compile/load/execute/closure/stream flow passes and verifies the eight-square output.
+- Captured four model screenshots under `reference/screenshots/`: `01-model-loaded-source.png`, `02-model-shared-result-and-updates.png`, `03-model-closure-environment.png`, and `04-model-eight-square-stream.png`.
+- Visually inspected the closure screenshot: the selected FUN object, body code, captured ENV chain, parameter binding and source expression are legible. The image clearly identifies the GO MODEL backend.
+- Added the standalone `lazy-language` Glazed command for compile/reference/run actions, explicit engine/device selection and bounded list/tick settings. Its compile command test verifies the emitted artifact with the real validator.
+- Review found that artifact eviction also needs to remove its order-list entry; this now keeps both cache structures bounded. Run changes clear source/object selection so an address from one run cannot silently select an object in another.
+
+### I5 final validation checkpoint
+
+- Retained `scripts/22-validate-implementation.sh` completed successfully: repository Go tests, affected race tests, default and embedded builds, Go vet, all 20 frontend tests, CLI compile/reference/model smoke checks and diff whitespace validation.
+- `make lint` and `make govulncheck` could not install their pinned tools inside the network-restricted sandbox. Both failed before analysis with `dial tcp: lookup proxy.golang.org on 127.0.0.53:53: dial udp 127.0.0.53:53: socket: operation not permitted`. I will rerun those same required checks with network access; this is an execution-permission failure, not a lint or vulnerability finding.
+- Restarted the model IDE on port 18091 and started the embedded FPGA-backed IDE on port 18092 after the physical suite released the UART. Both use tmux. The old Lab 4 physical server remains stopped because its UART protocol does not match the currently programmed LFL1 image.
+
+### I5 physical UI and boundary checks
+
+- The FPGA-backed browser flow passes through real compile/load/readback, shared execution, closure inspection and eight incremental square demands. Captured `05-fpga-loaded-source.png`, `06-fpga-shared-result-and-updates.png`, `07-fpga-closure-environment.png`, and `08-fpga-eight-square-stream.png`.
+- Visually inspected the physical stream screenshot. It clearly identifies FPGA/LFL1 and shows 98 claims, 98 updates, eight multiplications, 242 allocations, heap high water 268 and stack high water eight.
+- Network-enabled `make lint` passed. `make govulncheck` reports zero reachable vulnerabilities; it also reports one imported-package and five required-module vulnerabilities whose affected symbols are not called.
+- An additional browser boundary script initially requested a `BLACKHOLE` filter option that the UI does not provide. It timed out with `locator.selectOption: Timeout 30000ms exceeded` and `did not find some options`. Harness fix attempt 1 uses the existing mutable-object filter and selects the BLACKHOLE row by its displayed tag.
+
+### I5 completion and visual evidence
+
+**Commit (code):** 17c611a — "Build source-aware LFL1 React IDE and Go CLI with resumable stream controls"
+
+The boundary browser script passes after its first harness correction. It captures a claimed BLACKHOLE with its UPDATE continuation, verifies that historical frames disable execution controls, and verifies that editing source disables stale artifact loading. A type mismatch reports the exact source byte range. There are now eleven retained screenshots: seven model views and four physical FPGA views.
+
+![Physical closure capture: FUN body, source and captured environment](screenshots/07-fpga-closure-environment.png)
+
+![Physical eight-square observation with allocation and sharing counters](screenshots/08-fpga-eight-square-stream.png)
+
+![Paused claim with its UPDATE continuation](screenshots/09-model-claimed-thunk-and-update-frame.png)
+
+The later project report can reuse these original PNG files directly. They identify the backend and include artifact/run/frame identifiers. The physical UI remains running at `http://127.0.0.1:18092`; the model UI remains on port 18091. The final handoff will document the implemented APIs, measured resource deviation, model/hardware timing distinction and reproduction commands.
+
+## Step 13: Publish the implementation handoff and close qualification
+
+The complete ticket is implemented and qualified. I assembled a 3,290-word intern handoff that explains the source language, checker, deterministic artifacts, lazy evaluation, allocation, synchronous hardware, UART, IDE identity and stream observation. It includes code/API references, pseudocode, architecture diagrams, measured execution tables and two physical UI figures. The original design remains available as the design record, with an implementation update linking to the delivered behavior.
+
+The new guide renders to eleven pages, and both physical figures are embedded in the PDF. It uploaded successfully to reMarkable under the ticket folder as a new document. The source repository retains all eleven original screenshots, the complete diary, reproducible scripts, physical UART evidence and a hashed evidence index. The later article can use those original figures.
+
+### Prompt Context
+
+**User prompt (verbatim):** (see Step 8; screenshot reminder in Step 11)
+
+**Assistant interpretation:** Finish the whole ticket, preserve detailed implementation evidence, deliver the implemented guide and commit the completed work.
+
+**Inferred user intent:** Receive an operational, physically verified project with enough explanation and evidence for review and a later technical report.
+
+**Commit (code):** 17c611a — complete CLI and source-aware IDE milestone; earlier implementation commits are indexed in the handoff.
+
+### What I did
+
+- Added `reference/04-implemented-language-runtime-and-ide-intern-handoff.md` and its retained authoring source, plus a package README with runnable commands.
+- Updated the ticket index to describe the complete implementation and appended a measured qualification update to the original design document.
+- Added retained scripts 25–27 for installing the handoff/evidence index, exporting/uploading the guide, and reopening the final physical UI.
+- Generated `reference/validation/implementation-audit.json` with evidence hashes, RTL hashes, bitstream hash and measured resource/timing results.
+- Rendered the eleven-page PDF; verified its text and confirmed physical figures are embedded on pages eight and nine using `pdfinfo`, `pdftotext` and `pdfimages -list`.
+- Uploaded only the implemented guide to reMarkable, preserving the earlier design PDF and its possible annotations.
+- Ran docmgr doctor: all checks pass. Marked the final qualification task complete after physical and browser evidence was available.
+
+### Why
+
+- The original design contains estimates and proposed interfaces. A distinct implementation handoff makes measured outcomes and delivered APIs explicit.
+- Source-linked screenshots and raw validation receipts allow the later report to distinguish model observations from physical FPGA behavior.
+- Hashing the exact RTL, bitstream and evidence files connects reported measurements to concrete artifacts.
+
+### What worked
+
+- The guide rendered successfully as `GATEMATE 010 Implemented Language and IDE Guide.pdf`, eleven pages with two embedded physical figures.
+- Upload receipt: `OK: uploaded GATEMATE 010 Implemented Language and IDE Guide.pdf -> /ai/2026/09/05/GATEMATE-SYMBOLIC-010`.
+- The final browser page is `http://127.0.0.1:18092/`, identifies FPGA/LFL1 and displays 1, 4, 9, 16, 25, 36, 49, 64.
+- All implementation tasks have concrete validation: source/reference tests, compiler checks, finite-machine tests, RTL/UART simulation, routing, physical comparison and browser interaction.
+
+### What didn't work
+
+- No unresolved implementation failure remains. Earlier failed tool invocations and harness attempts are retained in Steps 11–12 and their logs.
+- The measured CPE logic count exceeds the preliminary design estimate; the implementation fits the device and passes timing. This deviation is documented rather than hidden.
+
+### What I learned
+
+- Exact semantic agreement across source, Go and hardware does not require equal cycle counts. The handoff identifies which quantities were compared and why hardware read timing differs.
+- Capturing physical UI figures during qualification produces stronger report evidence than recreating illustrative states later.
+
+### What was tricky to build
+
+- The report must distinguish the inline hand-derived fixture from the named shared example: both multiply once, but the named global function adds one claim/update pair and changes absolute heap addresses.
+- Documentation must retain the distinction between observing eight list heads and observing list termination. The final physical UI intentionally leaves the next tail undemanded.
+- The evidence index includes historical failed logs as well as successful replacement logs. The diary explains their meaning; the index provides integrity, not an assertion that every historical invocation succeeded.
+
+### What warrants a second pair of eyes
+
+- Review the model/hardware timing caveat and the measured resource deviation against the routed log.
+- Review snapshot/run identity and pending stream ownership before adding concurrent consumers or automatic retry behavior.
+- Review the physical UART capture and screenshot backend labels when selecting figures for the future article.
+
+### What should be done in the future
+
+- Write the later project article using the retained physical/model screenshots, as requested in the screenshot reminder.
+- No further implementation is required for the current ticket. Larger language types, garbage collection, longer traces and cycle-exact modeling would be separate extensions.
+
+### Code review instructions
+
+- Start with the implemented handoff, then follow its file map into compiler, machine, RTL, serial client and session controller.
+- Use `scripts/22-validate-implementation.sh` for repository validation and `scripts/21-physical-qualification.sh` for the explicit physical run after releasing the serial IDE.
+- Reproduce UI evidence with browser scripts 19, 23 and 24. Preserve the physical backend label in report figures.
+
+### Technical details
+
+- Physical service: tmux `lfl010-fpga`, port 18092, `/dev/ttyACM0`. Model service: tmux `lfl010-model-final`, port 18091.
+- GateMate image is loaded into volatile SRAM. The earlier Lab 4 physical server on port 18090 was stopped before programming; its protocol is different.
+- Qualified profile: heap 2048×80, code 2048×128, stack 512×128, provenance 2048×16, trace 64×256; 21.26 MHz routed maximum, 34 RAM halves, 14,359 CPE logic and 3,804 flip-flops.

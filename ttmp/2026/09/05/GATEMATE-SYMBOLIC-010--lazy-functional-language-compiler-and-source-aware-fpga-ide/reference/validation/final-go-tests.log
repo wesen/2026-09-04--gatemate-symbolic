@@ -1,0 +1,22 @@
+ok  	github.com/wesen/2026-09-04--gatemate-symbolic/cmd/dataflow-ide	0.035s
+ok  	github.com/wesen/2026-09-04--gatemate-symbolic/cmd/dataflow-lab	0.048s
+?   	github.com/wesen/2026-09-04--gatemate-symbolic/cmd/lazy-ide	[no test files]
+ok  	github.com/wesen/2026-09-04--gatemate-symbolic/cmd/lazy-lab	0.027s
+ok  	github.com/wesen/2026-09-04--gatemate-symbolic/cmd/lazy-language	0.016s
+?   	github.com/wesen/2026-09-04--gatemate-symbolic/cmd/lazy-language-ide	[no test files]
+ok  	github.com/wesen/2026-09-04--gatemate-symbolic/cmd/search-microscope	0.015s
+?   	github.com/wesen/2026-09-04--gatemate-symbolic/examples/lazylang	[no test files]
+ok  	github.com/wesen/2026-09-04--gatemate-symbolic/internal/dataflowide	0.029s
+ok  	github.com/wesen/2026-09-04--gatemate-symbolic/internal/lazyide	0.006s
+ok  	github.com/wesen/2026-09-04--gatemate-symbolic/internal/lazylanguageide	0.014s
+ok  	github.com/wesen/2026-09-04--gatemate-symbolic/internal/microscope	0.079s
+ok  	github.com/wesen/2026-09-04--gatemate-symbolic/pkg/dataflow	0.032s
+ok  	github.com/wesen/2026-09-04--gatemate-symbolic/pkg/lazy	0.016s
+ok  	github.com/wesen/2026-09-04--gatemate-symbolic/pkg/lazylang/check	0.003s
+ok  	github.com/wesen/2026-09-04--gatemate-symbolic/pkg/lazylang/compile	0.019s
+ok  	github.com/wesen/2026-09-04--gatemate-symbolic/pkg/lazylang/ir	0.003s
+ok  	github.com/wesen/2026-09-04--gatemate-symbolic/pkg/lazylang/machine	0.009s
+ok  	github.com/wesen/2026-09-04--gatemate-symbolic/pkg/lazylang/semantics	0.005s
+ok  	github.com/wesen/2026-09-04--gatemate-symbolic/pkg/lazylang/serial	0.005s
+ok  	github.com/wesen/2026-09-04--gatemate-symbolic/pkg/lazylang/syntax	0.028s
+ok  	github.com/wesen/2026-09-04--gatemate-symbolic/pkg/microscope	0.300s

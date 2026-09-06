@@ -1,7 +1,7 @@
 ---
 Title: Lazy functional language compiler and source-aware FPGA IDE
 Ticket: GATEMATE-SYMBOLIC-010
-Status: active
+Status: complete
 Topics:
     - fpga
     - gatemate
@@ -13,23 +13,25 @@ Owners: []
 RelatedFiles: []
 ExternalSources: []
 Summary: ""
-LastUpdated: 2026-09-05T18:34:04.738222604-04:00
+LastUpdated: 2026-09-05T21:11:21.348624253-04:00
 WhatFor: ""
 WhenToUse: ""
 ---
+
 
 # Lazy functional language compiler and source-aware FPGA IDE
 
 This ticket designs the follow-up to the physically qualified Lab 4 reducer: a typed lazy language with closures, recursive bindings, lazy integer lists, bounded allocation and source-linked inspection on GateMate.
 
-The design package is the current delivery. The syntax package is now implemented: a bounded lexer and recursive-descent/Pratt parser, with source spans, diagnostics, recovery and six parsed examples. Binding resolution, type checking, compilation and runtime execution remain future work. Tasks D1–D3 cover analysis, design and publication; tasks I1–I6 remain the future implementation sequence. The qualified Lab 4 runtime remains a separate experiment.
+The complete language, compiler, allocated Go machine, synchronous FPGA runtime, checked UART and Go/React IDE are implemented. Six physical source programs match model heap/provenance and semantic behavior. The FPGA routes at 21.26 MHz against a 10 MHz constraint. Eleven UI screenshots are retained for the diary and later report. The qualified Lab 4 runtime remains a separate experiment.
 
 ## Read first
 
+- [Implemented runtime and IDE handoff](reference/04-implemented-language-runtime-and-ide-intern-handoff.md): current APIs, measured results, execution principles, reproduction commands and screenshot index.
 - [Intern analysis, design and implementation guide](design-doc/01-lazy-functional-language-intern-analysis-design-and-implementation-guide.md): language, memory formats, compiler, transitions, allocator, protocol, IDE and acceptance gates.
 - [Source evidence and decisions](reference/02-source-evidence-and-design-decisions.md): implemented baseline and primary research with local resource copies.
 - [Implementation diary](reference/01-implementation-diary.md): chronological work, exact commands and failures, commits and delivery receipts.
-- [Tasks](tasks.md): design delivery and future implementation milestones.
+- [Tasks](tasks.md): completed design and implementation milestones.
 
 The completed reducer article was published first in go-go-parc commit 23de3f4: Projects/2026/09/05/ARTICLE - GateMate Symbolic - Inside a Lazy Graph Reducer.md, with five physical screenshots.
 

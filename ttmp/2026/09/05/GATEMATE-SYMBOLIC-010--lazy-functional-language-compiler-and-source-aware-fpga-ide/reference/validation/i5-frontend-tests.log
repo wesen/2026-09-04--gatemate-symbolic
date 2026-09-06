@@ -1,0 +1,10 @@
+
+ RUN  v4.0.18 /home/manuel/code/wesen/2026-09-04--gatemate-symbolic/web
+
+ ✓ src/lazylanguage/types.test.ts (3 tests) 4ms
+
+ Test Files  1 passed (1)
+      Tests  3 passed (3)
+   Start at  20:49:37
+   Duration  1.08s (transform 52ms, setup 215ms, import 56ms, tests 4ms, environment 653ms)
+

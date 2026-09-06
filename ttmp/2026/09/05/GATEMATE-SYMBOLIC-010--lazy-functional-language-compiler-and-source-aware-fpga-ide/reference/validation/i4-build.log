@@ -1,0 +1,1293 @@
+mkdir -p build
+yosys -ql build/yosys.log scripts/synth.ys
+Warning: Replacing memory \counters with list of registers. See rtl/lfl_core.sv:150
+Warning: Resizing cell port lfl_top.link.core.heap_ram.mem.0.1.B_DO from 20 bits to 40 bits.
+Warning: Resizing cell port lfl_top.link.core.heap_ram.mem.0.2.B_DO from 20 bits to 40 bits.
+Warning: Resizing cell port lfl_top.link.core.provenance_ram.mem.0.0.B_DO from 20 bits to 40 bits.
+Warning: Resizing cell port lfl_top.link.core.code_ram.mem.0.0.B_DO from 10 bits to 20 bits.
+Warning: Resizing cell port lfl_top.link.core.code_ram.mem.0.1.B_DO from 10 bits to 20 bits.
+Warning: Resizing cell port lfl_top.link.core.code_ram.mem.0.2.B_DO from 10 bits to 20 bits.
+Warning: Resizing cell port lfl_top.link.core.code_ram.mem.0.3.B_DO from 10 bits to 20 bits.
+Warning: Resizing cell port lfl_top.link.core.code_ram.mem.0.4.B_DO from 10 bits to 20 bits.
+Warning: Resizing cell port lfl_top.link.core.code_ram.mem.0.5.B_DO from 10 bits to 20 bits.
+Warning: Resizing cell port lfl_top.link.core.code_ram.mem.0.6.B_DO from 10 bits to 20 bits.
+Warning: Resizing cell port lfl_top.link.core.code_ram.mem.0.7.B_DO from 10 bits to 20 bits.
+Warning: Resizing cell port lfl_top.link.core.code_ram.mem.0.8.B_DO from 10 bits to 20 bits.
+Warning: Resizing cell port lfl_top.link.core.code_ram.mem.0.10.B_DO from 10 bits to 20 bits.
+Warning: Resizing cell port lfl_top.link.core.code_ram.mem.0.9.B_DO from 10 bits to 20 bits.
+Warning: Resizing cell port lfl_top.link.core.code_ram.mem.0.11.B_DO from 10 bits to 20 bits.
+Warning: Resizing cell port lfl_top.link.core.code_ram.mem.0.12.B_DO from 10 bits to 20 bits.
+Warning: Resizing cell port lfl_top.link.core.heap_ram.mem.0.0.B_DO from 20 bits to 40 bits.
+Warning: Resizing cell port lfl_top.link.core.heap_ram.mem.0.3.B_DO from 20 bits to 40 bits.
+nextpnr-himbaechel -l build/nextpnr.log --device CCGM1A1 --json build/top.json -o ccf=../symbolic_eval/constraints/olimex_gatematea1_evb.ccf -o out=build/top.txt --sdc ../symbolic_eval/constraints/top.sdc --router router2 --seed 2
+Info: Using uarch 'gatemate' for device 'CCGM1A1'
+Info: Using timing mode 'WORST'.
+Info: Using performance mode 'SPEED'.
+Info: constraining clock net 'clk_10m' to 10.00 MHz
+
+Info: Parsing CCF file..
+Info: Assign cell region based on attributes..
+Info: Packing constants..
+Info: Running cleanups..
+Info: Packing IOs..
+Info:     Constraining '$iopadmap$lfl_top.user_led' to pad 'IO_SB_B6'.
+Info:     Constraining '$iopadmap$lfl_top.uart_tx_pin' to pad 'IO_SA_B6'.
+Info:     Constraining '$iopadmap$lfl_top.uart_rx_pin' to pad 'IO_SA_A6'.
+Info:     Constraining '$iopadmap$lfl_top.fpga_but' to pad 'IO_SB_B7'.
+Info:     Constraining '$iopadmap$lfl_top.clk_10m' to pad 'IO_SB_A8'.
+Info: Insert clocking cells..
+Info: Packing PLLs..
+Info: Sort BUFGs..
+Info: Packing BUFGs..
+Info: Packing IO SELs..
+Info: Packing misc..
+Info: Packing RAMs..
+Info: Packing SERDES..
+Info: Packing multipliers...
+Info: Packing ADDFs..
+Info: Packing CPEs..
+Info: Removing unused constants..
+Info:     Removed unused VCC cell.
+Info:     Removed unused GND cell.
+Info: Fix cell assigned regions..
+Info: Checksum: 0xcf912c29
+
+Info: Device utilisation:
+Info: 	            USR_RSTN:       1/      1   100%
+Info: 	            CPE_COMP:       0/  20480     0%
+Info: 	         CPE_CPLINES:     114/  20480     0%
+Info: 	               IOSEL:       5/    162     3%
+Info: 	                GPIO:       5/    162     3%
+Info: 	               CLKIN:       1/      1   100%
+Info: 	              GLBOUT:       1/      1   100%
+Info: 	                 PLL:       0/      4     0%
+Info: 	            CFG_CTRL:       0/      1     0%
+Info: 	              SERDES:       0/      1     0%
+Info: 	              CPE_LT:   14359/  40960    35%
+Info: 	              CPE_FF:    3804/  40960     9%
+Info: 	           CPE_RAMIO:    2334/  40960     5%
+Info: 	            RAM_HALF:      34/     64    53%
+
+Info: Placed 0 cells based on constraints.
+Info: Creating initial analytic placement for 8442 cells, random placement wirelen = 1322077.
+Info:     at initial placer iter 0, wirelen = 17313
+Info:     at initial placer iter 1, wirelen = 15819
+Info:     at initial placer iter 2, wirelen = 15702
+Info:     at initial placer iter 3, wirelen = 15653
+Info: Running main analytical placer, max placement attempts per cell = 55366764.
+Info:     at iteration #1, type ALL: wirelen solved = 15588, spread = 390169, legal = 510508; time = 3.42s
+Info:     at iteration #2, type ALL: wirelen solved = 29169, spread = 324451, legal = 418963; time = 2.42s
+Info:     at iteration #3, type ALL: wirelen solved = 48118, spread = 276357, legal = 342136; time = 1.15s
+Info:     at iteration #4, type ALL: wirelen solved = 65821, spread = 252395, legal = 290219; time = 0.72s
+Info:     at iteration #5, type ALL: wirelen solved = 80201, spread = 236772, legal = 274513; time = 0.85s
+Info:     at iteration #6, type ALL: wirelen solved = 89532, spread = 236888, legal = 270696; time = 0.68s
+Info:     at iteration #7, type ALL: wirelen solved = 98181, spread = 221628, legal = 261412; time = 0.90s
+Info:     at iteration #8, type ALL: wirelen solved = 102025, spread = 225201, legal = 267390; time = 0.91s
+Info:     at iteration #9, type ALL: wirelen solved = 108339, spread = 220686, legal = 268414; time = 1.41s
+Info:     at iteration #10, type ALL: wirelen solved = 111976, spread = 213354, legal = 259086; time = 1.74s
+Info:     at iteration #11, type ALL: wirelen solved = 116616, spread = 207996, legal = 251882; time = 1.43s
+Info:     at iteration #12, type ALL: wirelen solved = 117872, spread = 207055, legal = 256035; time = 1.79s
+Info:     at iteration #13, type ALL: wirelen solved = 119552, spread = 205905, legal = 253978; time = 1.85s
+Info:     at iteration #14, type ALL: wirelen solved = 123156, spread = 205102, legal = 257092; time = 2.17s
+Info:     at iteration #15, type ALL: wirelen solved = 124459, spread = 201366, legal = 256028; time = 1.90s
+Info:     at iteration #16, type ALL: wirelen solved = 127777, spread = 207388, legal = 256182; time = 1.77s
+Info: HeAP Placer Time: 28.37s
+Info:   of which solving equations: 6.02s
+Info:   of which spreading cells: 1.33s
+Info:   of which strict legalisation: 18.85s
+
+Info: Running simulated annealing placer for refinement.
+Info:   at iteration #1: temp = 0.000000, timing cost = 2601, wirelen = 263261
+Info:   at iteration #5: temp = 0.000000, timing cost = 1017, wirelen = 222523
+Info:   at iteration #10: temp = 0.000000, timing cost = 1246, wirelen = 217835
+Info:   at iteration #14: temp = 0.000000, timing cost = 951, wirelen = 214474 
+Info: SA placement time 30.06s
+
+Info: Max frequency for clock 'link.clk': 29.99 MHz (PASS at 10.00 MHz)
+
+Info: Max delay <async> -> posedge link.clk: 3.83 ns
+
+Info: Slack histogram:
+Info:  legend: * represents 20 endpoint(s)
+Info:          + represents [1,20) endpoint(s)
+Info: [ 66658,  68286) |+
+Info: [ 68286,  69914) |+
+Info: [ 69914,  71542) |+
+Info: [ 71542,  73170) |*+
+Info: [ 73170,  74798) |***********+
+Info: [ 74798,  76426) |****************+
+Info: [ 76426,  78054) |****************+
+Info: [ 78054,  79682) |*******************+
+Info: [ 79682,  81310) |********************************+
+Info: [ 81310,  82938) |******************+
+Info: [ 82938,  84566) |************************+
+Info: [ 84566,  86194) |*******************************+
+Info: [ 86194,  87822) |******************************+
+Info: [ 87822,  89450) |**********************************+
+Info: [ 89450,  91078) |*************************+
+Info: [ 91078,  92706) |************************************************************ 
+Info: [ 92706,  94334) |****************************+
+Info: [ 94334,  95962) |************************************+
+Info: [ 95962,  97590) |*****************************************************+
+Info: [ 97590,  99218) |******************************************************+
+Info: Checksum: 0xc9de06da
+Info: Repacking RAMs..
+Info: Repacking CPEs..
+Info: Remove unused clocking cells..
+Info: Routing multipliers...
+Info: Routing clock nets...
+Info:     routing net 'link.clk' to 3824 users
+Info: Clock router time 7.34s.
+Info: Running router2...
+Info: Setting up routing resources...
+Info: Running main router loop...
+Info:     iter=1 wires=577394 overused=55983 overuse=61609 resources=19868 overused=1700 overuse=2168 archfail=NA
+Info:     iter=2 wires=611709 overused=28807 overuse=29411 resources=23124 overused=760 overuse=807 archfail=NA
+Info:     iter=3 wires=625504 overused=20900 overuse=21208 resources=25386 overused=588 overuse=643 archfail=NA
+Info:     iter=4 wires=636985 overused=16011 overuse=16166 resources=26701 overused=434 overuse=471 archfail=NA
+Info:     iter=5 wires=646151 overused=13000 overuse=13115 resources=28030 overused=389 overuse=435 archfail=NA
+Info:     iter=6 wires=652737 overused=10914 overuse=10973 resources=28478 overused=322 overuse=362 archfail=NA
+Info:     iter=7 wires=658281 overused=8996 overuse=9049 resources=29457 overused=323 overuse=372 archfail=NA
+Info:     iter=8 wires=663063 overused=7896 overuse=7947 resources=29744 overused=243 overuse=278 archfail=NA
+Info:     iter=9 wires=669168 overused=7014 overuse=7054 resources=30496 overused=236 overuse=272 archfail=NA
+Info:     iter=10 wires=672771 overused=6099 overuse=6121 resources=30454 overused=213 overuse=255 archfail=NA
+Info:     iter=11 wires=675018 overused=5264 overuse=5286 resources=30759 overused=182 overuse=219 archfail=NA
+Info:     iter=12 wires=678637 overused=4764 overuse=4773 resources=31320 overused=149 overuse=175 archfail=NA
+Info:     iter=13 wires=681000 overused=4166 overuse=4175 resources=31405 overused=122 overuse=143 archfail=NA
+Info:     iter=14 wires=685106 overused=3719 overuse=3725 resources=31679 overused=135 overuse=157 archfail=NA
+Info:     iter=15 wires=686497 overused=3287 overuse=3292 resources=31908 overused=122 overuse=151 archfail=NA
+Info:     iter=16 wires=688744 overused=2889 overuse=2890 resources=31843 overused=100 overuse=132 archfail=NA
+Info:     iter=17 wires=690261 overused=2476 overuse=2477 resources=32041 overused=89 overuse=108 archfail=NA
+Info:     iter=18 wires=691974 overused=2210 overuse=2216 resources=32193 overused=78 overuse=97 archfail=NA
+Info:     iter=19 wires=693283 overused=1945 overuse=1949 resources=32093 overused=67 overuse=84 archfail=NA
+Info:     iter=20 wires=694274 overused=1641 overuse=1647 resources=32176 overused=67 overuse=88 archfail=NA
+Info:     iter=21 wires=695938 overused=1482 overuse=1482 resources=32535 overused=68 overuse=82 archfail=NA
+Info:     iter=22 wires=696968 overused=1350 overuse=1350 resources=32443 overused=57 overuse=68 archfail=NA
+Info:     iter=23 wires=698032 overused=1315 overuse=1315 resources=32402 overused=44 overuse=56 archfail=NA
+Info:     iter=24 wires=699479 overused=1192 overuse=1193 resources=32473 overused=43 overuse=50 archfail=NA
+Info:     iter=25 wires=700434 overused=1043 overuse=1043 resources=32542 overused=37 overuse=43 archfail=NA
+Info:     iter=26 wires=701267 overused=955 overuse=955 resources=32661 overused=40 overuse=49 archfail=NA
+Info:     iter=27 wires=701567 overused=845 overuse=845 resources=32907 overused=43 overuse=54 archfail=NA
+Info:     iter=28 wires=702176 overused=698 overuse=698 resources=32934 overused=32 overuse=39 archfail=NA
+Info:     iter=29 wires=703507 overused=638 overuse=638 resources=33035 overused=22 overuse=27 archfail=NA
+Info:     iter=30 wires=703699 overused=583 overuse=583 resources=32846 overused=18 overuse=25 archfail=NA
+Info:     iter=31 wires=704464 overused=515 overuse=515 resources=32877 overused=19 overuse=20 archfail=NA
+Info:     iter=32 wires=705164 overused=487 overuse=487 resources=33006 overused=15 overuse=16 archfail=NA
+Info:     iter=33 wires=706142 overused=460 overuse=460 resources=33089 overused=13 overuse=16 archfail=NA
+Info:     iter=34 wires=706857 overused=428 overuse=428 resources=33039 overused=13 overuse=18 archfail=NA
+Info:     iter=35 wires=707500 overused=389 overuse=389 resources=33086 overused=12 overuse=15 archfail=NA
+Info:     iter=36 wires=708014 overused=343 overuse=343 resources=33197 overused=16 overuse=20 archfail=NA
+Info:     iter=37 wires=708700 overused=317 overuse=317 resources=33253 overused=13 overuse=13 archfail=NA
+Info:     iter=38 wires=709318 overused=326 overuse=326 resources=33327 overused=17 overuse=20 archfail=NA
+Info:     iter=39 wires=709579 overused=294 overuse=294 resources=33334 overused=10 overuse=12 archfail=NA
+Info:     iter=40 wires=709842 overused=271 overuse=271 resources=33257 overused=8 overuse=11 archfail=NA
+Info:     iter=41 wires=709733 overused=246 overuse=246 resources=33314 overused=5 overuse=5 archfail=NA
+Info:     iter=42 wires=710604 overused=231 overuse=231 resources=33320 overused=4 overuse=5 archfail=NA
+Info:     iter=43 wires=710968 overused=226 overuse=226 resources=33362 overused=4 overuse=4 archfail=NA
+Info:     iter=44 wires=711086 overused=217 overuse=217 resources=33384 overused=1 overuse=1 archfail=NA
+Info:     iter=45 wires=711808 overused=172 overuse=172 resources=33550 overused=5 overuse=5 archfail=NA
+Info:     iter=46 wires=711927 overused=149 overuse=149 resources=33544 overused=7 overuse=8 archfail=NA
+Info:     iter=47 wires=712396 overused=145 overuse=145 resources=33539 overused=5 overuse=7 archfail=NA
+Info:     iter=48 wires=712340 overused=120 overuse=120 resources=33460 overused=3 overuse=4 archfail=NA
+Info:     iter=49 wires=712839 overused=129 overuse=129 resources=33551 overused=10 overuse=12 archfail=NA
+Info:     iter=50 wires=712924 overused=117 overuse=117 resources=33466 overused=3 overuse=3 archfail=NA
+Info:     iter=51 wires=713129 overused=118 overuse=118 resources=33550 overused=2 overuse=2 archfail=NA
+Info:     iter=52 wires=713499 overused=106 overuse=106 resources=33596 overused=1 overuse=1 archfail=NA
+Info:     iter=53 wires=713558 overused=112 overuse=112 resources=33537 overused=1 overuse=1 archfail=NA
+Info:     iter=54 wires=714140 overused=130 overuse=130 resources=33632 overused=5 overuse=6 archfail=NA
+Info:     iter=55 wires=714264 overused=134 overuse=134 resources=33638 overused=2 overuse=3 archfail=NA
+Info:     iter=56 wires=714323 overused=106 overuse=106 resources=33721 overused=8 overuse=13 archfail=NA
+Info:     iter=57 wires=714397 overused=112 overuse=112 resources=33666 overused=2 overuse=3 archfail=NA
+Info:     iter=58 wires=714464 overused=93 overuse=93 resources=33682 overused=2 overuse=3 archfail=NA
+Info:     iter=59 wires=714717 overused=98 overuse=98 resources=33718 overused=7 overuse=9 archfail=NA
+Info:     iter=60 wires=714725 overused=81 overuse=81 resources=33694 overused=3 overuse=5 archfail=NA
+Info:     iter=61 wires=714888 overused=82 overuse=82 resources=33671 overused=4 overuse=6 archfail=NA
+Info:     iter=62 wires=714839 overused=78 overuse=78 resources=33646 overused=1 overuse=2 archfail=NA
+Info:     iter=63 wires=715094 overused=82 overuse=82 resources=33698 overused=2 overuse=3 archfail=NA
+Info:     iter=64 wires=715280 overused=90 overuse=90 resources=33696 overused=3 overuse=4 archfail=NA
+Info:     iter=65 wires=715437 overused=71 overuse=71 resources=33744 overused=6 overuse=10 archfail=NA
+Info:     iter=66 wires=715397 overused=73 overuse=73 resources=33738 overused=2 overuse=3 archfail=NA
+Info:     iter=67 wires=715373 overused=56 overuse=56 resources=33767 overused=3 overuse=4 archfail=NA
+Info:     iter=68 wires=715243 overused=43 overuse=43 resources=33744 overused=2 overuse=4 archfail=NA
+Info:     iter=69 wires=715405 overused=41 overuse=41 resources=33697 overused=0 overuse=0 archfail=NA
+Info:     iter=70 wires=715586 overused=36 overuse=36 resources=33796 overused=1 overuse=1 archfail=NA
+Info:     iter=71 wires=715738 overused=49 overuse=49 resources=33813 overused=4 overuse=4 archfail=NA
+Info:     iter=72 wires=715599 overused=31 overuse=31 resources=33765 overused=4 overuse=4 archfail=NA
+Info:     iter=73 wires=715824 overused=23 overuse=23 resources=33788 overused=0 overuse=0 archfail=NA
+Info:     iter=74 wires=715795 overused=29 overuse=29 resources=33754 overused=0 overuse=0 archfail=NA
+Info:     iter=75 wires=715985 overused=23 overuse=23 resources=33788 overused=0 overuse=0 archfail=NA
+Info:     iter=76 wires=715928 overused=22 overuse=22 resources=33754 overused=0 overuse=0 archfail=NA
+Info:     iter=77 wires=716160 overused=27 overuse=27 resources=33780 overused=0 overuse=0 archfail=NA
+Info:     iter=78 wires=716070 overused=12 overuse=12 resources=33784 overused=0 overuse=0 archfail=NA
+Info:     iter=79 wires=716055 overused=11 overuse=11 resources=33784 overused=0 overuse=0 archfail=NA
+Info:     iter=80 wires=716056 overused=10 overuse=10 resources=33784 overused=0 overuse=0 archfail=NA
+Info:     iter=81 wires=716133 overused=10 overuse=10 resources=33780 overused=0 overuse=0 archfail=NA
+Info:     iter=82 wires=716094 overused=10 overuse=10 resources=33749 overused=0 overuse=0 archfail=NA
+Info:     iter=83 wires=716236 overused=18 overuse=18 resources=33777 overused=0 overuse=0 archfail=NA
+Info:     iter=84 wires=716227 overused=19 overuse=19 resources=33777 overused=0 overuse=0 archfail=NA
+Info:     iter=85 wires=716255 overused=14 overuse=14 resources=33746 overused=1 overuse=1 archfail=NA
+Info:     iter=86 wires=716319 overused=18 overuse=18 resources=33732 overused=0 overuse=0 archfail=NA
+Info:     iter=87 wires=716368 overused=9 overuse=9 resources=33732 overused=0 overuse=0 archfail=NA
+Info:     iter=88 wires=716385 overused=13 overuse=13 resources=33732 overused=0 overuse=0 archfail=NA
+Info:     iter=89 wires=716478 overused=5 overuse=5 resources=33732 overused=0 overuse=0 archfail=NA
+Info:     iter=90 wires=716576 overused=15 overuse=15 resources=33743 overused=0 overuse=0 archfail=NA
+Info:     iter=91 wires=716506 overused=5 overuse=5 resources=33743 overused=0 overuse=0 archfail=NA
+Info:     iter=92 wires=716440 overused=8 overuse=8 resources=33696 overused=0 overuse=0 archfail=NA
+Info:     iter=93 wires=716416 overused=9 overuse=9 resources=33696 overused=0 overuse=0 archfail=NA
+Info:     iter=94 wires=716562 overused=15 overuse=15 resources=33696 overused=0 overuse=0 archfail=NA
+Info:     iter=95 wires=716439 overused=8 overuse=8 resources=33685 overused=0 overuse=0 archfail=NA
+Info:     iter=96 wires=716570 overused=7 overuse=7 resources=33685 overused=0 overuse=0 archfail=NA
+Info:     iter=97 wires=716628 overused=9 overuse=9 resources=33704 overused=1 overuse=2 archfail=NA
+Info:     iter=98 wires=716635 overused=8 overuse=8 resources=33692 overused=1 overuse=1 archfail=NA
+Info:     iter=99 wires=716622 overused=7 overuse=7 resources=33697 overused=1 overuse=2 archfail=NA
+Info:     iter=100 wires=716696 overused=8 overuse=8 resources=33704 overused=1 overuse=2 archfail=NA
+Info:     iter=101 wires=716648 overused=6 overuse=6 resources=33692 overused=1 overuse=1 archfail=NA
+Info:     iter=102 wires=716779 overused=8 overuse=8 resources=33761 overused=3 overuse=4 archfail=NA
+Info:     iter=103 wires=716685 overused=8 overuse=8 resources=33744 overused=2 overuse=2 archfail=NA
+Info:     iter=104 wires=716738 overused=8 overuse=8 resources=33756 overused=1 overuse=2 archfail=NA
+Info:     iter=105 wires=716681 overused=5 overuse=5 resources=33744 overused=1 overuse=1 archfail=NA
+Info:     iter=106 wires=716794 overused=11 overuse=11 resources=33728 overused=0 overuse=0 archfail=NA
+Info:     iter=107 wires=716728 overused=4 overuse=4 resources=33728 overused=0 overuse=0 archfail=NA
+Info:     iter=108 wires=716697 overused=3 overuse=3 resources=33683 overused=0 overuse=0 archfail=NA
+Info:     iter=109 wires=716709 overused=3 overuse=3 resources=33728 overused=0 overuse=0 archfail=NA
+Info:     iter=110 wires=716783 overused=13 overuse=13 resources=33728 overused=0 overuse=0 archfail=NA
+Info:     iter=111 wires=716798 overused=16 overuse=16 resources=33728 overused=0 overuse=0 archfail=NA
+Info:     iter=112 wires=716701 overused=10 overuse=10 resources=33704 overused=0 overuse=0 archfail=NA
+Info:     iter=113 wires=716748 overused=8 overuse=8 resources=33689 overused=0 overuse=0 archfail=NA
+Info:     iter=114 wires=716741 overused=5 overuse=5 resources=33710 overused=1 overuse=2 archfail=NA
+Info:     iter=115 wires=716762 overused=9 overuse=9 resources=33713 overused=0 overuse=0 archfail=NA
+Info:     iter=116 wires=716729 overused=7 overuse=7 resources=33689 overused=0 overuse=0 archfail=NA
+Info:     iter=117 wires=716876 overused=4 overuse=4 resources=33761 overused=1 overuse=1 archfail=NA
+Info:     iter=118 wires=716710 overused=5 overuse=5 resources=33689 overused=0 overuse=0 archfail=NA
+Info:     iter=119 wires=716743 overused=9 overuse=9 resources=33689 overused=0 overuse=0 archfail=NA
+Info:     iter=120 wires=716715 overused=3 overuse=3 resources=33665 overused=0 overuse=0 archfail=NA
+Info:     iter=121 wires=716717 overused=6 overuse=6 resources=33665 overused=0 overuse=0 archfail=NA
+Info:     iter=122 wires=716827 overused=5 overuse=5 resources=33737 overused=1 overuse=1 archfail=NA
+Info:     iter=123 wires=716744 overused=8 overuse=8 resources=33713 overused=0 overuse=0 archfail=NA
+Info:     iter=124 wires=716971 overused=5 overuse=5 resources=33781 overused=1 overuse=1 archfail=NA
+Info:     iter=125 wires=716786 overused=7 overuse=7 resources=33714 overused=1 overuse=2 archfail=NA
+Info:     iter=126 wires=716929 overused=5 overuse=5 resources=33772 overused=1 overuse=1 archfail=NA
+Info:     iter=127 wires=716756 overused=4 overuse=4 resources=33715 overused=0 overuse=0 archfail=NA
+Info:     iter=128 wires=716935 overused=4 overuse=4 resources=33783 overused=1 overuse=1 archfail=NA
+Info:     iter=129 wires=716756 overused=4 overuse=4 resources=33715 overused=0 overuse=0 archfail=NA
+Info:     iter=130 wires=716935 overused=4 overuse=4 resources=33783 overused=1 overuse=1 archfail=NA
+Info:     iter=131 wires=716835 overused=4 overuse=4 resources=33728 overused=0 overuse=0 archfail=NA
+Info:     iter=132 wires=716755 overused=5 overuse=5 resources=33707 overused=0 overuse=0 archfail=NA
+Info:     iter=133 wires=716825 overused=7 overuse=7 resources=33724 overused=1 overuse=1 archfail=NA
+Info:     iter=134 wires=716875 overused=4 overuse=4 resources=33749 overused=0 overuse=0 archfail=NA
+Info:     iter=135 wires=716824 overused=4 overuse=4 resources=33727 overused=0 overuse=0 archfail=NA
+Info:     iter=136 wires=716738 overused=4 overuse=4 resources=33703 overused=0 overuse=0 archfail=NA
+Info:     iter=137 wires=716736 overused=4 overuse=4 resources=33703 overused=0 overuse=0 archfail=NA
+Info:     iter=138 wires=716910 overused=4 overuse=4 resources=33771 overused=1 overuse=1 archfail=NA
+Info:     iter=139 wires=716740 overused=4 overuse=4 resources=33703 overused=0 overuse=0 archfail=NA
+Info:     iter=140 wires=716788 overused=6 overuse=6 resources=33708 overused=0 overuse=0 archfail=NA
+Info:     iter=141 wires=716923 overused=5 overuse=5 resources=33784 overused=1 overuse=2 archfail=NA
+Info:     iter=142 wires=716861 overused=5 overuse=5 resources=33760 overused=1 overuse=2 archfail=NA
+Info:     iter=143 wires=716926 overused=7 overuse=7 resources=33780 overused=0 overuse=0 archfail=NA
+Info:     iter=144 wires=716775 overused=8 overuse=8 resources=33708 overused=0 overuse=0 archfail=NA
+Info:     iter=145 wires=716804 overused=3 overuse=3 resources=33708 overused=0 overuse=0 archfail=NA
+Info:     iter=146 wires=716751 overused=4 overuse=4 resources=33684 overused=0 overuse=0 archfail=NA
+Info:     iter=147 wires=716824 overused=5 overuse=5 resources=33723 overused=0 overuse=0 archfail=NA
+Info:     iter=148 wires=716837 overused=5 overuse=5 resources=33723 overused=0 overuse=0 archfail=NA
+Info:     iter=149 wires=716841 overused=8 overuse=8 resources=33723 overused=0 overuse=0 archfail=NA
+Info:     iter=150 wires=716842 overused=4 overuse=4 resources=33723 overused=0 overuse=0 archfail=NA
+Info:     iter=151 wires=716919 overused=6 overuse=6 resources=33756 overused=0 overuse=0 archfail=NA
+Info:     iter=152 wires=716909 overused=5 overuse=5 resources=33756 overused=0 overuse=0 archfail=NA
+Info:     iter=153 wires=717011 overused=5 overuse=5 resources=33804 overused=0 overuse=0 archfail=NA
+Info:     iter=154 wires=716916 overused=3 overuse=3 resources=33756 overused=0 overuse=0 archfail=NA
+Info:     iter=155 wires=716784 overused=1 overuse=1 resources=33732 overused=0 overuse=0 archfail=NA
+Info:     iter=156 wires=716835 overused=1 overuse=1 resources=33739 overused=0 overuse=0 archfail=NA
+Info:     iter=157 wires=716784 overused=1 overuse=1 resources=33732 overused=0 overuse=0 archfail=NA
+Info:     iter=158 wires=716835 overused=1 overuse=1 resources=33739 overused=0 overuse=0 archfail=NA
+Info:     iter=159 wires=716784 overused=1 overuse=1 resources=33732 overused=0 overuse=0 archfail=NA
+Info:     iter=160 wires=716835 overused=1 overuse=1 resources=33739 overused=0 overuse=0 archfail=NA
+Info:     iter=161 wires=716784 overused=1 overuse=1 resources=33732 overused=0 overuse=0 archfail=NA
+Info:     iter=162 wires=716835 overused=1 overuse=1 resources=33739 overused=0 overuse=0 archfail=NA
+Info:     iter=163 wires=716784 overused=1 overuse=1 resources=33732 overused=0 overuse=0 archfail=NA
+Info:     iter=164 wires=716835 overused=1 overuse=1 resources=33739 overused=0 overuse=0 archfail=NA
+Info:     iter=165 wires=716784 overused=1 overuse=1 resources=33732 overused=0 overuse=0 archfail=NA
+Info:     iter=166 wires=716786 overused=2 overuse=2 resources=33732 overused=0 overuse=0 archfail=NA
+Info:     iter=167 wires=716784 overused=1 overuse=1 resources=33732 overused=0 overuse=0 archfail=NA
+Info:     iter=168 wires=716835 overused=1 overuse=1 resources=33739 overused=0 overuse=0 archfail=NA
+Info:     iter=169 wires=716830 overused=1 overuse=1 resources=33739 overused=0 overuse=0 archfail=NA
+Info:     iter=170 wires=716835 overused=1 overuse=1 resources=33739 overused=0 overuse=0 archfail=NA
+Info:     iter=171 wires=716784 overused=1 overuse=1 resources=33732 overused=0 overuse=0 archfail=NA
+Info:     iter=172 wires=716786 overused=2 overuse=2 resources=33732 overused=0 overuse=0 archfail=NA
+Info:     iter=173 wires=716784 overused=1 overuse=1 resources=33732 overused=0 overuse=0 archfail=NA
+Info:     iter=174 wires=716835 overused=1 overuse=1 resources=33739 overused=0 overuse=0 archfail=NA
+Info:     iter=175 wires=716784 overused=1 overuse=1 resources=33732 overused=0 overuse=0 archfail=NA
+Info:     iter=176 wires=716835 overused=1 overuse=1 resources=33739 overused=0 overuse=0 archfail=NA
+Info:     iter=177 wires=716784 overused=1 overuse=1 resources=33732 overused=0 overuse=0 archfail=NA
+Info:     iter=178 wires=716835 overused=1 overuse=1 resources=33739 overused=0 overuse=0 archfail=NA
+Info:     iter=179 wires=716784 overused=1 overuse=1 resources=33732 overused=0 overuse=0 archfail=NA
+Info:     iter=180 wires=716786 overused=2 overuse=2 resources=33732 overused=0 overuse=0 archfail=NA
+Info:     iter=181 wires=716855 overused=5 overuse=5 resources=33739 overused=0 overuse=0 archfail=NA
+Info:     iter=182 wires=716786 overused=2 overuse=2 resources=33732 overused=0 overuse=0 archfail=NA
+Info:     iter=183 wires=716852 overused=2 overuse=2 resources=33739 overused=0 overuse=0 archfail=NA
+Info:     iter=184 wires=716782 overused=1 overuse=1 resources=33732 overused=0 overuse=0 archfail=NA
+Info:     iter=185 wires=716833 overused=1 overuse=1 resources=33739 overused=0 overuse=0 archfail=NA
+Info:     iter=186 wires=716828 overused=1 overuse=1 resources=33739 overused=0 overuse=0 archfail=NA
+Info:     iter=187 wires=716833 overused=1 overuse=1 resources=33739 overused=0 overuse=0 archfail=NA
+Info:     iter=188 wires=716782 overused=1 overuse=1 resources=33732 overused=0 overuse=0 archfail=NA
+Info:     iter=189 wires=716833 overused=1 overuse=1 resources=33739 overused=0 overuse=0 archfail=NA
+Info:     iter=190 wires=716782 overused=1 overuse=1 resources=33732 overused=0 overuse=0 archfail=NA
+Info:     iter=191 wires=716784 overused=2 overuse=2 resources=33732 overused=0 overuse=0 archfail=NA
+Info:     iter=192 wires=716855 overused=5 overuse=5 resources=33739 overused=0 overuse=0 archfail=NA
+Info:     iter=193 wires=716784 overused=2 overuse=2 resources=33732 overused=0 overuse=0 archfail=NA
+Info:     iter=194 wires=716782 overused=1 overuse=1 resources=33732 overused=0 overuse=0 archfail=NA
+Info:     iter=195 wires=716833 overused=1 overuse=1 resources=33739 overused=0 overuse=0 archfail=NA
+Info:     iter=196 wires=716828 overused=1 overuse=1 resources=33739 overused=0 overuse=0 archfail=NA
+Info:     iter=197 wires=716833 overused=1 overuse=1 resources=33739 overused=0 overuse=0 archfail=NA
+Info:     iter=198 wires=716782 overused=1 overuse=1 resources=33732 overused=0 overuse=0 archfail=NA
+Info:     iter=199 wires=716833 overused=1 overuse=1 resources=33739 overused=0 overuse=0 archfail=NA
+Info:     iter=200 wires=716782 overused=1 overuse=1 resources=33732 overused=0 overuse=0 archfail=NA
+Info:     iter=201 wires=716859 overused=4 overuse=4 resources=33732 overused=0 overuse=0 archfail=NA
+Info:     iter=202 wires=716784 overused=2 overuse=2 resources=33732 overused=0 overuse=0 archfail=NA
+Info:     iter=203 wires=716852 overused=2 overuse=2 resources=33739 overused=0 overuse=0 archfail=NA
+Info:     iter=204 wires=716789 overused=5 overuse=5 resources=33732 overused=0 overuse=0 archfail=NA
+Info:     iter=205 wires=716755 overused=7 overuse=7 resources=33746 overused=1 overuse=1 archfail=NA
+Info:     iter=206 wires=716769 overused=5 overuse=5 resources=33741 overused=0 overuse=0 archfail=NA
+Info:     iter=207 wires=716765 overused=8 overuse=8 resources=33741 overused=0 overuse=0 archfail=NA
+Info:     iter=208 wires=716765 overused=5 overuse=5 resources=33741 overused=0 overuse=0 archfail=NA
+Info:     iter=209 wires=716765 overused=5 overuse=5 resources=33741 overused=0 overuse=0 archfail=NA
+Info:     iter=210 wires=716798 overused=5 overuse=5 resources=33746 overused=0 overuse=0 archfail=NA
+Info:     iter=211 wires=716765 overused=5 overuse=5 resources=33741 overused=0 overuse=0 archfail=NA
+Info:     iter=212 wires=716914 overused=5 overuse=5 resources=33826 overused=2 overuse=2 archfail=NA
+Info:     iter=213 wires=716807 overused=6 overuse=6 resources=33736 overused=0 overuse=0 archfail=NA
+Info:     iter=214 wires=716914 overused=2 overuse=2 resources=33826 overused=2 overuse=2 archfail=NA
+Info:     iter=215 wires=716801 overused=6 overuse=6 resources=33734 overused=0 overuse=0 archfail=NA
+Info:     iter=216 wires=716954 overused=3 overuse=3 resources=33819 overused=0 overuse=0 archfail=NA
+Info:     iter=217 wires=716972 overused=6 overuse=6 resources=33819 overused=0 overuse=0 archfail=NA
+Info:     iter=218 wires=716973 overused=3 overuse=3 resources=33819 overused=0 overuse=0 archfail=NA
+Info:     iter=219 wires=716967 overused=2 overuse=2 resources=33819 overused=0 overuse=0 archfail=NA
+Info:     iter=220 wires=716967 overused=2 overuse=2 resources=33819 overused=0 overuse=0 archfail=NA
+Info:     iter=221 wires=716967 overused=2 overuse=2 resources=33819 overused=0 overuse=0 archfail=NA
+Info:     iter=222 wires=716967 overused=5 overuse=5 resources=33819 overused=0 overuse=0 archfail=NA
+Info:     iter=223 wires=716967 overused=2 overuse=2 resources=33819 overused=0 overuse=0 archfail=NA
+Info:     iter=224 wires=716967 overused=2 overuse=2 resources=33819 overused=0 overuse=0 archfail=NA
+Info:     iter=225 wires=716967 overused=2 overuse=2 resources=33819 overused=0 overuse=0 archfail=NA
+Info:     iter=226 wires=716967 overused=2 overuse=2 resources=33819 overused=0 overuse=0 archfail=NA
+Info:     iter=227 wires=716950 overused=1 overuse=1 resources=33810 overused=0 overuse=0 archfail=NA
+Info:     iter=228 wires=716998 overused=1 overuse=1 resources=33817 overused=0 overuse=0 archfail=NA
+Info:     iter=229 wires=716998 overused=1 overuse=1 resources=33817 overused=0 overuse=0 archfail=NA
+Info:     iter=230 wires=716950 overused=1 overuse=1 resources=33810 overused=0 overuse=0 archfail=NA
+Info:     iter=231 wires=716998 overused=1 overuse=1 resources=33817 overused=0 overuse=0 archfail=NA
+Info:     iter=232 wires=716950 overused=1 overuse=1 resources=33810 overused=0 overuse=0 archfail=NA
+Info:     iter=233 wires=717027 overused=4 overuse=4 resources=33810 overused=0 overuse=0 archfail=NA
+Info:     iter=234 wires=717043 overused=7 overuse=7 resources=33810 overused=0 overuse=0 archfail=NA
+Info:     iter=235 wires=717252 overused=6 overuse=6 resources=33876 overused=1 overuse=1 archfail=NA
+Info:     iter=236 wires=717135 overused=6 overuse=6 resources=33829 overused=1 overuse=2 archfail=NA
+Info:     iter=237 wires=717095 overused=4 overuse=4 resources=33807 overused=0 overuse=0 archfail=NA
+Info:     iter=238 wires=717102 overused=4 overuse=4 resources=33831 overused=0 overuse=0 archfail=NA
+Info:     iter=239 wires=717264 overused=5 overuse=5 resources=33900 overused=1 overuse=1 archfail=NA
+Info:     iter=240 wires=717204 overused=5 overuse=5 resources=33879 overused=0 overuse=0 archfail=NA
+Info:     iter=241 wires=717197 overused=8 overuse=8 resources=33855 overused=0 overuse=0 archfail=NA
+Info:     iter=242 wires=717171 overused=6 overuse=6 resources=33889 overused=1 overuse=1 archfail=NA
+Info:     iter=243 wires=717459 overused=4 overuse=4 resources=33962 overused=1 overuse=1 archfail=NA
+Info:     iter=244 wires=717423 overused=4 overuse=4 resources=33962 overused=1 overuse=1 archfail=NA
+Info:     iter=245 wires=717419 overused=7 overuse=7 resources=33967 overused=0 overuse=0 archfail=NA
+Info:     iter=246 wires=717410 overused=4 overuse=4 resources=33967 overused=0 overuse=0 archfail=NA
+Info:     iter=247 wires=717303 overused=4 overuse=4 resources=33928 overused=0 overuse=0 archfail=NA
+Info:     iter=248 wires=717324 overused=4 overuse=4 resources=33926 overused=0 overuse=0 archfail=NA
+Info:     iter=249 wires=717217 overused=4 overuse=4 resources=33878 overused=0 overuse=0 archfail=NA
+Info:     iter=250 wires=717324 overused=4 overuse=4 resources=33926 overused=0 overuse=0 archfail=NA
+Info:     iter=251 wires=717201 overused=4 overuse=4 resources=33878 overused=0 overuse=0 archfail=NA
+Info:     iter=252 wires=717327 overused=7 overuse=7 resources=33926 overused=0 overuse=0 archfail=NA
+Info:     iter=253 wires=717036 overused=4 overuse=4 resources=33796 overused=0 overuse=0 archfail=NA
+Info:     iter=254 wires=717212 overused=5 overuse=5 resources=33865 overused=0 overuse=0 archfail=NA
+Info:     iter=255 wires=717216 overused=4 overuse=4 resources=33865 overused=0 overuse=0 archfail=NA
+Info:     iter=256 wires=717411 overused=5 overuse=5 resources=33933 overused=0 overuse=0 archfail=NA
+Info:     iter=257 wires=717212 overused=5 overuse=5 resources=33889 overused=0 overuse=0 archfail=NA
+Info:     iter=258 wires=717401 overused=5 overuse=5 resources=33957 overused=0 overuse=0 archfail=NA
+Info:     iter=259 wires=717211 overused=4 overuse=4 resources=33889 overused=0 overuse=0 archfail=NA
+Info:     iter=260 wires=717127 overused=1 overuse=1 resources=33889 overused=0 overuse=0 archfail=NA
+Info:     iter=261 wires=717175 overused=1 overuse=1 resources=33896 overused=0 overuse=0 archfail=NA
+Info:     iter=262 wires=717175 overused=1 overuse=1 resources=33896 overused=0 overuse=0 archfail=NA
+Info:     iter=263 wires=717127 overused=1 overuse=1 resources=33889 overused=0 overuse=0 archfail=NA
+Info:     iter=264 wires=717175 overused=1 overuse=1 resources=33896 overused=0 overuse=0 archfail=NA
+Info:     iter=265 wires=717127 overused=1 overuse=1 resources=33889 overused=0 overuse=0 archfail=NA
+Info:     iter=266 wires=717175 overused=1 overuse=1 resources=33896 overused=0 overuse=0 archfail=NA
+Info:     iter=267 wires=717127 overused=1 overuse=1 resources=33889 overused=0 overuse=0 archfail=NA
+Info:     iter=268 wires=717175 overused=1 overuse=1 resources=33896 overused=0 overuse=0 archfail=NA
+Info:     iter=269 wires=717127 overused=1 overuse=1 resources=33889 overused=0 overuse=0 archfail=NA
+Info:     iter=270 wires=717175 overused=1 overuse=1 resources=33896 overused=0 overuse=0 archfail=NA
+Info:     iter=271 wires=717127 overused=1 overuse=1 resources=33889 overused=0 overuse=0 archfail=NA
+Info:     iter=272 wires=717175 overused=1 overuse=1 resources=33896 overused=0 overuse=0 archfail=NA
+Info:     iter=273 wires=717127 overused=1 overuse=1 resources=33889 overused=0 overuse=0 archfail=NA
+Info:     iter=274 wires=717175 overused=1 overuse=1 resources=33896 overused=0 overuse=0 archfail=NA
+Info:     iter=275 wires=717127 overused=1 overuse=1 resources=33889 overused=0 overuse=0 archfail=NA
+Info:     iter=276 wires=717175 overused=1 overuse=1 resources=33896 overused=0 overuse=0 archfail=NA
+Info:     iter=277 wires=717127 overused=1 overuse=1 resources=33889 overused=0 overuse=0 archfail=NA
+Info:     iter=278 wires=717175 overused=1 overuse=1 resources=33896 overused=0 overuse=0 archfail=NA
+Info:     iter=279 wires=717127 overused=1 overuse=1 resources=33889 overused=0 overuse=0 archfail=NA
+Info:     iter=280 wires=717175 overused=1 overuse=1 resources=33896 overused=0 overuse=0 archfail=NA
+Info:     iter=281 wires=717127 overused=1 overuse=1 resources=33889 overused=0 overuse=0 archfail=NA
+Info:     iter=282 wires=717175 overused=1 overuse=1 resources=33896 overused=0 overuse=0 archfail=NA
+Info:     iter=283 wires=717127 overused=1 overuse=1 resources=33889 overused=0 overuse=0 archfail=NA
+Info:     iter=284 wires=717175 overused=1 overuse=1 resources=33896 overused=0 overuse=0 archfail=NA
+Info:     iter=285 wires=717127 overused=1 overuse=1 resources=33889 overused=0 overuse=0 archfail=NA
+Info:     iter=286 wires=717175 overused=1 overuse=1 resources=33896 overused=0 overuse=0 archfail=NA
+Info:     iter=287 wires=717127 overused=1 overuse=1 resources=33889 overused=0 overuse=0 archfail=NA
+Info:     iter=288 wires=717175 overused=1 overuse=1 resources=33896 overused=0 overuse=0 archfail=NA
+Info:     iter=289 wires=717127 overused=1 overuse=1 resources=33889 overused=0 overuse=0 archfail=NA
+Info:     iter=290 wires=717175 overused=1 overuse=1 resources=33896 overused=0 overuse=0 archfail=NA
+Info:     iter=291 wires=717127 overused=1 overuse=1 resources=33889 overused=0 overuse=0 archfail=NA
+Info:     iter=292 wires=717175 overused=1 overuse=1 resources=33896 overused=0 overuse=0 archfail=NA
+Info:     iter=293 wires=717127 overused=1 overuse=1 resources=33889 overused=0 overuse=0 archfail=NA
+Info:     iter=294 wires=717175 overused=1 overuse=1 resources=33896 overused=0 overuse=0 archfail=NA
+Info:     iter=295 wires=717127 overused=1 overuse=1 resources=33889 overused=0 overuse=0 archfail=NA
+Info:     iter=296 wires=717129 overused=2 overuse=2 resources=33889 overused=0 overuse=0 archfail=NA
+Info:     iter=297 wires=717144 overused=5 overuse=5 resources=33898 overused=0 overuse=0 archfail=NA
+Info:     iter=298 wires=717141 overused=2 overuse=2 resources=33898 overused=0 overuse=0 archfail=NA
+Info:     iter=299 wires=717144 overused=2 overuse=2 resources=33898 overused=0 overuse=0 archfail=NA
+Info:     iter=300 wires=717216 overused=4 overuse=4 resources=33898 overused=0 overuse=0 archfail=NA
+Info:     iter=301 wires=717428 overused=8 overuse=8 resources=33984 overused=1 overuse=2 archfail=NA
+Info:     iter=302 wires=717437 overused=4 overuse=4 resources=33972 overused=0 overuse=0 archfail=NA
+Info:     iter=303 wires=717424 overused=5 overuse=5 resources=33972 overused=0 overuse=0 archfail=NA
+Info:     iter=304 wires=717468 overused=4 overuse=4 resources=33972 overused=0 overuse=0 archfail=NA
+Info:     iter=305 wires=717424 overused=5 overuse=5 resources=33972 overused=0 overuse=0 archfail=NA
+Info:     iter=306 wires=717558 overused=4 overuse=4 resources=34020 overused=0 overuse=0 archfail=NA
+Info:     iter=307 wires=717526 overused=3 overuse=3 resources=34020 overused=0 overuse=0 archfail=NA
+Info:     iter=308 wires=717249 overused=3 overuse=3 resources=33903 overused=0 overuse=0 archfail=NA
+Info:     iter=309 wires=717526 overused=3 overuse=3 resources=34020 overused=0 overuse=0 archfail=NA
+Info:     iter=310 wires=717249 overused=3 overuse=3 resources=33903 overused=0 overuse=0 archfail=NA
+Info:     iter=311 wires=717405 overused=4 overuse=4 resources=33972 overused=0 overuse=0 archfail=NA
+Info:     iter=312 wires=717266 overused=4 overuse=4 resources=33903 overused=0 overuse=0 archfail=NA
+Info:     iter=313 wires=717183 overused=3 overuse=3 resources=33868 overused=0 overuse=0 archfail=NA
+Info:     iter=314 wires=717346 overused=3 overuse=3 resources=33950 overused=0 overuse=0 archfail=NA
+Info:     iter=315 wires=717176 overused=3 overuse=3 resources=33868 overused=0 overuse=0 archfail=NA
+Info:     iter=316 wires=717346 overused=3 overuse=3 resources=33950 overused=0 overuse=0 archfail=NA
+Info:     iter=317 wires=717176 overused=3 overuse=3 resources=33868 overused=0 overuse=0 archfail=NA
+Info:     iter=318 wires=717341 overused=4 overuse=4 resources=33950 overused=0 overuse=0 archfail=NA
+Info:     iter=319 wires=717177 overused=5 overuse=5 resources=33868 overused=0 overuse=0 archfail=NA
+Info:     iter=320 wires=717346 overused=3 overuse=3 resources=33950 overused=0 overuse=0 archfail=NA
+Info:     iter=321 wires=717183 overused=3 overuse=3 resources=33868 overused=0 overuse=0 archfail=NA
+Info:     iter=322 wires=717341 overused=4 overuse=4 resources=33950 overused=0 overuse=0 archfail=NA
+Info:     iter=323 wires=717289 overused=3 overuse=3 resources=33916 overused=0 overuse=0 archfail=NA
+Info:     iter=324 wires=717452 overused=3 overuse=3 resources=33998 overused=0 overuse=0 archfail=NA
+Info:     iter=325 wires=717289 overused=3 overuse=3 resources=33916 overused=0 overuse=0 archfail=NA
+Info:     iter=326 wires=717339 overused=3 overuse=3 resources=33950 overused=0 overuse=0 archfail=NA
+Info:     iter=327 wires=717031 overused=4 overuse=4 resources=33795 overused=0 overuse=0 archfail=NA
+Info:     iter=328 wires=717339 overused=4 overuse=4 resources=33950 overused=0 overuse=0 archfail=NA
+Info:     iter=329 wires=717084 overused=4 overuse=4 resources=33817 overused=0 overuse=0 archfail=NA
+Info:     iter=330 wires=717394 overused=4 overuse=4 resources=33972 overused=0 overuse=0 archfail=NA
+Info:     iter=331 wires=717065 overused=4 overuse=4 resources=33817 overused=0 overuse=0 archfail=NA
+Info:     iter=332 wires=717394 overused=4 overuse=4 resources=33972 overused=0 overuse=0 archfail=NA
+Info:     iter=333 wires=717029 overused=4 overuse=4 resources=33795 overused=0 overuse=0 archfail=NA
+Info:     iter=334 wires=716954 overused=2 overuse=2 resources=33795 overused=0 overuse=0 archfail=NA
+Info:     iter=335 wires=716957 overused=5 overuse=5 resources=33795 overused=0 overuse=0 archfail=NA
+Info:     iter=336 wires=716954 overused=2 overuse=2 resources=33795 overused=0 overuse=0 archfail=NA
+Info:     iter=337 wires=716957 overused=2 overuse=2 resources=33795 overused=0 overuse=0 archfail=NA
+Info:     iter=338 wires=716985 overused=1 overuse=1 resources=33802 overused=0 overuse=0 archfail=NA
+Info:     iter=339 wires=716985 overused=1 overuse=1 resources=33802 overused=0 overuse=0 archfail=NA
+Info:     iter=340 wires=716985 overused=1 overuse=1 resources=33802 overused=0 overuse=0 archfail=NA
+Info:     iter=341 wires=716985 overused=1 overuse=1 resources=33802 overused=0 overuse=0 archfail=NA
+Info:     iter=342 wires=716985 overused=1 overuse=1 resources=33802 overused=0 overuse=0 archfail=NA
+Info:     iter=343 wires=716985 overused=1 overuse=1 resources=33802 overused=0 overuse=0 archfail=NA
+Info:     iter=344 wires=716982 overused=1 overuse=1 resources=33795 overused=0 overuse=0 archfail=NA
+Info:     iter=345 wires=716985 overused=1 overuse=1 resources=33802 overused=0 overuse=0 archfail=NA
+Info:     iter=346 wires=716982 overused=1 overuse=1 resources=33795 overused=0 overuse=0 archfail=NA
+Info:     iter=347 wires=716985 overused=1 overuse=1 resources=33802 overused=0 overuse=0 archfail=NA
+Info:     iter=348 wires=716982 overused=1 overuse=1 resources=33795 overused=0 overuse=0 archfail=NA
+Info:     iter=349 wires=716985 overused=1 overuse=1 resources=33802 overused=0 overuse=0 archfail=NA
+Info:     iter=350 wires=716982 overused=1 overuse=1 resources=33795 overused=0 overuse=0 archfail=NA
+Info:     iter=351 wires=716985 overused=1 overuse=1 resources=33802 overused=0 overuse=0 archfail=NA
+Info:     iter=352 wires=716982 overused=1 overuse=1 resources=33795 overused=0 overuse=0 archfail=NA
+Info:     iter=353 wires=716985 overused=1 overuse=1 resources=33802 overused=0 overuse=0 archfail=NA
+Info:     iter=354 wires=716982 overused=1 overuse=1 resources=33795 overused=0 overuse=0 archfail=NA
+Info:     iter=355 wires=716985 overused=1 overuse=1 resources=33802 overused=0 overuse=0 archfail=NA
+Info:     iter=356 wires=716982 overused=1 overuse=1 resources=33795 overused=0 overuse=0 archfail=NA
+Info:     iter=357 wires=716985 overused=1 overuse=1 resources=33802 overused=0 overuse=0 archfail=NA
+Info:     iter=358 wires=716982 overused=1 overuse=1 resources=33795 overused=0 overuse=0 archfail=NA
+Info:     iter=359 wires=716985 overused=1 overuse=1 resources=33802 overused=0 overuse=0 archfail=NA
+Info:     iter=360 wires=716982 overused=1 overuse=1 resources=33795 overused=0 overuse=0 archfail=NA
+Info:     iter=361 wires=716985 overused=1 overuse=1 resources=33802 overused=0 overuse=0 archfail=NA
+Info:     iter=362 wires=716982 overused=1 overuse=1 resources=33795 overused=0 overuse=0 archfail=NA
+Info:     iter=363 wires=716985 overused=1 overuse=1 resources=33802 overused=0 overuse=0 archfail=NA
+Info:     iter=364 wires=716982 overused=1 overuse=1 resources=33795 overused=0 overuse=0 archfail=NA
+Info:     iter=365 wires=716985 overused=1 overuse=1 resources=33802 overused=0 overuse=0 archfail=NA
+Info:     iter=366 wires=716982 overused=1 overuse=1 resources=33795 overused=0 overuse=0 archfail=NA
+Info:     iter=367 wires=716985 overused=1 overuse=1 resources=33802 overused=0 overuse=0 archfail=NA
+Info:     iter=368 wires=716982 overused=1 overuse=1 resources=33795 overused=0 overuse=0 archfail=NA
+Info:     iter=369 wires=716985 overused=1 overuse=1 resources=33802 overused=0 overuse=0 archfail=NA
+Info:     iter=370 wires=716982 overused=1 overuse=1 resources=33795 overused=0 overuse=0 archfail=NA
+Info:     iter=371 wires=716985 overused=1 overuse=1 resources=33802 overused=0 overuse=0 archfail=NA
+Info:     iter=372 wires=716982 overused=1 overuse=1 resources=33795 overused=0 overuse=0 archfail=NA
+Info:     iter=373 wires=716985 overused=1 overuse=1 resources=33802 overused=0 overuse=0 archfail=NA
+Info:     iter=374 wires=716982 overused=1 overuse=1 resources=33795 overused=0 overuse=0 archfail=NA
+Info:     iter=375 wires=716985 overused=1 overuse=1 resources=33802 overused=0 overuse=0 archfail=NA
+Info:     iter=376 wires=716982 overused=1 overuse=1 resources=33795 overused=0 overuse=0 archfail=NA
+Info:     iter=377 wires=716954 overused=2 overuse=2 resources=33795 overused=0 overuse=0 archfail=NA
+Info:     iter=378 wires=716957 overused=2 overuse=2 resources=33795 overused=0 overuse=0 archfail=NA
+Info:     iter=379 wires=716960 overused=5 overuse=5 resources=33795 overused=0 overuse=0 archfail=NA
+Info:     iter=380 wires=716957 overused=2 overuse=2 resources=33795 overused=0 overuse=0 archfail=NA
+Info:     iter=381 wires=716954 overused=2 overuse=2 resources=33795 overused=0 overuse=0 archfail=NA
+Info:     iter=382 wires=716957 overused=2 overuse=2 resources=33795 overused=0 overuse=0 archfail=NA
+Info:     iter=383 wires=717008 overused=2 overuse=2 resources=33793 overused=0 overuse=0 archfail=NA
+Info:     iter=384 wires=716942 overused=2 overuse=2 resources=33786 overused=0 overuse=0 archfail=NA
+Info:     iter=385 wires=716940 overused=1 overuse=1 resources=33786 overused=0 overuse=0 archfail=NA
+Info:     iter=386 wires=716940 overused=1 overuse=1 resources=33786 overused=0 overuse=0 archfail=NA
+Info:     iter=387 wires=716981 overused=1 overuse=1 resources=33793 overused=0 overuse=0 archfail=NA
+Info:     iter=388 wires=716940 overused=1 overuse=1 resources=33786 overused=0 overuse=0 archfail=NA
+Info:     iter=389 wires=716981 overused=1 overuse=1 resources=33793 overused=0 overuse=0 archfail=NA
+Info:     iter=390 wires=716940 overused=1 overuse=1 resources=33786 overused=0 overuse=0 archfail=NA
+Info:     iter=391 wires=716981 overused=1 overuse=1 resources=33793 overused=0 overuse=0 archfail=NA
+Info:     iter=392 wires=716940 overused=1 overuse=1 resources=33786 overused=0 overuse=0 archfail=NA
+Info:     iter=393 wires=716957 overused=2 overuse=2 resources=33795 overused=0 overuse=0 archfail=NA
+Info:     iter=394 wires=716957 overused=5 overuse=5 resources=33795 overused=0 overuse=0 archfail=NA
+Info:     iter=395 wires=716954 overused=2 overuse=2 resources=33795 overused=0 overuse=0 archfail=NA
+Info:     iter=396 wires=716957 overused=2 overuse=2 resources=33795 overused=0 overuse=0 archfail=NA
+Info:     iter=397 wires=716954 overused=2 overuse=2 resources=33795 overused=0 overuse=0 archfail=NA
+Info:     iter=398 wires=716957 overused=2 overuse=2 resources=33795 overused=0 overuse=0 archfail=NA
+Info:     iter=399 wires=716940 overused=1 overuse=1 resources=33786 overused=0 overuse=0 archfail=NA
+Info:     iter=400 wires=716981 overused=1 overuse=1 resources=33793 overused=0 overuse=0 archfail=NA
+Info:     iter=401 wires=716940 overused=1 overuse=1 resources=33786 overused=0 overuse=0 archfail=NA
+Info:     iter=402 wires=716981 overused=1 overuse=1 resources=33793 overused=0 overuse=0 archfail=NA
+Info:     iter=403 wires=716940 overused=1 overuse=1 resources=33786 overused=0 overuse=0 archfail=NA
+Info:     iter=404 wires=716981 overused=1 overuse=1 resources=33793 overused=0 overuse=0 archfail=NA
+Info:     iter=405 wires=716940 overused=1 overuse=1 resources=33786 overused=0 overuse=0 archfail=NA
+Info:     iter=406 wires=716981 overused=1 overuse=1 resources=33793 overused=0 overuse=0 archfail=NA
+Info:     iter=407 wires=716940 overused=1 overuse=1 resources=33786 overused=0 overuse=0 archfail=NA
+Info:     iter=408 wires=716981 overused=1 overuse=1 resources=33793 overused=0 overuse=0 archfail=NA
+Info:     iter=409 wires=716940 overused=1 overuse=1 resources=33786 overused=0 overuse=0 archfail=NA
+Info:     iter=410 wires=716981 overused=1 overuse=1 resources=33793 overused=0 overuse=0 archfail=NA
+Info:     iter=411 wires=716940 overused=1 overuse=1 resources=33786 overused=0 overuse=0 archfail=NA
+Info:     iter=412 wires=716981 overused=1 overuse=1 resources=33793 overused=0 overuse=0 archfail=NA
+Info:     iter=413 wires=716940 overused=1 overuse=1 resources=33786 overused=0 overuse=0 archfail=NA
+Info:     iter=414 wires=716981 overused=1 overuse=1 resources=33793 overused=0 overuse=0 archfail=NA
+Info:     iter=415 wires=716940 overused=1 overuse=1 resources=33786 overused=0 overuse=0 archfail=NA
+Info:     iter=416 wires=716942 overused=2 overuse=2 resources=33786 overused=0 overuse=0 archfail=NA
+Info:     iter=417 wires=716957 overused=5 overuse=5 resources=33795 overused=0 overuse=0 archfail=NA
+Info:     iter=418 wires=716957 overused=2 overuse=2 resources=33793 overused=0 overuse=0 archfail=NA
+Info:     iter=419 wires=716957 overused=2 overuse=2 resources=33793 overused=0 overuse=0 archfail=NA
+Info:     iter=420 wires=716957 overused=2 overuse=2 resources=33793 overused=0 overuse=0 archfail=NA
+Info:     iter=421 wires=716957 overused=2 overuse=2 resources=33793 overused=0 overuse=0 archfail=NA
+Info:     iter=422 wires=716957 overused=2 overuse=2 resources=33793 overused=0 overuse=0 archfail=NA
+Info:     iter=423 wires=716957 overused=2 overuse=2 resources=33793 overused=0 overuse=0 archfail=NA
+Info:     iter=424 wires=716957 overused=2 overuse=2 resources=33793 overused=0 overuse=0 archfail=NA
+Info:     iter=425 wires=716957 overused=2 overuse=2 resources=33793 overused=0 overuse=0 archfail=NA
+Info:     iter=426 wires=716957 overused=2 overuse=2 resources=33793 overused=0 overuse=0 archfail=NA
+Info:     iter=427 wires=716957 overused=2 overuse=2 resources=33793 overused=0 overuse=0 archfail=NA
+Info:     iter=428 wires=716957 overused=2 overuse=2 resources=33793 overused=0 overuse=0 archfail=NA
+Info:     iter=429 wires=716957 overused=2 overuse=2 resources=33793 overused=0 overuse=0 archfail=NA
+Info:     iter=430 wires=716957 overused=2 overuse=2 resources=33793 overused=0 overuse=0 archfail=NA
+Info:     iter=431 wires=716957 overused=2 overuse=2 resources=33793 overused=0 overuse=0 archfail=NA
+Info:     iter=432 wires=716957 overused=2 overuse=2 resources=33793 overused=0 overuse=0 archfail=NA
+Info:     iter=433 wires=716957 overused=2 overuse=2 resources=33793 overused=0 overuse=0 archfail=NA
+Info:     iter=434 wires=717199 overused=4 overuse=4 resources=33892 overused=2 overuse=3 archfail=NA
+Info:     iter=435 wires=717260 overused=3 overuse=3 resources=33867 overused=0 overuse=0 archfail=NA
+Info:     iter=436 wires=717261 overused=2 overuse=2 resources=33867 overused=0 overuse=0 archfail=NA
+Info:     iter=437 wires=717261 overused=2 overuse=2 resources=33867 overused=0 overuse=0 archfail=NA
+Info:     iter=438 wires=717261 overused=2 overuse=2 resources=33867 overused=0 overuse=0 archfail=NA
+Info:     iter=439 wires=717261 overused=2 overuse=2 resources=33867 overused=0 overuse=0 archfail=NA
+Info:     iter=440 wires=717261 overused=2 overuse=2 resources=33867 overused=0 overuse=0 archfail=NA
+Info:     iter=441 wires=717261 overused=2 overuse=2 resources=33867 overused=0 overuse=0 archfail=NA
+Info:     iter=442 wires=717019 overused=2 overuse=2 resources=33768 overused=0 overuse=0 archfail=NA
+Info:     iter=443 wires=717261 overused=2 overuse=2 resources=33867 overused=0 overuse=0 archfail=NA
+Info:     iter=444 wires=717019 overused=2 overuse=2 resources=33768 overused=0 overuse=0 archfail=NA
+Info:     iter=445 wires=717261 overused=2 overuse=2 resources=33867 overused=0 overuse=0 archfail=NA
+Info:     iter=446 wires=717019 overused=2 overuse=2 resources=33768 overused=0 overuse=0 archfail=NA
+Info:     iter=447 wires=717261 overused=2 overuse=2 resources=33867 overused=0 overuse=0 archfail=NA
+Info:     iter=448 wires=717019 overused=2 overuse=2 resources=33768 overused=0 overuse=0 archfail=NA
+Info:     iter=449 wires=717261 overused=2 overuse=2 resources=33867 overused=0 overuse=0 archfail=NA
+Info:     iter=450 wires=717019 overused=2 overuse=2 resources=33768 overused=0 overuse=0 archfail=NA
+Info:     iter=451 wires=717261 overused=2 overuse=2 resources=33867 overused=0 overuse=0 archfail=NA
+Info:     iter=452 wires=717019 overused=2 overuse=2 resources=33768 overused=0 overuse=0 archfail=NA
+Info:     iter=453 wires=717261 overused=2 overuse=2 resources=33867 overused=0 overuse=0 archfail=NA
+Info:     iter=454 wires=717019 overused=2 overuse=2 resources=33768 overused=0 overuse=0 archfail=NA
+Info:     iter=455 wires=717261 overused=2 overuse=2 resources=33867 overused=0 overuse=0 archfail=NA
+Info:     iter=456 wires=717019 overused=2 overuse=2 resources=33768 overused=0 overuse=0 archfail=NA
+Info:     iter=457 wires=717261 overused=2 overuse=2 resources=33867 overused=0 overuse=0 archfail=NA
+Info:     iter=458 wires=717019 overused=2 overuse=2 resources=33768 overused=0 overuse=0 archfail=NA
+Info:     iter=459 wires=717256 overused=2 overuse=2 resources=33860 overused=0 overuse=0 archfail=NA
+Info:     iter=460 wires=717019 overused=2 overuse=2 resources=33768 overused=0 overuse=0 archfail=NA
+Info:     iter=461 wires=717256 overused=2 overuse=2 resources=33860 overused=0 overuse=0 archfail=NA
+Info:     iter=462 wires=717019 overused=2 overuse=2 resources=33768 overused=0 overuse=0 archfail=NA
+Info:     iter=463 wires=717256 overused=2 overuse=2 resources=33860 overused=0 overuse=0 archfail=NA
+Info:     iter=464 wires=717261 overused=2 overuse=2 resources=33867 overused=0 overuse=0 archfail=NA
+Info:     iter=465 wires=717019 overused=2 overuse=2 resources=33768 overused=0 overuse=0 archfail=NA
+Info:     iter=466 wires=717096 overused=4 overuse=4 resources=33768 overused=0 overuse=0 archfail=NA
+Info:     iter=467 wires=717017 overused=1 overuse=1 resources=33768 overused=0 overuse=0 archfail=NA
+Info:     iter=468 wires=717092 overused=5 overuse=5 resources=33768 overused=0 overuse=0 archfail=NA
+Info:     iter=469 wires=717121 overused=3 overuse=3 resources=33799 overused=0 overuse=0 archfail=NA
+Info:     iter=470 wires=717207 overused=6 overuse=6 resources=33799 overused=0 overuse=0 archfail=NA
+Info:     iter=471 wires=717095 overused=1 overuse=1 resources=33775 overused=0 overuse=0 archfail=NA
+Info:     iter=472 wires=717227 overused=1 overuse=1 resources=33825 overused=1 overuse=1 archfail=NA
+Info:     iter=473 wires=717095 overused=1 overuse=1 resources=33775 overused=0 overuse=0 archfail=NA
+Info:     iter=474 wires=717227 overused=1 overuse=1 resources=33825 overused=1 overuse=2 archfail=NA
+Info:     iter=475 wires=717095 overused=1 overuse=1 resources=33775 overused=0 overuse=0 archfail=NA
+Info:     iter=476 wires=717227 overused=1 overuse=1 resources=33825 overused=1 overuse=1 archfail=NA
+Info:     iter=477 wires=717095 overused=1 overuse=1 resources=33775 overused=0 overuse=0 archfail=NA
+Info:     iter=478 wires=717227 overused=1 overuse=1 resources=33825 overused=1 overuse=2 archfail=NA
+Info:     iter=479 wires=717095 overused=1 overuse=1 resources=33775 overused=0 overuse=0 archfail=NA
+Info:     iter=480 wires=717172 overused=4 overuse=4 resources=33775 overused=0 overuse=0 archfail=NA
+Info:     iter=481 wires=717329 overused=6 overuse=6 resources=33848 overused=0 overuse=0 archfail=NA
+Info:     iter=482 wires=717482 overused=4 overuse=4 resources=33930 overused=0 overuse=0 archfail=NA
+Info:     iter=483 wires=717326 overused=3 overuse=3 resources=33848 overused=0 overuse=0 archfail=NA
+Info:     iter=484 wires=717342 overused=3 overuse=3 resources=33857 overused=0 overuse=0 archfail=NA
+Info:     iter=485 wires=717326 overused=3 overuse=3 resources=33848 overused=0 overuse=0 archfail=NA
+Info:     iter=486 wires=717341 overused=7 overuse=7 resources=33857 overused=0 overuse=0 archfail=NA
+Info:     iter=487 wires=717304 overused=6 overuse=6 resources=33847 overused=0 overuse=0 archfail=NA
+Info:     iter=488 wires=717465 overused=7 overuse=7 resources=33911 overused=2 overuse=3 archfail=NA
+Info:     iter=489 wires=717534 overused=5 overuse=5 resources=33916 overused=0 overuse=0 archfail=NA
+Info:     iter=490 wires=717371 overused=6 overuse=6 resources=33835 overused=0 overuse=0 archfail=NA
+Info:     iter=491 wires=717552 overused=5 overuse=5 resources=33903 overused=0 overuse=0 archfail=NA
+Info:     iter=492 wires=717557 overused=5 overuse=5 resources=33903 overused=0 overuse=0 archfail=NA
+Info:     iter=493 wires=717411 overused=4 overuse=4 resources=33835 overused=0 overuse=0 archfail=NA
+Info:     iter=494 wires=717438 overused=4 overuse=4 resources=33855 overused=0 overuse=0 archfail=NA
+Info:     iter=495 wires=717555 overused=4 overuse=4 resources=33903 overused=0 overuse=0 archfail=NA
+Info:     iter=496 wires=717259 overused=4 overuse=4 resources=33787 overused=0 overuse=0 archfail=NA
+Info:     iter=497 wires=717424 overused=4 overuse=4 resources=33855 overused=0 overuse=0 archfail=NA
+Info:     iter=498 wires=717264 overused=4 overuse=4 resources=33787 overused=0 overuse=0 archfail=NA
+Info:     iter=499 wires=717416 overused=4 overuse=4 resources=33855 overused=0 overuse=0 archfail=NA
+Info:     iter=500 wires=717248 overused=4 overuse=4 resources=33787 overused=0 overuse=0 archfail=NA
+Info:     iter=501 wires=717424 overused=4 overuse=4 resources=33855 overused=0 overuse=0 archfail=NA
+Info:     iter=502 wires=717160 overused=1 overuse=1 resources=33787 overused=0 overuse=0 archfail=NA
+Info:     iter=503 wires=717292 overused=1 overuse=1 resources=33837 overused=1 overuse=1 archfail=NA
+Info:     iter=504 wires=717160 overused=1 overuse=1 resources=33787 overused=0 overuse=0 archfail=NA
+Info:     iter=505 wires=717292 overused=1 overuse=1 resources=33837 overused=1 overuse=2 archfail=NA
+Info:     iter=506 wires=717145 overused=1 overuse=1 resources=33780 overused=0 overuse=0 archfail=NA
+Info:     iter=507 wires=717193 overused=1 overuse=1 resources=33787 overused=0 overuse=0 archfail=NA
+Info:     iter=508 wires=717193 overused=1 overuse=1 resources=33787 overused=0 overuse=0 archfail=NA
+Info:     iter=509 wires=717193 overused=1 overuse=1 resources=33787 overused=0 overuse=0 archfail=NA
+Info:     iter=510 wires=717193 overused=1 overuse=1 resources=33787 overused=0 overuse=0 archfail=NA
+Info:     iter=511 wires=717193 overused=1 overuse=1 resources=33787 overused=0 overuse=0 archfail=NA
+Info:     iter=512 wires=717145 overused=1 overuse=1 resources=33780 overused=0 overuse=0 archfail=NA
+Info:     iter=513 wires=717193 overused=1 overuse=1 resources=33787 overused=0 overuse=0 archfail=NA
+Info:     iter=514 wires=717145 overused=1 overuse=1 resources=33780 overused=0 overuse=0 archfail=NA
+Info:     iter=515 wires=717193 overused=1 overuse=1 resources=33787 overused=0 overuse=0 archfail=NA
+Info:     iter=516 wires=717145 overused=1 overuse=1 resources=33780 overused=0 overuse=0 archfail=NA
+Info:     iter=517 wires=717193 overused=1 overuse=1 resources=33787 overused=0 overuse=0 archfail=NA
+Info:     iter=518 wires=717145 overused=1 overuse=1 resources=33780 overused=0 overuse=0 archfail=NA
+Info:     iter=519 wires=717193 overused=1 overuse=1 resources=33787 overused=0 overuse=0 archfail=NA
+Info:     iter=520 wires=717145 overused=1 overuse=1 resources=33780 overused=0 overuse=0 archfail=NA
+Info:     iter=521 wires=717232 overused=5 overuse=5 resources=33780 overused=0 overuse=0 archfail=NA
+Info:     iter=522 wires=717502 overused=4 overuse=4 resources=33901 overused=0 overuse=0 archfail=NA
+Info:     iter=523 wires=717665 overused=4 overuse=4 resources=33983 overused=0 overuse=0 archfail=NA
+Info:     iter=524 wires=717391 overused=4 overuse=4 resources=33853 overused=0 overuse=0 archfail=NA
+Info:     iter=525 wires=717462 overused=3 overuse=3 resources=33888 overused=0 overuse=0 archfail=NA
+Info:     iter=526 wires=717498 overused=3 overuse=3 resources=33913 overused=0 overuse=0 archfail=NA
+Info:     iter=527 wires=717465 overused=3 overuse=3 resources=33875 overused=0 overuse=0 archfail=NA
+Info:     iter=528 wires=717528 overused=3 overuse=3 resources=33913 overused=0 overuse=0 archfail=NA
+Info:     iter=529 wires=717465 overused=3 overuse=3 resources=33875 overused=0 overuse=0 archfail=NA
+Info:     iter=530 wires=717335 overused=3 overuse=3 resources=33831 overused=0 overuse=0 archfail=NA
+Info:     iter=531 wires=717352 overused=4 overuse=4 resources=33827 overused=0 overuse=0 archfail=NA
+Info:     iter=532 wires=717415 overused=4 overuse=4 resources=33866 overused=0 overuse=0 archfail=NA
+Info:     iter=533 wires=717395 overused=4 overuse=4 resources=33849 overused=0 overuse=0 archfail=NA
+Info:     iter=534 wires=717381 overused=4 overuse=4 resources=33853 overused=0 overuse=0 archfail=NA
+Info:     iter=535 wires=717356 overused=3 overuse=3 resources=33840 overused=0 overuse=0 archfail=NA
+Info:     iter=536 wires=717333 overused=4 overuse=4 resources=33831 overused=0 overuse=0 archfail=NA
+Info:     iter=537 wires=717407 overused=4 overuse=4 resources=33849 overused=0 overuse=0 archfail=NA
+Info:     iter=538 wires=717396 overused=3 overuse=3 resources=33866 overused=0 overuse=0 archfail=NA
+Info:     iter=539 wires=717395 overused=3 overuse=3 resources=33849 overused=0 overuse=0 archfail=NA
+Info:     iter=540 wires=717396 overused=3 overuse=3 resources=33866 overused=0 overuse=0 archfail=NA
+Info:     iter=541 wires=717145 overused=1 overuse=1 resources=33780 overused=0 overuse=0 archfail=NA
+Info:     iter=542 wires=717193 overused=1 overuse=1 resources=33787 overused=0 overuse=0 archfail=NA
+Info:     iter=543 wires=717193 overused=1 overuse=1 resources=33787 overused=0 overuse=0 archfail=NA
+Info:     iter=544 wires=717145 overused=1 overuse=1 resources=33780 overused=0 overuse=0 archfail=NA
+Info:     iter=545 wires=717193 overused=1 overuse=1 resources=33787 overused=0 overuse=0 archfail=NA
+Info:     iter=546 wires=717145 overused=1 overuse=1 resources=33780 overused=0 overuse=0 archfail=NA
+Info:     iter=547 wires=717193 overused=1 overuse=1 resources=33787 overused=0 overuse=0 archfail=NA
+Info:     iter=548 wires=717145 overused=1 overuse=1 resources=33780 overused=0 overuse=0 archfail=NA
+Info:     iter=549 wires=717193 overused=1 overuse=1 resources=33787 overused=0 overuse=0 archfail=NA
+Info:     iter=550 wires=717145 overused=1 overuse=1 resources=33780 overused=0 overuse=0 archfail=NA
+Info:     iter=551 wires=717193 overused=1 overuse=1 resources=33787 overused=0 overuse=0 archfail=NA
+Info:     iter=552 wires=717145 overused=1 overuse=1 resources=33780 overused=0 overuse=0 archfail=NA
+Info:     iter=553 wires=717193 overused=1 overuse=1 resources=33787 overused=0 overuse=0 archfail=NA
+Info:     iter=554 wires=717145 overused=1 overuse=1 resources=33780 overused=0 overuse=0 archfail=NA
+Info:     iter=555 wires=717193 overused=1 overuse=1 resources=33787 overused=0 overuse=0 archfail=NA
+Info:     iter=556 wires=717145 overused=1 overuse=1 resources=33780 overused=0 overuse=0 archfail=NA
+Info:     iter=557 wires=717193 overused=1 overuse=1 resources=33787 overused=0 overuse=0 archfail=NA
+Info:     iter=558 wires=717145 overused=1 overuse=1 resources=33780 overused=0 overuse=0 archfail=NA
+Info:     iter=559 wires=717193 overused=1 overuse=1 resources=33787 overused=0 overuse=0 archfail=NA
+Info:     iter=560 wires=717145 overused=1 overuse=1 resources=33780 overused=0 overuse=0 archfail=NA
+Info:     iter=561 wires=717193 overused=1 overuse=1 resources=33787 overused=0 overuse=0 archfail=NA
+Info:     iter=562 wires=717145 overused=1 overuse=1 resources=33780 overused=0 overuse=0 archfail=NA
+Info:     iter=563 wires=717193 overused=1 overuse=1 resources=33787 overused=0 overuse=0 archfail=NA
+Info:     iter=564 wires=717145 overused=1 overuse=1 resources=33780 overused=0 overuse=0 archfail=NA
+Info:     iter=565 wires=717193 overused=1 overuse=1 resources=33787 overused=0 overuse=0 archfail=NA
+Info:     iter=566 wires=717145 overused=1 overuse=1 resources=33780 overused=0 overuse=0 archfail=NA
+Info:     iter=567 wires=717193 overused=1 overuse=1 resources=33787 overused=0 overuse=0 archfail=NA
+Info:     iter=568 wires=717145 overused=1 overuse=1 resources=33780 overused=0 overuse=0 archfail=NA
+Info:     iter=569 wires=717193 overused=1 overuse=1 resources=33787 overused=0 overuse=0 archfail=NA
+Info:     iter=570 wires=717145 overused=1 overuse=1 resources=33780 overused=0 overuse=0 archfail=NA
+Info:     iter=571 wires=717193 overused=1 overuse=1 resources=33787 overused=0 overuse=0 archfail=NA
+Info:     iter=572 wires=717145 overused=1 overuse=1 resources=33780 overused=0 overuse=0 archfail=NA
+Info:     iter=573 wires=717193 overused=1 overuse=1 resources=33787 overused=0 overuse=0 archfail=NA
+Info:     iter=574 wires=717145 overused=1 overuse=1 resources=33780 overused=0 overuse=0 archfail=NA
+Info:     iter=575 wires=717193 overused=1 overuse=1 resources=33787 overused=0 overuse=0 archfail=NA
+Info:     iter=576 wires=717145 overused=1 overuse=1 resources=33780 overused=0 overuse=0 archfail=NA
+Info:     iter=577 wires=717193 overused=1 overuse=1 resources=33787 overused=0 overuse=0 archfail=NA
+Info:     iter=578 wires=717145 overused=1 overuse=1 resources=33780 overused=0 overuse=0 archfail=NA
+Info:     iter=579 wires=717193 overused=1 overuse=1 resources=33787 overused=0 overuse=0 archfail=NA
+Info:     iter=580 wires=717145 overused=1 overuse=1 resources=33780 overused=0 overuse=0 archfail=NA
+Info:     iter=581 wires=717193 overused=1 overuse=1 resources=33787 overused=0 overuse=0 archfail=NA
+Info:     iter=582 wires=717145 overused=1 overuse=1 resources=33780 overused=0 overuse=0 archfail=NA
+Info:     iter=583 wires=717162 overused=2 overuse=2 resources=33789 overused=0 overuse=0 archfail=NA
+Info:     iter=584 wires=717162 overused=2 overuse=2 resources=33789 overused=0 overuse=0 archfail=NA
+Info:     iter=585 wires=717162 overused=2 overuse=2 resources=33789 overused=0 overuse=0 archfail=NA
+Info:     iter=586 wires=717162 overused=2 overuse=2 resources=33789 overused=0 overuse=0 archfail=NA
+Info:     iter=587 wires=717162 overused=2 overuse=2 resources=33789 overused=0 overuse=0 archfail=NA
+Info:     iter=588 wires=717162 overused=2 overuse=2 resources=33789 overused=0 overuse=0 archfail=NA
+Info:     iter=589 wires=717162 overused=2 overuse=2 resources=33789 overused=0 overuse=0 archfail=NA
+Info:     iter=590 wires=717162 overused=2 overuse=2 resources=33789 overused=0 overuse=0 archfail=NA
+Info:     iter=591 wires=717222 overused=2 overuse=2 resources=33787 overused=0 overuse=0 archfail=NA
+Info:     iter=592 wires=717162 overused=2 overuse=2 resources=33789 overused=0 overuse=0 archfail=NA
+Info:     iter=593 wires=717222 overused=2 overuse=2 resources=33787 overused=0 overuse=0 archfail=NA
+Info:     iter=594 wires=717147 overused=2 overuse=2 resources=33780 overused=0 overuse=0 archfail=NA
+Info:     iter=595 wires=717222 overused=2 overuse=2 resources=33787 overused=0 overuse=0 archfail=NA
+Info:     iter=596 wires=717232 overused=4 overuse=4 resources=33780 overused=0 overuse=0 archfail=NA
+Info:     iter=597 wires=717526 overused=4 overuse=4 resources=33896 overused=0 overuse=0 archfail=NA
+Info:     iter=598 wires=717397 overused=4 overuse=4 resources=33837 overused=0 overuse=0 archfail=NA
+Info:     iter=599 wires=717212 overused=2 overuse=2 resources=33789 overused=0 overuse=0 archfail=NA
+Info:     iter=600 wires=717300 overused=4 overuse=4 resources=33789 overused=0 overuse=0 archfail=NA
+Info:     iter=601 wires=717450 overused=4 overuse=4 resources=33862 overused=0 overuse=0 archfail=NA
+Info:     iter=602 wires=717482 overused=3 overuse=3 resources=33852 overused=0 overuse=0 archfail=NA
+Info:     iter=603 wires=717459 overused=3 overuse=3 resources=33843 overused=0 overuse=0 archfail=NA
+Info:     iter=604 wires=717235 overused=1 overuse=1 resources=33770 overused=0 overuse=0 archfail=NA
+Info:     iter=605 wires=717283 overused=1 overuse=1 resources=33777 overused=0 overuse=0 archfail=NA
+Info:     iter=606 wires=717283 overused=1 overuse=1 resources=33777 overused=0 overuse=0 archfail=NA
+Info:     iter=607 wires=717283 overused=1 overuse=1 resources=33777 overused=0 overuse=0 archfail=NA
+Info:     iter=608 wires=717283 overused=1 overuse=1 resources=33777 overused=0 overuse=0 archfail=NA
+Info:     iter=609 wires=717235 overused=1 overuse=1 resources=33770 overused=0 overuse=0 archfail=NA
+Info:     iter=610 wires=717283 overused=1 overuse=1 resources=33777 overused=0 overuse=0 archfail=NA
+Info:     iter=611 wires=717235 overused=1 overuse=1 resources=33770 overused=0 overuse=0 archfail=NA
+Info:     iter=612 wires=717283 overused=1 overuse=1 resources=33777 overused=0 overuse=0 archfail=NA
+Info:     iter=613 wires=717235 overused=1 overuse=1 resources=33770 overused=0 overuse=0 archfail=NA
+Info:     iter=614 wires=717283 overused=1 overuse=1 resources=33777 overused=0 overuse=0 archfail=NA
+Info:     iter=615 wires=717235 overused=1 overuse=1 resources=33770 overused=0 overuse=0 archfail=NA
+Info:     iter=616 wires=717318 overused=6 overuse=6 resources=33770 overused=0 overuse=0 archfail=NA
+Info:     iter=617 wires=717411 overused=5 overuse=5 resources=33837 overused=0 overuse=0 archfail=NA
+Info:     iter=618 wires=717348 overused=5 overuse=5 resources=33828 overused=0 overuse=0 archfail=NA
+Info:     iter=619 wires=717392 overused=5 overuse=5 resources=33853 overused=0 overuse=0 archfail=NA
+Info:     iter=620 wires=717238 overused=5 overuse=5 resources=33780 overused=0 overuse=0 archfail=NA
+Info:     iter=621 wires=717417 overused=5 overuse=5 resources=33848 overused=0 overuse=0 archfail=NA
+Info:     iter=622 wires=717230 overused=4 overuse=4 resources=33756 overused=0 overuse=0 archfail=NA
+Info:     iter=623 wires=717412 overused=5 overuse=5 resources=33824 overused=0 overuse=0 archfail=NA
+Info:     iter=624 wires=717344 overused=5 overuse=5 resources=33828 overused=0 overuse=0 archfail=NA
+Info:     iter=625 wires=717530 overused=4 overuse=4 resources=33896 overused=0 overuse=0 archfail=NA
+Info:     iter=626 wires=717236 overused=4 overuse=4 resources=33780 overused=0 overuse=0 archfail=NA
+Info:     iter=627 wires=717530 overused=4 overuse=4 resources=33896 overused=0 overuse=0 archfail=NA
+Info:     iter=628 wires=717198 overused=5 overuse=5 resources=33758 overused=0 overuse=0 archfail=NA
+Info:     iter=629 wires=717113 overused=2 overuse=2 resources=33761 overused=0 overuse=0 archfail=NA
+Info:     iter=630 wires=717150 overused=1 overuse=1 resources=33744 overused=0 overuse=0 archfail=NA
+Info:     iter=631 wires=717150 overused=1 overuse=1 resources=33744 overused=0 overuse=0 archfail=NA
+Info:     iter=632 wires=717109 overused=1 overuse=1 resources=33737 overused=0 overuse=0 archfail=NA
+Info:     iter=633 wires=717150 overused=1 overuse=1 resources=33744 overused=0 overuse=0 archfail=NA
+Info:     iter=634 wires=717109 overused=1 overuse=1 resources=33737 overused=0 overuse=0 archfail=NA
+Info:     iter=635 wires=717150 overused=1 overuse=1 resources=33744 overused=0 overuse=0 archfail=NA
+Info:     iter=636 wires=717109 overused=1 overuse=1 resources=33737 overused=0 overuse=0 archfail=NA
+Info:     iter=637 wires=717150 overused=1 overuse=1 resources=33744 overused=0 overuse=0 archfail=NA
+Info:     iter=638 wires=717109 overused=1 overuse=1 resources=33737 overused=0 overuse=0 archfail=NA
+Info:     iter=639 wires=717186 overused=4 overuse=4 resources=33737 overused=0 overuse=0 archfail=NA
+Info:     iter=640 wires=717340 overused=3 overuse=3 resources=33810 overused=0 overuse=0 archfail=NA
+Info:     iter=641 wires=717356 overused=3 overuse=3 resources=33819 overused=0 overuse=0 archfail=NA
+Info:     iter=642 wires=717526 overused=3 overuse=3 resources=33892 overused=0 overuse=0 archfail=NA
+Info:     iter=643 wires=717354 overused=4 overuse=4 resources=33806 overused=0 overuse=0 archfail=NA
+Info:     iter=644 wires=717643 overused=4 overuse=4 resources=33964 overused=0 overuse=0 archfail=NA
+Info:     iter=645 wires=717357 overused=4 overuse=4 resources=33830 overused=0 overuse=0 archfail=NA
+Info:     iter=646 wires=717449 overused=4 overuse=4 resources=33882 overused=0 overuse=0 archfail=NA
+Info:     iter=647 wires=717413 overused=5 overuse=5 resources=33852 overused=0 overuse=0 archfail=NA
+Info:     iter=648 wires=717536 overused=4 overuse=4 resources=33917 overused=0 overuse=0 archfail=NA
+Info:     iter=649 wires=717251 overused=4 overuse=4 resources=33783 overused=0 overuse=0 archfail=NA
+Info:     iter=650 wires=717346 overused=4 overuse=4 resources=33831 overused=0 overuse=0 archfail=NA
+Info:     iter=651 wires=717418 overused=4 overuse=4 resources=33851 overused=0 overuse=0 archfail=NA
+Info:     iter=652 wires=717399 overused=4 overuse=4 resources=33852 overused=0 overuse=0 archfail=NA
+Info:     iter=653 wires=717426 overused=4 overuse=4 resources=33869 overused=0 overuse=0 archfail=NA
+Info:     iter=654 wires=717584 overused=4 overuse=4 resources=33938 overused=0 overuse=0 archfail=NA
+Info:     iter=655 wires=717189 overused=4 overuse=4 resources=33761 overused=0 overuse=0 archfail=NA
+Info:     iter=656 wires=717554 overused=4 overuse=4 resources=33938 overused=0 overuse=0 archfail=NA
+Info:     iter=657 wires=717189 overused=4 overuse=4 resources=33761 overused=0 overuse=0 archfail=NA
+Info:     iter=658 wires=717584 overused=4 overuse=4 resources=33938 overused=0 overuse=0 archfail=NA
+Info:     iter=659 wires=717225 overused=4 overuse=4 resources=33783 overused=0 overuse=0 archfail=NA
+Info:     iter=660 wires=717554 overused=4 overuse=4 resources=33938 overused=0 overuse=0 archfail=NA
+Info:     iter=661 wires=717225 overused=4 overuse=4 resources=33783 overused=0 overuse=0 archfail=NA
+Info:     iter=662 wires=717148 overused=1 overuse=1 resources=33783 overused=0 overuse=0 archfail=NA
+Info:     iter=663 wires=717196 overused=1 overuse=1 resources=33790 overused=0 overuse=0 archfail=NA
+Info:     iter=664 wires=717196 overused=1 overuse=1 resources=33790 overused=0 overuse=0 archfail=NA
+Info:     iter=665 wires=717148 overused=1 overuse=1 resources=33783 overused=0 overuse=0 archfail=NA
+Info:     iter=666 wires=717196 overused=1 overuse=1 resources=33790 overused=0 overuse=0 archfail=NA
+Info:     iter=667 wires=717148 overused=1 overuse=1 resources=33783 overused=0 overuse=0 archfail=NA
+Info:     iter=668 wires=717196 overused=1 overuse=1 resources=33790 overused=0 overuse=0 archfail=NA
+Info:     iter=669 wires=717148 overused=1 overuse=1 resources=33783 overused=0 overuse=0 archfail=NA
+Info:     iter=670 wires=717165 overused=2 overuse=2 resources=33792 overused=0 overuse=0 archfail=NA
+Info:     iter=671 wires=717165 overused=2 overuse=2 resources=33792 overused=0 overuse=0 archfail=NA
+Info:     iter=672 wires=717165 overused=2 overuse=2 resources=33792 overused=0 overuse=0 archfail=NA
+Info:     iter=673 wires=717162 overused=2 overuse=2 resources=33792 overused=0 overuse=0 archfail=NA
+Info:     iter=674 wires=717165 overused=2 overuse=2 resources=33792 overused=0 overuse=0 archfail=NA
+Info:     iter=675 wires=717162 overused=2 overuse=2 resources=33792 overused=0 overuse=0 archfail=NA
+Info:     iter=676 wires=717165 overused=2 overuse=2 resources=33792 overused=0 overuse=0 archfail=NA
+Info:     iter=677 wires=717225 overused=2 overuse=2 resources=33790 overused=0 overuse=0 archfail=NA
+Info:     iter=678 wires=717165 overused=2 overuse=2 resources=33792 overused=0 overuse=0 archfail=NA
+Info:     iter=679 wires=717225 overused=2 overuse=2 resources=33790 overused=0 overuse=0 archfail=NA
+Info:     iter=680 wires=717148 overused=1 overuse=1 resources=33783 overused=0 overuse=0 archfail=NA
+Info:     iter=681 wires=717196 overused=1 overuse=1 resources=33790 overused=0 overuse=0 archfail=NA
+Info:     iter=682 wires=717196 overused=1 overuse=1 resources=33790 overused=0 overuse=0 archfail=NA
+Info:     iter=683 wires=717148 overused=1 overuse=1 resources=33783 overused=0 overuse=0 archfail=NA
+Info:     iter=684 wires=717196 overused=1 overuse=1 resources=33790 overused=0 overuse=0 archfail=NA
+Info:     iter=685 wires=717148 overused=1 overuse=1 resources=33783 overused=0 overuse=0 archfail=NA
+Info:     iter=686 wires=717196 overused=1 overuse=1 resources=33790 overused=0 overuse=0 archfail=NA
+Info:     iter=687 wires=717148 overused=1 overuse=1 resources=33783 overused=0 overuse=0 archfail=NA
+Info:     iter=688 wires=717196 overused=1 overuse=1 resources=33790 overused=0 overuse=0 archfail=NA
+Info:     iter=689 wires=717148 overused=1 overuse=1 resources=33783 overused=0 overuse=0 archfail=NA
+Info:     iter=690 wires=717196 overused=1 overuse=1 resources=33790 overused=0 overuse=0 archfail=NA
+Info:     iter=691 wires=717148 overused=1 overuse=1 resources=33783 overused=0 overuse=0 archfail=NA
+Info:     iter=692 wires=717196 overused=1 overuse=1 resources=33790 overused=0 overuse=0 archfail=NA
+Info:     iter=693 wires=717148 overused=1 overuse=1 resources=33783 overused=0 overuse=0 archfail=NA
+Info:     iter=694 wires=717196 overused=1 overuse=1 resources=33790 overused=0 overuse=0 archfail=NA
+Info:     iter=695 wires=717148 overused=1 overuse=1 resources=33783 overused=0 overuse=0 archfail=NA
+Info:     iter=696 wires=717196 overused=1 overuse=1 resources=33790 overused=0 overuse=0 archfail=NA
+Info:     iter=697 wires=717148 overused=1 overuse=1 resources=33783 overused=0 overuse=0 archfail=NA
+Info:     iter=698 wires=717196 overused=1 overuse=1 resources=33790 overused=0 overuse=0 archfail=NA
+Info:     iter=699 wires=717148 overused=1 overuse=1 resources=33783 overused=0 overuse=0 archfail=NA
+Info:     iter=700 wires=717196 overused=1 overuse=1 resources=33790 overused=0 overuse=0 archfail=NA
+Info:     iter=701 wires=717148 overused=1 overuse=1 resources=33783 overused=0 overuse=0 archfail=NA
+Info:     iter=702 wires=717196 overused=1 overuse=1 resources=33790 overused=0 overuse=0 archfail=NA
+Info:     iter=703 wires=717148 overused=1 overuse=1 resources=33783 overused=0 overuse=0 archfail=NA
+Info:     iter=704 wires=717165 overused=2 overuse=2 resources=33792 overused=0 overuse=0 archfail=NA
+Info:     iter=705 wires=717225 overused=2 overuse=2 resources=33790 overused=0 overuse=0 archfail=NA
+Info:     iter=706 wires=717165 overused=2 overuse=2 resources=33792 overused=0 overuse=0 archfail=NA
+Info:     iter=707 wires=717162 overused=2 overuse=2 resources=33792 overused=0 overuse=0 archfail=NA
+Info:     iter=708 wires=717165 overused=2 overuse=2 resources=33792 overused=0 overuse=0 archfail=NA
+Info:     iter=709 wires=717162 overused=2 overuse=2 resources=33792 overused=0 overuse=0 archfail=NA
+Info:     iter=710 wires=717165 overused=2 overuse=2 resources=33792 overused=0 overuse=0 archfail=NA
+Info:     iter=711 wires=717225 overused=2 overuse=2 resources=33790 overused=0 overuse=0 archfail=NA
+Info:     iter=712 wires=717196 overused=1 overuse=1 resources=33790 overused=0 overuse=0 archfail=NA
+Info:     iter=713 wires=717148 overused=1 overuse=1 resources=33783 overused=0 overuse=0 archfail=NA
+Info:     iter=714 wires=717196 overused=1 overuse=1 resources=33790 overused=0 overuse=0 archfail=NA
+Info:     iter=715 wires=717148 overused=1 overuse=1 resources=33783 overused=0 overuse=0 archfail=NA
+Info:     iter=716 wires=717196 overused=1 overuse=1 resources=33790 overused=0 overuse=0 archfail=NA
+Info:     iter=717 wires=717148 overused=1 overuse=1 resources=33783 overused=0 overuse=0 archfail=NA
+Info:     iter=718 wires=717196 overused=1 overuse=1 resources=33790 overused=0 overuse=0 archfail=NA
+Info:     iter=719 wires=717148 overused=1 overuse=1 resources=33783 overused=0 overuse=0 archfail=NA
+Info:     iter=720 wires=717196 overused=1 overuse=1 resources=33790 overused=0 overuse=0 archfail=NA
+Info:     iter=721 wires=717148 overused=1 overuse=1 resources=33783 overused=0 overuse=0 archfail=NA
+Info:     iter=722 wires=717196 overused=1 overuse=1 resources=33790 overused=0 overuse=0 archfail=NA
+Info:     iter=723 wires=717148 overused=1 overuse=1 resources=33783 overused=0 overuse=0 archfail=NA
+Info:     iter=724 wires=717196 overused=1 overuse=1 resources=33790 overused=0 overuse=0 archfail=NA
+Info:     iter=725 wires=717148 overused=1 overuse=1 resources=33783 overused=0 overuse=0 archfail=NA
+Info:     iter=726 wires=717196 overused=1 overuse=1 resources=33790 overused=0 overuse=0 archfail=NA
+Info:     iter=727 wires=717148 overused=1 overuse=1 resources=33783 overused=0 overuse=0 archfail=NA
+Info:     iter=728 wires=717196 overused=1 overuse=1 resources=33790 overused=0 overuse=0 archfail=NA
+Info:     iter=729 wires=717148 overused=1 overuse=1 resources=33783 overused=0 overuse=0 archfail=NA
+Info:     iter=730 wires=717235 overused=4 overuse=4 resources=33783 overused=0 overuse=0 archfail=NA
+Info:     iter=731 wires=717537 overused=4 overuse=4 resources=33899 overused=0 overuse=0 archfail=NA
+Info:     iter=732 wires=717545 overused=4 overuse=4 resources=33899 overused=0 overuse=0 archfail=NA
+Info:     iter=733 wires=717374 overused=4 overuse=4 resources=33834 overused=0 overuse=0 archfail=NA
+Info:     iter=734 wires=717412 overused=4 overuse=4 resources=33852 overused=0 overuse=0 archfail=NA
+Info:     iter=735 wires=717437 overused=5 overuse=5 resources=33852 overused=0 overuse=0 archfail=NA
+Info:     iter=736 wires=717617 overused=5 overuse=5 resources=33920 overused=0 overuse=0 archfail=NA
+Info:     iter=737 wires=717429 overused=4 overuse=4 resources=33852 overused=0 overuse=0 archfail=NA
+Info:     iter=738 wires=717620 overused=4 overuse=4 resources=33920 overused=0 overuse=0 archfail=NA
+Info:     iter=739 wires=717429 overused=4 overuse=4 resources=33852 overused=0 overuse=0 archfail=NA
+Info:     iter=740 wires=717597 overused=4 overuse=4 resources=33920 overused=0 overuse=0 archfail=NA
+Info:     iter=741 wires=717405 overused=5 overuse=5 resources=33852 overused=0 overuse=0 archfail=NA
+Info:     iter=742 wires=717684 overused=6 overuse=6 resources=33968 overused=0 overuse=0 archfail=NA
+Info:     iter=743 wires=717573 overused=5 overuse=5 resources=33900 overused=0 overuse=0 archfail=NA
+Info:     iter=744 wires=717722 overused=5 overuse=5 resources=33968 overused=0 overuse=0 archfail=NA
+Info:     iter=745 wires=717452 overused=4 overuse=4 resources=33828 overused=0 overuse=0 archfail=NA
+Info:     iter=746 wires=717623 overused=4 overuse=4 resources=33914 overused=0 overuse=0 archfail=NA
+Info:     iter=747 wires=717455 overused=4 overuse=4 resources=33845 overused=0 overuse=0 archfail=NA
+Info:     iter=748 wires=717196 overused=2 overuse=2 resources=33759 overused=0 overuse=0 archfail=NA
+Info:     iter=749 wires=717271 overused=2 overuse=2 resources=33766 overused=0 overuse=0 archfail=NA
+Info:     iter=750 wires=717211 overused=2 overuse=2 resources=33768 overused=0 overuse=0 archfail=NA
+Info:     iter=751 wires=717211 overused=2 overuse=2 resources=33768 overused=0 overuse=0 archfail=NA
+Info:     iter=752 wires=717211 overused=2 overuse=2 resources=33768 overused=0 overuse=0 archfail=NA
+Info:     iter=753 wires=717271 overused=2 overuse=2 resources=33766 overused=0 overuse=0 archfail=NA
+Info:     iter=754 wires=717196 overused=2 overuse=2 resources=33759 overused=0 overuse=0 archfail=NA
+Info:     iter=755 wires=717271 overused=2 overuse=2 resources=33766 overused=0 overuse=0 archfail=NA
+Info:     iter=756 wires=717196 overused=2 overuse=2 resources=33759 overused=0 overuse=0 archfail=NA
+Info:     iter=757 wires=717242 overused=1 overuse=1 resources=33766 overused=0 overuse=0 archfail=NA
+Info:     iter=758 wires=717194 overused=1 overuse=1 resources=33759 overused=0 overuse=0 archfail=NA
+Info:     iter=759 wires=717242 overused=1 overuse=1 resources=33766 overused=0 overuse=0 archfail=NA
+Info:     iter=760 wires=717194 overused=1 overuse=1 resources=33759 overused=0 overuse=0 archfail=NA
+Info:     iter=761 wires=717242 overused=1 overuse=1 resources=33766 overused=0 overuse=0 archfail=NA
+Info:     iter=762 wires=717194 overused=1 overuse=1 resources=33759 overused=0 overuse=0 archfail=NA
+Info:     iter=763 wires=717242 overused=1 overuse=1 resources=33766 overused=0 overuse=0 archfail=NA
+Info:     iter=764 wires=717194 overused=1 overuse=1 resources=33759 overused=0 overuse=0 archfail=NA
+Info:     iter=765 wires=717242 overused=1 overuse=1 resources=33766 overused=0 overuse=0 archfail=NA
+Info:     iter=766 wires=717194 overused=1 overuse=1 resources=33759 overused=0 overuse=0 archfail=NA
+Info:     iter=767 wires=717242 overused=1 overuse=1 resources=33766 overused=0 overuse=0 archfail=NA
+Info:     iter=768 wires=717194 overused=1 overuse=1 resources=33759 overused=0 overuse=0 archfail=NA
+Info:     iter=769 wires=717242 overused=1 overuse=1 resources=33766 overused=0 overuse=0 archfail=NA
+Info:     iter=770 wires=717194 overused=1 overuse=1 resources=33759 overused=0 overuse=0 archfail=NA
+Info:     iter=771 wires=717242 overused=1 overuse=1 resources=33766 overused=0 overuse=0 archfail=NA
+Info:     iter=772 wires=717194 overused=1 overuse=1 resources=33759 overused=0 overuse=0 archfail=NA
+Info:     iter=773 wires=717242 overused=1 overuse=1 resources=33766 overused=0 overuse=0 archfail=NA
+Info:     iter=774 wires=717194 overused=1 overuse=1 resources=33759 overused=0 overuse=0 archfail=NA
+Info:     iter=775 wires=717242 overused=1 overuse=1 resources=33766 overused=0 overuse=0 archfail=NA
+Info:     iter=776 wires=717194 overused=1 overuse=1 resources=33759 overused=0 overuse=0 archfail=NA
+Info:     iter=777 wires=717271 overused=4 overuse=4 resources=33759 overused=0 overuse=0 archfail=NA
+Info:     iter=778 wires=717194 overused=1 overuse=1 resources=33759 overused=0 overuse=0 archfail=NA
+Info:     iter=779 wires=717242 overused=1 overuse=1 resources=33766 overused=0 overuse=0 archfail=NA
+Info:     iter=780 wires=717242 overused=1 overuse=1 resources=33766 overused=0 overuse=0 archfail=NA
+Info:     iter=781 wires=717194 overused=1 overuse=1 resources=33759 overused=0 overuse=0 archfail=NA
+Info:     iter=782 wires=717277 overused=5 overuse=5 resources=33759 overused=0 overuse=0 archfail=NA
+Info:     iter=783 wires=717534 overused=5 overuse=5 resources=33899 overused=0 overuse=0 archfail=NA
+Info:     iter=784 wires=717396 overused=5 overuse=5 resources=33831 overused=0 overuse=0 archfail=NA
+Info:     iter=785 wires=717506 overused=4 overuse=4 resources=33853 overused=0 overuse=0 archfail=NA
+Info:     iter=786 wires=717407 overused=4 overuse=4 resources=33806 overused=0 overuse=0 archfail=NA
+Info:     iter=787 wires=717401 overused=4 overuse=4 resources=33806 overused=0 overuse=0 archfail=NA
+Info:     iter=788 wires=717416 overused=3 overuse=3 resources=33823 overused=0 overuse=0 archfail=NA
+Info:     iter=789 wires=717582 overused=3 overuse=3 resources=33892 overused=0 overuse=0 archfail=NA
+Info:     iter=790 wires=717242 overused=3 overuse=3 resources=33737 overused=0 overuse=0 archfail=NA
+Info:     iter=791 wires=717552 overused=4 overuse=4 resources=33892 overused=0 overuse=0 archfail=NA
+Info:     iter=792 wires=717235 overused=3 overuse=3 resources=33737 overused=0 overuse=0 archfail=NA
+Info:     iter=793 wires=717158 overused=1 overuse=1 resources=33737 overused=0 overuse=0 archfail=NA
+Info:     iter=794 wires=717175 overused=2 overuse=2 resources=33746 overused=0 overuse=0 archfail=NA
+Info:     iter=795 wires=717175 overused=2 overuse=2 resources=33746 overused=0 overuse=0 archfail=NA
+Info:     iter=796 wires=717175 overused=2 overuse=2 resources=33746 overused=0 overuse=0 archfail=NA
+Info:     iter=797 wires=717175 overused=2 overuse=2 resources=33746 overused=0 overuse=0 archfail=NA
+Info:     iter=798 wires=717172 overused=2 overuse=2 resources=33746 overused=0 overuse=0 archfail=NA
+Info:     iter=799 wires=717175 overused=2 overuse=2 resources=33746 overused=0 overuse=0 archfail=NA
+Info:     iter=800 wires=717226 overused=2 overuse=2 resources=33744 overused=0 overuse=0 archfail=NA
+Info:     iter=801 wires=717199 overused=1 overuse=1 resources=33744 overused=0 overuse=0 archfail=NA
+Info:     iter=802 wires=717199 overused=1 overuse=1 resources=33744 overused=0 overuse=0 archfail=NA
+Info:     iter=803 wires=717158 overused=1 overuse=1 resources=33737 overused=0 overuse=0 archfail=NA
+Info:     iter=804 wires=717199 overused=1 overuse=1 resources=33744 overused=0 overuse=0 archfail=NA
+Info:     iter=805 wires=717158 overused=1 overuse=1 resources=33737 overused=0 overuse=0 archfail=NA
+Info:     iter=806 wires=717199 overused=1 overuse=1 resources=33744 overused=0 overuse=0 archfail=NA
+Info:     iter=807 wires=717158 overused=1 overuse=1 resources=33737 overused=0 overuse=0 archfail=NA
+Info:     iter=808 wires=717199 overused=1 overuse=1 resources=33744 overused=0 overuse=0 archfail=NA
+Info:     iter=809 wires=717158 overused=1 overuse=1 resources=33737 overused=0 overuse=0 archfail=NA
+Info:     iter=810 wires=717199 overused=1 overuse=1 resources=33744 overused=0 overuse=0 archfail=NA
+Info:     iter=811 wires=717158 overused=1 overuse=1 resources=33737 overused=0 overuse=0 archfail=NA
+Info:     iter=812 wires=717199 overused=1 overuse=1 resources=33744 overused=0 overuse=0 archfail=NA
+Info:     iter=813 wires=717158 overused=1 overuse=1 resources=33737 overused=0 overuse=0 archfail=NA
+Info:     iter=814 wires=717199 overused=1 overuse=1 resources=33744 overused=0 overuse=0 archfail=NA
+Info:     iter=815 wires=717158 overused=1 overuse=1 resources=33737 overused=0 overuse=0 archfail=NA
+Info:     iter=816 wires=717233 overused=5 overuse=5 resources=33737 overused=0 overuse=0 archfail=NA
+Info:     iter=817 wires=717158 overused=1 overuse=1 resources=33737 overused=0 overuse=0 archfail=NA
+Info:     iter=818 wires=717235 overused=4 overuse=4 resources=33737 overused=0 overuse=0 archfail=NA
+Info:     iter=819 wires=717160 overused=2 overuse=2 resources=33737 overused=0 overuse=0 archfail=NA
+Info:     iter=820 wires=717199 overused=1 overuse=1 resources=33744 overused=0 overuse=0 archfail=NA
+Info:     iter=821 wires=717199 overused=1 overuse=1 resources=33744 overused=0 overuse=0 archfail=NA
+Info:     iter=822 wires=717158 overused=1 overuse=1 resources=33737 overused=0 overuse=0 archfail=NA
+Info:     iter=823 wires=717199 overused=1 overuse=1 resources=33744 overused=0 overuse=0 archfail=NA
+Info:     iter=824 wires=717158 overused=1 overuse=1 resources=33737 overused=0 overuse=0 archfail=NA
+Info:     iter=825 wires=717233 overused=5 overuse=5 resources=33737 overused=0 overuse=0 archfail=NA
+Info:     iter=826 wires=717659 overused=5 overuse=5 resources=33954 overused=0 overuse=0 archfail=NA
+Info:     iter=827 wires=717462 overused=5 overuse=5 resources=33873 overused=0 overuse=0 archfail=NA
+Info:     iter=828 wires=717658 overused=5 overuse=5 resources=33954 overused=0 overuse=0 archfail=NA
+Info:     iter=829 wires=717354 overused=4 overuse=4 resources=33825 overused=0 overuse=0 archfail=NA
+Info:     iter=830 wires=717658 overused=4 overuse=4 resources=33954 overused=0 overuse=0 archfail=NA
+Info:     iter=831 wires=717193 overused=5 overuse=5 resources=33761 overused=0 overuse=0 archfail=NA
+Info:     iter=832 wires=717552 overused=4 overuse=4 resources=33906 overused=0 overuse=0 archfail=NA
+Info:     iter=833 wires=717200 overused=4 overuse=4 resources=33761 overused=0 overuse=0 archfail=NA
+Info:     iter=834 wires=717503 overused=4 overuse=4 resources=33901 overused=0 overuse=0 archfail=NA
+Info:     iter=835 wires=717374 overused=4 overuse=4 resources=33829 overused=0 overuse=0 archfail=NA
+Info:     iter=836 wires=717114 overused=2 overuse=2 resources=33761 overused=0 overuse=0 archfail=NA
+Info:     iter=837 wires=717153 overused=1 overuse=1 resources=33768 overused=0 overuse=0 archfail=NA
+Info:     iter=838 wires=717112 overused=1 overuse=1 resources=33761 overused=0 overuse=0 archfail=NA
+Info:     iter=839 wires=717153 overused=1 overuse=1 resources=33768 overused=0 overuse=0 archfail=NA
+Info:     iter=840 wires=717112 overused=1 overuse=1 resources=33761 overused=0 overuse=0 archfail=NA
+Info:     iter=841 wires=717153 overused=1 overuse=1 resources=33768 overused=0 overuse=0 archfail=NA
+Info:     iter=842 wires=717112 overused=1 overuse=1 resources=33761 overused=0 overuse=0 archfail=NA
+Info:     iter=843 wires=717153 overused=1 overuse=1 resources=33768 overused=0 overuse=0 archfail=NA
+Info:     iter=844 wires=717112 overused=1 overuse=1 resources=33761 overused=0 overuse=0 archfail=NA
+Info:     iter=845 wires=717191 overused=5 overuse=5 resources=33761 overused=0 overuse=0 archfail=NA
+Info:     iter=846 wires=717495 overused=4 overuse=4 resources=33898 overused=0 overuse=0 archfail=NA
+Info:     iter=847 wires=717497 overused=5 overuse=5 resources=33898 overused=0 overuse=0 archfail=NA
+Info:     iter=848 wires=717600 overused=4 overuse=4 resources=33946 overused=0 overuse=0 archfail=NA
+Info:     iter=849 wires=717612 overused=3 overuse=3 resources=33955 overused=0 overuse=0 archfail=NA
+Info:     iter=850 wires=717485 overused=3 overuse=3 resources=33898 overused=0 overuse=0 archfail=NA
+Info:     iter=851 wires=717615 overused=3 overuse=3 resources=33942 overused=1 overuse=3 archfail=NA
+Info:     iter=852 wires=717485 overused=3 overuse=3 resources=33898 overused=0 overuse=0 archfail=NA
+Info:     iter=853 wires=717499 overused=4 overuse=4 resources=33907 overused=0 overuse=0 archfail=NA
+Info:     iter=854 wires=717502 overused=4 overuse=4 resources=33898 overused=0 overuse=0 archfail=NA
+Info:     iter=855 wires=717359 overused=3 overuse=3 resources=33843 overused=0 overuse=0 archfail=NA
+Info:     iter=856 wires=717343 overused=3 overuse=3 resources=33834 overused=0 overuse=0 archfail=NA
+Info:     iter=857 wires=717114 overused=2 overuse=2 resources=33761 overused=0 overuse=0 archfail=NA
+Info:     iter=858 wires=717129 overused=2 overuse=2 resources=33770 overused=0 overuse=0 archfail=NA
+Info:     iter=859 wires=717129 overused=2 overuse=2 resources=33770 overused=0 overuse=0 archfail=NA
+Info:     iter=860 wires=717129 overused=2 overuse=2 resources=33770 overused=0 overuse=0 archfail=NA
+Info:     iter=861 wires=717129 overused=2 overuse=2 resources=33770 overused=0 overuse=0 archfail=NA
+Info:     iter=862 wires=717126 overused=2 overuse=2 resources=33770 overused=0 overuse=0 archfail=NA
+Info:     iter=863 wires=717129 overused=2 overuse=2 resources=33770 overused=0 overuse=0 archfail=NA
+Info:     iter=864 wires=717112 overused=1 overuse=1 resources=33761 overused=0 overuse=0 archfail=NA
+Info:     iter=865 wires=717153 overused=1 overuse=1 resources=33768 overused=0 overuse=0 archfail=NA
+Info:     iter=866 wires=717153 overused=1 overuse=1 resources=33768 overused=0 overuse=0 archfail=NA
+Info:     iter=867 wires=717112 overused=1 overuse=1 resources=33761 overused=0 overuse=0 archfail=NA
+Info:     iter=868 wires=717153 overused=1 overuse=1 resources=33768 overused=0 overuse=0 archfail=NA
+Info:     iter=869 wires=717112 overused=1 overuse=1 resources=33761 overused=0 overuse=0 archfail=NA
+Info:     iter=870 wires=717153 overused=1 overuse=1 resources=33768 overused=0 overuse=0 archfail=NA
+Info:     iter=871 wires=717112 overused=1 overuse=1 resources=33761 overused=0 overuse=0 archfail=NA
+Info:     iter=872 wires=717153 overused=1 overuse=1 resources=33768 overused=0 overuse=0 archfail=NA
+Info:     iter=873 wires=717112 overused=1 overuse=1 resources=33761 overused=0 overuse=0 archfail=NA
+Info:     iter=874 wires=717153 overused=1 overuse=1 resources=33768 overused=0 overuse=0 archfail=NA
+Info:     iter=875 wires=717112 overused=1 overuse=1 resources=33761 overused=0 overuse=0 archfail=NA
+Info:     iter=876 wires=717153 overused=1 overuse=1 resources=33768 overused=0 overuse=0 archfail=NA
+Info:     iter=877 wires=717112 overused=1 overuse=1 resources=33761 overused=0 overuse=0 archfail=NA
+Info:     iter=878 wires=717153 overused=1 overuse=1 resources=33768 overused=0 overuse=0 archfail=NA
+Info:     iter=879 wires=717112 overused=1 overuse=1 resources=33761 overused=0 overuse=0 archfail=NA
+Info:     iter=880 wires=717114 overused=2 overuse=2 resources=33761 overused=0 overuse=0 archfail=NA
+Info:     iter=881 wires=717153 overused=1 overuse=1 resources=33768 overused=0 overuse=0 archfail=NA
+Info:     iter=882 wires=717112 overused=1 overuse=1 resources=33761 overused=0 overuse=0 archfail=NA
+Info:     iter=883 wires=717129 overused=2 overuse=2 resources=33770 overused=0 overuse=0 archfail=NA
+Info:     iter=884 wires=717126 overused=2 overuse=2 resources=33770 overused=0 overuse=0 archfail=NA
+Info:     iter=885 wires=717201 overused=4 overuse=4 resources=33770 overused=0 overuse=0 archfail=NA
+Info:     iter=886 wires=717371 overused=5 overuse=5 resources=33834 overused=0 overuse=0 archfail=NA
+Info:     iter=887 wires=717549 overused=4 overuse=4 resources=33915 overused=0 overuse=0 archfail=NA
+Info:     iter=888 wires=717273 overused=2 overuse=2 resources=33834 overused=0 overuse=0 archfail=NA
+Info:     iter=889 wires=717276 overused=2 overuse=2 resources=33834 overused=0 overuse=0 archfail=NA
+Info:     iter=890 wires=717276 overused=2 overuse=2 resources=33834 overused=0 overuse=0 archfail=NA
+Info:     iter=891 wires=717327 overused=2 overuse=2 resources=33832 overused=0 overuse=0 archfail=NA
+Info:     iter=892 wires=717261 overused=2 overuse=2 resources=33825 overused=0 overuse=0 archfail=NA
+Info:     iter=893 wires=717327 overused=2 overuse=2 resources=33832 overused=0 overuse=0 archfail=NA
+Info:     iter=894 wires=717261 overused=2 overuse=2 resources=33825 overused=0 overuse=0 archfail=NA
+Info:     iter=895 wires=717300 overused=1 overuse=1 resources=33832 overused=0 overuse=0 archfail=NA
+Info:     iter=896 wires=717259 overused=1 overuse=1 resources=33825 overused=0 overuse=0 archfail=NA
+Info:     iter=897 wires=717300 overused=1 overuse=1 resources=33832 overused=0 overuse=0 archfail=NA
+Info:     iter=898 wires=717259 overused=1 overuse=1 resources=33825 overused=0 overuse=0 archfail=NA
+Info:     iter=899 wires=717300 overused=1 overuse=1 resources=33832 overused=0 overuse=0 archfail=NA
+Info:     iter=900 wires=717259 overused=1 overuse=1 resources=33825 overused=0 overuse=0 archfail=NA
+Info:     iter=901 wires=717300 overused=1 overuse=1 resources=33832 overused=0 overuse=0 archfail=NA
+Info:     iter=902 wires=717259 overused=1 overuse=1 resources=33825 overused=0 overuse=0 archfail=NA
+Info:     iter=903 wires=717338 overused=5 overuse=5 resources=33825 overused=0 overuse=0 archfail=NA
+Info:     iter=904 wires=717499 overused=5 overuse=5 resources=33898 overused=0 overuse=0 archfail=NA
+Info:     iter=905 wires=717712 overused=4 overuse=4 resources=33979 overused=0 overuse=0 archfail=NA
+Info:     iter=906 wires=717507 overused=4 overuse=4 resources=33898 overused=0 overuse=0 archfail=NA
+Info:     iter=907 wires=717705 overused=5 overuse=5 resources=33979 overused=0 overuse=0 archfail=NA
+Info:     iter=908 wires=717494 overused=5 overuse=5 resources=33898 overused=0 overuse=0 archfail=NA
+Info:     iter=909 wires=717819 overused=5 overuse=5 resources=34027 overused=0 overuse=0 archfail=NA
+Info:     iter=910 wires=717496 overused=5 overuse=5 resources=33882 overused=0 overuse=0 archfail=NA
+Info:     iter=911 wires=717659 overused=5 overuse=5 resources=33946 overused=0 overuse=0 archfail=NA
+Info:     iter=912 wires=717379 overused=5 overuse=5 resources=33834 overused=0 overuse=0 archfail=NA
+Info:     iter=913 wires=717303 overused=1 overuse=1 resources=33834 overused=0 overuse=0 archfail=NA
+Info:     iter=914 wires=717344 overused=1 overuse=1 resources=33841 overused=0 overuse=0 archfail=NA
+Info:     iter=915 wires=717344 overused=1 overuse=1 resources=33841 overused=0 overuse=0 archfail=NA
+Info:     iter=916 wires=717344 overused=1 overuse=1 resources=33841 overused=0 overuse=0 archfail=NA
+Info:     iter=917 wires=717303 overused=1 overuse=1 resources=33834 overused=0 overuse=0 archfail=NA
+Info:     iter=918 wires=717344 overused=1 overuse=1 resources=33841 overused=0 overuse=0 archfail=NA
+Info:     iter=919 wires=717303 overused=1 overuse=1 resources=33834 overused=0 overuse=0 archfail=NA
+Info:     iter=920 wires=717344 overused=1 overuse=1 resources=33841 overused=0 overuse=0 archfail=NA
+Info:     iter=921 wires=717303 overused=1 overuse=1 resources=33834 overused=0 overuse=0 archfail=NA
+Info:     iter=922 wires=717344 overused=1 overuse=1 resources=33841 overused=0 overuse=0 archfail=NA
+Info:     iter=923 wires=717303 overused=1 overuse=1 resources=33834 overused=0 overuse=0 archfail=NA
+Info:     iter=924 wires=717344 overused=1 overuse=1 resources=33841 overused=0 overuse=0 archfail=NA
+Info:     iter=925 wires=717303 overused=1 overuse=1 resources=33834 overused=0 overuse=0 archfail=NA
+Info:     iter=926 wires=717344 overused=1 overuse=1 resources=33841 overused=0 overuse=0 archfail=NA
+Info:     iter=927 wires=717303 overused=1 overuse=1 resources=33834 overused=0 overuse=0 archfail=NA
+Info:     iter=928 wires=717380 overused=4 overuse=4 resources=33834 overused=0 overuse=0 archfail=NA
+Info:     iter=929 wires=717537 overused=4 overuse=4 resources=33898 overused=0 overuse=0 archfail=NA
+Info:     iter=930 wires=717537 overused=4 overuse=4 resources=33898 overused=0 overuse=0 archfail=NA
+Info:     iter=931 wires=717518 overused=4 overuse=4 resources=33898 overused=0 overuse=0 archfail=NA
+Info:     iter=932 wires=717521 overused=3 overuse=3 resources=33898 overused=0 overuse=0 archfail=NA
+Info:     iter=933 wires=717544 overused=5 overuse=5 resources=33907 overused=1 overuse=3 archfail=NA
+Info:     iter=934 wires=717348 overused=4 overuse=4 resources=33809 overused=0 overuse=0 archfail=NA
+Info:     iter=935 wires=717498 overused=4 overuse=4 resources=33873 overused=0 overuse=0 archfail=NA
+Info:     iter=936 wires=717143 overused=1 overuse=1 resources=33761 overused=0 overuse=0 archfail=NA
+Info:     iter=937 wires=717184 overused=1 overuse=1 resources=33768 overused=0 overuse=0 archfail=NA
+Info:     iter=938 wires=717184 overused=1 overuse=1 resources=33768 overused=0 overuse=0 archfail=NA
+Info:     iter=939 wires=717143 overused=1 overuse=1 resources=33761 overused=0 overuse=0 archfail=NA
+Info:     iter=940 wires=717184 overused=1 overuse=1 resources=33768 overused=0 overuse=0 archfail=NA
+Info:     iter=941 wires=717143 overused=1 overuse=1 resources=33761 overused=0 overuse=0 archfail=NA
+Info:     iter=942 wires=717184 overused=1 overuse=1 resources=33768 overused=0 overuse=0 archfail=NA
+Info:     iter=943 wires=717143 overused=1 overuse=1 resources=33761 overused=0 overuse=0 archfail=NA
+Info:     iter=944 wires=717160 overused=2 overuse=2 resources=33770 overused=0 overuse=0 archfail=NA
+Info:     iter=945 wires=717160 overused=2 overuse=2 resources=33770 overused=0 overuse=0 archfail=NA
+Info:     iter=946 wires=717160 overused=2 overuse=2 resources=33770 overused=0 overuse=0 archfail=NA
+Info:     iter=947 wires=717160 overused=5 overuse=5 resources=33770 overused=0 overuse=0 archfail=NA
+Info:     iter=948 wires=717391 overused=6 overuse=6 resources=33873 overused=4 overuse=4 archfail=NA
+Info:     iter=949 wires=717429 overused=4 overuse=4 resources=33865 overused=2 overuse=2 archfail=NA
+Info:     iter=950 wires=717414 overused=2 overuse=2 resources=33856 overused=1 overuse=1 archfail=NA
+Info:     iter=951 wires=717301 overused=2 overuse=2 resources=33757 overused=0 overuse=0 archfail=NA
+Info:     iter=952 wires=717301 overused=2 overuse=2 resources=33757 overused=0 overuse=0 archfail=NA
+Info:     iter=953 wires=717541 overused=2 overuse=2 resources=33856 overused=0 overuse=0 archfail=NA
+Info:     iter=954 wires=717301 overused=2 overuse=2 resources=33757 overused=0 overuse=0 archfail=NA
+Info:     iter=955 wires=717541 overused=2 overuse=2 resources=33856 overused=0 overuse=0 archfail=NA
+Info:     iter=956 wires=717301 overused=2 overuse=2 resources=33757 overused=0 overuse=0 archfail=NA
+Info:     iter=957 wires=717541 overused=2 overuse=2 resources=33856 overused=0 overuse=0 archfail=NA
+Info:     iter=958 wires=717301 overused=2 overuse=2 resources=33757 overused=0 overuse=0 archfail=NA
+Info:     iter=959 wires=717541 overused=2 overuse=2 resources=33856 overused=0 overuse=0 archfail=NA
+Info:     iter=960 wires=717301 overused=2 overuse=2 resources=33757 overused=0 overuse=0 archfail=NA
+Info:     iter=961 wires=717541 overused=2 overuse=2 resources=33856 overused=0 overuse=0 archfail=NA
+Info:     iter=962 wires=717301 overused=2 overuse=2 resources=33757 overused=0 overuse=0 archfail=NA
+Info:     iter=963 wires=717541 overused=2 overuse=2 resources=33856 overused=0 overuse=0 archfail=NA
+Info:     iter=964 wires=717301 overused=2 overuse=2 resources=33757 overused=0 overuse=0 archfail=NA
+Info:     iter=965 wires=717541 overused=2 overuse=2 resources=33856 overused=0 overuse=0 archfail=NA
+Info:     iter=966 wires=717301 overused=2 overuse=2 resources=33757 overused=0 overuse=0 archfail=NA
+Info:     iter=967 wires=717541 overused=2 overuse=2 resources=33856 overused=0 overuse=0 archfail=NA
+Info:     iter=968 wires=717301 overused=2 overuse=2 resources=33757 overused=0 overuse=0 archfail=NA
+Info:     iter=969 wires=717541 overused=2 overuse=2 resources=33856 overused=0 overuse=0 archfail=NA
+Info:     iter=970 wires=717301 overused=2 overuse=2 resources=33757 overused=0 overuse=0 archfail=NA
+Info:     iter=971 wires=717541 overused=2 overuse=2 resources=33856 overused=0 overuse=0 archfail=NA
+Info:     iter=972 wires=717301 overused=2 overuse=2 resources=33757 overused=0 overuse=0 archfail=NA
+Info:     iter=973 wires=717541 overused=2 overuse=2 resources=33856 overused=0 overuse=0 archfail=NA
+Info:     iter=974 wires=717301 overused=2 overuse=2 resources=33757 overused=0 overuse=0 archfail=NA
+Info:     iter=975 wires=717541 overused=2 overuse=2 resources=33856 overused=0 overuse=0 archfail=NA
+Info:     iter=976 wires=717301 overused=2 overuse=2 resources=33757 overused=0 overuse=0 archfail=NA
+Info:     iter=977 wires=717541 overused=2 overuse=2 resources=33856 overused=0 overuse=0 archfail=NA
+Info:     iter=978 wires=717301 overused=2 overuse=2 resources=33757 overused=0 overuse=0 archfail=NA
+Info:     iter=979 wires=717541 overused=2 overuse=2 resources=33856 overused=0 overuse=0 archfail=NA
+Info:     iter=980 wires=717301 overused=2 overuse=2 resources=33757 overused=0 overuse=0 archfail=NA
+Info:     iter=981 wires=717541 overused=2 overuse=2 resources=33856 overused=0 overuse=0 archfail=NA
+Info:     iter=982 wires=717301 overused=2 overuse=2 resources=33757 overused=0 overuse=0 archfail=NA
+Info:     iter=983 wires=717541 overused=2 overuse=2 resources=33856 overused=0 overuse=0 archfail=NA
+Info:     iter=984 wires=717301 overused=2 overuse=2 resources=33757 overused=0 overuse=0 archfail=NA
+Info:     iter=985 wires=717541 overused=2 overuse=2 resources=33856 overused=0 overuse=0 archfail=NA
+Info:     iter=986 wires=717301 overused=2 overuse=2 resources=33757 overused=0 overuse=0 archfail=NA
+Info:     iter=987 wires=717541 overused=2 overuse=2 resources=33856 overused=0 overuse=0 archfail=NA
+Info:     iter=988 wires=717301 overused=2 overuse=2 resources=33757 overused=0 overuse=0 archfail=NA
+Info:     iter=989 wires=717541 overused=2 overuse=2 resources=33856 overused=0 overuse=0 archfail=NA
+Info:     iter=990 wires=717301 overused=2 overuse=2 resources=33757 overused=0 overuse=0 archfail=NA
+Info:     iter=991 wires=717511 overused=2 overuse=2 resources=33848 overused=0 overuse=0 archfail=NA
+Info:     iter=992 wires=717301 overused=2 overuse=2 resources=33757 overused=0 overuse=0 archfail=NA
+Info:     iter=993 wires=717541 overused=2 overuse=2 resources=33856 overused=0 overuse=0 archfail=NA
+Info:     iter=994 wires=717301 overused=2 overuse=2 resources=33757 overused=0 overuse=0 archfail=NA
+Info:     iter=995 wires=717511 overused=2 overuse=2 resources=33848 overused=0 overuse=0 archfail=NA
+Info:     iter=996 wires=717301 overused=2 overuse=2 resources=33757 overused=0 overuse=0 archfail=NA
+Info:     iter=997 wires=717511 overused=2 overuse=2 resources=33848 overused=0 overuse=0 archfail=NA
+Info:     iter=998 wires=717311 overused=2 overuse=2 resources=33759 overused=0 overuse=0 archfail=NA
+Info:     iter=999 wires=717311 overused=2 overuse=2 resources=33759 overused=0 overuse=0 archfail=NA
+Info:     iter=1000 wires=717271 overused=2 overuse=2 resources=33749 overused=0 overuse=0 archfail=NA
+Info:     iter=1001 wires=717301 overused=2 overuse=2 resources=33757 overused=0 overuse=0 archfail=NA
+Info:     iter=1002 wires=717301 overused=2 overuse=2 resources=33757 overused=0 overuse=0 archfail=NA
+Info:     iter=1003 wires=717541 overused=2 overuse=2 resources=33856 overused=0 overuse=0 archfail=NA
+Info:     iter=1004 wires=717301 overused=2 overuse=2 resources=33757 overused=0 overuse=0 archfail=NA
+Info:     iter=1005 wires=717511 overused=2 overuse=2 resources=33848 overused=0 overuse=0 archfail=NA
+Info:     iter=1006 wires=717301 overused=2 overuse=2 resources=33757 overused=0 overuse=0 archfail=NA
+Info:     iter=1007 wires=717301 overused=0 overuse=0 resources=33748 overused=0 overuse=0 archfail=0
+Info: Router2 time 616.05s
+Info: Running router1 to check that route is legal...
+
+Info: Routing..
+Info: Setting up routing queue.
+Info: Routing 0 arcs.
+Info:            |   (re-)routed arcs  |   delta    | remaining|       time spent     |
+Info:    IterCnt |  w/ripup   wo/ripup |  w/r  wo/r |      arcs| batch(sec) total(sec)|
+Info:          0 |        0          0 |    0     0 |         0|       2.13       2.13|
+Info: Routing complete.
+Info: Router1 time 2.13s
+Info: Checksum: 0xa04c9b21
+
+Info: Critical path report for clock 'link.clk' (posedge -> posedge):
+Info:       type curr  total name
+Info:   clk-skew  0.23  0.23 Net link.clk (27,8) -> (44,4)
+Info:                          Sink $auto$ff.cc:337:slice$23152.CLK_INT
+Info:                          Defined in:
+Info:                               rtl/lfl_link.sv:2.104-2.107
+Info:   clk-to-q  0.59  0.82 Source $auto$ff.cc:337:slice$71067.DOUT
+Info:    routing  1.67  2.49 Net link.tx_index[4] (27,8) -> (31,7)
+Info:                          Sink $abc$95634$auto$blifparse.cc:397:parse_blif$96246.D0_10
+Info:                          Defined in:
+Info:                               rtl/lfl_link.sv:25.11-25.19
+Info:      logic  0.61  3.10 Source $abc$95634$auto$blifparse.cc:397:parse_blif$96246.OUT
+Info:    routing  1.93  5.03 Net $auto$alumacc.cc:548:replace_alu$21079.BB[4] (31,7) -> (30,14)
+Info:                          Sink $auto$alumacc.cc:548:replace_alu$21079.slice[5].addf_i.D0_03
+Info:                          Defined in:
+Info:                               rtl/lfl_link.sv:36.45-36.56
+Info:                               /home/manuel/fpga/oss-cad-suite/lib/../share/yosys/gatemate/arith_map.v:49.21-49.23
+Info:      logic  0.48  5.50 Source $auto$alumacc.cc:548:replace_alu$21079.slice[5].addf_i.COUTY1
+Info:    routing  0.00  5.50 Net $auto$alumacc.cc:548:replace_alu$21079.CO[5] (30,14) -> (30,15)
+Info:                          Sink $auto$alumacc.cc:548:replace_alu$21079.slice[6].addf_i.CINY1
+Info:                          Defined in:
+Info:                               rtl/lfl_link.sv:36.45-36.56
+Info:                               /home/manuel/fpga/oss-cad-suite/lib/../share/yosys/gatemate/arith_map.v:37.23-37.25
+Info:      logic  0.51  6.02 Source $auto$alumacc.cc:548:replace_alu$21079.slice[6].addf_i.OUT1
+Info:    routing  11.93  17.95 Net $auto$alumacc.cc:548:replace_alu$21079.Y[6] (30,15) -> (21,105)
+Info:                          Sink $auto$muxcover.cc:526:implement_best_cover$95099.D0_02
+Info:                          Defined in:
+Info:                               rtl/lfl_link.sv:36.45-36.56
+Info:                               /home/manuel/fpga/oss-cad-suite/lib/../share/yosys/gatemate/arith_map.v:33.26-33.27
+Info:      logic  0.55  18.50 Source $auto$muxcover.cc:526:implement_best_cover$95099.OUT1
+Info:    routing  1.82  20.32 Net $techmap$flatten\link.$shr$rtl/lfl_link.sv:36$132.$11\buffer[135:0][51] (21,105) -> (19,104)
+Info:                          Sink $auto$muxcover.cc:526:implement_best_cover$95100.IN4
+Info:                          Defined in:
+Info:                               rtl/lfl_link.sv:36.31-36.58
+Info:                               /home/manuel/fpga/oss-cad-suite/lib/../share/yosys/techmap.v:106.2-119.5
+Info:      logic  0.50  20.82 Source $auto$muxcover.cc:526:implement_best_cover$95100.OUT1
+Info:    routing  2.71  23.53 Net $abc$95634$techmap$flatten\link.$shr$rtl/lfl_link.sv:36$132.$13\buffer[135:0][35] (19,104) -> (4,98)
+Info:                          Sink $abc$95634$auto$blifparse.cc:397:parse_blif$102462.D0_00
+Info:                          Defined in:
+Info:                               rtl/lfl_link.sv:36.31-36.58
+Info:                               /home/manuel/fpga/oss-cad-suite/lib/../share/yosys/techmap.v:106.2-119.5
+Info:      logic  0.55  24.08 Source $abc$95634$auto$blifparse.cc:397:parse_blif$102462.OUT
+Info:    routing  1.99  26.07 Net $abc$95634$techmap$flatten\link.$shr$rtl/lfl_link.sv:36$132.$16\buffer[135:0][3] (4,98) -> (5,93)
+Info:                          Sink $auto$muxcover.cc:526:implement_best_cover$95117.IN1
+Info:                          Defined in:
+Info:                               rtl/lfl_link.sv:36.31-36.58
+Info:                               /home/manuel/fpga/oss-cad-suite/lib/../share/yosys/techmap.v:106.2-119.5
+Info:      logic  0.52  26.59 Source $auto$muxcover.cc:526:implement_best_cover$95117.OUT1
+Info:    routing  7.78  34.37 Net $abc$95634$techmap$flatten\link.$shr$rtl/lfl_link.sv:36$132.$22\buffer[135:0][3] (5,93) -> (27,14)
+Info:                          Sink $abc$95634$auto$blifparse.cc:397:parse_blif$99639.D1_10
+Info:                          Defined in:
+Info:                               rtl/lfl_link.sv:36.31-36.58
+Info:                               /home/manuel/fpga/oss-cad-suite/lib/../share/yosys/techmap.v:106.2-119.5
+Info:      logic  0.56  34.93 Source $abc$95634$auto$blifparse.cc:397:parse_blif$99639.OUT
+Info:    routing  1.75  36.68 Net $auto$maccmap.cc:240:synth$26030.A[3] (27,14) -> (37,13)
+Info:                          Sink $auto$maccmap.cc:240:synth$26030.slice[3].addf_i.D0_00
+Info:                          Defined in:
+Info:                               /home/manuel/fpga/oss-cad-suite/lib/../share/yosys/gatemate/arith_map.v:29.22-29.23
+Info:      logic  0.60  37.28 Source $auto$maccmap.cc:240:synth$26030.slice[3].addf_i.OUT2
+Info:    routing  1.01  38.29 Net $auto$maccmap.cc:240:synth$26030.Y[3] (37,13) -> (38,14)
+Info:                          Sink $abc$95634$auto$blifparse.cc:397:parse_blif$100737.D0_01
+Info:                          Defined in:
+Info:                               /home/manuel/fpga/oss-cad-suite/lib/../share/yosys/gatemate/arith_map.v:33.26-33.27
+Info:      logic  0.47  38.76 Source $abc$95634$auto$blifparse.cc:397:parse_blif$100737.OUT
+Info:    routing  2.10  40.86 Net $abc$95634$flatten\link.$ternary$rtl/lfl_link.sv:23$137_Y[3] (38,14) -> (38,9)
+Info:                          Sink $auto$muxcover.cc:526:implement_best_cover$84947.IN3
+Info:                          Defined in:
+Info:                               rtl/lfl_link.sv:23.59-23.99
+Info:      logic  0.52  41.39 Source $auto$muxcover.cc:526:implement_best_cover$84947.OUT1
+Info:    routing  2.18  43.57 Net link.transmitter.data[3] (38,9) -> (44,3)
+Info:                          Sink $abc$95634$auto$blifparse.cc:397:parse_blif$100721.D1_01
+Info:                          Defined in:
+Info:                               ../symbolic_eval/rtl/uart_tx.sv:14.25-14.29
+Info:      logic  0.60  44.16 Source $abc$95634$auto$blifparse.cc:397:parse_blif$100721.OUT
+Info:    routing  1.34  45.51 Net $abc$95634$new_n12607 (44,3) -> (44,3)
+Info:                          Sink $abc$95634$auto$blifparse.cc:397:parse_blif$100722.D0_00
+Info:      logic  0.55  46.05 Source $abc$95634$auto$blifparse.cc:397:parse_blif$100722.OUT
+Info:    routing  0.41  46.47 Net $abc$95634$new_n12608 (44,3) -> (44,4)
+Info:                          Sink $abc$95634$auto$blifparse.cc:397:parse_blif$100723.D1_10
+Info:      logic  0.47  46.94 Source $abc$95634$auto$blifparse.cc:397:parse_blif$100723.OUT
+Info:    routing  0.00  46.94 Net $abc$95634$auto$rtlil.cc:3513:MuxGate$80028 (44,4) -> (44,4)
+Info:                          Sink $auto$ff.cc:337:slice$23152.DIN
+Info:      setup  0.10  47.04 Source $auto$ff.cc:337:slice$23152.DIN
+Info: 8.19 ns logic, 38.85 ns routing
+
+Info: Critical path report for cross-domain path '<async>' -> 'posedge link.clk':
+Info:       type curr  total name
+Info:     source  0.00  0.00 Source $iopadmap$lfl_top.fpga_but.Y
+Info:    routing  0.00  0.00 Net $iopadmap$lfl_top.fpga_but$conn$Y (0,101) -> (0,101)
+Info:                          Sink $iopadmap$lfl_top.fpga_but$iosel.GPIO_IN
+Info:      logic  0.38  0.38 Source $iopadmap$lfl_top.fpga_but$iosel.IN1
+Info:    routing  2.52  2.90 Net $iopadmap$fpga_but (0,101) -> (4,80)
+Info:                          Sink $auto$ff.cc:337:slice$32693$lt.D0_10
+Info:      logic  0.55  3.45 Source $auto$ff.cc:337:slice$32693$lt.OUT
+Info:    routing  0.00  3.45 Net $auto$ff.cc:337:slice$32693$di (4,80) -> (4,80)
+Info:                          Sink $auto$ff.cc:337:slice$32693.DIN
+Info:      setup  0.10  3.55 Source $auto$ff.cc:337:slice$32693.DIN
+Info: 1.03 ns logic, 2.52 ns routing
+
+Info: Max frequency for clock 'link.clk': 21.26 MHz (PASS at 10.00 MHz)
+
+Info: Max delay <async> -> posedge link.clk: 3.55 ns
+
+Info: Slack histogram:
+Info:  legend: * represents 29 endpoint(s)
+Info:          + represents [1,29) endpoint(s)
+Info: [ 52959,  55238) |+
+Info: [ 55238,  57517) |+
+Info: [ 57517,  59796) |**+
+Info: [ 59796,  62075) |******+
+Info: [ 62075,  64354) |***************+
+Info: [ 64354,  66633) |***********************+
+Info: [ 66633,  68912) |************************+
+Info: [ 68912,  71191) |*********************+
+Info: [ 71191,  73470) |**********+
+Info: [ 73470,  75749) |****+
+Info: [ 75749,  78028) |*****+
+Info: [ 78028,  80307) |*****+
+Info: [ 80307,  82586) |*****+
+Info: [ 82586,  84865) |*********+
+Info: [ 84865,  87144) |*********************+
+Info: [ 87144,  89423) |************************************************************ 
+Info: [ 89423,  91702) |*******************************************+
+Info: [ 91702,  93981) |************************************+
+Info: [ 93981,  96260) |**********************************+
+Info: [ 96260,  98539) |*******************+
+Info: Update configuration based on routing..
+
+Info: Program finished normally.
+gmpack build/top.txt build/top.bit

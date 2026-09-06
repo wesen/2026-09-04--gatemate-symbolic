@@ -641,3 +641,8 @@ Each row below should become a small commit or a closely related pair of code an
 | I6 | Shared function trace; productive/cyclic examples; eight squares; pause/reset/fault tests; generated-program comparisons; final resource figures, screenshots and handoff |
 
 The documentation should be updated whenever these choices change. In particular, a change from linked to flat environments or from object references to copied values is an architecture change, not a local codec refactor. Revise the machine contract and independent tests before propagating such a change through Go, RTL and React.
+
+
+## Implemented qualification update
+
+The original design below is retained as the design record. The [implemented runtime and IDE handoff](../reference/04-implemented-language-runtime-and-ide-intern-handoff.md) describes the delivered APIs and measured behavior. All implementation phases are complete. Final routing reports 21.26 MHz, 34 RAM halves, 3,804 flip-flops and 14,359 CPE logic resources. Logic exceeds the preliminary 10,000-resource estimate. The Go machine and hardware agree semantically; synchronous hardware rereads cause different cycle, heap-read and trace-timestamp totals. Six physical programs and eleven UI screenshots provide the qualification evidence.

@@ -1,0 +1,8 @@
+ok  	github.com/wesen/2026-09-04--gatemate-symbolic/pkg/lazylang/check	(cached)
+ok  	github.com/wesen/2026-09-04--gatemate-symbolic/pkg/lazylang/compile	1.099s
+ok  	github.com/wesen/2026-09-04--gatemate-symbolic/pkg/lazylang/ir	(cached)
+ok  	github.com/wesen/2026-09-04--gatemate-symbolic/pkg/lazylang/machine	(cached)
+ok  	github.com/wesen/2026-09-04--gatemate-symbolic/pkg/lazylang/semantics	(cached)
+ok  	github.com/wesen/2026-09-04--gatemate-symbolic/pkg/lazylang/serial	1.024s
+ok  	github.com/wesen/2026-09-04--gatemate-symbolic/pkg/lazylang/syntax	1.071s
+ok  	github.com/wesen/2026-09-04--gatemate-symbolic/internal/lazylanguageide	1.031s
