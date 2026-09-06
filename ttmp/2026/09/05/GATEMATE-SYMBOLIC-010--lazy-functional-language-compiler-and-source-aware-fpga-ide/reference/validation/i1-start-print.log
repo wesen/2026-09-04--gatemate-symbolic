@@ -1,0 +1,25 @@
+layout: reference/validation/i1-start.yaml
+dry_run: false
+height: 335
+layout_member: i1-start.yaml
+ok: true
+printed: true
+printer_response:
+    ok: true
+rendered_at: "2026-09-06T00:04:32Z"
+response:
+    height: 335
+    ok: true
+    printed: true
+    printerResponse:
+        ok: true
+    renderedAt: "2026-09-06T00:04:32Z"
+    width: 384
+source_kind: file
+status_code: 200
+url: https://almanach.crib.scapegoat.dev/api/render-and-print
+width: 384
+
+---
+
+printed: yes

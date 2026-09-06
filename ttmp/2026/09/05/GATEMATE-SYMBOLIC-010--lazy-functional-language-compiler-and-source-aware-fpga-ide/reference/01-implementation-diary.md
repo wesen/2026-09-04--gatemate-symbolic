@@ -11,6 +11,14 @@ DocType: reference
 Intent: long-term
 Owners: []
 RelatedFiles:
+    - Path: repo://pkg/lazylang/check/check.go
+      Note: Lexical binding and type checking, commit 657c706
+    - Path: repo://pkg/lazylang/check/check_test.go
+      Note: Binding and diagnostic validation
+    - Path: repo://pkg/lazylang/semantics/reference.go
+      Note: Independent lazy evaluator, commit 657c706
+    - Path: repo://pkg/lazylang/semantics/reference_test.go
+      Note: Demand, sharing, closure and fault validation
     - Path: repo://ttmp/2026/09/05/GATEMATE-SYMBOLIC-009--laboratory-4-lazy-graph-reducer-and-heap-inspector/scripts/22-publish-report.py
       Note: Vault publication
     - Path: repo://ttmp/2026/09/05/GATEMATE-SYMBOLIC-010--lazy-functional-language-compiler-and-source-aware-fpga-ide/scripts/02-collect-sources.sh
@@ -33,6 +41,7 @@ LastUpdated: 2026-09-05T18:34:32.906562561-04:00
 WhatFor: ""
 WhenToUse: ""
 ---
+
 
 
 
@@ -588,3 +597,79 @@ All validation passed. The focused suite reports 94.5% statement coverage, the f
 - All seven parser slips printed successfully: plan and S1–S3 start/completion. The final completion QR refers to 54a02be.
 - reference/validation/parser-audit.json indexes successful checks and hashes their logs. There were no failing software tests in these three phases.
 - Parser substeps are complete. The broader I1 task remains open for binding resolution, type checking and independent evaluation.
+
+## Step 8: Complete lexical checking and independent lazy evaluation
+
+I resumed the complete ticket after the parser milestone. The implementation plan and I1 start slip printed successfully before work began. This step adds lexical binding resolution, monomorphic type checking, and an independent evaluator over the checked syntax tree. The evaluator provides semantic evidence against which compiled execution can later be compared.
+
+The checker distinguishes nonrecursive and recursive bindings and records stable binding identities and lexical depths. Evaluation uses memoized cells, captures lexical environments in closures, and leaves constructor fields suspended. Tests cover the six source examples and targeted failures without relying on compiler records or hardware execution.
+
+### Prompt Context
+
+**User prompt (verbatim):** "build the whole ticket."
+
+**Additional user prompt (verbatim):** "commit at appropriate intervals and keep a detailed diary as you work (using the diary format from the skill)"
+
+**Assistant interpretation:** Complete all remaining implementation phases, validate and commit each meaningful milestone, and preserve detailed evidence in the ticket diary.
+
+**Inferred user intent:** Deliver the entire language/compiler/runtime/IDE project with a reviewable record of progress.
+
+**Commit (code):** 657c706 — "Implement lexical checking and independent lazy source evaluation"
+
+### What I did
+
+- Added `pkg/lazylang/check/check.go` and checker tests for type mismatches, duplicate declarations, missing main, unbound names, lexical shadowing, parameter depths and cancellation.
+- Added `pkg/lazylang/semantics/reference.go` and tests for source execution, closure capture, shared arithmetic, recursive functions, cycles, lazy lists, overflow and fuel limits.
+- Ran `GOCACHE=/tmp/gatemate009-go-cache go test ./pkg/lazylang/... -count=1 -cover`: checker 85.5%, evaluator 86.7%, syntax 94.5% coverage.
+- Ran repository tests and the language package race suite; retained their output in `reference/validation/i1-repository-tests.log` and `i1-race.log`.
+- Printed the complete I1–I6 implementation plan and I1 start slip; retained their layouts and receipts.
+
+### Why
+
+- Compilation needs checked binding identities and lexical depths before it can emit environment accesses.
+- An independent source evaluator makes semantic comparisons meaningful; sharing implementation with the allocated machine would hide common errors.
+- Fuel exhaustion and cancellation describe an inconclusive observation, so they remain Go errors rather than language faults.
+
+### What worked
+
+- All tests passed on the first test run; the initial production-package compilation also passed.
+- `shared.lazy` produces 168 with one multiplication and three additions; `closure.lazy` produces 42; `unused.lazy` produces 7.
+- Scalar recursion produces fault 3. Productive recursion produces eight ones; the squares program produces 1, 4, 9, 16, 25, 36, 49, 64.
+- A prefix of eight does not demand a ninth constructor. A prefix of nine observes the terminating NIL in the finite squares example.
+
+### What didn't work
+
+- No software test, compilation, or printer failures occurred in this step.
+
+### What I learned
+
+- Binding identities serve the reference evaluator directly, while lexical depths describe the future linked ENV representation. Both can be derived during the same check without coupling the evaluator to code records.
+- Successful prefix observation and complete-list observation must remain distinct in the public result.
+
+### What was tricky to build
+
+- Recursive RHS environments must contain their own cells, while nonrecursive RHS environments must retain any outer binding with the same spelling. Tests explicitly distinguish these cases.
+- Closure application needs the closure environment for the function body and the caller environment for the argument thunk. Using one environment for both would silently implement incorrect scope.
+- List observation must stop before forcing the final tail. The prefix tests make that demand boundary observable with a cyclic tail.
+
+### What warrants a second pair of eyes
+
+- Review lexical depths against the compiler's planned ENV chain ordering, especially the case head/tail bindings.
+- Review which failures are memoized source faults and which terminate an observation as host errors.
+- The source evaluator is bounded by fuel, not by the allocated machine's finite heap; resource exhaustion parity is a later machine concern.
+
+### What should be done in the future
+
+- Implement deterministic code records, constant allocation, artifact validation and provenance in I2.
+- Compare allocated execution with this evaluator in I3, including sharing counters and lazy demand boundaries.
+
+### Code review instructions
+
+- Start at `check.Check`, then inspect `checker.expr`, `evaluator.force`, `evaluator.eval` and `semantics.Observe`.
+- Run `GOCACHE=/tmp/gatemate009-go-cache go test ./pkg/lazylang/... -count=1 -cover` and inspect the retained repository/race logs.
+
+### Technical details
+
+- Binding IDs are assigned to top-level declarations first, followed by local declarations during traversal. Variable uses retain the corresponding ID and zero-based lexical depth.
+- Cell state transitions are suspended → evaluating → done. Re-entering evaluating produces CYCLIC_THUNK, code 3; completed values and faults are shared.
+- Checked integer arithmetic uses int64 intermediates and rejects results outside signed 32-bit range with fault 6.

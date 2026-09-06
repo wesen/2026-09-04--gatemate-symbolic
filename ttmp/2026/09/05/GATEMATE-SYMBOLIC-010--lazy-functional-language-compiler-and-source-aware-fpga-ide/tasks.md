@@ -5,7 +5,7 @@
 - [x] D1: Audit the qualified reducer and record primary source evidence <!-- t:2owd -->
 - [x] D2: Specify the language, compiler, allocated runtime, protocol and source-aware IDE <!-- t:vjwi -->
 - [x] D3: Validate the design package, upload to reMarkable and record delivery <!-- t:tx1q -->
-- [ ] I1: Implement parser, monomorphic type checker and independent semantic evaluator <!-- t:xxed -->
+- [x] I1: Implement parser, monomorphic type checker and independent semantic evaluator <!-- t:xxed -->
 - [ ] I2: Implement deterministic expression-code compiler and source artifacts <!-- t:6d0s -->
 - [ ] I3: Implement allocated Go machine and differential semantic tests <!-- t:860w -->
 - [ ] I4: Implement synchronous FPGA machine, checked protocol and timing qualification <!-- t:g60a -->
