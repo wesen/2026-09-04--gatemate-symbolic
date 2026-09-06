@@ -3,7 +3,7 @@ async (existing) => {
  try {
  await page.goto('about:blank');
  await page.addScriptTag({path:'/home/manuel/.local/share/nvim/lazy/markdown-preview.nvim/app/_static/mermaid.min.js'});
- const sources = ["flowchart TD\n  S[Source text] --> P[Lexer and parser]\n  P --> C[Type and lexical checker]\n  C --> R[AST reference evaluator]\n  C --> A[Compiler and immutable artifact]\n  A --> G[Finite Go machine]\n  A --> U[UART loader and client]\n  U --> F[GateMate FPGA machine]\n  G --> H[Go session and HTTP API]\n  F --> U\n  U --> H\n  H --> I[React source and machine inspector]\n", "flowchart LR\n  T[THUNK: code and environment] -->|claim and push UPDATE| B[BLACKHOLE]\n  B -->|body returns a value reference| I[IND: result reference]\n  B -->|recursive demand while evaluating| E[Cycle error]\n  E -->|unwind pending updates| I\n"];
+ const sources = ["graph TD\n  S[\"Source text\"] --> P[\"Lexer and parser\"]\n  P --> C[\"Type and lexical checker\"]\n  C --> R[\"AST reference evaluator\"]\n  C --> A[\"Compiler and immutable artifact\"]\n  A --> G[\"Finite Go machine\"]\n  A --> U[\"UART loader and client\"]\n  U --> F[\"GateMate FPGA machine\"]\n  G --> H[\"Go session and HTTP API\"]\n  F --> U\n  U --> H\n  H --> I[\"React source and machine inspector\"]\n", "graph LR\n  T[\"THUNK: code and environment\"] -->|\"claim and push UPDATE\"| B[\"BLACKHOLE\"]\n  B -->|\"body returns a value reference\"| I[\"IND: result reference\"]\n  B -->|\"recursive demand while evaluating\"| E[\"Cycle error\"]\n  E -->|\"unwind pending updates\"| I\n"];
  return await page.evaluate(async (sources) => {
  window.mermaid.initialize({startOnLoad:false,securityLevel:'strict'});
  const results=[];

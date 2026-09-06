@@ -79,3 +79,8 @@ All D1-D3 and I1-I6 tasks complete. Language/compiler/Go machine/FPGA/UART/React
 
 Step 14: Published 5526-word LFL1 technical article with seven screenshots and two validated diagrams to go-go-parc; committed and pushed vault 1a56e11.
 
+
+## 2026-09-05
+
+Step 15: Simplified and locally rendered both Mermaid diagrams after Obsidian error report; vault correction 3cbc967 pushed successfully.
+

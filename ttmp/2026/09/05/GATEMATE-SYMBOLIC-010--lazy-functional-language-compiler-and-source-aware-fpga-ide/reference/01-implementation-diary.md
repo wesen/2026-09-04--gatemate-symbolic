@@ -1246,3 +1246,59 @@ Read `sources/lfl1-project-report.md` alongside `reference/validation/i4-physica
 - Source implementation: `64ebbe291a4a1e23c8cb21a6dcb2db2be767b9f2`.
 - Vault publication: `1a56e1108225f8b4a61670d5e8221e9e45d5302e`.
 - Remote: `ssh://git@github.com/go-go-golems/go-go-parc`.
+
+## Step 15: Simplify Mermaid syntax after an Obsidian rendering report
+
+Updated both article diagrams to use `graph` declarations and quoted node and edge labels. Applied the same edits to the retained article and generator, then regenerated the validation script and asset manifest.
+
+### Prompt Context
+
+**User prompt (verbatim):** "i do get mermaid rendering errors in that article"
+
+**Assistant interpretation:** Correct the published diagrams and synchronize the vault.
+
+**Inferred user intent:** Read the article without diagram rendering errors in Obsidian.
+
+### What I did
+
+- Inspected both published Mermaid blocks and the vault working tree.
+- Added script 34 to reproduce the targeted syntax edit.
+- Replaced `flowchart` with `graph` and quoted all displayed labels.
+- Rendered both corrected blocks successfully with the local Mermaid bundle in Playwright.
+- Updated the existing vault article as explicitly requested, committed as `3cbc967`, and initiated the vault push.
+
+### Why
+
+The initial external-renderer check had passed, but did not establish compatibility with the user's Obsidian renderer. Conservative syntax removes unquoted punctuation and uses the longstanding graph declaration.
+
+### What worked
+
+Both revised diagrams rendered; article source and vault copy have identical hashes. The correction changes only diagram syntax.
+
+### What didn't work
+
+The original validation did not reproduce the user's Obsidian error. No error text or Obsidian renderer version was available, so the exact cause remains unconfirmed.
+
+### What I learned
+
+Successful rendering in the local bundle cannot be described as validation inside Obsidian.
+
+### What was tricky to build
+
+The rendering environments differ. Kept the change limited to syntax and preserved the diagram structure instead of guessing at application configuration.
+
+### What warrants a second pair of eyes
+
+Confirm rendering in the user's Obsidian instance after synchronization.
+
+### What should be done in the future
+
+If errors persist, obtain the actual error text before a further targeted correction.
+
+### Code review instructions
+
+Inspect vault commit `3cbc967` and script 34; run script 31 through Playwright to repeat the available renderer check.
+
+### Technical details
+
+Two Mermaid blocks changed; all seven screenshots and article prose remain intact. Publication manifest refreshed after verifying source/vault identity.
