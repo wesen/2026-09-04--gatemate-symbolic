@@ -1,0 +1,22 @@
+{
+  "tasks_complete": true,
+  "ticket_closed": true,
+  "i1_start_printed": true,
+  "i1_done_printed": true,
+  "i2_start_printed": true,
+  "i2_done_printed": true,
+  "i3_start_printed": true,
+  "i3_done_printed": true,
+  "i4_start_printed": true,
+  "i4_done_printed": true,
+  "i5_start_printed": true,
+  "i5_done_printed": true,
+  "i6_start_printed": true,
+  "i6_done_printed": true,
+  "plan_printed": true,
+  "physical_programs_pass": true,
+  "routing_pass": true,
+  "eleven_screenshots": true,
+  "guide_uploaded": true,
+  "docmgr_clean": true
+}

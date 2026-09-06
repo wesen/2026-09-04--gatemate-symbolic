@@ -1141,3 +1141,10 @@ The new guide renders to eleven pages, and both physical figures are embedded in
 - Physical service: tmux `lfl010-fpga`, port 18092, `/dev/ttyACM0`. Model service: tmux `lfl010-model-final`, port 18091.
 - GateMate image is loaded into volatile SRAM. The earlier Lab 4 physical server on port 18090 was stopped before programming; its protocol is different.
 - Qualified profile: heap 2048×80, code 2048×128, stack 512×128, provenance 2048×16, trace 64×256; 21.26 MHz routed maximum, 34 RAM halves, 14,359 CPE logic and 3,804 flip-flops.
+
+### Final completion receipts
+
+- Implementation and handoff committed at `99018a8`; CLI/IDE code milestone `17c611a`.
+- The I6 DONE slip printed successfully with a QR for commit 99018a8. The initial plan and all six phase start/completion slips have successful retained receipts.
+- Ticket status is complete and every task is checked. The final docmgr doctor report passes.
+- Retained `scripts/28-check-completion.py` verifies task closure, all required print receipts, physical/timing evidence, eleven screenshots and successful guide delivery without repeating the qualified workloads.
