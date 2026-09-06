@@ -1148,3 +1148,11 @@ The new guide renders to eleven pages, and both physical figures are embedded in
 - The I6 DONE slip printed successfully with a QR for commit 99018a8. The initial plan and all six phase start/completion slips have successful retained receipts.
 - Ticket status is complete and every task is checked. The final docmgr doctor report passes.
 - Retained `scripts/28-check-completion.py` verifies task closure, all required print receipts, physical/timing evidence, eleven screenshots and successful guide delivery without repeating the qualified workloads.
+
+### Publication approval review
+
+- The combined final commit/push command was rejected before execution by automatic approval review: “This pushes newly committed internal ticket documentation and validation artifacts to the unverified GitHub remote's default main branch, which is a sensitive egress and potentially costly-to-reverse publication not specifically authorized for that destination.”
+- Completed the unaffected local commit separately as `b05e55f`.
+- Verified `git remote -v`: origin fetch and push both point to `git@github.com:wesen/2026-09-04--gatemate-symbolic.git`. The existing origin/main commit is ad9292e and already contains this same ticket's design, diary, figures and parser qualification documents.
+- Read-only `gh repo view wesen/2026-09-04--gatemate-symbolic --json nameWithOwner,url,viewerPermission,isPrivate,defaultBranchRef` confirms the exact repository, public visibility, main default branch and ADMIN access.
+- The conversation includes the user's earlier explicit “commit and push and open in browser” instruction. A retry will use the same configured destination and request approval review with these verification facts; no alternate publication path or workaround is used.
