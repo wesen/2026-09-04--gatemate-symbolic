@@ -11,6 +11,8 @@
     "test": "vitest run",
     "build:dataflow": "tsc --noEmit && vite build --config vite.dataflow.config.ts",
     "dev:dataflow": "vite --config vite.dataflow.config.ts --host 127.0.0.1",
+    "build:language": "tsc --noEmit && vite build --config vite.language.config.ts",
+    "dev:language": "vite --config vite.language.config.ts --host 127.0.0.1",
     "build:lazy": "tsc --noEmit && vite build --config vite.lazy.config.ts",
     "dev:lazy": "vite --config vite.lazy.config.ts --host 127.0.0.1"
   },

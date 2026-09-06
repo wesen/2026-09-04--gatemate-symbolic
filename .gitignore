@@ -19,3 +19,8 @@ __pycache__/
 /web/dist-lazy/
 
 /lazy_language/build/
+
+/internal/lazylanguageide/assets/
+/web/dist-language/
+
+/.playwright-mcp/
