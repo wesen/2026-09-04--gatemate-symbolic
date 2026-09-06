@@ -1,0 +1,40 @@
+{
+  "words": 5526,
+  "diagrams": 2,
+  "published": true,
+  "article": "/home/manuel/code/wesen/go-go-golems/go-go-parc/Projects/2026/09/05/ARTICLE - GateMate Symbolic - Inside a Lazy Functional Language.md",
+  "files": [
+    {
+      "path": "Projects/2026/09/05/ARTICLE - GateMate Symbolic - Inside a Lazy Functional Language.md",
+      "sha256": "7487719f98787ae7109cdb40f119d04259b69ce38fb0032e6890e2722cb6e6ff"
+    },
+    {
+      "path": "Projects/2026/09/05/_assets/lfl1-fpga-loaded-source.png",
+      "sha256": "d79acd9b6ea1ccd9a71aff052f93a7d02f1f7d4a9b46d9893d8e392fd98cd81c"
+    },
+    {
+      "path": "Projects/2026/09/05/_assets/lfl1-model-type-diagnostic.png",
+      "sha256": "2027a15c17c6bcf34dafb1c97c2bbdedbfadefdf3e414e293340c9c74e142d43"
+    },
+    {
+      "path": "Projects/2026/09/05/_assets/lfl1-model-claimed-thunk-and-update-frame.png",
+      "sha256": "072f9116e97514410f0e852519dad53632c6452b4d9d6c1b54b4ec2a3668bc38"
+    },
+    {
+      "path": "Projects/2026/09/05/_assets/lfl1-fpga-shared-result-and-updates.png",
+      "sha256": "084b0d57183fc6895c6780c24c92dea47eb1cc27299a7b9b92fc7d88f3729a09"
+    },
+    {
+      "path": "Projects/2026/09/05/_assets/lfl1-fpga-closure-environment.png",
+      "sha256": "e7a0de0cf76294c9c983bbbf9e754378964c6e8a832e665ecd12ee6cb03769ae"
+    },
+    {
+      "path": "Projects/2026/09/05/_assets/lfl1-fpga-eight-square-stream.png",
+      "sha256": "2836c0af92f403da986626ebc3a40a0ad3baaeb7e9e45c0a3cbdb876fa6d2f26"
+    },
+    {
+      "path": "Projects/2026/09/05/_assets/lfl1-model-read-only-history.png",
+      "sha256": "3e11f05f57f8aaca1de86bd3274046018645b5a48a15171ea74f1c79d2134696"
+    }
+  ]
+}
