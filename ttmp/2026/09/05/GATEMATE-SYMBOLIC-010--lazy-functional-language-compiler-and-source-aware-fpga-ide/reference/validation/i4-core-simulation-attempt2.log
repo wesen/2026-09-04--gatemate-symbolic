@@ -1,0 +1,2 @@
+PASS 15 compiled programs, full heaps and semantic counters
+tb/lfl_core_tb.sv:24: $finish called at 137820000 (1ps)

@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+set -euo pipefail
+cd "$(dirname "$0")/.."
+source /home/manuel/fpga/oss-cad-suite/environment
+mkdir -p build
+GOCACHE=/tmp/gatemate009-go-cache go run ./scripts/generate_cases.go
+iverilog -g2012 -I build -s lfl_core_tb -o build/lfl_core.vvp ../symbolic_eval/rtl/sync_sdp_ram.sv rtl/lfl_core.sv tb/lfl_core_tb.sv
+vvp build/lfl_core.vvp

@@ -844,3 +844,77 @@ The independent source evaluator and the allocated machine agree on all six exam
 - An allocation moves through object writes, provenance writes, trace publication and resume. The committedTop changes only when all required data is initialized.
 - Stable output is represented by state OUTPUT and valid=true. Poll consumes that result and returns the machine to IDLE.
 - Machine state and snapshots own copies of artifact records; mutations to returned heap strings or trace arrays do not change execution.
+
+## Step 11: Implement and qualify synchronous FPGA execution (in progress)
+
+I4 began after successful I3 completion and I4 start slips. I am implementing a separate LFL1 hardware core with synchronous code, heap, stack, provenance and trace memories. The core is currently unvalidated; simulation, UART integration, synthesis, routing and board checks remain outstanding.
+
+### Prompt Context
+
+**User prompt (verbatim):** (see Step 8)
+
+**Additional user prompt (verbatim):** "remember to take screenshots of the UI if possible for the diary and the report we'll write later on"
+
+**Assistant interpretation:** Continue hardware implementation and capture the new IDE's meaningful execution states when it is available.
+
+**Inferred user intent:** Finish the complete ticket and preserve visual evidence suitable for both the chronological diary and the later project report.
+
+### What I did
+
+- Added the initial `lazy_language/rtl/lfl_core.sv` implementation using five `sync_sdp_ram` instances.
+- Retained explicit allocation stages and finite trace publication from the Go design.
+- Inspected the earlier Lab 4 UART wrapper, synthesis script, RAM wrapper and simulation harness for integration conventions.
+
+### Why
+
+- Hardware memory accesses must be synchronous and must remain valid across tick-budget pauses.
+- The new language needs its own code memory, closure representation and loading protocol.
+
+### What worked
+
+- I3 DONE and I4 START printed successfully.
+- Located the installed simulator at `/home/manuel/fpga/oss-cad-suite/bin/iverilog`.
+
+### What didn't work
+
+- `iverilog -g2012 -s lfl_core -o /tmp/lfl-core.vvp symbolic_eval/rtl/sync_sdp_ram.sv lazy_language/rtl/lfl_core.sv` could not launch from the default PATH: `zsh:248: command not found: iverilog` (exit 127). This is a tool-path failure, before compilation or simulation. The next run will use the installed OSS CAD environment.
+
+### What I learned
+
+- The default shell does not expose the installed FPGA tools; validation commands need the established toolchain environment.
+
+### What was tricky to build
+
+- The RTL must read returned values and saved primitive operands through RAM ports. The initial Go abstract machine inspects these directly, so cycle and heap-read accounting will need explicit reconciliation during qualification.
+
+### What warrants a second pair of eyes
+
+- All new RTL remains unvalidated at this checkpoint. No hardware completion or timing claim has been made.
+
+### What should be done in the future
+
+- Run simulator compilation and generated model-qualified program vectors; then implement and validate LFL1 UART loading/readback.
+- Capture screenshots once the new IDE is running, including closure ENV inspection, sharing updates and stream demand boundaries.
+
+### Code review instructions
+
+- Begin with the synchronous RAM port muxes and state transitions in `lazy_language/rtl/lfl_core.sv`.
+- Review subsequent validation entries before relying on this implementation.
+
+### Technical details
+
+- Hardware memories: heap 2048×80, code 2048×128, provenance 2048×16, stack 512×128 and trace 64×256.
+- Allocation object/provenance writes remain private until publication; the debugger pauses execution while using the RAM read ports.
+
+### I4 simulation attempt 1
+
+- Core-only compilation succeeded after sourcing the installed OSS CAD environment.
+- Added a retained Go vector generator and SystemVerilog testbench. Vectors load compiler artifacts and compare every committed heap object and semantic counter after each demand, including list-prefix demands.
+- `bash lazy_language/scripts/test.sh` failed compiling the testbench: `tb/lfl_core_tb.sv:15: syntax error` and `tb/lfl_core_tb.sv:16: error: Syntax error in task/function port declaration.` The task parameter was named `ref`, a SystemVerilog keyword. Fix attempt 1 renames that parameter to `address` and reruns the suite.
+
+### I4 core simulation result
+
+- Fix attempt 1 succeeded: `bash lazy_language/scripts/test.sh` reports `PASS 15 compiled programs, full heaps and semantic counters`.
+- The suite compares all committed heap words and counters for allocations, object kinds, claims, updates, arithmetic, indirections, environment steps and maximum heap/stack after each demand. It includes all six checked-in examples plus signed overflow, negative multiplication, comparisons, branch selection and NIL case selection.
+- Tick execution is interleaved with disabled clock cycles, exercising persistent RAM request/wait state. The testbench also holds output before polling.
+- UART and physical timing remain outstanding. Cycle and heap-read counts are intentionally not compared yet because the synchronous RTL explicitly rereads returned values and saved primitive operands.

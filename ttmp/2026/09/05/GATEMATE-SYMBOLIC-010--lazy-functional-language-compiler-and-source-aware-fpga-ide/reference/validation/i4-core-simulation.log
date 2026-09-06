@@ -1,0 +1,2 @@
+tb/lfl_core_tb.sv:15: syntax error
+tb/lfl_core_tb.sv:16: error: Syntax error in task/function port declaration.

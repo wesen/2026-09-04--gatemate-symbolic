@@ -17,3 +17,5 @@ __pycache__/
 /lazy_reducer/build/
 /internal/lazyide/assets/
 /web/dist-lazy/
+
+/lazy_language/build/
