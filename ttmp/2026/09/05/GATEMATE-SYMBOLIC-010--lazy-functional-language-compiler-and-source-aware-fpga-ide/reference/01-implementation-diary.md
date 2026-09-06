@@ -15,6 +15,18 @@ RelatedFiles:
       Note: Lexical binding and type checking, commit 657c706
     - Path: repo://pkg/lazylang/check/check_test.go
       Note: Binding and diagnostic validation
+    - Path: repo://pkg/lazylang/compile/compile.go
+      Note: Deterministic artifacts and validation, commit f58a283
+    - Path: repo://pkg/lazylang/compile/compile_test.go
+      Note: Compiler layout, corruption and profile-limit tests
+    - Path: repo://pkg/lazylang/ir/records.go
+      Note: Fixed-width LFL1 packing
+    - Path: repo://pkg/lazylang/ir/records_test.go
+      Note: Exact packed-record validation
+    - Path: repo://pkg/lazylang/machine/machine.go
+      Note: Allocated stepped execution, commit 85bb6a3
+    - Path: repo://pkg/lazylang/machine/machine_test.go
+      Note: Differential semantics and machine invariants
     - Path: repo://pkg/lazylang/semantics/reference.go
       Note: Independent lazy evaluator, commit 657c706
     - Path: repo://pkg/lazylang/semantics/reference_test.go
@@ -41,6 +53,8 @@ LastUpdated: 2026-09-05T18:34:32.906562561-04:00
 WhatFor: ""
 WhenToUse: ""
 ---
+
+
 
 
 
@@ -673,3 +687,160 @@ The checker distinguishes nonrecursive and recursive bindings and records stable
 - Binding IDs are assigned to top-level declarations first, followed by local declarations during traversal. Variable uses retain the corresponding ID and zero-based lexical depth.
 - Cell state transitions are suspended → evaluating → done. Re-entering evaluating produces CYCLIC_THUNK, code 3; completed values and faults are shared.
 - Checked integer arithmetic uses int64 intermediates and rejects results outside signed 32-bit range with fault 6.
+
+## Step 9: Compile deterministic LFL1 artifacts
+
+I2 translates checked expressions into fixed-width, children-before-parent code records and constructs the initial heap. Artifacts retain the exact source, entry type, lexical bindings and uses, code types, byte spans and per-object provenance. They can round-trip through JSON without losing 80-bit object or 128-bit instruction precision.
+
+Validation runs before an artifact is returned and is available independently for runtime loads. It verifies the profile, digest, dimensions, pinned constants, initial environment links, instruction operands and source bounds. This creates an explicit boundary between editor compilation and later machine mutation.
+
+### Prompt Context
+
+**User prompt (verbatim):** (see Step 8)
+
+**Assistant interpretation:** Continue the complete ticket through deterministic compilation, with validated milestone commits and phase receipts.
+
+**Inferred user intent:** Obtain executable, inspectable artifacts that the Go machine, FPGA loader and IDE can share.
+
+**Commit (code):** f58a283 — "Compile typed lazy source into validated deterministic LFL1 artifacts"
+
+### What I did
+
+- Added `ir.Object`, `ir.Code` and `ir.Frame` with explicit big-endian packing and hexadecimal transport encodings.
+- Added `compile.Compile`, `Artifact.Digest` and `Artifact.Validate`.
+- Emitted postorder instructions, deduplicated integer literals, pinned errors/booleans/NIL, and alternating top-level THUNK/ENV slots sharing the final global environment.
+- Added deterministic compilation and JSON round-trip tests for all six source examples, exact packed-record tests, a shared-program layout test and corrupted-artifact rejection tests.
+- Tested heap profile exhaustion using 1,101 top-level definitions.
+- Ran the language coverage suite, all repository tests and the language race suite. Compiler coverage is 89.2%; record coverage is 92.5%.
+
+### Why
+
+- Wide records must not pass through JavaScript numeric values; hexadecimal strings preserve all bits.
+- Fixed struct-field order and ordered arrays provide a reproducible digest input without map iteration dependence.
+- Runtime loaders need to reject malformed artifacts before changing the currently loaded experiment.
+
+### What worked
+
+- Compilation, tests, JSON round trips and race checks passed without a failing software test.
+- The shared inline example produces 14 instructions, 17 initial heap objects, root 15 and constantEnd 15.
+- Deliberate digest changes, malformed records, invalid spans, pinned-error corruption, code self-reference and an ENV cycle are rejected.
+- Both I1 DONE and I2 START slips printed successfully; their receipts are retained.
+
+### What didn't work
+
+- No implementation or printer failure occurred.
+- Inspection found the hand-derived design fixture assigns constant 21 before constant 2 although 2 appears first in the source. That fixture explicitly predates the compiler and uses symbolic span IDs. The compiler follows the stated first-source-occurrence rule; the new layout test records its actual addresses.
+
+### What I learned
+
+- A hand-derived semantic fixture is useful without being an exact compiler-byte fixture. Constant addresses and span numbering need explicit independent assertions.
+- The immutable artifact hash must exclude its own ID field; the implementation hashes the same fixed structure with ID set to an empty string.
+
+### What was tricky to build
+
+- Global recursion requires every initial thunk to capture the final ENV head, including definitions that occur earlier in source order. The compiler computes that address before writing the alternating slots.
+- Children must precede their parent instruction. Recursive programs still have acyclic code because recursion travels through ENV bindings rather than instruction edges.
+- Grouping preserves parser source information but does not require an executable instruction. The compiler emits its inner expression directly.
+
+### What warrants a second pair of eyes
+
+- Review the canonical hash definition: compact Go encoding/json of Artifact with ID empty, fixed declaration order, no map fields, ordered arrays and exact source text.
+- Review all initial-heap and code validation checks before connecting this API to device reset/load commands.
+- Runtime faults must still defend against invalid refs and dynamic state corruption; compiler validation is not a replacement for those checks.
+
+### What should be done in the future
+
+- Implement I3 using these packed records and compare its results with the independent AST evaluator.
+- Publish a final API handoff with the implemented artifact schema and explicit distinction from the earlier symbolic fixture.
+
+### Code review instructions
+
+- Read `ir/records.go`, then `compile.Compile`, `builder.expr` and `Artifact.Validate`.
+- Run `GOCACHE=/tmp/gatemate009-go-cache go test ./pkg/lazylang/... -count=1 -cover`.
+- Inspect `i2-repository-tests.log` and `i2-race.log` under the ticket validation directory.
+
+### Technical details
+
+- Object encoding: tag8, flags8, A16, B16, payload32; code encoding: opcode8, flags8, A16, B16, C16, immediate32, span16, reserved16.
+- The schema identity is `lfl1-go-1` with profile `LFL1-2048-512-64-v1`.
+- Immutable pinned addresses are errors 0–9, false 10, true 11 and NIL 12. Integer literals begin at 13; mutable slots begin at constantEnd.
+
+## Step 10: Execute compiled code with a finite stepped machine
+
+I3 adds a machine that executes compiler records with a 2,048-object heap, 512-frame continuation stack, explicit thunk claims and indirection updates. Each Tick advances persistent state. Output remains valid until Poll, and allocation publishes a complete batch only after its object and provenance writes finish.
+
+The independent source evaluator and the allocated machine agree on all six examples, including claims, updates and primitive counts. The machine also exposes detached snapshots, finite mutation traces and allocation progress for the later IDE. This is a Go abstract-machine implementation; FPGA RAM inference and cycle-level hardware equivalence remain I4 work.
+
+### Prompt Context
+
+**User prompt (verbatim):** (see Step 8)
+
+**Assistant interpretation:** Implement and validate the compiled-code runtime before proceeding to hardware and the source-aware IDE.
+
+**Inferred user intent:** Make the language executable with observable sharing, finite resources and reproducible stepping.
+
+**Commit (code):** 85bb6a3 — "Implement finite stepped lazy machine with allocation and update traces"
+
+### What I did
+
+- Added `machine.New`, `Demand`, `Tick`, `Poll` and `Snapshot` over detached compiled artifacts.
+- Implemented code, heap, environment, return, update, allocation and multiplication states with persistent continuation frames.
+- Added transactional batch allocation, immutable provenance, first-64 mutation events and dropped-event counters.
+- Added differential tests for all source examples, exact shared-fixture allocation counts, stable output, snapshot independence, allocation pauses, fault unwinding, resource limits, tick partitioning and defensive faults.
+- Ran focused coverage, repository tests and race checks; retained `i3-tests.log`, `i3-repository-tests.log` and `i3-race.log`.
+- Printed I2 DONE and I3 START successfully before this phase.
+
+### Why
+
+- The finite machine makes allocation and stack limits explicit rather than inheriting the host evaluator's memory behavior.
+- Preserving state between individual ticks supports debugger stepping and later pause/resume protocol operations.
+- A complete allocation transaction must become visible at once; a paused partial write must never become a forceable object.
+
+### What worked
+
+- All implementation compilation and test runs passed without a software failure.
+- The shared inline fixture returns INT 168 at ref 25 with nine runtime allocations, three claims, three updates, one multiplication and three additions.
+- All six examples match the independent evaluator's results and semantic counters.
+- Stack exhaustion and heap exhaustion return pinned faults and unwind owned blackholes. Invalid addresses, IND cycles, bad environments, invalid code and type faults are detected.
+- The trace fills at 64 entries and counts subsequent drops while execution continues.
+- Machine coverage is 87.0%; all repository and language race tests pass.
+
+### What didn't work
+
+- No test or printer failures occurred in I3.
+
+### What I learned
+
+- Source-level sharing counters can match exactly even though the allocated machine creates explicit ENV and value objects that the reference evaluator does not model.
+- Testing different partitions of the same tick budget catches accidental dependence on host request boundaries.
+
+### What was tricky to build
+
+- UPDATE frames must survive ordinary error propagation and run before their enclosing continuation is discarded. The tests verify that completed fault results leave claims and updates balanced.
+- APP arguments capture the caller ENV while the function body extends the closure ENV. CASE extends head then tail to preserve the checked lexical depths.
+- Publication occurs after all object and provenance writes, followed by sequenced trace events before execution resumes. Tests inspect the state at individual allocation ticks.
+- Multiplication retains operands and a 32-step progress counter so a tick-budget pause does not restart the operation.
+
+### What warrants a second pair of eyes
+
+- Hardware must implement actual synchronous reads; the Go state model includes issue/wait states but still directly inspects host memory for terminal checks and primitive operands.
+- The Go machine has no internal mutex. Its contract requires callers to serialize operations and distribute detached snapshots.
+- Review fault behavior during UPDATE ownership checks and capacity checks before any object batch writes.
+
+### What should be done in the future
+
+- Implement synchronous hardware memories, protocol load/readback, simulation and timing qualification in I4.
+- Add source-aware control, streaming sessions and history management in I5 using this machine's serialized API.
+
+### Code review instructions
+
+- Start at `Machine.step`, then read `evalInstruction`, `returnFrame`, `reserve` and `allocationStep`.
+- Read `TestDifferentialExamples`, `TestAllocationPauseAndPublication`, `TestFaultUnwindAndLimits` and `TestTickPartitionAndFaultDefenses`.
+- Run `GOCACHE=/tmp/gatemate009-go-cache go test ./pkg/lazylang/... -count=1 -cover`.
+
+### Technical details
+
+- Pinned error references are `code - 1`, so unwinding a fault requires no heap allocation.
+- An allocation moves through object writes, provenance writes, trace publication and resume. The committedTop changes only when all required data is initialized.
+- Stable output is represented by state OUTPUT and valid=true. Poll consumes that result and returns the machine to IDLE.
+- Machine state and snapshots own copies of artifact records; mutations to returned heap strings or trace arrays do not change execution.

@@ -1,0 +1,17 @@
+ok  	github.com/wesen/2026-09-04--gatemate-symbolic/cmd/dataflow-ide	(cached)
+ok  	github.com/wesen/2026-09-04--gatemate-symbolic/cmd/dataflow-lab	(cached)
+?   	github.com/wesen/2026-09-04--gatemate-symbolic/cmd/lazy-ide	[no test files]
+ok  	github.com/wesen/2026-09-04--gatemate-symbolic/cmd/lazy-lab	(cached)
+ok  	github.com/wesen/2026-09-04--gatemate-symbolic/cmd/search-microscope	(cached)
+ok  	github.com/wesen/2026-09-04--gatemate-symbolic/internal/dataflowide	(cached)
+ok  	github.com/wesen/2026-09-04--gatemate-symbolic/internal/lazyide	(cached)
+ok  	github.com/wesen/2026-09-04--gatemate-symbolic/internal/microscope	(cached)
+ok  	github.com/wesen/2026-09-04--gatemate-symbolic/pkg/dataflow	(cached)
+ok  	github.com/wesen/2026-09-04--gatemate-symbolic/pkg/lazy	(cached)
+ok  	github.com/wesen/2026-09-04--gatemate-symbolic/pkg/lazylang/check	(cached)
+ok  	github.com/wesen/2026-09-04--gatemate-symbolic/pkg/lazylang/compile	(cached)
+ok  	github.com/wesen/2026-09-04--gatemate-symbolic/pkg/lazylang/ir	(cached)
+ok  	github.com/wesen/2026-09-04--gatemate-symbolic/pkg/lazylang/machine	0.004s
+ok  	github.com/wesen/2026-09-04--gatemate-symbolic/pkg/lazylang/semantics	(cached)
+ok  	github.com/wesen/2026-09-04--gatemate-symbolic/pkg/lazylang/syntax	(cached)
+ok  	github.com/wesen/2026-09-04--gatemate-symbolic/pkg/microscope	(cached)

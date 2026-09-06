@@ -1,0 +1,6 @@
+ok  	github.com/wesen/2026-09-04--gatemate-symbolic/pkg/lazylang/check	0.003s	coverage: 85.5% of statements
+ok  	github.com/wesen/2026-09-04--gatemate-symbolic/pkg/lazylang/compile	0.013s	coverage: 89.2% of statements
+ok  	github.com/wesen/2026-09-04--gatemate-symbolic/pkg/lazylang/ir	0.002s	coverage: 92.5% of statements
+ok  	github.com/wesen/2026-09-04--gatemate-symbolic/pkg/lazylang/machine	0.005s	coverage: 87.0% of statements
+ok  	github.com/wesen/2026-09-04--gatemate-symbolic/pkg/lazylang/semantics	0.002s	coverage: 86.7% of statements
+ok  	github.com/wesen/2026-09-04--gatemate-symbolic/pkg/lazylang/syntax	0.015s	coverage: 94.5% of statements

@@ -44,3 +44,13 @@ Parser delivered: S1 bde6d48, S2 460ba86, S3 54a02be. All seven parser slips con
 
 Step 8: Complete I1 binding/type checking and independent lazy evaluator; examples, repository tests and race suite pass (657c706).
 
+
+## 2026-09-05
+
+Step 9: Complete I2 deterministic compiler, packed records, provenance and artifact validation; repository and race suites pass (f58a283).
+
+
+## 2026-09-05
+
+Step 10: Complete I3 allocated machine and differential tests; shared fixture and six programs match, repository/race suites pass (85bb6a3).
+
