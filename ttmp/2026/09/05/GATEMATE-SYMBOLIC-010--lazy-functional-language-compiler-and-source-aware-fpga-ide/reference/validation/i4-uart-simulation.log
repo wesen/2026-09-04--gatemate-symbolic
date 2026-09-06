@@ -1,0 +1,4 @@
+PASS 15 compiled programs, full heaps and semantic counters
+tb/lfl_core_tb.sv:24: $finish called at 137820000 (1ps)
+PASS LFL1 UART framing, checked load/readback, continuations, trace, sharing and polling
+tb/lfl_link_tb.sv:59: $finish called at 3322625000 (1ps)

@@ -918,3 +918,20 @@ I4 began after successful I3 completion and I4 start slips. I am implementing a 
 - The suite compares all committed heap words and counters for allocations, object kinds, claims, updates, arithmetic, indirections, environment steps and maximum heap/stack after each demand. It includes all six checked-in examples plus signed overflow, negative multiplication, comparisons, branch selection and NIL case selection.
 - Tick execution is interleaved with disabled clock cycles, exercising persistent RAM request/wait state. The testbench also holds output before polling.
 - UART and physical timing remain outstanding. Cycle and heap-read counts are intentionally not compared yet because the synchronous RTL explicitly rereads returned values and saved primitive operands.
+
+### I4 UART simulation result
+
+- Core checkpoint committed as `a78ea08`.
+- Added the separate LFL1 UART wrapper and GateMate top-level integration. Requests carry XOR-checked ASCII hexadecimal payloads; the wrapper rejects incomplete or noncontiguous loads and requires all code/heap/provenance records before commit.
+- Added retained UART fixture generation and a wire-level UART testbench. The testbench verifies partial-command timeout, checksum rejection, signature/profile, force-before-load rejection, premature commit rejection, noncontiguous writes, complete load/readback, continuation pages, trace counts, arithmetic sharing, polling and excessive tick rejection.
+- `bash lazy_language/scripts/test.sh` passes both the 15-program core suite and `PASS LFL1 UART framing, checked load/readback, continuations, trace, sharing and polling` on the first UART test run.
+- Added a build script that sources the installed OSS CAD environment and runs synthesis, placement/routing and bitstream packing. Timing and resource outcomes remain unmeasured until that build completes.
+
+### I4 host transport and synthesis checkpoint
+
+- Added `pkg/lazylang/serial.Client` with serialized operations, context deadlines, checked record parsing, complete pre-reset artifact validation, contiguous load writes, full readback and commit-after-verification.
+- A transport or response failure invalidates synchronization. Subsequent demand/tick/poll operations are rejected until reset/load establishes a known state. Invalid artifact validation returns before any device command.
+- Host tests pass for exact request/response encoding, corruption rejection, readback mismatch without commit, reset-required behavior, cancellation and snapshot decoding. Focused transport coverage is 67.8% before physical tests.
+- Added an explicitly opted-in physical test (`-lfl-device`) that loads six examples, compares all committed heap/provenance records, semantic counters and mutation traces against the model, and can retain UART evidence with `-lfl-capture`.
+- Synthesis completed and inferred all five logical memories into block RAM. Placement reports 34 RAM halves, 3,804 flip-flops and 14,359 CPE logic resources. RAM fits the planning allowance of 40 halves; logic exceeds the initial 10,000-resource estimate but occupies 35% of the device. This is a measured deviation from the design estimate, not a timing result. Routing is still running.
+- Hardware's synchronous return/saved-operand reads currently produce different cycle/heap-read totals from the Go model. Physical comparisons explicitly exclude those totals and output stalls while requiring semantic counts and trace mutations to agree.
